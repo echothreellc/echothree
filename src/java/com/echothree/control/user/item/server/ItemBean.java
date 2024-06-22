@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -244,6 +244,16 @@ public class ItemBean
     @Override
     public CommandResult createItemAliasChecksumType(UserVisitPK userVisitPK, CreateItemAliasChecksumTypeForm form) {
         return new CreateItemAliasChecksumTypeCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getItemAliasChecksumTypes(UserVisitPK userVisitPK, GetItemAliasChecksumTypesForm form) {
+        return new GetItemAliasChecksumTypesCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getItemAliasChecksumType(UserVisitPK userVisitPK, GetItemAliasChecksumTypeForm form) {
+        return new GetItemAliasChecksumTypeCommand(userVisitPK, form).run();
     }
 
     @Override

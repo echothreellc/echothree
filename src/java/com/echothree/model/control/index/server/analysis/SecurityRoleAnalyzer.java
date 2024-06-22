@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,7 +16,8 @@
 
 package com.echothree.model.control.index.server.analysis;
 
-import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.IndexFields;
+import com.echothree.model.data.core.server.entity.EntityAliasType;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.party.server.entity.Language;
@@ -29,9 +30,9 @@ import org.apache.lucene.analysis.Analyzer;
 public class SecurityRoleAnalyzer
         extends BasicAnalyzer {
     
-    public SecurityRoleAnalyzer(final ExecutionErrorAccumulator eea, final Language language, final EntityType entityType, final List<EntityAttribute> entityAttributes,
+    public SecurityRoleAnalyzer(final ExecutionErrorAccumulator eea, final Language language, final EntityType entityType, final List<EntityAliasType> entityAliasTypes, final List<EntityAttribute> entityAttributes,
             final List<TagScope> tagScopes) {
-        super(eea, language, entityType, entityAttributes, tagScopes);
+        super(eea, language, entityType, entityAliasTypes, entityAttributes, tagScopes);
     }
 
     public SecurityRoleAnalyzer(final ExecutionErrorAccumulator eea, final Language language, final EntityType entityType) {
@@ -42,8 +43,8 @@ public class SecurityRoleAnalyzer
     protected Map<String, Analyzer> getEntityTypeAnalyzers(final Map<String, Analyzer> fieldAnalyzers) {
         super.getEntityTypeAnalyzers(fieldAnalyzers);
         
-        fieldAnalyzers.put(IndexConstants.IndexField_SecurityRoleGroupName, new WhitespaceLowerCaseAnalyzer());
-        fieldAnalyzers.put(IndexConstants.IndexField_SecurityRoleName, new WhitespaceLowerCaseAnalyzer());
+        fieldAnalyzers.put(IndexFields.securityRoleGroupName.name(), new WhitespaceLowerCaseAnalyzer());
+        fieldAnalyzers.put(IndexFields.securityRoleName.name(), new WhitespaceLowerCaseAnalyzer());
         
         return fieldAnalyzers;
     }

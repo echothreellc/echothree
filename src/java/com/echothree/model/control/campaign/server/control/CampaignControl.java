@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -123,10 +123,12 @@ import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.persistence.Sha1Utils;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -165,7 +167,7 @@ public class CampaignControl
     }
     
     public Campaign createCampaign(String campaignName, String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase());
+        String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
         Campaign defaultCampaign = getDefaultCampaign();
         boolean defaultFound = defaultCampaign != null;
 
@@ -189,7 +191,7 @@ public class CampaignControl
         campaign.store();
 
         CampaignPK campaignPK = campaign.getPrimaryKey();
-        sendEventUsingNames(campaignPK, EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(campaignPK, EventTypes.CREATE, null, null, createdBy);
 
         EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(campaignPK);
         getWorkflowControl().addEntityToWorkflowUsingNames(null, CampaignStatusConstants.Workflow_CAMPAIGN_STATUS,
@@ -198,7 +200,7 @@ public class CampaignControl
         return campaign;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.Campaign */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Campaign */
     public Campaign getCampaignByEntityInstance(EntityInstance entityInstance) {
         CampaignPK pk = new CampaignPK(entityInstance.getEntityUniqueId());
         Campaign campaign = CampaignFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
@@ -258,7 +260,7 @@ public class CampaignControl
 
     private Campaign getCampaignByValue(String value, EntityPermission entityPermission) {
         return CampaignFactory.getInstance().getEntityFromQuery(entityPermission, getCampaignByValueQueries, 
-                Sha1Utils.getInstance().hash(value));
+                Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault())));
     }
 
     public Campaign getCampaignByValue(String value) {
@@ -440,7 +442,7 @@ public class CampaignControl
             CampaignPK campaignPK = campaignDetail.getCampaignPK(); // Not updated
             String campaignName = campaignDetailValue.getCampaignName();
             var value = campaignDetailValue.getValue();
-            String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase());
+            String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
             Boolean isDefault = campaignDetailValue.getIsDefault();
             Integer sortOrder = campaignDetailValue.getSortOrder();
 
@@ -466,7 +468,7 @@ public class CampaignControl
             campaign.setActiveDetail(campaignDetail);
             campaign.setLastDetail(campaignDetail);
 
-            sendEventUsingNames(campaignPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(campaignPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -504,7 +506,7 @@ public class CampaignControl
             }
         }
 
-        sendEventUsingNames(campaign.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(campaign.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteCampaign(Campaign campaign, BasePK deletedBy) {
@@ -527,7 +529,7 @@ public class CampaignControl
         CampaignDescription campaignDescription = CampaignDescriptionFactory.getInstance().create(campaign, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(campaign.getPrimaryKey(), EventTypes.MODIFY.name(), campaignDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(campaign.getPrimaryKey(), EventTypes.MODIFY, campaignDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return campaignDescription;
     }
@@ -649,14 +651,14 @@ public class CampaignControl
             campaignDescription = CampaignDescriptionFactory.getInstance().create(campaign, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(campaign.getPrimaryKey(), EventTypes.MODIFY.name(), campaignDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(campaign.getPrimaryKey(), EventTypes.MODIFY, campaignDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteCampaignDescription(CampaignDescription campaignDescription, BasePK deletedBy) {
         campaignDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(campaignDescription.getCampaignPK(), EventTypes.MODIFY.name(), campaignDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(campaignDescription.getCampaignPK(), EventTypes.MODIFY, campaignDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -681,7 +683,7 @@ public class CampaignControl
     }
     
     public CampaignSource createCampaignSource(String campaignSourceName, String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase());
+        String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
         CampaignSource defaultCampaignSource = getDefaultCampaignSource();
         boolean defaultFound = defaultCampaignSource != null;
 
@@ -705,7 +707,7 @@ public class CampaignControl
         campaignSource.store();
 
         CampaignSourcePK campaignSourcePK = campaignSource.getPrimaryKey();
-        sendEventUsingNames(campaignSourcePK, EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(campaignSourcePK, EventTypes.CREATE, null, null, createdBy);
 
         EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(campaignSourcePK);
         getWorkflowControl().addEntityToWorkflowUsingNames(null, CampaignSourceStatusConstants.Workflow_CAMPAIGN_SOURCE_STATUS,
@@ -714,7 +716,7 @@ public class CampaignControl
         return campaignSource;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.CampaignSource */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.CampaignSource */
     public CampaignSource getCampaignSourceByEntityInstance(EntityInstance entityInstance) {
         CampaignSourcePK pk = new CampaignSourcePK(entityInstance.getEntityUniqueId());
         CampaignSource campaignSource = CampaignSourceFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
@@ -774,7 +776,7 @@ public class CampaignControl
 
     private CampaignSource getCampaignSourceByValue(String value, EntityPermission entityPermission) {
         return CampaignSourceFactory.getInstance().getEntityFromQuery(entityPermission, getCampaignSourceByValueQueries, 
-                Sha1Utils.getInstance().hash(value));
+                Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault())));
     }
 
     public CampaignSource getCampaignSourceByValue(String value) {
@@ -956,7 +958,7 @@ public class CampaignControl
             CampaignSourcePK campaignSourcePK = campaignSourceDetail.getCampaignSourcePK(); // Not updated
             String campaignSourceName = campaignSourceDetailValue.getCampaignSourceName();
             var value = campaignSourceDetailValue.getValue();
-            String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase());
+            String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
             Boolean isDefault = campaignSourceDetailValue.getIsDefault();
             Integer sortOrder = campaignSourceDetailValue.getSortOrder();
 
@@ -982,7 +984,7 @@ public class CampaignControl
             campaignSource.setActiveDetail(campaignSourceDetail);
             campaignSource.setLastDetail(campaignSourceDetail);
 
-            sendEventUsingNames(campaignSourcePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(campaignSourcePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -1020,7 +1022,7 @@ public class CampaignControl
             }
         }
 
-        sendEventUsingNames(campaignSource.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(campaignSource.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteCampaignSource(CampaignSource campaignSource, BasePK deletedBy) {
@@ -1043,7 +1045,7 @@ public class CampaignControl
         CampaignSourceDescription campaignSourceDescription = CampaignSourceDescriptionFactory.getInstance().create(campaignSource, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(campaignSource.getPrimaryKey(), EventTypes.MODIFY.name(), campaignSourceDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(campaignSource.getPrimaryKey(), EventTypes.MODIFY, campaignSourceDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return campaignSourceDescription;
     }
@@ -1165,14 +1167,14 @@ public class CampaignControl
             campaignSourceDescription = CampaignSourceDescriptionFactory.getInstance().create(campaignSource, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(campaignSource.getPrimaryKey(), EventTypes.MODIFY.name(), campaignSourceDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(campaignSource.getPrimaryKey(), EventTypes.MODIFY, campaignSourceDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteCampaignSourceDescription(CampaignSourceDescription campaignSourceDescription, BasePK deletedBy) {
         campaignSourceDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(campaignSourceDescription.getCampaignSourcePK(), EventTypes.MODIFY.name(), campaignSourceDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(campaignSourceDescription.getCampaignSourcePK(), EventTypes.MODIFY, campaignSourceDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -1197,7 +1199,7 @@ public class CampaignControl
     }
     
     public CampaignMedium createCampaignMedium(String campaignMediumName, String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase());
+        String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
         CampaignMedium defaultCampaignMedium = getDefaultCampaignMedium();
         boolean defaultFound = defaultCampaignMedium != null;
 
@@ -1221,7 +1223,7 @@ public class CampaignControl
         campaignMedium.store();
 
         CampaignMediumPK campaignMediumPK = campaignMedium.getPrimaryKey();
-        sendEventUsingNames(campaignMediumPK, EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(campaignMediumPK, EventTypes.CREATE, null, null, createdBy);
 
         EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(campaignMediumPK);
         getWorkflowControl().addEntityToWorkflowUsingNames(null, CampaignMediumStatusConstants.Workflow_CAMPAIGN_MEDIUM_STATUS,
@@ -1230,7 +1232,7 @@ public class CampaignControl
         return campaignMedium;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.CampaignMedium */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.CampaignMedium */
     public CampaignMedium getCampaignMediumByEntityInstance(EntityInstance entityInstance) {
         CampaignMediumPK pk = new CampaignMediumPK(entityInstance.getEntityUniqueId());
         CampaignMedium campaignMedium = CampaignMediumFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
@@ -1290,7 +1292,7 @@ public class CampaignControl
 
     private CampaignMedium getCampaignMediumByValue(String value, EntityPermission entityPermission) {
         return CampaignMediumFactory.getInstance().getEntityFromQuery(entityPermission, getCampaignMediumByValueQueries, 
-                Sha1Utils.getInstance().hash(value));
+                Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault())));
     }
 
     public CampaignMedium getCampaignMediumByValue(String value) {
@@ -1472,7 +1474,7 @@ public class CampaignControl
             CampaignMediumPK campaignMediumPK = campaignMediumDetail.getCampaignMediumPK(); // Not updated
             String campaignMediumName = campaignMediumDetailValue.getCampaignMediumName();
             var value = campaignMediumDetailValue.getValue();
-            String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase());
+            String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
             Boolean isDefault = campaignMediumDetailValue.getIsDefault();
             Integer sortOrder = campaignMediumDetailValue.getSortOrder();
 
@@ -1498,7 +1500,7 @@ public class CampaignControl
             campaignMedium.setActiveDetail(campaignMediumDetail);
             campaignMedium.setLastDetail(campaignMediumDetail);
 
-            sendEventUsingNames(campaignMediumPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(campaignMediumPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -1536,7 +1538,7 @@ public class CampaignControl
             }
         }
 
-        sendEventUsingNames(campaignMedium.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(campaignMedium.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteCampaignMedium(CampaignMedium campaignMedium, BasePK deletedBy) {
@@ -1559,7 +1561,7 @@ public class CampaignControl
         CampaignMediumDescription campaignMediumDescription = CampaignMediumDescriptionFactory.getInstance().create(campaignMedium, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(campaignMedium.getPrimaryKey(), EventTypes.MODIFY.name(), campaignMediumDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(campaignMedium.getPrimaryKey(), EventTypes.MODIFY, campaignMediumDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return campaignMediumDescription;
     }
@@ -1681,14 +1683,14 @@ public class CampaignControl
             campaignMediumDescription = CampaignMediumDescriptionFactory.getInstance().create(campaignMedium, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(campaignMedium.getPrimaryKey(), EventTypes.MODIFY.name(), campaignMediumDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(campaignMedium.getPrimaryKey(), EventTypes.MODIFY, campaignMediumDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteCampaignMediumDescription(CampaignMediumDescription campaignMediumDescription, BasePK deletedBy) {
         campaignMediumDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(campaignMediumDescription.getCampaignMediumPK(), EventTypes.MODIFY.name(), campaignMediumDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(campaignMediumDescription.getCampaignMediumPK(), EventTypes.MODIFY, campaignMediumDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -1713,7 +1715,7 @@ public class CampaignControl
     }
     
     public CampaignTerm createCampaignTerm(String campaignTermName, String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase());
+        String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
         CampaignTerm defaultCampaignTerm = getDefaultCampaignTerm();
         boolean defaultFound = defaultCampaignTerm != null;
 
@@ -1737,7 +1739,7 @@ public class CampaignControl
         campaignTerm.store();
 
         CampaignTermPK campaignTermPK = campaignTerm.getPrimaryKey();
-        sendEventUsingNames(campaignTermPK, EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(campaignTermPK, EventTypes.CREATE, null, null, createdBy);
 
         EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(campaignTermPK);
         getWorkflowControl().addEntityToWorkflowUsingNames(null, CampaignTermStatusConstants.Workflow_CAMPAIGN_TERM_STATUS,
@@ -1746,7 +1748,7 @@ public class CampaignControl
         return campaignTerm;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.CampaignTerm */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.CampaignTerm */
     public CampaignTerm getCampaignTermByEntityInstance(EntityInstance entityInstance) {
         CampaignTermPK pk = new CampaignTermPK(entityInstance.getEntityUniqueId());
         CampaignTerm campaignTerm = CampaignTermFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
@@ -1806,7 +1808,7 @@ public class CampaignControl
 
     private CampaignTerm getCampaignTermByValue(String value, EntityPermission entityPermission) {
         return CampaignTermFactory.getInstance().getEntityFromQuery(entityPermission, getCampaignTermByValueQueries, 
-                Sha1Utils.getInstance().hash(value));
+                Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault())));
     }
 
     public CampaignTerm getCampaignTermByValue(String value) {
@@ -1988,7 +1990,7 @@ public class CampaignControl
             CampaignTermPK campaignTermPK = campaignTermDetail.getCampaignTermPK(); // Not updated
             String campaignTermName = campaignTermDetailValue.getCampaignTermName();
             var value = campaignTermDetailValue.getValue();
-            String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase());
+            String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
             Boolean isDefault = campaignTermDetailValue.getIsDefault();
             Integer sortOrder = campaignTermDetailValue.getSortOrder();
 
@@ -2014,7 +2016,7 @@ public class CampaignControl
             campaignTerm.setActiveDetail(campaignTermDetail);
             campaignTerm.setLastDetail(campaignTermDetail);
 
-            sendEventUsingNames(campaignTermPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(campaignTermPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -2052,7 +2054,7 @@ public class CampaignControl
             }
         }
 
-        sendEventUsingNames(campaignTerm.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(campaignTerm.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteCampaignTerm(CampaignTerm campaignTerm, BasePK deletedBy) {
@@ -2075,7 +2077,7 @@ public class CampaignControl
         CampaignTermDescription campaignTermDescription = CampaignTermDescriptionFactory.getInstance().create(campaignTerm, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(campaignTerm.getPrimaryKey(), EventTypes.MODIFY.name(), campaignTermDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(campaignTerm.getPrimaryKey(), EventTypes.MODIFY, campaignTermDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return campaignTermDescription;
     }
@@ -2197,14 +2199,14 @@ public class CampaignControl
             campaignTermDescription = CampaignTermDescriptionFactory.getInstance().create(campaignTerm, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(campaignTerm.getPrimaryKey(), EventTypes.MODIFY.name(), campaignTermDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(campaignTerm.getPrimaryKey(), EventTypes.MODIFY, campaignTermDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteCampaignTermDescription(CampaignTermDescription campaignTermDescription, BasePK deletedBy) {
         campaignTermDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(campaignTermDescription.getCampaignTermPK(), EventTypes.MODIFY.name(), campaignTermDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(campaignTermDescription.getCampaignTermPK(), EventTypes.MODIFY, campaignTermDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -2229,7 +2231,7 @@ public class CampaignControl
     }
     
     public CampaignContent createCampaignContent(String campaignContentName, String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase());
+        String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
         CampaignContent defaultCampaignContent = getDefaultCampaignContent();
         boolean defaultFound = defaultCampaignContent != null;
 
@@ -2253,7 +2255,7 @@ public class CampaignControl
         campaignContent.store();
 
         CampaignContentPK campaignContentPK = campaignContent.getPrimaryKey();
-        sendEventUsingNames(campaignContentPK, EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(campaignContentPK, EventTypes.CREATE, null, null, createdBy);
 
         EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(campaignContentPK);
         getWorkflowControl().addEntityToWorkflowUsingNames(null, CampaignContentStatusConstants.Workflow_CAMPAIGN_CONTENT_STATUS,
@@ -2262,7 +2264,7 @@ public class CampaignControl
         return campaignContent;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.CampaignContent */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.CampaignContent */
     public CampaignContent getCampaignContentByEntityInstance(EntityInstance entityInstance) {
         CampaignContentPK pk = new CampaignContentPK(entityInstance.getEntityUniqueId());
         CampaignContent campaignContent = CampaignContentFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
@@ -2322,7 +2324,7 @@ public class CampaignControl
 
     private CampaignContent getCampaignContentByValue(String value, EntityPermission entityPermission) {
         return CampaignContentFactory.getInstance().getEntityFromQuery(entityPermission, getCampaignContentByValueQueries, 
-                Sha1Utils.getInstance().hash(value));
+                Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault())));
     }
 
     public CampaignContent getCampaignContentByValue(String value) {
@@ -2504,7 +2506,7 @@ public class CampaignControl
             CampaignContentPK campaignContentPK = campaignContentDetail.getCampaignContentPK(); // Not updated
             String campaignContentName = campaignContentDetailValue.getCampaignContentName();
             var value = campaignContentDetailValue.getValue();
-            String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase());
+            String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
             Boolean isDefault = campaignContentDetailValue.getIsDefault();
             Integer sortOrder = campaignContentDetailValue.getSortOrder();
 
@@ -2530,7 +2532,7 @@ public class CampaignControl
             campaignContent.setActiveDetail(campaignContentDetail);
             campaignContent.setLastDetail(campaignContentDetail);
 
-            sendEventUsingNames(campaignContentPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(campaignContentPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -2568,7 +2570,7 @@ public class CampaignControl
             }
         }
 
-        sendEventUsingNames(campaignContent.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(campaignContent.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteCampaignContent(CampaignContent campaignContent, BasePK deletedBy) {
@@ -2591,7 +2593,7 @@ public class CampaignControl
         CampaignContentDescription campaignContentDescription = CampaignContentDescriptionFactory.getInstance().create(campaignContent, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(campaignContent.getPrimaryKey(), EventTypes.MODIFY.name(), campaignContentDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(campaignContent.getPrimaryKey(), EventTypes.MODIFY, campaignContentDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return campaignContentDescription;
     }
@@ -2713,14 +2715,14 @@ public class CampaignControl
             campaignContentDescription = CampaignContentDescriptionFactory.getInstance().create(campaignContent, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(campaignContent.getPrimaryKey(), EventTypes.MODIFY.name(), campaignContentDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(campaignContent.getPrimaryKey(), EventTypes.MODIFY, campaignContentDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteCampaignContentDescription(CampaignContentDescription campaignContentDescription, BasePK deletedBy) {
         campaignContentDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(campaignContentDescription.getCampaignContentPK(), EventTypes.MODIFY.name(), campaignContentDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(campaignContentDescription.getCampaignContentPK(), EventTypes.MODIFY, campaignContentDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -2938,7 +2940,7 @@ public class CampaignControl
         return getCampaignTransferCaches(userVisit).getUserVisitCampaignTransferCache().getUserVisitCampaignTransfer(userVisitCampaign);
     }
 
-    public List<UserVisitCampaignTransfer> getUserVisitCampaignTransfers(UserVisit userVisit, List<UserVisitCampaign> userVisitCampaigns) {
+    public List<UserVisitCampaignTransfer> getUserVisitCampaignTransfers(UserVisit userVisit, Collection<UserVisitCampaign> userVisitCampaigns) {
         List<UserVisitCampaignTransfer> userVisitCampaignTransfers = new ArrayList<>(userVisitCampaigns.size());
         UserVisitCampaignTransferCache userVisitCampaignTransferCache = getCampaignTransferCaches(userVisit).getUserVisitCampaignTransferCache();
 

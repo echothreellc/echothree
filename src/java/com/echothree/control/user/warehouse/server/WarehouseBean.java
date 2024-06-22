@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,6 +16,30 @@
 
 package com.echothree.control.user.warehouse.server;
 
+import com.echothree.control.user.filter.common.form.CreateFilterKindDescriptionForm;
+import com.echothree.control.user.filter.common.form.CreateFilterKindForm;
+import com.echothree.control.user.filter.common.form.DeleteFilterKindDescriptionForm;
+import com.echothree.control.user.filter.common.form.DeleteFilterKindForm;
+import com.echothree.control.user.filter.common.form.EditFilterKindDescriptionForm;
+import com.echothree.control.user.filter.common.form.EditFilterKindForm;
+import com.echothree.control.user.filter.common.form.GetFilterKindChoicesForm;
+import com.echothree.control.user.filter.common.form.GetFilterKindDescriptionForm;
+import com.echothree.control.user.filter.common.form.GetFilterKindDescriptionsForm;
+import com.echothree.control.user.filter.common.form.GetFilterKindForm;
+import com.echothree.control.user.filter.common.form.GetFilterKindsForm;
+import com.echothree.control.user.filter.common.form.SetDefaultFilterKindForm;
+import com.echothree.control.user.filter.server.command.CreateFilterKindCommand;
+import com.echothree.control.user.filter.server.command.CreateFilterKindDescriptionCommand;
+import com.echothree.control.user.filter.server.command.DeleteFilterKindCommand;
+import com.echothree.control.user.filter.server.command.DeleteFilterKindDescriptionCommand;
+import com.echothree.control.user.filter.server.command.EditFilterKindCommand;
+import com.echothree.control.user.filter.server.command.EditFilterKindDescriptionCommand;
+import com.echothree.control.user.filter.server.command.GetFilterKindChoicesCommand;
+import com.echothree.control.user.filter.server.command.GetFilterKindCommand;
+import com.echothree.control.user.filter.server.command.GetFilterKindDescriptionCommand;
+import com.echothree.control.user.filter.server.command.GetFilterKindDescriptionsCommand;
+import com.echothree.control.user.filter.server.command.GetFilterKindsCommand;
+import com.echothree.control.user.filter.server.command.SetDefaultFilterKindCommand;
 import com.echothree.control.user.warehouse.common.WarehouseRemote;
 import com.echothree.control.user.warehouse.common.form.*;
 import com.echothree.control.user.warehouse.server.command.*;
@@ -45,7 +69,17 @@ public class WarehouseBean
     public CommandResult createLocationUseType(UserVisitPK userVisitPK, CreateLocationUseTypeForm form) {
         return new CreateLocationUseTypeCommand(userVisitPK, form).run();
     }
-    
+
+    @Override
+    public CommandResult getLocationUseTypes(UserVisitPK userVisitPK, GetLocationUseTypesForm form) {
+        return new GetLocationUseTypesCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getLocationUseType(UserVisitPK userVisitPK, GetLocationUseTypeForm form) {
+        return new GetLocationUseTypeCommand(userVisitPK, form).run();
+    }
+
     @Override
     public CommandResult getLocationUseTypeChoices(UserVisitPK userVisitPK, GetLocationUseTypeChoicesForm form) {
         return new GetLocationUseTypeChoicesCommand(userVisitPK, form).run();
@@ -59,7 +93,75 @@ public class WarehouseBean
     public CommandResult createLocationUseTypeDescription(UserVisitPK userVisitPK, CreateLocationUseTypeDescriptionForm form) {
         return new CreateLocationUseTypeDescriptionCommand(userVisitPK, form).run();
     }
-    
+
+    // -------------------------------------------------------------------------
+    //   Warehouse Types
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult createWarehouseType(UserVisitPK userVisitPK, CreateWarehouseTypeForm form) {
+        return new CreateWarehouseTypeCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getWarehouseTypes(UserVisitPK userVisitPK, GetWarehouseTypesForm form) {
+        return new GetWarehouseTypesCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getWarehouseType(UserVisitPK userVisitPK, GetWarehouseTypeForm form) {
+        return new GetWarehouseTypeCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getWarehouseTypeChoices(UserVisitPK userVisitPK, GetWarehouseTypeChoicesForm form) {
+        return new GetWarehouseTypeChoicesCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult setDefaultWarehouseType(UserVisitPK userVisitPK, SetDefaultWarehouseTypeForm form) {
+        return new SetDefaultWarehouseTypeCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult editWarehouseType(UserVisitPK userVisitPK, EditWarehouseTypeForm form) {
+        return new EditWarehouseTypeCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult deleteWarehouseType(UserVisitPK userVisitPK, DeleteWarehouseTypeForm form) {
+        return new DeleteWarehouseTypeCommand(userVisitPK, form).run();
+    }
+
+    // -------------------------------------------------------------------------
+    //   Warehouse Type Descriptions
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult createWarehouseTypeDescription(UserVisitPK userVisitPK, CreateWarehouseTypeDescriptionForm form) {
+        return new CreateWarehouseTypeDescriptionCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getWarehouseTypeDescriptions(UserVisitPK userVisitPK, GetWarehouseTypeDescriptionsForm form) {
+        return new GetWarehouseTypeDescriptionsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getWarehouseTypeDescription(UserVisitPK userVisitPK, GetWarehouseTypeDescriptionForm form) {
+        return new GetWarehouseTypeDescriptionCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult editWarehouseTypeDescription(UserVisitPK userVisitPK, EditWarehouseTypeDescriptionForm form) {
+        return new EditWarehouseTypeDescriptionCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult deleteWarehouseTypeDescription(UserVisitPK userVisitPK, DeleteWarehouseTypeDescriptionForm form) {
+        return new DeleteWarehouseTypeDescriptionCommand(userVisitPK, form).run();
+    }
+
     // -------------------------------------------------------------------------
     //   Warehouses
     // -------------------------------------------------------------------------
@@ -175,7 +277,12 @@ public class WarehouseBean
     public CommandResult getLocationNameElements(UserVisitPK userVisitPK, GetLocationNameElementsForm form) {
         return new GetLocationNameElementsCommand(userVisitPK, form).run();
     }
-    
+
+    @Override
+    public CommandResult getLocationNameElement(UserVisitPK userVisitPK, GetLocationNameElementForm form) {
+        return new GetLocationNameElementCommand(userVisitPK, form).run();
+    }
+
     @Override
     public CommandResult editLocationNameElement(UserVisitPK userVisitPK, EditLocationNameElementForm form) {
         return new EditLocationNameElementCommand(userVisitPK, form).run();

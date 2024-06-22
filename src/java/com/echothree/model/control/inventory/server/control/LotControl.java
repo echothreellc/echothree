@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -64,12 +64,12 @@ public class LotControl
         lot.setLastDetail(lotDetail);
         lot.store();
 
-        sendEventUsingNames(lot.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(lot.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return lot;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.Lot */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Lot */
     public Lot getLotByEntityInstance(final EntityInstance entityInstance,
             final EntityPermission entityPermission) {
         var pk = new LotPK(entityInstance.getEntityUniqueId());
@@ -83,6 +83,13 @@ public class LotControl
 
     public Lot getLotByEntityInstanceForUpdate(final EntityInstance entityInstance) {
         return getLotByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countLots() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM lots, lotdetails " +
+                "WHERE lt_activedetailid = ltdt_lotdetailid");
     }
 
     private static final Map<EntityPermission, String> getLotByNameQueries = Map.of(
@@ -335,7 +342,7 @@ public class LotControl
             lot.setActiveDetail(lotDetail);
             lot.setLastDetail(lotDetail);
 
-            sendEventUsingNames(lotPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(lotPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -345,7 +352,7 @@ public class LotControl
         lotDetail.store();
         lot.setActiveDetail(null);
 
-        sendEventUsingNames(lot.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(lot.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteLots(final Collection<Lot> lots, final BasePK deletedBy) {

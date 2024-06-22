@@ -1,7 +1,7 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" %>
 
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -27,7 +27,7 @@
     <body>
         <div id="Header">
             <h2>
-                <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
+                <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
                 <a href="<c:url value="/action/Configuration/Main" />">Configuration</a> &gt;&gt;
                 <a href="<c:url value="/action/Configuration/WorkEffortType/Main" />">Work Effort Types</a> &gt;&gt;
                 <c:url var="workEffortScopesUrl" value="/action/Configuration/WorkEffortScope/Main">
@@ -88,7 +88,7 @@
             Work Assignment Selector:
             <c:choose>
                 <c:when test="${workRequirementScope.workAssignmentSelector == null}">
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:url var="workAssignmentSelectorUrl" value="/action/Sequence/Sequence/Review">
@@ -107,7 +107,7 @@
                 <c:when test="${workRequirementScope.estimatedTimeAllowed == null}">
                     <c:choose>
                         <c:when test="${workRequirementScope.workRequirementType.estimatedTimeAllowed == null}">
-                            <i>Not Set.</i>
+                            <i><fmt:message key="phrase.notSet" /></i>
                         </c:when>
                         <c:otherwise>
                             Using Default (<c:out value="${workRequirementScope.workRequirementType.estimatedTimeAllowed}" />)
@@ -124,7 +124,7 @@
                 <c:when test="${workRequirementScope.maximumTimeAllowed == null}">
                     <c:choose>
                         <c:when test="${workRequirementScope.workRequirementType.maximumTimeAllowed == null}">
-                            <i>Not Set.</i>
+                            <i><fmt:message key="phrase.notSet" /></i>
                         </c:when>
                         <c:otherwise>
                             Using Default (<c:out value="${workRequirementScope.workRequirementType.maximumTimeAllowed}" />)

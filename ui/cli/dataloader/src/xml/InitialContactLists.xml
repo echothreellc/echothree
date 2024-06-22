@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -20,7 +20,7 @@
             <chainKindDescription languageIsoName="en" description="Contact List" />
             <chainType chainTypeName="CONFIRMATION_REQUEST" isDefault="true" sortOrder="1">
                 <chainTypeDescription languageIsoName="en" description="Confirmation Request" />
-                <chainEntityRoleType chainEntityRoleTypeName="PARTY_CONTACT_LIST" componentVendorName="EchoThree" entityTypeName="PartyContactList" sortOrder="1">
+                <chainEntityRoleType chainEntityRoleTypeName="PARTY_CONTACT_LIST" componentVendorName="ECHO_THREE" entityTypeName="PartyContactList" sortOrder="1">
                     <chainEntityRoleTypeDescription languageIsoName="en" description="Party Contact List" />
                 </chainEntityRoleType>
                 <chain chainName="TEST_CONFIRMATION_REQUEST" isDefault="true" sortOrder="1">
@@ -29,7 +29,7 @@
             </chainType>
             <chainType chainTypeName="SUBSCRIBE" isDefault="false" sortOrder="1">
                 <chainTypeDescription languageIsoName="en" description="Subscribed" />
-                <chainEntityRoleType chainEntityRoleTypeName="PARTY_CONTACT_LIST" componentVendorName="EchoThree" entityTypeName="PartyContactList" sortOrder="1">
+                <chainEntityRoleType chainEntityRoleTypeName="PARTY_CONTACT_LIST" componentVendorName="ECHO_THREE" entityTypeName="PartyContactList" sortOrder="1">
                     <chainEntityRoleTypeDescription languageIsoName="en" description="Party Contact List" />
                 </chainEntityRoleType>
                 <chain chainName="TEST_SUBSCRIBE" isDefault="true" sortOrder="1">
@@ -38,7 +38,7 @@
             </chainType>
             <chainType chainTypeName="UNSUBSCRIBE" isDefault="false" sortOrder="1">
                 <chainTypeDescription languageIsoName="en" description="Unsubscribed" />
-                <chainEntityRoleType chainEntityRoleTypeName="PARTY_CONTACT_LIST" componentVendorName="EchoThree" entityTypeName="PartyContactList" sortOrder="1">
+                <chainEntityRoleType chainEntityRoleTypeName="PARTY_CONTACT_LIST" componentVendorName="ECHO_THREE" entityTypeName="PartyContactList" sortOrder="1">
                     <chainEntityRoleTypeDescription languageIsoName="en" description="Party Contact List" />
                 </chainEntityRoleType>
                 <chain chainName="TEST_UNSUBSCRIBE" isDefault="true" sortOrder="1">

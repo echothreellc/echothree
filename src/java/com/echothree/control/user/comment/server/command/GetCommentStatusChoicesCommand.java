@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -69,13 +69,13 @@ public class GetCommentStatusChoicesCommand
             Comment comment = null;
             
             if(commentTypeName != null) {
-                EntityType entityType = EntityTypeLogic.getInstance().getEntityTypeByName(this, ComponentVendors.ECHOTHREE.name(), EntityTypes.Comment.name());
+                EntityType entityType = EntityTypeLogic.getInstance().getEntityTypeByName(this, ComponentVendors.ECHO_THREE.name(), EntityTypes.Comment.name());
                 
                 if(!hasExecutionErrors()) {
                     commentType = commentControl.getCommentTypeByName(entityType, commentTypeName);
                     
                     if(commentType == null) {
-                        addExecutionError(ExecutionErrors.UnknownCommentTypeName.name(), ComponentVendors.ECHOTHREE.name(), EntityTypes.Comment.name(),
+                        addExecutionError(ExecutionErrors.UnknownCommentTypeName.name(), ComponentVendors.ECHO_THREE.name(), EntityTypes.Comment.name(),
                                 commentTypeName);
                     }
                 }

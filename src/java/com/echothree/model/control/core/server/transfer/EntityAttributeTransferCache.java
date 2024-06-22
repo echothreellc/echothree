@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -55,14 +55,17 @@ import java.util.Set;
 
 public class EntityAttributeTransferCache
         extends BaseCoreTransferCache<EntityAttribute, EntityAttributeTransfer> {
-    
+
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
     SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
     
     boolean includeValue;
     boolean includeEntityListItems;
+    boolean includeEntityListItemsCount;
     boolean includeEntityAttributeEntityTypes;
-    
+    boolean includeEntityAttributeEntityTypesCount;
+
     TransferProperties transferProperties;
     boolean filterEntityType;
     boolean filterEntityAttributeName;
@@ -77,19 +80,21 @@ public class EntityAttributeTransferCache
     boolean filterEntityInstance;
 
     /** Creates a new instance of EntityAttributeTransferCache */
-    public EntityAttributeTransferCache(UserVisit userVisit, CoreControl coreControl) {
-        super(userVisit, coreControl);
+    public EntityAttributeTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         var options = session.getOptions();
         if(options != null) {
             includeValue = options.contains(CoreOptions.EntityAttributeIncludeValue);
             includeEntityListItems = options.contains(CoreOptions.EntityAttributeIncludeEntityListItems);
+            includeEntityListItemsCount = options.contains(CoreOptions.EntityAttributeIncludeEntityListItemsCount);
             includeEntityAttributeEntityTypes = options.contains(CoreOptions.EntityAttributeIncludeEntityAttributeEntityTypes);
+            includeEntityAttributeEntityTypesCount = options.contains(CoreOptions.EntityAttributeIncludeEntityAttributeEntityTypesCount);
         }
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
-            Set<String> properties = transferProperties.getProperties(EntityAttributeTransfer.class);
+            var properties = transferProperties.getProperties(EntityAttributeTransfer.class);
             
             if(properties != null) {
                 filterEntityType = !properties.contains(CoreProperties.ENTITY_TYPE);
@@ -258,11 +263,19 @@ public class EntityAttributeTransferCache
                     getLog().error("entityInstance is null");
                 }
             }
-            
+
+            if(includeEntityListItemsCount) {
+                entityAttributeTransfer.setEntityListItemsCount(coreControl.countEntityListItems(entityAttribute));
+            }
+
             if(includeEntityListItems) {
                 entityAttributeTransfer.setEntityListItems(new ListWrapper<>(coreControl.getEntityListItemTransfersByEntityAttribute(userVisit, entityAttribute, entityInstance)));
             }
-            
+
+            if(includeEntityAttributeEntityTypesCount) {
+                entityAttributeTransfer.setEntityAttributeEntityTypesCount(coreControl.countEntityAttributeEntityTypesByEntityAttribute(entityAttribute));
+            }
+
             if(includeEntityAttributeEntityTypes) {
                 entityAttributeTransfer.setEntityAttributeEntityTypes(new ListWrapper<>(coreControl.getEntityAttributeEntityTypeTransfersByEntityAttribute(userVisit, entityAttribute, entityInstance)));
             }

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -33,14 +33,16 @@ import java.util.Set;
 
 public class EntityClobAttributeTransferCache
         extends BaseCoreTransferCache<EntityClobAttribute, EntityClobAttributeTransfer> {
-    
+
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
+
     boolean includeClob;
     boolean includeETag;
     
     /** Creates a new instance of EntityClobAttributeTransferCache */
-    public EntityClobAttributeTransferCache(UserVisit userVisit, CoreControl coreControl) {
-        super(userVisit, coreControl);
+    public EntityClobAttributeTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         var options = session.getOptions();
         if(options != null) {
@@ -54,7 +56,7 @@ public class EntityClobAttributeTransferCache
         
         if(entityClobAttributeTransfer == null) {
             EntityAttributeTransfer entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityClobAttribute.getEntityAttribute(), entityInstance) : null;
-            EntityInstanceTransfer entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityClobAttribute.getEntityInstance(), false, false, false, false, false);
+            EntityInstanceTransfer entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityClobAttribute.getEntityInstance(), false, false, false, false, false, false);
             LanguageTransfer language = partyControl.getLanguageTransfer(userVisit, entityClobAttribute.getLanguage());
             String clobAttribute = includeClob ? entityClobAttribute.getClobAttribute() : null;
             MimeTypeTransfer mimeType = coreControl.getMimeTypeTransfer(userVisit, entityClobAttribute.getMimeType());

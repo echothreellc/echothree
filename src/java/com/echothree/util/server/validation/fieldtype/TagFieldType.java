@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import com.echothree.util.common.message.Message;
 import com.echothree.util.common.message.Messages;
 import com.echothree.util.server.validation.Patterns;
 import com.echothree.util.server.validation.Validator;
+import java.util.Locale;
 import java.util.regex.Matcher;
 
 public class TagFieldType
@@ -40,7 +41,7 @@ public class TagFieldType
     
     @Override
     public String validate() {
-        String lcFieldValue = fieldValue.toLowerCase();
+        String lcFieldValue = fieldValue.toLowerCase(Locale.getDefault());
         int length = lcFieldValue.length();
         boolean hadErrors = false;
         

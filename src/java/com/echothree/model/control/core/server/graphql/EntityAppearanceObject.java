@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,11 +16,8 @@
 
 package com.echothree.model.control.core.server.graphql;
 
-import com.echothree.control.user.core.server.command.GetAppearanceCommand;
-import com.echothree.control.user.core.server.command.GetEntityInstanceCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.data.core.server.entity.EntityAppearance;
-import com.echothree.util.server.control.BaseSingleEntityCommand;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
@@ -30,7 +27,7 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("entity appearance object")
 @GraphQLName("EntityAppearance")
 public class EntityAppearanceObject
-        extends BaseGraphQl {
+        implements BaseGraphQl {
     
     private final EntityAppearance entityAppearance; // Always Present
     
@@ -38,46 +35,16 @@ public class EntityAppearanceObject
         this.entityAppearance = entityAppearance;
     }
 
-    private Boolean hasEntityInstanceAccess;
-
-    private boolean getHasEntityInstanceAccess(final DataFetchingEnvironment env) {
-        if(hasEntityInstanceAccess == null) {
-            var baseSingleEntityCommand = new GetEntityInstanceCommand(getUserVisitPK(env), null);
-
-            baseSingleEntityCommand.security();
-
-            hasEntityInstanceAccess = !baseSingleEntityCommand.hasSecurityMessages();
-        }
-
-        return hasEntityInstanceAccess;
-    }
-
-    private Boolean hasAppearanceAccess;
-
-    private boolean getHasAppearanceAccess(final DataFetchingEnvironment env) {
-        if(hasAppearanceAccess == null) {
-            var baseSingleEntityCommand = new GetAppearanceCommand(getUserVisitPK(env), null);
-
-            baseSingleEntityCommand.security();
-
-            hasAppearanceAccess = !baseSingleEntityCommand.hasSecurityMessages();
-        }
-
-        return hasAppearanceAccess;
-    }
-
     @GraphQLField
     @GraphQLDescription("entity instance")
-    @GraphQLNonNull
     public EntityInstanceObject getEntityInstance(final DataFetchingEnvironment env) {
-        return getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityAppearance.getEntityInstance()) : null;
+        return CoreSecurityUtils.getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityAppearance.getEntityInstance()) : null;
     }
     
     @GraphQLField
     @GraphQLDescription("appearance")
-    @GraphQLNonNull
     public AppearanceObject getAppearance(final DataFetchingEnvironment env) {
-        return getHasAppearanceAccess(env) ? new AppearanceObject(entityAppearance.getAppearance()) : null;
+        return CoreSecurityUtils.getHasAppearanceAccess(env) ? new AppearanceObject(entityAppearance.getAppearance()) : null;
     }
     
 }

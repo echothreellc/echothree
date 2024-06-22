@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -50,7 +50,7 @@ public class EditAction
     @Override
     protected RelatedItemTypeSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        RelatedItemTypeSpec spec = ItemUtil.getHome().getRelatedItemTypeSpec();
+        var spec = ItemUtil.getHome().getRelatedItemTypeUniversalSpec();
         
         spec.setRelatedItemTypeName(findParameter(request, ParameterConstants.ORIGINAL_RELATED_ITEM_TYPE_NAME, actionForm.getOriginalRelatedItemTypeName()));
         

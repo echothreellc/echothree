@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -47,6 +47,7 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 public class EditContactTelephoneCommand
@@ -77,7 +78,7 @@ public class EditContactTelephoneCommand
                 new FieldDefinition("AreaCode", FieldType.STRING, false, 1L, 5L),
                 new FieldDefinition("TelephoneNumber", FieldType.STRING, true, 1L, 25L),
                 new FieldDefinition("TelephoneExtension", FieldType.NUMBERS, false, 1L, 10L),
-                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 ));
     }
     
@@ -180,7 +181,7 @@ public class EditContactTelephoneCommand
     public void canUpdate(PartyContactMechanism partyContactMechanism) {
         var geoControl = Session.getModelController(GeoControl.class);
         var countryName = edit.getCountryName();
-        var countryAlias = StringUtils.getInstance().cleanStringToName(countryName).toUpperCase();
+        var countryAlias = StringUtils.getInstance().cleanStringToName(countryName).toUpperCase(Locale.getDefault());
 
         countryGeoCode = geoControl.getCountryByAlias(countryAlias);
 

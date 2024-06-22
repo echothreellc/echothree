@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -80,6 +80,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -137,7 +138,7 @@ public class SubscriptionControl
         subscriptionKind.setLastDetail(subscriptionKindDetail);
         subscriptionKind.store();
 
-        sendEventUsingNames(subscriptionKind.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(subscriptionKind.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return subscriptionKind;
     }
@@ -329,7 +330,7 @@ public class SubscriptionControl
         subscriptionKind.setLastDetail(subscriptionKindDetail);
         subscriptionKind.store();
 
-        sendEventUsingNames(subscriptionKindPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+        sendEvent(subscriptionKindPK, EventTypes.MODIFY, null, null, updatedBy);
     }
 
     public void updateSubscriptionKindFromValue(SubscriptionKindDetailValue subscriptionKindDetailValue, BasePK updatedBy) {
@@ -361,7 +362,7 @@ public class SubscriptionControl
             }
         }
 
-        sendEventUsingNames(subscriptionKind.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(subscriptionKind.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     // --------------------------------------------------------------------------------
@@ -373,7 +374,7 @@ public class SubscriptionControl
         SubscriptionKindDescription subscriptionKindDescription = SubscriptionKindDescriptionFactory.getInstance().create(subscriptionKind,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(subscriptionKind.getPrimaryKey(), EventTypes.MODIFY.name(), subscriptionKindDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(subscriptionKind.getPrimaryKey(), EventTypes.MODIFY, subscriptionKindDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return subscriptionKindDescription;
     }
@@ -494,14 +495,14 @@ public class SubscriptionControl
             subscriptionKindDescription = SubscriptionKindDescriptionFactory.getInstance().create(subscriptionKind, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(subscriptionKind.getPrimaryKey(), EventTypes.MODIFY.name(), subscriptionKindDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(subscriptionKind.getPrimaryKey(), EventTypes.MODIFY, subscriptionKindDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteSubscriptionKindDescription(SubscriptionKindDescription subscriptionKindDescription, BasePK deletedBy) {
         subscriptionKindDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(subscriptionKindDescription.getSubscriptionKindPK(), EventTypes.MODIFY.name(), subscriptionKindDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(subscriptionKindDescription.getSubscriptionKindPK(), EventTypes.MODIFY, subscriptionKindDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -543,7 +544,7 @@ public class SubscriptionControl
         subscriptionType.setLastDetail(subscriptionTypeDetail);
         subscriptionType.store();
         
-        sendEventUsingNames(subscriptionType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(subscriptionType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return subscriptionType;
     }
@@ -769,7 +770,7 @@ public class SubscriptionControl
             subscriptionType.setActiveDetail(subscriptionTypeDetail);
             subscriptionType.setLastDetail(subscriptionTypeDetail);
             
-            sendEventUsingNames(subscriptionTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(subscriptionTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -811,7 +812,7 @@ public class SubscriptionControl
             }
         }
         
-        sendEventUsingNames(subscriptionType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(subscriptionType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -823,7 +824,7 @@ public class SubscriptionControl
         SubscriptionTypeDescription subscriptionTypeDescription = SubscriptionTypeDescriptionFactory.getInstance().create(session,
                 subscriptionType, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(subscriptionType.getPrimaryKey(), EventTypes.MODIFY.name(),
+        sendEvent(subscriptionType.getPrimaryKey(), EventTypes.MODIFY,
                 subscriptionTypeDescription.getPrimaryKey(), null, createdBy);
         
         return subscriptionTypeDescription;
@@ -978,7 +979,7 @@ public class SubscriptionControl
             subscriptionTypeDescription = SubscriptionTypeDescriptionFactory.getInstance().create(subscriptionType,
                     language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(subscriptionType.getPrimaryKey(), EventTypes.MODIFY.name(), subscriptionTypeDescription.getPrimaryKey(),
+            sendEvent(subscriptionType.getPrimaryKey(), EventTypes.MODIFY, subscriptionTypeDescription.getPrimaryKey(),
                     null, updatedBy);
         }
     }
@@ -986,7 +987,7 @@ public class SubscriptionControl
     public void deleteSubscriptionTypeDescription(SubscriptionTypeDescription subscriptionTypeDescription, BasePK deletedBy) {
         subscriptionTypeDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(subscriptionTypeDescription.getSubscriptionTypePK(), EventTypes.MODIFY.name(),
+        sendEvent(subscriptionTypeDescription.getSubscriptionTypePK(), EventTypes.MODIFY,
                 subscriptionTypeDescription.getPrimaryKey(), null, deletedBy);
     }
     
@@ -1007,7 +1008,7 @@ public class SubscriptionControl
         SubscriptionTypeChain subscriptionTypeChain = SubscriptionTypeChainFactory.getInstance().create(subscriptionType,
                 chain, remainingTime, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(subscriptionType.getPrimaryKey(), EventTypes.MODIFY.name(), subscriptionTypeChain.getPrimaryKey(),
+        sendEvent(subscriptionType.getPrimaryKey(), EventTypes.MODIFY, subscriptionTypeChain.getPrimaryKey(),
                 null, createdBy);
         
         return subscriptionTypeChain;
@@ -1146,7 +1147,7 @@ public class SubscriptionControl
         return getSubscriptionTypeChainsBySubscriptionTypeAndChainType(subscriptionType, chainType, EntityPermission.READ_WRITE);
     }
     
-    private List<SubscriptionTypeChainTransfer> getSubscriptionTypeChainTransfers(UserVisit userVisit, List<SubscriptionTypeChain> subscriptionTypeChains) {
+    private List<SubscriptionTypeChainTransfer> getSubscriptionTypeChainTransfers(UserVisit userVisit, Collection<SubscriptionTypeChain> subscriptionTypeChains) {
         List<SubscriptionTypeChainTransfer> subscriptionTypeChainTransfers = new ArrayList<>(subscriptionTypeChains.size());
         SubscriptionTypeChainTransferCache subscriptionTypeChainTransferCache = getSubscriptionTransferCaches(userVisit).getSubscriptionTypeChainTransferCache();
         
@@ -1177,7 +1178,7 @@ public class SubscriptionControl
             subscriptionTypeChain = SubscriptionTypeChainFactory.getInstance().create(subscriptionTypePK, chainPK,
                     remainingTime, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(subscriptionTypeChain.getSubscriptionTypePK(), EventTypes.MODIFY.name(),
+            sendEvent(subscriptionTypeChain.getSubscriptionTypePK(), EventTypes.MODIFY,
                     subscriptionTypeChain.getPrimaryKey(), null, updatedBy);
         }
     }
@@ -1187,7 +1188,7 @@ public class SubscriptionControl
         
         subscriptionTypeChain.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(subscriptionTypeChain.getSubscriptionTypePK(), EventTypes.MODIFY.name(),
+        sendEvent(subscriptionTypeChain.getSubscriptionTypePK(), EventTypes.MODIFY,
                 subscriptionTypeChain.getPrimaryKey(), null, deletedBy);
     }
     
@@ -1225,7 +1226,7 @@ public class SubscriptionControl
         subscription.setLastDetail(subscriptionDetail);
         subscription.store();
         
-        sendEventUsingNames(subscription.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(subscription.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return subscription;
     }
@@ -1394,7 +1395,7 @@ public class SubscriptionControl
         return getSubscriptionTransferCaches(userVisit).getSubscriptionTransferCache().getSubscriptionTransfer(subscription);
     }
     
-    private List<SubscriptionTransfer> getSubscriptionTransfers(UserVisit userVisit, List<Subscription> subscriptions) {
+    private List<SubscriptionTransfer> getSubscriptionTransfers(UserVisit userVisit, Collection<Subscription> subscriptions) {
         List<SubscriptionTransfer> subscriptionTransfers = new ArrayList<>(subscriptions.size());
         SubscriptionTransferCache subscriptionTransferCache = getSubscriptionTransferCaches(userVisit).getSubscriptionTransferCache();
         
@@ -1436,7 +1437,7 @@ public class SubscriptionControl
             subscription.setActiveDetail(subscriptionDetail);
             subscription.setLastDetail(subscriptionDetail);
             
-            sendEventUsingNames(subscriptionPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(subscriptionPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -1448,7 +1449,7 @@ public class SubscriptionControl
         subscription.setActiveDetail(null);
         subscription.store();
         
-        sendEventUsingNames(subscription.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(subscription.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteSubscriptionsBySubscriptionType(SubscriptionType subscriptionType, BasePK deletedBy) {

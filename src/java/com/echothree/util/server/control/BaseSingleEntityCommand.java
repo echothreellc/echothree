@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -34,9 +34,9 @@ public abstract class BaseSingleEntityCommand<BE extends BaseEntity, F extends B
     }
     
     protected abstract BE getEntity();
-    protected abstract BaseResult getTransfer(BE entity);
+    protected abstract BaseResult getResult(BE entity);
 
-    public BE runForGraphQl() {
+    public BE getEntityForGraphQl() {
         BE entity = null;
 
         if(canQueryByGraphQl()) {
@@ -52,10 +52,10 @@ public abstract class BaseSingleEntityCommand<BE extends BaseEntity, F extends B
     }
 
     @Override
-    protected BaseResult execute() {
-        BE entity = getEntity();
+    protected final BaseResult execute() {
+        var entity = getEntity();
         
-        return getTransfer(entity);
+        return getResult(entity);
     }
     
 }

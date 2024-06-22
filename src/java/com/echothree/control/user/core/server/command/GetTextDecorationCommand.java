@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -67,7 +67,7 @@ public class GetTextDecorationCommand
         if(parameterCount == 1) {
             if(textDecorationName == null) {
                 var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
-                        ComponentVendors.ECHOTHREE.name(), EntityTypes.TextDecoration.name());
+                        ComponentVendors.ECHO_THREE.name(), EntityTypes.TextDecoration.name());
 
                 if(!hasExecutionErrors()) {
                     textDecoration = coreControl.getTextDecorationByEntityInstance(entityInstance);
@@ -77,7 +77,7 @@ public class GetTextDecorationCommand
             }
 
             if(textDecoration != null) {
-                sendEventUsingNames(textDecoration.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                sendEvent(textDecoration.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
@@ -87,7 +87,7 @@ public class GetTextDecorationCommand
     }
     
     @Override
-    protected BaseResult getTransfer(TextDecoration textDecoration) {
+    protected BaseResult getResult(TextDecoration textDecoration) {
         var coreControl = getCoreControl();
         GetTextDecorationResult result = CoreResultFactory.getGetTextDecorationResult();
 

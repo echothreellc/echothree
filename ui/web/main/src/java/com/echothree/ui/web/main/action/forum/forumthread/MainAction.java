@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -34,6 +34,7 @@ import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
+import static java.lang.Math.toIntExact;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -76,7 +77,7 @@ public class MainAction
         options.add(ForumOptions.ForumMessagePartIncludeString);
         commandForm.setOptions(options);
 
-        String offsetParameter = request.getParameter((new ParamEncoder("forumThread").encodeParameterName(TableTagParameters.PARAMETER_PAGE)));
+        String offsetParameter = request.getParameter(new ParamEncoder("forumThread").encodeParameterName(TableTagParameters.PARAMETER_PAGE));
         Integer offset = offsetParameter == null ? null : (Integer.parseInt(offsetParameter) - 1) * 5;
 
         Map<String, Limit> limits = new HashMap<>();
@@ -92,7 +93,7 @@ public class MainAction
             forwardKey = ForwardConstants.ERROR_404;
         } else {
             request.setAttribute(AttributeConstants.FORUM, forum);
-            request.setAttribute(AttributeConstants.FORUM_THREAD_COUNT, Integer.valueOf(result.getForumThreadCount().toString()));
+            request.setAttribute(AttributeConstants.FORUM_THREAD_COUNT, toIntExact(result.getForumThreadCount()));
             request.setAttribute(AttributeConstants.FORUM_THREADS, new ListWrapper<>(result.getForumThreads()));
             setupDtAttributes(request, "forumThread");
             forwardKey = ForwardConstants.DISPLAY;

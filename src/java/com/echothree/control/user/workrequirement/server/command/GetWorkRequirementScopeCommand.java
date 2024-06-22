@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -76,7 +76,7 @@ public class GetWorkRequirementScopeCommand
                     
                     result.setWorkRequirementScope(workRequirementControl.getWorkRequirementScopeTransfer(getUserVisit(), workRequirementScope));
                     
-                    sendEventUsingNames(workRequirementType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                    sendEvent(workRequirementType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownWorkRequirementTypeName.name(), workRequirementTypeName);
                 }

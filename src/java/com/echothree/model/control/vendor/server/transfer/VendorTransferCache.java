@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -103,6 +103,7 @@ public class VendorTransferCache
     
     boolean includeUserLogin;
     boolean includeRecoveryAnswer;
+    boolean includePartyAliases;
     boolean includePartyContactMechanisms;
     boolean includePartyContactLists;
     boolean includePartyDocuments;
@@ -134,6 +135,7 @@ public class VendorTransferCache
             setIncludeGuid(options.contains(PartyOptions.PartyIncludeGuid) || options.contains(VendorOptions.VendorIncludeGuid));
             includeUserLogin = options.contains(PartyOptions.PartyIncludeUserLogin);
             includeRecoveryAnswer = options.contains(PartyOptions.PartyIncludeRecoveryAnswer);
+            includePartyAliases = options.contains(PartyOptions.PartyIncludePartyAliases);
             includePartyContactMechanisms = options.contains(PartyOptions.PartyIncludePartyContactMechanisms);
             includePartyContactLists = options.contains(PartyOptions.PartyIncludePartyContactLists);
             includePartyDocuments = options.contains(PartyOptions.PartyIncludePartyDocuments);
@@ -230,6 +232,10 @@ public class VendorTransferCache
 
             if(includeRecoveryAnswer) {
                 vendorTransfer.setRecoveryAnswer(userControl.getRecoveryAnswerTransfer(userVisit, party));
+            }
+
+            if(includePartyAliases) {
+                vendorTransfer.setPartyAliases(new ListWrapper<>(partyControl.getPartyAliasTransfersByParty(userVisit, party)));
             }
 
             if(includePartyContactMechanisms) {

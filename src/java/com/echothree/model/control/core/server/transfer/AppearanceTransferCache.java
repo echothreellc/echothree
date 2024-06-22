@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,17 +29,20 @@ import com.echothree.model.data.core.server.entity.FontStyle;
 import com.echothree.model.data.core.server.entity.FontWeight;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
+import com.echothree.util.server.persistence.Session;
 import java.util.Set;
 
 public class AppearanceTransferCache
         extends BaseCoreTransferCache<Appearance, AppearanceTransfer> {
 
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+
     boolean includeTextDecorations;
     boolean includeTextTransformations;
     
     /** Creates a new instance of AppearanceTransferCache */
-    public AppearanceTransferCache(UserVisit userVisit, CoreControl coreControl) {
-        super(userVisit, coreControl);
+    public AppearanceTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         var options = session.getOptions();
         if(options != null) {

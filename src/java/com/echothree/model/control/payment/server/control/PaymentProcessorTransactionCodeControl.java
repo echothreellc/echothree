@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -49,7 +49,7 @@ public class PaymentProcessorTransactionCodeControl
         var paymentProcessorTransactionCode = PaymentProcessorTransactionCodeFactory.getInstance().create(paymentProcessorTransaction,
                 paymentProcessorTypeCode, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(paymentProcessorTransaction.getPrimaryKey(), EventTypes.MODIFY.name(), paymentProcessorTransactionCode.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(paymentProcessorTransaction.getPrimaryKey(), EventTypes.MODIFY, paymentProcessorTransactionCode.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return paymentProcessorTransactionCode;
     }
@@ -177,7 +177,7 @@ public class PaymentProcessorTransactionCodeControl
     public void deletePaymentProcessorTransactionCode(final PaymentProcessorTransactionCode paymentProcessorTransactionCode, final BasePK deletedBy) {
         paymentProcessorTransactionCode.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(paymentProcessorTransactionCode.getPaymentProcessorTransactionPK(), EventTypes.MODIFY.name(), paymentProcessorTransactionCode.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(paymentProcessorTransactionCode.getPaymentProcessorTransactionPK(), EventTypes.MODIFY, paymentProcessorTransactionCode.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 

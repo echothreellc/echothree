@@ -1,7 +1,7 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" %>
 
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -31,7 +31,7 @@
                 <a href="<c:url value="/action/HumanResources/Main" />"><fmt:message key="navigation.humanResources" /></a> &gt;&gt;
                 <fmt:message key="navigation.leaves" /> &gt;&gt;
                 <a href="<c:url value="/action/HumanResources/Leave/Search" />">Search</a> &gt;&gt
-                Results
+                <fmt:message key="navigation.results" />
             </h2>
         </div>
         <div id="Content">

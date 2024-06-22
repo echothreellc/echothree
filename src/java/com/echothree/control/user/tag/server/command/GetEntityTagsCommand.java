@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,33 +17,36 @@
 package com.echothree.control.user.tag.server.command;
 
 import com.echothree.control.user.tag.common.form.GetEntityTagsForm;
-import com.echothree.control.user.tag.common.result.GetEntityTagsResult;
 import com.echothree.control.user.tag.common.result.TagResultFactory;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.tag.server.control.TagControl;
+import com.echothree.model.control.tag.server.logic.TagLogic;
 import com.echothree.model.data.core.server.entity.EntityInstance;
+import com.echothree.model.data.tag.server.entity.EntityTag;
 import com.echothree.model.data.tag.server.entity.Tag;
-import com.echothree.model.data.tag.server.entity.TagScope;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.validation.ParameterUtils;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 public class GetEntityTagsCommand
-        extends BaseSimpleCommand<GetEntityTagsForm> {
-    
+        extends BaseMultipleEntitiesCommand<EntityTag, GetEntityTagsForm> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -57,6 +60,9 @@ public class GetEntityTagsCommand
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null),
                 new FieldDefinition("TagScopeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("TagName", FieldType.TAG, false, null, null)
                 ));
@@ -66,50 +72,58 @@ public class GetEntityTagsCommand
     public GetEntityTagsCommand(UserVisitPK userVisitPK, GetEntityTagsForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    EntityInstance taggedEntityInstance;
+    Tag tag;
+
     @Override
-    protected BaseResult execute() {
-        GetEntityTagsResult result = TagResultFactory.getGetEntityTagsResult();
-        String tagScopeName = form.getTagScopeName();
-        String tagName = form.getTagName();
-        String entityRef = form.getEntityRef();
-        var parameterCount = (tagScopeName == null && tagName == null ? 0 : 1) + (entityRef == null ? 0 : 1);
-        
-        if(parameterCount == 1) {
-            var tagControl = Session.getModelController(TagControl.class);
-            UserVisit userVisit = getUserVisit();
-            
-            if(entityRef != null) {
-                var coreControl = getCoreControl();
-                EntityInstance taggedEntityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
-                
-                if(taggedEntityInstance != null) {
-                    result.setTaggedEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, taggedEntityInstance, false, false, false, false, false));
-                    result.setEntityTags(tagControl.getEntityTagTransfersByTaggedEntityInstance(userVisit, taggedEntityInstance));
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownEntityRef.name(), entityRef);
-                }
-            } else {
-                TagScope tagScope = tagControl.getTagScopeByName(tagScopeName);
-                
-                if(tagScope != null) {
-                    Tag tag = tagControl.getTagByName(tagScope, tagName);
-                    
-                    if(tag != null) {
-                        result.setTag(tagControl.getTagTransfer(userVisit, tag));
-                        result.setEntityTags(tagControl.getEntityTagTransfersByTag(userVisit, tag));
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownTagName.name(), tagScopeName, tagName);
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownTagScopeName.name(), tagScopeName);
-                }
+    protected Collection<EntityTag> getEntities() {
+        var tagControl = Session.getModelController(TagControl.class);
+        var tagScopeName = form.getTagScopeName();
+        var tagName = form.getTagName();
+        var possibleEntitySpecs = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var traditionalParameterCount = ParameterUtils.getInstance().countNonNullParameters(tagScopeName, tagName);
+        Collection<EntityTag> entityTags = null;
+
+        if(possibleEntitySpecs == 1 && traditionalParameterCount == 0) {
+            taggedEntityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
+
+            if(!hasExecutionErrors()) {
+                entityTags = tagControl.getEntityTagsByTaggedEntityInstance(taggedEntityInstance);
+            }
+        } else if (possibleEntitySpecs == 0 && traditionalParameterCount == 2) {
+            tag = TagLogic.getInstance().getTagByName(this, tagScopeName, tagName);
+
+            if(!hasExecutionErrors()) {
+                entityTags = tagControl.getEntityTagsByTag(tag);
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
-        
+
+        return entityTags;
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<EntityTag> entities) {
+        var result = TagResultFactory.getGetEntityTagsResult();
+
+        if(entities != null) {
+            var tagControl = Session.getModelController(TagControl.class);
+            UserVisit userVisit = getUserVisit();
+
+            if(taggedEntityInstance != null) {
+                var coreControl = getCoreControl();
+
+                result.setTaggedEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, taggedEntityInstance, false, false, false, false, false, false));
+            } else {
+                result.setTag(tagControl.getTagTransfer(userVisit, tag));
+            }
+
+            result.setEntityTags(tagControl.getEntityTagTransfers(userVisit, entities));
+        }
+
         return result;
     }
-    
+
 }

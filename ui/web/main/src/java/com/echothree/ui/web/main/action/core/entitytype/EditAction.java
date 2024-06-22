@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -67,6 +67,7 @@ public class EditAction
         edit.setKeepAllHistory(actionForm.getKeepAllHistory().toString());
         edit.setLockTimeout(actionForm.getLockTimeout());
         edit.setLockTimeoutUnitOfMeasureTypeName(actionForm.getLockTimeoutUnitOfMeasureTypeChoice());
+        edit.setIsExtensible(actionForm.getIsExtensible().toString());
         edit.setSortOrder(actionForm.getSortOrder());
         edit.setDescription(actionForm.getDescription());
 
@@ -87,6 +88,7 @@ public class EditAction
         actionForm.setKeepAllHistory(Boolean.valueOf(edit.getKeepAllHistory()));
         actionForm.setLockTimeout(edit.getLockTimeout());
         actionForm.setLockTimeoutUnitOfMeasureTypeChoice(edit.getLockTimeoutUnitOfMeasureTypeName());
+        actionForm.setIsExtensible(Boolean.valueOf(edit.getIsExtensible()));
         actionForm.setSortOrder(edit.getSortOrder());
         actionForm.setDescription(edit.getDescription());
     }

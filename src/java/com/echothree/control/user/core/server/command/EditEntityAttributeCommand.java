@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import com.echothree.control.user.core.common.edit.EntityAttributeEdit;
 import com.echothree.control.user.core.common.form.EditEntityAttributeForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditEntityAttributeResult;
-import com.echothree.control.user.core.common.spec.EntityAttributeSpec;
+import com.echothree.control.user.core.common.spec.EntityAttributeUniversalSpec;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -32,69 +32,54 @@ import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceTypeLogic;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
-import com.echothree.model.data.core.server.entity.EntityAttributeBlob;
-import com.echothree.model.data.core.server.entity.EntityAttributeDescription;
-import com.echothree.model.data.core.server.entity.EntityAttributeDetail;
-import com.echothree.model.data.core.server.entity.EntityAttributeInteger;
-import com.echothree.model.data.core.server.entity.EntityAttributeListItem;
-import com.echothree.model.data.core.server.entity.EntityAttributeLong;
-import com.echothree.model.data.core.server.entity.EntityAttributeNumeric;
-import com.echothree.model.data.core.server.entity.EntityAttributeString;
-import com.echothree.model.data.core.server.entity.EntityAttributeType;
-import com.echothree.model.data.core.server.value.EntityAttributeBlobValue;
-import com.echothree.model.data.core.server.value.EntityAttributeDescriptionValue;
-import com.echothree.model.data.core.server.value.EntityAttributeDetailValue;
-import com.echothree.model.data.core.server.value.EntityAttributeIntegerValue;
-import com.echothree.model.data.core.server.value.EntityAttributeListItemValue;
 import com.echothree.model.data.core.server.value.EntityAttributeLongValue;
-import com.echothree.model.data.core.server.value.EntityAttributeNumericValue;
-import com.echothree.model.data.core.server.value.EntityAttributeStringValue;
 import com.echothree.model.data.sequence.server.entity.Sequence;
-import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureTypeDetail;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.form.ValidationResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.form.ValidationResult;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.Validator;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class EditEntityAttributeCommand
-        extends BaseAbstractEditCommand<EntityAttributeSpec, EntityAttributeEdit, EditEntityAttributeResult, EntityAttribute, EntityAttribute> {
+        extends BaseAbstractEditCommand<EntityAttributeUniversalSpec, EntityAttributeEdit, EditEntityAttributeResult, EntityAttribute, EntityAttribute> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
-                        new SecurityRoleDefinition(SecurityRoleGroups.EntityAttributeGroup.name(), SecurityRoles.Edit.name())
-                        )))
-                )));
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.EntityAttribute.name(), SecurityRoles.Edit.name())
+                ))
+        ));
         
-        SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
-                new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+        SPEC_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null),
+                new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, false, null, null),
+                new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null)
+        );
         
-        EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("TrackRevisions", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
-                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
-                ));
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
+        );
     }
     
     /** Creates a new instance of EditEntityAttributeCommand */
@@ -104,14 +89,14 @@ public class EditEntityAttributeCommand
     
     @Override
     protected ValidationResult validateEdit(Validator validator) {
-        ValidationResult validationResult = validator.validate(edit, getEditFieldDefinitions());
+        var validationResult = validator.validate(edit, getEditFieldDefinitions());
         
         if(!validationResult.getHasErrors()) {
-            entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByName(this,
-                    spec.getComponentVendorName(), spec.getEntityTypeName(), spec.getEntityAttributeName());
+            entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByUniversalSpec(this,
+                    spec);
             
             if(!hasExecutionErrors()) {
-                EntityAttributeType entityAttributeType = entityAttribute.getLastDetail().getEntityAttributeType();
+                var entityAttributeType = entityAttribute.getLastDetail().getEntityAttributeType();
     
                 validationResult = CreateEntityAttributeCommand.AdditionalEntityAttributeValidation(edit, validator, entityAttributeType);
             }
@@ -134,9 +119,8 @@ public class EditEntityAttributeCommand
     
     @Override
     public EntityAttribute getEntity(EditEntityAttributeResult result) {
-        entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByName(this,
-                spec.getComponentVendorName(), spec.getEntityTypeName(), spec.getEntityAttributeName(),
-                editModeToEntityPermission(editMode));
+        entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByUniversalSpec(this,
+                spec, editModeToEntityPermission(editMode));
 
         return entityAttribute;
     }
@@ -159,39 +143,39 @@ public class EditEntityAttributeCommand
     @Override
     public void doLock(EntityAttributeEdit edit, EntityAttribute entityAttribute) {
         var coreControl = getCoreControl();
-        EntityAttributeDescription entityAttributeDescription = coreControl.getEntityAttributeDescription(entityAttribute, getPreferredLanguage());
-        EntityAttributeDetail entityAttributeDetail = entityAttribute.getLastDetail();
-        String entityAttributeTypeName = entityAttribute.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
-        EntityAttributeTypes entityAttributeType = EntityAttributeTypes.valueOf(entityAttributeTypeName);
+        var entityAttributeDescription = coreControl.getEntityAttributeDescription(entityAttribute, getPreferredLanguage());
+        var entityAttributeDetail = entityAttribute.getLastDetail();
+        var entityAttributeTypeName = entityAttribute.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
+        var entityAttributeType = EntityAttributeTypes.valueOf(entityAttributeTypeName);
         
         edit.setEntityAttributeName(entityAttributeDetail.getEntityAttributeName());
         edit.setTrackRevisions(entityAttributeDetail.getTrackRevisions().toString());
         edit.setSortOrder(entityAttributeDetail.getSortOrder().toString());
-        
+
         switch(entityAttributeType) {
-            case BLOB:
-                EntityAttributeBlob entityAttributeBlob = coreControl.getEntityAttributeBlobForUpdate(entityAttribute);
-                
+            case BLOB -> {
+                var entityAttributeBlob = coreControl.getEntityAttributeBlobForUpdate(entityAttribute);
+
                 edit.setCheckContentWebAddress(entityAttributeBlob.getCheckContentWebAddress().toString());
-                break;
-            case STRING:
-                EntityAttributeString entityAttributeString = coreControl.getEntityAttributeStringForUpdate(entityAttribute);
-                
+            }
+            case STRING -> {
+                var entityAttributeString = coreControl.getEntityAttributeStringForUpdate(entityAttribute);
+
                 if(entityAttributeString != null) {
                     edit.setValidationPattern(entityAttributeString.getValidationPattern());
                 }
-                break;
-            case INTEGER: {
-                EntityAttributeInteger entityAttributeInteger = coreControl.getEntityAttributeIntegerForUpdate(entityAttribute);
-                EntityAttributeNumeric entityAttributeNumeric = coreControl.getEntityAttributeNumericForUpdate(entityAttribute);
-                
+            }
+            case INTEGER -> {
+                var entityAttributeInteger = coreControl.getEntityAttributeIntegerForUpdate(entityAttribute);
+                var entityAttributeNumeric = coreControl.getEntityAttributeNumericForUpdate(entityAttribute);
+
                 if(entityAttributeInteger != null) {
                     edit.setUpperLimitIntegerValue(entityAttributeInteger.getUpperLimitIntegerValue().toString());
                     edit.setUpperRangeIntegerValue(entityAttributeInteger.getUpperRangeIntegerValue().toString());
                     edit.setLowerRangeIntegerValue(entityAttributeInteger.getLowerRangeIntegerValue().toString());
                     edit.setLowerLimitIntegerValue(entityAttributeInteger.getLowerLimitIntegerValue().toString());
                 }
-                
+
                 if(entityAttributeNumeric != null) {
                     unitOfMeasureType = entityAttributeNumeric.getUnitOfMeasureType();
 
@@ -203,18 +187,17 @@ public class EditEntityAttributeCommand
                     }
                 }
             }
-            break;
-            case LONG: {
-                EntityAttributeLong entityAttributeLong = coreControl.getEntityAttributeLongForUpdate(entityAttribute);
-                EntityAttributeNumeric entityAttributeNumeric = coreControl.getEntityAttributeNumericForUpdate(entityAttribute);
-                
+            case LONG -> {
+                var entityAttributeLong = coreControl.getEntityAttributeLongForUpdate(entityAttribute);
+                var entityAttributeNumeric = coreControl.getEntityAttributeNumericForUpdate(entityAttribute);
+
                 if(entityAttributeLong != null) {
                     edit.setUpperLimitLongValue(entityAttributeLong.getUpperLimitLongValue().toString());
                     edit.setUpperRangeLongValue(entityAttributeLong.getUpperRangeLongValue().toString());
                     edit.setLowerRangeLongValue(entityAttributeLong.getLowerRangeLongValue().toString());
                     edit.setLowerLimitLongValue(entityAttributeLong.getLowerLimitLongValue().toString());
                 }
-                
+
                 if(entityAttributeNumeric != null) {
                     unitOfMeasureType = entityAttributeNumeric.getUnitOfMeasureType();
 
@@ -226,19 +209,17 @@ public class EditEntityAttributeCommand
                     }
                 }
             }
-            break;
-            case LISTITEM:
-            case MULTIPLELISTITEM:
-                EntityAttributeListItem entityAttributeListItem = coreControl.getEntityAttributeListItemForUpdate(entityAttribute);
-                
+            case LISTITEM, MULTIPLELISTITEM -> {
+                var entityAttributeListItem = coreControl.getEntityAttributeListItemForUpdate(entityAttribute);
+
                 if(entityAttributeListItem != null) {
                     entityListItemSequence = entityAttributeListItem.getEntityListItemSequence();
-                    
+
                     edit.setEntityListItemSequenceName(entityListItemSequence == null ? null : entityListItemSequence.getLastDetail().getSequenceName());
                 }
-                break;
-            default:
-                break;
+            }
+            default -> {
+            }
         }
         
         if(entityAttributeDescription != null) {
@@ -249,18 +230,18 @@ public class EditEntityAttributeCommand
     @Override
     public void canUpdate(EntityAttribute entityAttribute) {
         var coreControl = getCoreControl();
-        String entityAttributeName = edit.getEntityAttributeName();
-        EntityAttribute duplicateEntityAttribute = coreControl.getEntityAttributeByName(entityAttribute.getLastDetail().getEntityType(),
+        var entityAttributeName = edit.getEntityAttributeName();
+        var duplicateEntityAttribute = coreControl.getEntityAttributeByName(entityAttribute.getLastDetail().getEntityType(),
                 entityAttributeName);
 
         if(duplicateEntityAttribute == null || entityAttribute.equals(duplicateEntityAttribute)) {
-            String entityAttributeTypeName = entityAttribute.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
-            String entityListItemSequenceName = entityAttributeTypeName.equals(EntityAttributeTypes.LISTITEM.name())
+            var entityAttributeTypeName = entityAttribute.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
+            var entityListItemSequenceName = entityAttributeTypeName.equals(EntityAttributeTypes.LISTITEM.name())
                     || entityAttributeTypeName.equals(EntityAttributeTypes.MULTIPLELISTITEM.name()) ?
                     edit.getEntityListItemSequenceName() : null;
 
             if(entityListItemSequenceName != null) {
-                SequenceType sequenceType = SequenceTypeLogic.getInstance().getSequenceTypeByName(this, SequenceTypes.ENTITY_LIST_ITEM.name());
+                var sequenceType = SequenceTypeLogic.getInstance().getSequenceTypeByName(this, SequenceTypes.ENTITY_LIST_ITEM.name());
 
                 if(!hasExecutionErrors()) {
                     var sequenceControl = Session.getModelController(SequenceControl.class);
@@ -274,8 +255,8 @@ public class EditEntityAttributeCommand
             }
 
             if(!hasExecutionErrors()) {
-                String unitOfMeasureKindName = edit.getUnitOfMeasureKindName();
-                String unitOfMeasureTypeName = edit.getUnitOfMeasureTypeName();
+                var unitOfMeasureKindName = edit.getUnitOfMeasureKindName();
+                var unitOfMeasureTypeName = edit.getUnitOfMeasureTypeName();
                 var parameterCount = (unitOfMeasureKindName == null ? 0 : 1) + (unitOfMeasureTypeName == null ? 0 : 1);
                 
                 if(parameterCount == 0 || parameterCount == 2) {
@@ -295,28 +276,28 @@ public class EditEntityAttributeCommand
     public void doUpdate(EntityAttribute entityAttribute) {
         var coreControl = getCoreControl();
         var partyPK = getPartyPK();
-        EntityAttributeDetailValue entityAttributeDetailValue = coreControl.getEntityAttributeDetailValueForUpdate(entityAttribute);
-        EntityAttributeDescription entityAttributeDescription = coreControl.getEntityAttributeDescriptionForUpdate(entityAttribute, getPreferredLanguage());
-        String strCheckContentWebAddress = edit.getCheckContentWebAddress();
-        Boolean checkContentWebAddress = strCheckContentWebAddress == null ? null : Boolean.valueOf(strCheckContentWebAddress);
-        String validationPattern = edit.getValidationPattern();
-        String strUpperRangeIntegerValue = edit.getUpperRangeIntegerValue();
-        Integer upperRangeIntegerValue = strUpperRangeIntegerValue == null ? null : Integer.valueOf(strUpperRangeIntegerValue);
-        String strUpperLimitIntegerValue = edit.getUpperLimitIntegerValue();
-        Integer upperLimitIntegerValue = strUpperLimitIntegerValue == null ? null : Integer.valueOf(strUpperLimitIntegerValue);
-        String strLowerLimitIntegerValue = edit.getLowerLimitIntegerValue();
-        Integer lowerLimitIntegerValue = strLowerLimitIntegerValue == null ? null : Integer.valueOf(strLowerLimitIntegerValue);
-        String strLowerRangeIntegerValue = edit.getLowerRangeIntegerValue();
-        Integer lowerRangeIntegerValue = strLowerRangeIntegerValue == null ? null : Integer.valueOf(strLowerRangeIntegerValue);
-        String strUpperRangeLongValue = edit.getUpperRangeLongValue();
-        Long upperRangeLongValue = strUpperRangeLongValue == null ? null : Long.valueOf(strUpperRangeLongValue);
-        String strUpperLimitLongValue = edit.getUpperLimitLongValue();
-        Long upperLimitLongValue = strUpperLimitLongValue == null ? null : Long.valueOf(strUpperLimitLongValue);
-        String strLowerLimitLongValue = edit.getLowerLimitLongValue();
-        Long lowerLimitLongValue = strLowerLimitLongValue == null ? null : Long.valueOf(strLowerLimitLongValue);
-        String strLowerRangeLongValue = edit.getLowerRangeLongValue();
-        Long lowerRangeLongValue = strLowerRangeLongValue == null ? null : Long.valueOf(strLowerRangeLongValue);
-        String description = edit.getDescription();
+        var entityAttributeDetailValue = coreControl.getEntityAttributeDetailValueForUpdate(entityAttribute);
+        var entityAttributeDescription = coreControl.getEntityAttributeDescriptionForUpdate(entityAttribute, getPreferredLanguage());
+        var strCheckContentWebAddress = edit.getCheckContentWebAddress();
+        var checkContentWebAddress = strCheckContentWebAddress == null ? null : Boolean.valueOf(strCheckContentWebAddress);
+        var validationPattern = edit.getValidationPattern();
+        var strUpperRangeIntegerValue = edit.getUpperRangeIntegerValue();
+        var upperRangeIntegerValue = strUpperRangeIntegerValue == null ? null : Integer.valueOf(strUpperRangeIntegerValue);
+        var strUpperLimitIntegerValue = edit.getUpperLimitIntegerValue();
+        var upperLimitIntegerValue = strUpperLimitIntegerValue == null ? null : Integer.valueOf(strUpperLimitIntegerValue);
+        var strLowerLimitIntegerValue = edit.getLowerLimitIntegerValue();
+        var lowerLimitIntegerValue = strLowerLimitIntegerValue == null ? null : Integer.valueOf(strLowerLimitIntegerValue);
+        var strLowerRangeIntegerValue = edit.getLowerRangeIntegerValue();
+        var lowerRangeIntegerValue = strLowerRangeIntegerValue == null ? null : Integer.valueOf(strLowerRangeIntegerValue);
+        var strUpperRangeLongValue = edit.getUpperRangeLongValue();
+        var upperRangeLongValue = strUpperRangeLongValue == null ? null : Long.valueOf(strUpperRangeLongValue);
+        var strUpperLimitLongValue = edit.getUpperLimitLongValue();
+        var upperLimitLongValue = strUpperLimitLongValue == null ? null : Long.valueOf(strUpperLimitLongValue);
+        var strLowerLimitLongValue = edit.getLowerLimitLongValue();
+        var lowerLimitLongValue = strLowerLimitLongValue == null ? null : Long.valueOf(strLowerLimitLongValue);
+        var strLowerRangeLongValue = edit.getLowerRangeLongValue();
+        var lowerRangeLongValue = strLowerRangeLongValue == null ? null : Long.valueOf(strLowerRangeLongValue);
+        var description = edit.getDescription();
 
         entityAttributeDetailValue.setEntityAttributeName(edit.getEntityAttributeName());
         entityAttributeDetailValue.setTrackRevisions(Boolean.valueOf(edit.getTrackRevisions()));
@@ -324,47 +305,44 @@ public class EditEntityAttributeCommand
 
         EntityAttributeLogic.getInstance().updateEntityAttributeFromValue(session, entityAttributeDetailValue, partyPK);
 
-        String entityAttributeTypeName = entityAttribute.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
-        EntityAttributeTypes entityAttributeType = EntityAttributeTypes.valueOf(entityAttributeTypeName);
-        
+        var entityAttributeTypeName = entityAttribute.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
+        var entityAttributeType = EntityAttributeTypes.valueOf(entityAttributeTypeName);
+
         switch(entityAttributeType) {
-            case BLOB:
-                EntityAttributeBlobValue entityAttributeBlobValue = coreControl.getEntityAttributeBlobValueForUpdate(entityAttribute);
-                
+            case BLOB -> {
+                var entityAttributeBlobValue = coreControl.getEntityAttributeBlobValueForUpdate(entityAttribute);
+
                 entityAttributeBlobValue.setCheckContentWebAddress(checkContentWebAddress);
                 coreControl.updateEntityAttributeBlobFromValue(entityAttributeBlobValue, partyPK);
-                break;
-            case STRING:
-                EntityAttributeString entityAttributeString = coreControl.getEntityAttributeStringForUpdate(entityAttribute);
-                
+            }
+            case STRING -> {
+                var entityAttributeString = coreControl.getEntityAttributeStringForUpdate(entityAttribute);
+
                 if(entityAttributeString == null && validationPattern != null) {
                     coreControl.createEntityAttributeString(entityAttribute, validationPattern, partyPK);
                 } else if(entityAttributeString != null) {
                     if(validationPattern == null) {
                         coreControl.deleteEntityAttributeString(entityAttributeString, partyPK);
                     } else {
-                        EntityAttributeStringValue entityAttributeStringValue = coreControl.getEntityAttributeStringValue(entityAttributeString);
-                        
+                        var entityAttributeStringValue = coreControl.getEntityAttributeStringValue(entityAttributeString);
+
                         entityAttributeStringValue.setValidationPattern(validationPattern);
                         coreControl.updateEntityAttributeStringFromValue(entityAttributeStringValue, partyPK);
                     }
                 }
-                break;
-            case INTEGER: {
-                EntityAttributeInteger entityAttributeInteger = coreControl.getEntityAttributeIntegerForUpdate(entityAttribute);
-                EntityAttributeNumeric entityAttributeNumeric = coreControl.getEntityAttributeNumericForUpdate(entityAttribute);
-                
-                if(entityAttributeInteger == null && (upperRangeIntegerValue != null || upperLimitIntegerValue != null
-                        || lowerLimitIntegerValue != null || lowerRangeIntegerValue != null)) {
-                    coreControl.createEntityAttributeInteger(entityAttribute, upperRangeIntegerValue, upperLimitIntegerValue,
-                            lowerLimitIntegerValue, lowerRangeIntegerValue, partyPK);
+            }
+            case INTEGER -> {
+                var entityAttributeInteger = coreControl.getEntityAttributeIntegerForUpdate(entityAttribute);
+                var entityAttributeNumeric = coreControl.getEntityAttributeNumericForUpdate(entityAttribute);
+
+                if(entityAttributeInteger == null && (upperRangeIntegerValue != null || upperLimitIntegerValue != null || lowerLimitIntegerValue != null || lowerRangeIntegerValue != null)) {
+                    coreControl.createEntityAttributeInteger(entityAttribute, upperRangeIntegerValue, upperLimitIntegerValue, lowerLimitIntegerValue, lowerRangeIntegerValue, partyPK);
                 } else if(entityAttributeInteger != null) {
-                    if(upperRangeIntegerValue == null && upperLimitIntegerValue == null && lowerLimitIntegerValue == null
-                            && lowerRangeIntegerValue == null) {
+                    if(upperRangeIntegerValue == null && upperLimitIntegerValue == null && lowerLimitIntegerValue == null && lowerRangeIntegerValue == null) {
                         coreControl.deleteEntityAttributeInteger(entityAttributeInteger, partyPK);
                     } else {
-                        EntityAttributeIntegerValue entityAttributeIntegerValue = coreControl.getEntityAttributeIntegerValue(entityAttributeInteger);
-                        
+                        var entityAttributeIntegerValue = coreControl.getEntityAttributeIntegerValue(entityAttributeInteger);
+
                         entityAttributeIntegerValue.setUpperRangeIntegerValue(upperRangeIntegerValue);
                         entityAttributeIntegerValue.setUpperLimitIntegerValue(upperLimitIntegerValue);
                         entityAttributeIntegerValue.setLowerLimitIntegerValue(lowerLimitIntegerValue);
@@ -379,29 +357,25 @@ public class EditEntityAttributeCommand
                     if(unitOfMeasureType == null) {
                         coreControl.deleteEntityAttributeNumeric(entityAttributeNumeric, partyPK);
                     } else {
-                        EntityAttributeNumericValue entityAttributeNumericValue = coreControl.getEntityAttributeNumericValue(entityAttributeNumeric);
-                        
+                        var entityAttributeNumericValue = coreControl.getEntityAttributeNumericValue(entityAttributeNumeric);
+
                         entityAttributeNumericValue.setUnitOfMeasureTypePK(unitOfMeasureType.getPrimaryKey());
                         coreControl.updateEntityAttributeNumericFromValue(entityAttributeNumericValue, partyPK);
                     }
                 }
             }
-            break;
-            case LONG: {
-                EntityAttributeLong entityAttributeLong = coreControl.getEntityAttributeLongForUpdate(entityAttribute);
-                EntityAttributeNumeric entityAttributeNumeric = coreControl.getEntityAttributeNumericForUpdate(entityAttribute);
-                
-                if(entityAttributeLong == null && (upperRangeLongValue != null || upperLimitLongValue != null
-                        || lowerLimitLongValue != null || lowerRangeLongValue != null)) {
-                    coreControl.createEntityAttributeLong(entityAttribute, upperRangeLongValue, upperLimitLongValue,
-                            lowerLimitLongValue, lowerRangeLongValue, partyPK);
+            case LONG -> {
+                var entityAttributeLong = coreControl.getEntityAttributeLongForUpdate(entityAttribute);
+                var entityAttributeNumeric = coreControl.getEntityAttributeNumericForUpdate(entityAttribute);
+
+                if(entityAttributeLong == null && (upperRangeLongValue != null || upperLimitLongValue != null || lowerLimitLongValue != null || lowerRangeLongValue != null)) {
+                    coreControl.createEntityAttributeLong(entityAttribute, upperRangeLongValue, upperLimitLongValue, lowerLimitLongValue, lowerRangeLongValue, partyPK);
                 } else if(entityAttributeLong != null) {
-                    if(upperRangeLongValue == null && upperLimitLongValue == null && lowerLimitLongValue == null
-                            && lowerRangeLongValue == null) {
+                    if(upperRangeLongValue == null && upperLimitLongValue == null && lowerLimitLongValue == null && lowerRangeLongValue == null) {
                         coreControl.deleteEntityAttributeLong(entityAttributeLong, partyPK);
                     } else {
                         EntityAttributeLongValue entityAttributeLongValue = coreControl.getEntityAttributeLongValue(entityAttributeLong);
-                        
+
                         entityAttributeLongValue.setUpperRangeLongValue(upperRangeLongValue);
                         entityAttributeLongValue.setUpperLimitLongValue(upperLimitLongValue);
                         entityAttributeLongValue.setLowerLimitLongValue(lowerLimitLongValue);
@@ -416,33 +390,31 @@ public class EditEntityAttributeCommand
                     if(unitOfMeasureType == null) {
                         coreControl.deleteEntityAttributeNumeric(entityAttributeNumeric, partyPK);
                     } else {
-                        EntityAttributeNumericValue entityAttributeNumericValue = coreControl.getEntityAttributeNumericValue(entityAttributeNumeric);
-                        
+                        var entityAttributeNumericValue = coreControl.getEntityAttributeNumericValue(entityAttributeNumeric);
+
                         entityAttributeNumericValue.setUnitOfMeasureTypePK(unitOfMeasureType.getPrimaryKey());
                         coreControl.updateEntityAttributeNumericFromValue(entityAttributeNumericValue, partyPK);
                     }
                 }
             }
-            break;
-            case LISTITEM:
-            case MULTIPLELISTITEM:
-                EntityAttributeListItem entityAttributeListItem = coreControl.getEntityAttributeListItemForUpdate(entityAttribute);
-                
+            case LISTITEM, MULTIPLELISTITEM -> {
+                var entityAttributeListItem = coreControl.getEntityAttributeListItemForUpdate(entityAttribute);
+
                 if(entityAttributeListItem == null && entityListItemSequence != null) {
                     coreControl.createEntityAttributeListItem(entityAttribute, entityListItemSequence, partyPK);
                 } else if(entityAttributeListItem != null) {
-                    if(entityAttributeListItem == null) {
+                    if(entityListItemSequence == null) {
                         coreControl.deleteEntityAttributeListItem(entityAttributeListItem, partyPK);
                     } else {
-                        EntityAttributeListItemValue entityAttributeListItemValue = coreControl.getEntityAttributeListItemValue(entityAttributeListItem);
-                        
+                        var entityAttributeListItemValue = coreControl.getEntityAttributeListItemValue(entityAttributeListItem);
+
                         entityAttributeListItemValue.setEntityListItemSequencePK(entityListItemSequence.getPrimaryKey());
                         coreControl.updateEntityAttributeListItemFromValue(entityAttributeListItemValue, partyPK);
                     }
                 }
-                break;
-            default:
-                break;
+            }
+            default -> {
+            }
         }
         
         if(entityAttributeDescription == null && description != null) {
@@ -451,7 +423,7 @@ public class EditEntityAttributeCommand
             if(description == null) {
                 coreControl.deleteEntityAttributeDescription(entityAttributeDescription, partyPK);
             } else {
-                EntityAttributeDescriptionValue entityAttributeDescriptionValue = coreControl.getEntityAttributeDescriptionValue(entityAttributeDescription);
+                var entityAttributeDescriptionValue = coreControl.getEntityAttributeDescriptionValue(entityAttributeDescription);
 
                 entityAttributeDescriptionValue.setDescription(description);
                 coreControl.updateEntityAttributeDescriptionFromValue(entityAttributeDescriptionValue, partyPK);

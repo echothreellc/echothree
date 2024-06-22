@@ -1,7 +1,7 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" %>
 
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -27,7 +27,7 @@
     <body>
         <div id="Header">
             <h2>
-                <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
+                <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
                 <a href="<c:url value="/action/Core/Main" />">Core</a> &gt;&gt;
                 <a href="<c:url value="/action/Core/ComponentVendor/Main" />">Component Vendors</a> &gt;&gt;
                 <c:url var="entityTypesUrl" value="/action/Core/EntityType/Main">
@@ -59,18 +59,31 @@
                                 <c:param name="EntityTypeName" value="${entityAttribute.entityType.entityTypeName}" />
                                 <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
                             </c:url>
-                            <a href="${reviewUrl}"><c:out value="${entityAttribute.entityAttributeName}" /></a>
+                            <a href="${reviewUrl}"><et:appearance appearance="${entityAttribute.entityInstance.entityAppearance.appearance}"><c:out value="${entityAttribute.entityAttributeName}" /></et:appearance></a>
                         </c:when>
                         <c:otherwise>
-                            <c:out value="${entityAttribute.entityAttributeName}" />
+                            <et:appearance appearance="${entityAttribute.entityInstance.entityAppearance.appearance}"><c:out value="${entityAttribute.entityAttributeName}" /></et:appearance>
                         </c:otherwise>
                     </c:choose>
                 </display:column>
                 <display:column titleKey="columnTitle.description">
-                    <c:out value="${entityAttribute.description}" />
+                    <et:appearance appearance="${entityAttribute.entityInstance.entityAppearance.appearance}"><c:out value="${entityAttribute.description}" /></et:appearance>
                 </display:column>
                 <display:column titleKey="columnTitle.type">
                     <c:out value="${entityAttribute.entityAttributeType.description}" />
+                </display:column>
+                <display:column titleKey="columnTitle.trackRevisions">
+                    <c:choose>
+                        <c:when test="${entityAttribute.trackRevisions}">
+                            <fmt:message key="phrase.yes" />
+                        </c:when>
+                        <c:otherwise>
+                            <fmt:message key="phrase.no" />
+                        </c:otherwise>
+                    </c:choose>
+                </display:column>
+                <display:column titleKey="columnTitle.sortOrder">
+                    <c:out value="${entityAttribute.sortOrder}" />
                 </display:column>
                 <display:column>
                     <et:hasSecurityRole securityRole="EntityAttribute.EntityAttributeEntityAttributeGroup">

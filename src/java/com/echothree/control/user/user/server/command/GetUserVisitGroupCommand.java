@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -58,7 +58,7 @@ public class GetUserVisitGroupCommand
         if(userVisitGroup != null) {
             result.setUserVisitGroup(userControl.getUserVisitGroupTransfer(getUserVisit(), userVisitGroup));
             
-            sendEventUsingNames(userVisitGroup.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(userVisitGroup.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownUserVisitGroupName.name(), userVisitGroupName);
         }

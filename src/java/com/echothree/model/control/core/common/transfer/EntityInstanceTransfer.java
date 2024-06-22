@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -33,8 +33,9 @@ public final class EntityInstanceTransfer
     private String description;
     
     private EntityAppearanceTransfer entityAppearance;
+    private EntityVisitTransfer entityVisit;
     private EntityNames entityNames;
-    
+
     /** Creates a new instance of EntityInstanceTransfer */
     public EntityInstanceTransfer(EntityTypeTransfer entityType, Long entityUniqueId, String key, String guid, String ulid,
             String entityRef, EntityTimeTransfer entityTime, String description) {
@@ -99,15 +100,15 @@ public final class EntityInstanceTransfer
     public void setEntityRef(String entityRef) {
         this.entityRef = entityRef;
     }
-    
+
     public EntityTimeTransfer getEntityTime() {
         return entityTime;
     }
-    
+
     public void setEntityTime(EntityTimeTransfer entityTime) {
         this.entityTime = entityTime;
     }
-    
+
     public String getDescription() {
         if(description == null) {
             description = new StringBuilder(entityType.getDescription()).append('-').append(entityUniqueId).toString();
@@ -127,7 +128,15 @@ public final class EntityInstanceTransfer
     public void setEntityAppearance(EntityAppearanceTransfer entityAppearance) {
         this.entityAppearance = entityAppearance;
     }
-    
+
+    public EntityVisitTransfer getEntityVisit() {
+        return entityVisit;
+    }
+
+    public void setEntityVisit(EntityVisitTransfer entityVisit) {
+        this.entityVisit = entityVisit;
+    }
+
     public EntityNames getEntityNames() {
         return entityNames;
     }

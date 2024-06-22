@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,8 +22,8 @@ import com.echothree.control.user.geo.common.result.GetCountryResult;
 import com.echothree.control.user.search.common.SearchUtil;
 import com.echothree.control.user.search.common.form.GetHarmonizedTariffScheduleCodeResultsForm;
 import com.echothree.control.user.search.common.result.GetHarmonizedTariffScheduleCodeResultsResult;
-import com.echothree.model.control.search.common.SearchConstants;
 import com.echothree.model.control.search.common.SearchOptions;
+import com.echothree.model.control.search.common.SearchTypes;
 import com.echothree.model.data.search.common.SearchResultConstants;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -37,6 +37,7 @@ import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
+import static java.lang.Math.toIntExact;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -84,7 +85,7 @@ public class ResultAction
         GetHarmonizedTariffScheduleCodeResultsForm commandForm = SearchUtil.getHome().getGetHarmonizedTariffScheduleCodeResultsForm();
         String results = request.getParameter(ParameterConstants.RESULTS);
 
-        commandForm.setSearchTypeName(SearchConstants.SearchType_EMPLOYEE);
+        commandForm.setSearchTypeName(SearchTypes.EMPLOYEE.name());
 
         Set<String> options = new HashSet<>();
         options.add(SearchOptions.HarmonizedTariffScheduleCodeResultIncludeHarmonizedTariffScheduleCode);
@@ -104,9 +105,9 @@ public class ResultAction
             ExecutionResult executionResult = commandResult.getExecutionResult();
             GetHarmonizedTariffScheduleCodeResultsResult result = (GetHarmonizedTariffScheduleCodeResultsResult)executionResult.getResult();
 
-            Integer harmonizedTariffScheduleCodeResultCount = result.getHarmonizedTariffScheduleCodeResultCount();
+            var harmonizedTariffScheduleCodeResultCount = result.getHarmonizedTariffScheduleCodeResultCount();
             if(harmonizedTariffScheduleCodeResultCount != null) {
-                request.setAttribute(AttributeConstants.HARMONIZED_TARIFF_SCHEDULE_CODE_RESULT_COUNT, harmonizedTariffScheduleCodeResultCount);
+                request.setAttribute(AttributeConstants.HARMONIZED_TARIFF_SCHEDULE_CODE_RESULT_COUNT, toIntExact(harmonizedTariffScheduleCodeResultCount));
             }
 
             request.setAttribute(AttributeConstants.HARMONIZED_TARIFF_SCHEDULE_CODE_RESULTS, new ListWrapper<>(result.getHarmonizedTariffScheduleCodeResults()));

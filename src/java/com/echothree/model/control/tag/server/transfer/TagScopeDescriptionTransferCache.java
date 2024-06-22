@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,13 +22,16 @@ import com.echothree.model.control.tag.common.transfer.TagScopeTransfer;
 import com.echothree.model.control.tag.server.control.TagControl;
 import com.echothree.model.data.tag.server.entity.TagScopeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class TagScopeDescriptionTransferCache
         extends BaseTagDescriptionTransferCache<TagScopeDescription, TagScopeDescriptionTransfer> {
-    
+
+    TagControl tagControl = Session.getModelController(TagControl.class);
+
     /** Creates a new instance of TagScopeDescriptionTransferCache */
-    public TagScopeDescriptionTransferCache(UserVisit userVisit, TagControl tagControl) {
-        super(userVisit, tagControl);
+    public TagScopeDescriptionTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
     
     public TagScopeDescriptionTransfer getTagScopeDescriptionTransfer(TagScopeDescription tagScopeDescription) {

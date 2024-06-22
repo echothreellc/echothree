@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,19 +22,19 @@ import com.echothree.control.user.core.common.form.EditEntityTimeAttributeForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditEntityTimeAttributeResult;
 import com.echothree.control.user.core.common.spec.EntityTimeAttributeSpec;
-import com.echothree.model.data.core.server.entity.EntityAttribute;
-import com.echothree.model.data.core.server.entity.EntityInstance;
+import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.core.server.entity.EntityTimeAttribute;
-import com.echothree.model.data.core.server.entity.EntityTypeDetail;
-import com.echothree.model.data.core.server.value.EntityTimeAttributeValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.persistence.PersistenceUtils;
 import com.echothree.util.server.string.DateUtils;
 import java.util.Arrays;
@@ -43,14 +43,24 @@ import java.util.List;
 
 public class EditEntityTimeAttributeCommand
         extends BaseEditCommand<EntityTimeAttributeSpec, EntityTimeAttributeEdit> {
-    
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
     
     static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), null)
+        ));
+
         SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, true, null, null),
-                new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null),
+                new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityAttributeUlid", FieldType.ULID, false, null, null)
                 ));
         
         EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
@@ -60,85 +70,99 @@ public class EditEntityTimeAttributeCommand
     
     /** Creates a new instance of EditEntityTimeAttributeCommand */
     public EditEntityTimeAttributeCommand(UserVisitPK userVisitPK, EditEntityTimeAttributeForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
         EditEntityTimeAttributeResult result = CoreResultFactory.getEditEntityTimeAttributeResult();
-        String entityRef = spec.getEntityRef();
-        EntityInstance entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
+        var parameterCount = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(spec);
 
-        if(entityInstance != null) {
-            String entityAttributeName = spec.getEntityAttributeName();
-            EntityAttribute entityAttribute = coreControl.getEntityAttributeByName(entityInstance.getEntityType(), entityAttributeName);
+        if(parameterCount == 1) {
+            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, spec);
 
-            if(entityAttribute != null) {
-                EntityTimeAttribute entityTimeAttribute = null;
-                BasePK basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
+            if(!hasExecutionErrors()) {
+                var entityAttributeName = spec.getEntityAttributeName();
+                var entityAttributeUlid = spec.getEntityAttributeUlid();
 
-                if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    entityTimeAttribute = coreControl.getEntityTimeAttribute(entityAttribute, entityInstance);
+                parameterCount = (entityAttributeName == null ? 0 : 1) + (entityAttributeUlid == null ? 0 : 1);
 
-                    if(entityTimeAttribute != null) {
-                        if(editMode.equals(EditMode.LOCK)) {
-                            result.setEntityTimeAttribute(coreControl.getEntityTimeAttributeTransfer(getUserVisit(),
-                                    entityTimeAttribute, entityInstance));
+                if(parameterCount == 1) {
+                    var entityAttribute = entityAttributeName == null ?
+                            EntityAttributeLogic.getInstance().getEntityAttributeByUlid(this, entityAttributeUlid) :
+                            EntityAttributeLogic.getInstance().getEntityAttributeByName(this, entityInstance.getEntityType(), entityAttributeName);
 
-                            if(lockEntity(basePK)) {
-                                EntityTimeAttributeEdit edit = CoreEditFactory.getEntityTimeAttributeEdit();
+                    if(!hasExecutionErrors()) {
+                        if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
+                            var coreControl = getCoreControl();
+                            EntityTimeAttribute entityTimeAttribute = null;
+                            var basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
 
-                                result.setEdit(edit);
-                                edit.setTimeAttribute(DateUtils.getInstance().formatTypicalDateTime(getUserVisit(), getPreferredDateTimeFormat(), entityTimeAttribute.getTimeAttribute()));
-                            } else {
-                                addExecutionError(ExecutionErrors.EntityLockFailed.name());
+                            if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
+                                entityTimeAttribute = coreControl.getEntityTimeAttribute(entityAttribute, entityInstance);
+
+                                if(entityTimeAttribute != null) {
+                                    if(editMode.equals(EditMode.LOCK)) {
+                                        result.setEntityTimeAttribute(coreControl.getEntityTimeAttributeTransfer(getUserVisit(),
+                                                entityTimeAttribute, entityInstance));
+
+                                        if(lockEntity(basePK)) {
+                                            var edit = CoreEditFactory.getEntityTimeAttributeEdit();
+
+                                            result.setEdit(edit);
+                                            edit.setTimeAttribute(DateUtils.getInstance().formatTypicalDateTime(getUserVisit(), entityTimeAttribute.getTimeAttribute()));
+                                        } else {
+                                            addExecutionError(ExecutionErrors.EntityLockFailed.name());
+                                        }
+                                    } else { // EditMode.ABANDON
+                                        unlockEntity(basePK);
+                                        basePK = null;
+                                    }
+                                } else {
+                                    addExecutionError(ExecutionErrors.UnknownEntityTimeAttribute.name(),
+                                            EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance), entityAttributeName);
+                                }
+                            } else if(editMode.equals(EditMode.UPDATE)) {
+                                entityTimeAttribute = coreControl.getEntityTimeAttributeForUpdate(entityAttribute, entityInstance);
+
+                                if(entityTimeAttribute != null) {
+                                    if(lockEntityForUpdate(basePK)) {
+                                        try {
+                                            var entityTimeAttributeValue = coreControl.getEntityTimeAttributeValueForUpdate(entityTimeAttribute);
+
+                                            entityTimeAttributeValue.setTimeAttribute(Long.valueOf(edit.getTimeAttribute()));
+
+                                            coreControl.updateEntityTimeAttributeFromValue(entityTimeAttributeValue, getPartyPK());
+                                        } finally {
+                                            unlockEntity(basePK);
+                                            basePK = null;
+                                        }
+                                    } else {
+                                        addExecutionError(ExecutionErrors.EntityLockStale.name());
+                                    }
+                                } else {
+                                    addExecutionError(ExecutionErrors.UnknownEntityTimeAttribute.name(),
+                                            EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance), entityAttributeName);
+                                }
                             }
-                        } else { // EditMode.ABANDON
-                            unlockEntity(basePK);
-                            basePK = null;
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownEntityTimeAttribute.name(), entityRef, entityAttributeName);
-                    }
-                } else if(editMode.equals(EditMode.UPDATE)) {
-                    entityTimeAttribute = coreControl.getEntityTimeAttributeForUpdate(entityAttribute, entityInstance);
 
-                    if(entityTimeAttribute != null) {
-                        if(lockEntityForUpdate(basePK)) {
-                            try {
-                                EntityTimeAttributeValue entityTimeAttributeValue = coreControl.getEntityTimeAttributeValueForUpdate(entityTimeAttribute);
+                            if(basePK != null) {
+                                result.setEntityLock(getEntityLockTransfer(basePK));
+                            }
 
-                                entityTimeAttributeValue.setTimeAttribute(Long.valueOf(edit.getTimeAttribute()));
-
-                                coreControl.updateEntityTimeAttributeFromValue(entityTimeAttributeValue, getPartyPK());
-                            } finally {
-                                unlockEntity(basePK);
-                                basePK = null;
+                            if(entityTimeAttribute != null) {
+                                result.setEntityTimeAttribute(coreControl.getEntityTimeAttributeTransfer(getUserVisit(), entityTimeAttribute, entityInstance));
                             }
                         } else {
-                            addExecutionError(ExecutionErrors.EntityLockStale.name());
+                            addExecutionError(ExecutionErrors.MismatchedEntityType.name());
                         }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownEntityTimeAttribute.name(), entityRef, entityAttributeName);
                     }
+                } else {
+                    addExecutionError(ExecutionErrors.InvalidParameterCount.name());
                 }
-
-                if(basePK != null) {
-                    result.setEntityLock(getEntityLockTransfer(basePK));
-                }
-
-                if(entityTimeAttribute != null) {
-                    result.setEntityTimeAttribute(coreControl.getEntityTimeAttributeTransfer(getUserVisit(), entityTimeAttribute, entityInstance));
-                }
-            } else {
-                EntityTypeDetail entityTypeDetail = entityInstance.getEntityType().getLastDetail();
-
-                addExecutionError(ExecutionErrors.UnknownEntityAttributeName.name(), entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                        entityTypeDetail.getEntityTypeName(), entityAttributeName);
             }
         } else {
-            addExecutionError(ExecutionErrors.UnknownEntityRef.name(), entityRef);
+            addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
 
         return result;

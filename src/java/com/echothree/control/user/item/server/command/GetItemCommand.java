@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,17 +25,14 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.logic.ItemLogic;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class GetItemCommand
@@ -45,14 +42,14 @@ public class GetItemCommand
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("ItemNameOrAlias", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Key", FieldType.KEY, false, null, null),
                 new FieldDefinition("Guid", FieldType.GUID, false, null, null),
                 new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
-                ));
+        );
     }
     
     /** Creates a new instance of GetItemCommand */
@@ -64,14 +61,14 @@ public class GetItemCommand
     protected Item getEntity() {
         var itemControl = Session.getModelController(ItemControl.class);
         Item item = null;
-        String itemName = form.getItemName();
-        String itemNameOrAlias = form.getItemNameOrAlias();
+        var itemName = form.getItemName();
+        var itemNameOrAlias = form.getItemNameOrAlias();
         var parameterCount = (itemName == null ? 0 : 1) + (itemNameOrAlias == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
             if(itemName == null && itemNameOrAlias == null) {
                 var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
-                        ComponentVendors.ECHOTHREE.name(), EntityTypes.Item.name());
+                        ComponentVendors.ECHO_THREE.name(), EntityTypes.Item.name());
 
                 if(!hasExecutionErrors()) {
                     item = itemControl.getItemByEntityInstance(entityInstance);
@@ -81,7 +78,7 @@ public class GetItemCommand
             }
 
             if(item != null) {
-                sendEventUsingNames(item.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                sendEvent(item.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
@@ -91,7 +88,7 @@ public class GetItemCommand
     }
     
     @Override
-    protected BaseResult getTransfer(Item item) {
+    protected BaseResult getResult(Item item) {
         var itemControl = Session.getModelController(ItemControl.class);
         GetItemResult result = ItemResultFactory.getGetItemResult();
 

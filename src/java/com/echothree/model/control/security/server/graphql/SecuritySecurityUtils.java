@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,28 +16,29 @@
 
 package com.echothree.model.control.security.server.graphql;
 
+import com.echothree.control.user.security.server.command.GetSecurityRoleCommand;
 import com.echothree.control.user.security.server.command.GetSecurityRoleGroupCommand;
 import com.echothree.control.user.security.server.command.GetSecurityRoleGroupsCommand;
+import com.echothree.control.user.security.server.command.GetSecurityRolesCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class SecuritySecurityUtils
-        extends BaseGraphQl {
+public interface SecuritySecurityUtils {
 
-    private static class FilterSecurityUtilsHolder {
-        static SecuritySecurityUtils instance = new SecuritySecurityUtils();
-    }
-    
-    public static SecuritySecurityUtils getInstance() {
-        return FilterSecurityUtilsHolder.instance;
+    static boolean getHasSecurityRoleGroupsAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetSecurityRoleGroupsCommand.class);
     }
 
-    public boolean getHasSecurityRoleGroupsAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetSecurityRoleGroupsCommand.class);
+    static boolean getHasSecurityRoleGroupAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetSecurityRoleGroupCommand.class);
     }
 
-    public boolean getHasSecurityRoleGroupAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetSecurityRoleGroupCommand.class);
+    static boolean getHasSecurityRolesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetSecurityRolesCommand.class);
+    }
+
+    static boolean getHasSecurityRoleAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetSecurityRoleCommand.class);
     }
 
 }

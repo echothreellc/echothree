@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -41,12 +41,10 @@
             <file file="${build.lib.dir}/jooq.jar"/>
             <file file="${build.lib.dir}/jooq-codegen.jar"/>
             <file file="${build.lib.dir}/jooq-meta.jar"/>
-            <file file="${build.lib.dir}/jooq-meta.jar"/>
-            <file file="${build.lib.dir}/jooq-meta.jar"/>
             <file file="${build.lib.dir}/jaxb-api.jar"/>
             <file file="${build.lib.dir}/r2dbc-spi.jar"/>
             <file file="${build.lib.dir}/reactive-streams.jar"/>
-            <file file="${build.lib.dir}/mysql-connector-java.jar"/>
+            <file file="${build.lib.dir}/mysql-connector-j.jar"/>
             <file file="${build.lib.dir}/guava.jar"/>
             <file file="${build.lib.dir}/commons-cli.jar"/>
             <file file="${build.lib.dir}/commons-lang.jar"/>
@@ -66,6 +64,12 @@
     <target name="compile" depends="prepare">
         <path id="processorpath.ref">
             <pathelement location="${build.lib.dir}/error_prone_core-with-dependencies.jar"/>
+            <pathelement location="${build.lib.dir}/error_prone_annotation.jar"/>
+            <pathelement location="${build.lib.dir}/error_prone_annotations.jar"/>
+            <pathelement location="${build.lib.dir}/error_prone_type_annotations.jar"/>
+            <pathelement location="${build.lib.dir}/error_prone_check_api.jar"/>
+            <pathelement location="${build.lib.dir}/java-diff-utils.jar"/>
+            <pathelement location="${build.lib.dir}/dataflow-errorprone.jar"/>
             <pathelement location="${build.lib.dir}/failureaccess.jar"/>
             <pathelement location="${build.lib.dir}/jFormatString.jar"/>
             <pathelement location="${build.lib.dir}/threeten-extra.jar"/>
@@ -85,7 +89,7 @@
                     <include name="**/*.jar"/>
                 </fileset>
             </classpath>
-            <compilerarg line="-XDcompilePolicy=simple"/>
+            <compilerarg value="-XDcompilePolicy=simple"/>
             <compilerarg value="-processorpath"/>
             <compilerarg pathref="processorpath.ref"/>
             <!-- Begin Error Prone -->

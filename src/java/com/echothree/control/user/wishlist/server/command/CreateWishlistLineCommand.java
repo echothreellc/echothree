@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -42,7 +42,7 @@ import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.wishlist.server.entity.WishlistType;
-import com.echothree.model.data.wishlist.server.entity.WishlistTypePriority;
+import com.echothree.model.data.wishlist.server.entity.WishlistPriority;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -62,7 +62,7 @@ public class CreateWishlistLineCommand
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
             new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
             new FieldDefinition("WishlistTypeName", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("WishlistTypePriorityName", FieldType.ENTITY_NAME, false, null, null),
+            new FieldDefinition("WishlistPriorityName", FieldType.ENTITY_NAME, false, null, null),
             new FieldDefinition("CurrencyIsoName", FieldType.ENTITY_NAME, false, null, null),
             new FieldDefinition("SourceName", FieldType.ENTITY_NAME, false, null, null),
             new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
@@ -94,11 +94,11 @@ public class CreateWishlistLineCommand
                     wishlistControl.getWishlistTypeByName(wishlistTypeName);
                 
                 if(wishlistType != null) {
-                    String wishlistTypePriorityName = form.getWishlistTypePriorityName();
-                    WishlistTypePriority wishlistTypePriority = wishlistTypePriorityName == null? wishlistControl.getDefaultWishlistTypePriority(wishlistType):
-                        wishlistControl.getWishlistTypePriorityByName(wishlistType, wishlistTypePriorityName);
+                    String wishlistPriorityName = form.getWishlistPriorityName();
+                    WishlistPriority wishlistPriority = wishlistPriorityName == null? wishlistControl.getDefaultWishlistPriority(wishlistType):
+                        wishlistControl.getWishlistPriorityByName(wishlistType, wishlistPriorityName);
                     
-                    if(wishlistTypePriority != null) {
+                    if(wishlistPriority != null) {
                         var accountingControl = Session.getModelController(AccountingControl.class);
                         String currencyIsoName = form.getCurrencyIsoName();
                         Currency currency = currencyIsoName == null? accountingControl.getDefaultCurrency():
@@ -157,7 +157,7 @@ public class CreateWishlistLineCommand
                                                     String comment = form.getComment();
 
                                                     WishlistLogic.getInstance().createWishlistLine(session, this, getUserVisit(), party, source, offerItemPrice,
-                                                            wishlistType, wishlistTypePriority, quantity, comment, getPartyPK());
+                                                            wishlistType, wishlistPriority, quantity, comment, getPartyPK());
                                                 } else {
                                                     addExecutionError(ExecutionErrors.UnknownOfferItemPrice.name(),
                                                             offerItem.getOffer().getLastDetail().getOfferName(),
@@ -183,7 +183,7 @@ public class CreateWishlistLineCommand
                             addExecutionError(ExecutionErrors.UnknownCurrencyIsoName.name(), currencyIsoName);
                         }
                     } else {
-                        addExecutionError(ExecutionErrors.UnknownWishlistTypePriorityName.name(), wishlistTypePriorityName);
+                        addExecutionError(ExecutionErrors.UnknownWishlistPriorityName.name(), wishlistPriorityName);
                     }
                 } else {
                     addExecutionError(ExecutionErrors.UnknownWishlistTypeName.name(), wishlistTypeName);

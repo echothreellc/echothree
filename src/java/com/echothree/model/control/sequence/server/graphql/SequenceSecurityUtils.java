@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,31 +23,22 @@ import com.echothree.control.user.sequence.server.command.GetSequenceTypeCommand
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class SequenceSecurityUtils
-        extends BaseGraphQl {
+public interface SequenceSecurityUtils {
 
-    private static class SequenceSecurityUtilsHolder {
-        static SequenceSecurityUtils instance = new SequenceSecurityUtils();
-    }
-    
-    public static SequenceSecurityUtils getInstance() {
-        return SequenceSecurityUtilsHolder.instance;
+    static boolean getHasSequenceTypeAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetSequenceTypeCommand.class);
     }
 
-    public boolean getHasSequenceTypeAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetSequenceTypeCommand.class);
+    static boolean getHasSequenceAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetSequenceCommand.class);
     }
 
-    public boolean getHasSequenceAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetSequenceCommand.class);
+    static boolean getHasSequenceChecksumTypeAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetSequenceChecksumTypeCommand.class);
     }
 
-    public boolean getHasSequenceChecksumTypeAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetSequenceChecksumTypeCommand.class);
-    }
-
-    public boolean getHasSequenceEncoderTypeAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetSequenceEncoderTypeCommand.class);
+    static boolean getHasSequenceEncoderTypeAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetSequenceEncoderTypeCommand.class);
     }
 
 }

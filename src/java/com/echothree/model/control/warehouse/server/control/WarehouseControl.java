@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,11 +18,14 @@ package com.echothree.model.control.warehouse.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.search.common.SearchOptions;
+import com.echothree.model.control.search.server.control.SearchControl;
+import static com.echothree.model.control.search.server.control.SearchControl.ENI_ENTITYUNIQUEID_COLUMN_INDEX;
 import com.echothree.model.control.warehouse.common.choice.LocationChoicesBean;
 import com.echothree.model.control.warehouse.common.choice.LocationStatusChoicesBean;
 import com.echothree.model.control.warehouse.common.choice.LocationTypeChoicesBean;
-import com.echothree.model.control.warehouse.common.choice.LocationUseTypeChoicesBean;
 import com.echothree.model.control.warehouse.common.choice.WarehouseChoicesBean;
+import com.echothree.model.control.warehouse.common.choice.WarehouseTypeChoicesBean;
 import com.echothree.model.control.warehouse.common.transfer.LocationCapacityTransfer;
 import com.echothree.model.control.warehouse.common.transfer.LocationDescriptionTransfer;
 import com.echothree.model.control.warehouse.common.transfer.LocationNameElementDescriptionTransfer;
@@ -30,13 +33,16 @@ import com.echothree.model.control.warehouse.common.transfer.LocationNameElement
 import com.echothree.model.control.warehouse.common.transfer.LocationTransfer;
 import com.echothree.model.control.warehouse.common.transfer.LocationTypeDescriptionTransfer;
 import com.echothree.model.control.warehouse.common.transfer.LocationTypeTransfer;
-import com.echothree.model.control.warehouse.common.transfer.LocationUseTypeTransfer;
 import com.echothree.model.control.warehouse.common.transfer.LocationVolumeTransfer;
+import com.echothree.model.control.warehouse.common.transfer.WarehouseResultTransfer;
 import com.echothree.model.control.warehouse.common.transfer.WarehouseTransfer;
+import com.echothree.model.control.warehouse.common.transfer.WarehouseTypeDescriptionTransfer;
+import com.echothree.model.control.warehouse.common.transfer.WarehouseTypeTransfer;
+import com.echothree.model.control.warehouse.common.workflow.LocationStatusConstants;
+import com.echothree.model.control.warehouse.server.graphql.WarehouseObject;
 import com.echothree.model.control.warehouse.server.transfer.LocationCapacityTransferCache;
 import com.echothree.model.control.warehouse.server.transfer.LocationNameElementTransferCache;
-import com.echothree.model.control.warehouse.server.transfer.WarehouseTransferCaches;
-import com.echothree.model.control.warehouse.common.workflow.LocationStatusConstants;
+import com.echothree.model.control.warehouse.server.transfer.WarehouseTypeTransferCache;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.inventory.common.pk.InventoryLocationGroupPK;
 import com.echothree.model.data.inventory.server.entity.InventoryLocationGroup;
@@ -44,6 +50,7 @@ import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyGroup;
+import com.echothree.model.data.search.server.entity.UserVisitSearch;
 import com.echothree.model.data.uom.common.pk.UnitOfMeasureTypePK;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -51,6 +58,7 @@ import com.echothree.model.data.warehouse.common.pk.LocationNameElementPK;
 import com.echothree.model.data.warehouse.common.pk.LocationPK;
 import com.echothree.model.data.warehouse.common.pk.LocationTypePK;
 import com.echothree.model.data.warehouse.common.pk.LocationUseTypePK;
+import com.echothree.model.data.warehouse.common.pk.WarehouseTypePK;
 import com.echothree.model.data.warehouse.server.entity.Location;
 import com.echothree.model.data.warehouse.server.entity.LocationCapacity;
 import com.echothree.model.data.warehouse.server.entity.LocationDescription;
@@ -62,9 +70,11 @@ import com.echothree.model.data.warehouse.server.entity.LocationType;
 import com.echothree.model.data.warehouse.server.entity.LocationTypeDescription;
 import com.echothree.model.data.warehouse.server.entity.LocationTypeDetail;
 import com.echothree.model.data.warehouse.server.entity.LocationUseType;
-import com.echothree.model.data.warehouse.server.entity.LocationUseTypeDescription;
 import com.echothree.model.data.warehouse.server.entity.LocationVolume;
 import com.echothree.model.data.warehouse.server.entity.Warehouse;
+import com.echothree.model.data.warehouse.server.entity.WarehouseType;
+import com.echothree.model.data.warehouse.server.entity.WarehouseTypeDescription;
+import com.echothree.model.data.warehouse.server.entity.WarehouseTypeDetail;
 import com.echothree.model.data.warehouse.server.factory.LocationCapacityFactory;
 import com.echothree.model.data.warehouse.server.factory.LocationDescriptionFactory;
 import com.echothree.model.data.warehouse.server.factory.LocationDetailFactory;
@@ -75,10 +85,11 @@ import com.echothree.model.data.warehouse.server.factory.LocationNameElementFact
 import com.echothree.model.data.warehouse.server.factory.LocationTypeDescriptionFactory;
 import com.echothree.model.data.warehouse.server.factory.LocationTypeDetailFactory;
 import com.echothree.model.data.warehouse.server.factory.LocationTypeFactory;
-import com.echothree.model.data.warehouse.server.factory.LocationUseTypeDescriptionFactory;
-import com.echothree.model.data.warehouse.server.factory.LocationUseTypeFactory;
 import com.echothree.model.data.warehouse.server.factory.LocationVolumeFactory;
 import com.echothree.model.data.warehouse.server.factory.WarehouseFactory;
+import com.echothree.model.data.warehouse.server.factory.WarehouseTypeDescriptionFactory;
+import com.echothree.model.data.warehouse.server.factory.WarehouseTypeDetailFactory;
+import com.echothree.model.data.warehouse.server.factory.WarehouseTypeFactory;
 import com.echothree.model.data.warehouse.server.value.LocationCapacityValue;
 import com.echothree.model.data.warehouse.server.value.LocationDescriptionValue;
 import com.echothree.model.data.warehouse.server.value.LocationDetailValue;
@@ -88,50 +99,474 @@ import com.echothree.model.data.warehouse.server.value.LocationNameElementValue;
 import com.echothree.model.data.warehouse.server.value.LocationTypeDescriptionValue;
 import com.echothree.model.data.warehouse.server.value.LocationTypeDetailValue;
 import com.echothree.model.data.warehouse.server.value.LocationVolumeValue;
+import com.echothree.model.data.warehouse.server.value.WarehouseTypeDescriptionValue;
+import com.echothree.model.data.warehouse.server.value.WarehouseTypeDetailValue;
 import com.echothree.model.data.warehouse.server.value.WarehouseValue;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntityStatus;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
-import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class WarehouseControl
-        extends BaseModelControl {
+        extends BaseWarehouseControl {
     
     /** Creates a new instance of WarehouseControl */
     public WarehouseControl() {
         super();
     }
-    
+
     // --------------------------------------------------------------------------------
-    //   Warehouse Transfer Caches
+    //   Warehouse Types
     // --------------------------------------------------------------------------------
-    
-    private WarehouseTransferCaches warehouseTransferCaches;
-    
-    public WarehouseTransferCaches getWarehouseTransferCaches(UserVisit userVisit) {
-        if(warehouseTransferCaches == null) {
-            warehouseTransferCaches = new WarehouseTransferCaches(userVisit, this);
+
+    public WarehouseType createWarehouseType(String warehouseTypeName, Integer priority, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
+        WarehouseType defaultWarehouseType = getDefaultWarehouseType();
+        boolean defaultFound = defaultWarehouseType != null;
+
+        if(defaultFound && isDefault) {
+            WarehouseTypeDetailValue defaultWarehouseTypeDetailValue = getDefaultWarehouseTypeDetailValueForUpdate();
+
+            defaultWarehouseTypeDetailValue.setIsDefault(Boolean.FALSE);
+            updateWarehouseTypeFromValue(defaultWarehouseTypeDetailValue, false, createdBy);
+        } else if(!defaultFound) {
+            isDefault = Boolean.TRUE;
         }
-        
-        return warehouseTransferCaches;
+
+        WarehouseType warehouseType = WarehouseTypeFactory.getInstance().create();
+        WarehouseTypeDetail warehouseTypeDetail = WarehouseTypeDetailFactory.getInstance().create(warehouseType, warehouseTypeName, priority, isDefault, sortOrder,
+                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+
+        // Convert to R/W
+        warehouseType = WarehouseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+                warehouseType.getPrimaryKey());
+        warehouseType.setActiveDetail(warehouseTypeDetail);
+        warehouseType.setLastDetail(warehouseTypeDetail);
+        warehouseType.store();
+
+        sendEvent(warehouseType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+
+        return warehouseType;
     }
-    
+
+    public long countWarehouseTypes() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM warehousetypes, warehousetypedetails " +
+                        "WHERE whsetyp_activedetailid = whsetypdt_warehousetypedetailid");
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.WarehouseType */
+    public WarehouseType getWarehouseTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new WarehouseTypePK(entityInstance.getEntityUniqueId());
+
+        return WarehouseTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public WarehouseType getWarehouseTypeByEntityInstance(EntityInstance entityInstance) {
+        return getWarehouseTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public WarehouseType getWarehouseTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getWarehouseTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    private static final Map<EntityPermission, String> getWarehouseTypeByNameQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ "
+                        + "FROM warehousetypes, warehousetypedetails "
+                        + "WHERE whsetyp_activedetailid = whsetypdt_warehousetypedetailid AND whsetypdt_warehousetypename = ?");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ "
+                        + "FROM warehousetypes, warehousetypedetails "
+                        + "WHERE whsetyp_activedetailid = whsetypdt_warehousetypedetailid AND whsetypdt_warehousetypename = ? "
+                        + "FOR UPDATE");
+        getWarehouseTypeByNameQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    public WarehouseType getWarehouseTypeByName(String warehouseTypeName, EntityPermission entityPermission) {
+        return WarehouseTypeFactory.getInstance().getEntityFromQuery(entityPermission, getWarehouseTypeByNameQueries,
+                warehouseTypeName);
+    }
+
+    public WarehouseType getWarehouseTypeByName(String warehouseTypeName) {
+        return getWarehouseTypeByName(warehouseTypeName, EntityPermission.READ_ONLY);
+    }
+
+    public WarehouseType getWarehouseTypeByNameForUpdate(String warehouseTypeName) {
+        return getWarehouseTypeByName(warehouseTypeName, EntityPermission.READ_WRITE);
+    }
+
+    public WarehouseTypeDetailValue getWarehouseTypeDetailValueForUpdate(WarehouseType warehouseType) {
+        return warehouseType == null? null: warehouseType.getLastDetailForUpdate().getWarehouseTypeDetailValue().clone();
+    }
+
+    public WarehouseTypeDetailValue getWarehouseTypeDetailValueByNameForUpdate(String warehouseTypeName) {
+        return getWarehouseTypeDetailValueForUpdate(getWarehouseTypeByNameForUpdate(warehouseTypeName));
+    }
+
+    private static final Map<EntityPermission, String> getDefaultWarehouseTypeQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ "
+                        + "FROM warehousetypes, warehousetypedetails "
+                        + "WHERE whsetyp_activedetailid = whsetypdt_warehousetypedetailid AND whsetypdt_isdefault = 1");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ "
+                        + "FROM warehousetypes, warehousetypedetails "
+                        + "WHERE whsetyp_activedetailid = whsetypdt_warehousetypedetailid AND whsetypdt_isdefault = 1 "
+                        + "FOR UPDATE");
+        getDefaultWarehouseTypeQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    public WarehouseType getDefaultWarehouseType(EntityPermission entityPermission) {
+        return WarehouseTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultWarehouseTypeQueries);
+    }
+
+    public WarehouseType getDefaultWarehouseType() {
+        return getDefaultWarehouseType(EntityPermission.READ_ONLY);
+    }
+
+    public WarehouseType getDefaultWarehouseTypeForUpdate() {
+        return getDefaultWarehouseType(EntityPermission.READ_WRITE);
+    }
+
+    public WarehouseTypeDetailValue getDefaultWarehouseTypeDetailValueForUpdate() {
+        return getDefaultWarehouseType(EntityPermission.READ_WRITE).getLastDetailForUpdate().getWarehouseTypeDetailValue();
+    }
+
+    private static final Map<EntityPermission, String> getWarehouseTypesQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ "
+                        + "FROM warehousetypes, warehousetypedetails "
+                        + "WHERE whsetyp_activedetailid = whsetypdt_warehousetypedetailid "
+                        + "ORDER BY whsetypdt_sortorder, whsetypdt_warehousetypename "
+                        + "_LIMIT_");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ "
+                        + "FROM warehousetypes, warehousetypedetails "
+                        + "WHERE whsetyp_activedetailid = whsetypdt_warehousetypedetailid "
+                        + "FOR UPDATE");
+        getWarehouseTypesQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    private List<WarehouseType> getWarehouseTypes(EntityPermission entityPermission) {
+        return WarehouseTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getWarehouseTypesQueries);
+    }
+
+    public List<WarehouseType> getWarehouseTypes() {
+        return getWarehouseTypes(EntityPermission.READ_ONLY);
+    }
+
+    public List<WarehouseType> getWarehouseTypesForUpdate() {
+        return getWarehouseTypes(EntityPermission.READ_WRITE);
+    }
+
+    public WarehouseTypeChoicesBean getWarehouseTypeChoices(String defaultWarehouseTypeChoice, Language language, boolean allowNullChoice) {
+        List<WarehouseType> warehouseTypes = getWarehouseTypes();
+        var size = warehouseTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
+        String defaultValue = null;
+
+        if(allowNullChoice) {
+            labels.add("");
+            values.add("");
+
+            if(defaultWarehouseTypeChoice == null) {
+                defaultValue = "";
+            }
+        }
+
+        for(var warehouseType : warehouseTypes) {
+            WarehouseTypeDetail warehouseTypeDetail = warehouseType.getLastDetail();
+
+            var label = getBestWarehouseTypeDescription(warehouseType, language);
+            var value = warehouseTypeDetail.getWarehouseTypeName();
+
+            labels.add(label == null? value: label);
+            values.add(value);
+
+            var usingDefaultChoice = defaultWarehouseTypeChoice != null && defaultWarehouseTypeChoice.equals(value);
+            if(usingDefaultChoice || (defaultValue == null && warehouseTypeDetail.getIsDefault())) {
+                defaultValue = value;
+            }
+        }
+
+        return new WarehouseTypeChoicesBean(labels, values, defaultValue);
+    }
+
+    public WarehouseTypeTransfer getWarehouseTypeTransfer(UserVisit userVisit, WarehouseType warehouseType) {
+        return getWarehouseTransferCaches(userVisit).getWarehouseTypeTransferCache().getTransfer(warehouseType);
+    }
+
+    public List<WarehouseTypeTransfer> getWarehouseTypeTransfers(UserVisit userVisit, Collection<WarehouseType> warehouseTypes) {
+        List<WarehouseTypeTransfer> warehouseTypeTransfers = new ArrayList<>(warehouseTypes.size());
+        WarehouseTypeTransferCache warehouseTypeTransferCache = getWarehouseTransferCaches(userVisit).getWarehouseTypeTransferCache();
+
+        warehouseTypes.forEach((warehouseType) ->
+                warehouseTypeTransfers.add(warehouseTypeTransferCache.getTransfer(warehouseType))
+        );
+
+        return warehouseTypeTransfers;
+    }
+
+    public List<WarehouseTypeTransfer> getWarehouseTypeTransfers(UserVisit userVisit) {
+        return getWarehouseTypeTransfers(userVisit, getWarehouseTypes());
+    }
+
+    private void updateWarehouseTypeFromValue(WarehouseTypeDetailValue warehouseTypeDetailValue, boolean checkDefault, BasePK updatedBy) {
+        WarehouseType warehouseType = WarehouseTypeFactory.getInstance().getEntityFromPK(session,
+                EntityPermission.READ_WRITE, warehouseTypeDetailValue.getWarehouseTypePK());
+        WarehouseTypeDetail warehouseTypeDetail = warehouseType.getActiveDetailForUpdate();
+
+        warehouseTypeDetail.setThruTime(session.START_TIME_LONG);
+        warehouseTypeDetail.store();
+
+        WarehouseTypePK warehouseTypePK = warehouseTypeDetail.getWarehouseTypePK();
+        String warehouseTypeName = warehouseTypeDetailValue.getWarehouseTypeName();
+        Integer priority = warehouseTypeDetailValue.getPriority();
+        Boolean isDefault = warehouseTypeDetailValue.getIsDefault();
+        Integer sortOrder = warehouseTypeDetailValue.getSortOrder();
+
+        if(checkDefault) {
+            WarehouseType defaultWarehouseType = getDefaultWarehouseType();
+            boolean defaultFound = defaultWarehouseType != null && !defaultWarehouseType.equals(warehouseType);
+
+            if(isDefault && defaultFound) {
+                // If I'm the default, and a default already existed...
+                WarehouseTypeDetailValue defaultWarehouseTypeDetailValue = getDefaultWarehouseTypeDetailValueForUpdate();
+
+                defaultWarehouseTypeDetailValue.setIsDefault(Boolean.FALSE);
+                updateWarehouseTypeFromValue(defaultWarehouseTypeDetailValue, false, updatedBy);
+            } else if(!isDefault && !defaultFound) {
+                // If I'm not the default, and no other default exists...
+                isDefault = Boolean.TRUE;
+            }
+        }
+
+        warehouseTypeDetail = WarehouseTypeDetailFactory.getInstance().create(warehouseTypePK, warehouseTypeName, priority,
+                isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+
+        warehouseType.setActiveDetail(warehouseTypeDetail);
+        warehouseType.setLastDetail(warehouseTypeDetail);
+        warehouseType.store();
+
+        sendEvent(warehouseTypePK, EventTypes.MODIFY, null, null, updatedBy);
+    }
+
+    public void updateWarehouseTypeFromValue(WarehouseTypeDetailValue warehouseTypeDetailValue, BasePK updatedBy) {
+        updateWarehouseTypeFromValue(warehouseTypeDetailValue, true, updatedBy);
+    }
+
+    public void deleteWarehouseType(WarehouseType warehouseType, BasePK deletedBy) {
+        deleteWarehouseTypeDescriptionsByWarehouseType(warehouseType, deletedBy);
+
+        WarehouseTypeDetail warehouseTypeDetail = warehouseType.getLastDetailForUpdate();
+        warehouseTypeDetail.setThruTime(session.START_TIME_LONG);
+        warehouseType.setActiveDetail(null);
+        warehouseType.store();
+
+        // Check for default, and pick one if necessary
+        WarehouseType defaultWarehouseType = getDefaultWarehouseType();
+        if(defaultWarehouseType == null) {
+            List<WarehouseType> warehouseTypes = getWarehouseTypesForUpdate();
+
+            if(!warehouseTypes.isEmpty()) {
+                Iterator<WarehouseType> iter = warehouseTypes.iterator();
+                if(iter.hasNext()) {
+                    defaultWarehouseType = iter.next();
+                }
+                WarehouseTypeDetailValue warehouseTypeDetailValue = Objects.requireNonNull(defaultWarehouseType).getLastDetailForUpdate().getWarehouseTypeDetailValue().clone();
+
+                warehouseTypeDetailValue.setIsDefault(Boolean.TRUE);
+                updateWarehouseTypeFromValue(warehouseTypeDetailValue, false, deletedBy);
+            }
+        }
+
+        sendEvent(warehouseType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+    }
+
+    // --------------------------------------------------------------------------------
+    //   Warehouse Type Descriptions
+    // --------------------------------------------------------------------------------
+
+    public WarehouseTypeDescription createWarehouseTypeDescription(WarehouseType warehouseType, Language language, String description,
+            BasePK createdBy) {
+        WarehouseTypeDescription warehouseTypeDescription = WarehouseTypeDescriptionFactory.getInstance().create(warehouseType,
+                language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+
+        sendEvent(warehouseType.getPrimaryKey(), EventTypes.MODIFY, warehouseTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+
+        return warehouseTypeDescription;
+    }
+
+    private static final Map<EntityPermission, String> getWarehouseTypeDescriptionQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ "
+                        + "FROM warehousetypedescriptions "
+                        + "WHERE whsetypd_whsetyp_warehousetypeid = ? AND whsetypd_lang_languageid = ? AND whsetypd_thrutime = ?");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ "
+                        + "FROM warehousetypedescriptions "
+                        + "WHERE whsetypd_whsetyp_warehousetypeid = ? AND whsetypd_lang_languageid = ? AND whsetypd_thrutime = ? "
+                        + "FOR UPDATE");
+        getWarehouseTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    private WarehouseTypeDescription getWarehouseTypeDescription(WarehouseType warehouseType, Language language, EntityPermission entityPermission) {
+        return WarehouseTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getWarehouseTypeDescriptionQueries,
+                warehouseType, language, Session.MAX_TIME);
+    }
+
+    public WarehouseTypeDescription getWarehouseTypeDescription(WarehouseType warehouseType, Language language) {
+        return getWarehouseTypeDescription(warehouseType, language, EntityPermission.READ_ONLY);
+    }
+
+    public WarehouseTypeDescription getWarehouseTypeDescriptionForUpdate(WarehouseType warehouseType, Language language) {
+        return getWarehouseTypeDescription(warehouseType, language, EntityPermission.READ_WRITE);
+    }
+
+    public WarehouseTypeDescriptionValue getWarehouseTypeDescriptionValue(WarehouseTypeDescription warehouseTypeDescription) {
+        return warehouseTypeDescription == null? null: warehouseTypeDescription.getWarehouseTypeDescriptionValue().clone();
+    }
+
+    public WarehouseTypeDescriptionValue getWarehouseTypeDescriptionValueForUpdate(WarehouseType warehouseType, Language language) {
+        return getWarehouseTypeDescriptionValue(getWarehouseTypeDescriptionForUpdate(warehouseType, language));
+    }
+
+    private static final Map<EntityPermission, String> getWarehouseTypeDescriptionsByWarehouseTypeQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ "
+                        + "FROM warehousetypedescriptions, languages "
+                        + "WHERE whsetypd_whsetyp_warehousetypeid = ? AND whsetypd_thrutime = ? AND whsetypd_lang_languageid = lang_languageid "
+                        + "ORDER BY lang_sortorder, lang_languageisoname");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ "
+                        + "FROM warehousetypedescriptions "
+                        + "WHERE whsetypd_whsetyp_warehousetypeid = ? AND whsetypd_thrutime = ? "
+                        + "FOR UPDATE");
+        getWarehouseTypeDescriptionsByWarehouseTypeQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    private List<WarehouseTypeDescription> getWarehouseTypeDescriptionsByWarehouseType(WarehouseType warehouseType, EntityPermission entityPermission) {
+        return WarehouseTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getWarehouseTypeDescriptionsByWarehouseTypeQueries,
+                warehouseType, Session.MAX_TIME);
+    }
+
+    public List<WarehouseTypeDescription> getWarehouseTypeDescriptionsByWarehouseType(WarehouseType warehouseType) {
+        return getWarehouseTypeDescriptionsByWarehouseType(warehouseType, EntityPermission.READ_ONLY);
+    }
+
+    public List<WarehouseTypeDescription> getWarehouseTypeDescriptionsByWarehouseTypeForUpdate(WarehouseType warehouseType) {
+        return getWarehouseTypeDescriptionsByWarehouseType(warehouseType, EntityPermission.READ_WRITE);
+    }
+
+    public String getBestWarehouseTypeDescription(WarehouseType warehouseType, Language language) {
+        String description;
+        WarehouseTypeDescription warehouseTypeDescription = getWarehouseTypeDescription(warehouseType, language);
+
+        if(warehouseTypeDescription == null && !language.getIsDefault()) {
+            warehouseTypeDescription = getWarehouseTypeDescription(warehouseType, getPartyControl().getDefaultLanguage());
+        }
+
+        if(warehouseTypeDescription == null) {
+            description = warehouseType.getLastDetail().getWarehouseTypeName();
+        } else {
+            description = warehouseTypeDescription.getDescription();
+        }
+
+        return description;
+    }
+
+    public WarehouseTypeDescriptionTransfer getWarehouseTypeDescriptionTransfer(UserVisit userVisit, WarehouseTypeDescription warehouseTypeDescription) {
+        return getWarehouseTransferCaches(userVisit).getWarehouseTypeDescriptionTransferCache().getTransfer(warehouseTypeDescription);
+    }
+
+    public List<WarehouseTypeDescriptionTransfer> getWarehouseTypeDescriptionTransfersByWarehouseType(UserVisit userVisit, WarehouseType warehouseType) {
+        List<WarehouseTypeDescription> warehouseTypeDescriptions = getWarehouseTypeDescriptionsByWarehouseType(warehouseType);
+        List<WarehouseTypeDescriptionTransfer> warehouseTypeDescriptionTransfers = new ArrayList<>(warehouseTypeDescriptions.size());
+
+        warehouseTypeDescriptions.forEach((warehouseTypeDescription) ->
+                warehouseTypeDescriptionTransfers.add(getWarehouseTransferCaches(userVisit).getWarehouseTypeDescriptionTransferCache().getTransfer(warehouseTypeDescription))
+        );
+
+        return warehouseTypeDescriptionTransfers;
+    }
+
+    public void updateWarehouseTypeDescriptionFromValue(WarehouseTypeDescriptionValue warehouseTypeDescriptionValue, BasePK updatedBy) {
+        if(warehouseTypeDescriptionValue.hasBeenModified()) {
+            WarehouseTypeDescription warehouseTypeDescription = WarehouseTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+                    warehouseTypeDescriptionValue.getPrimaryKey());
+
+            warehouseTypeDescription.setThruTime(session.START_TIME_LONG);
+            warehouseTypeDescription.store();
+
+            WarehouseType warehouseType = warehouseTypeDescription.getWarehouseType();
+            Language language = warehouseTypeDescription.getLanguage();
+            String description = warehouseTypeDescriptionValue.getDescription();
+
+            warehouseTypeDescription = WarehouseTypeDescriptionFactory.getInstance().create(warehouseType, language, description,
+                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+
+            sendEvent(warehouseType.getPrimaryKey(), EventTypes.MODIFY, warehouseTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+        }
+    }
+
+    public void deleteWarehouseTypeDescription(WarehouseTypeDescription warehouseTypeDescription, BasePK deletedBy) {
+        warehouseTypeDescription.setThruTime(session.START_TIME_LONG);
+
+        sendEvent(warehouseTypeDescription.getWarehouseTypePK(), EventTypes.MODIFY, warehouseTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+
+    }
+
+    public void deleteWarehouseTypeDescriptionsByWarehouseType(WarehouseType warehouseType, BasePK deletedBy) {
+        List<WarehouseTypeDescription> warehouseTypeDescriptions = getWarehouseTypeDescriptionsByWarehouseTypeForUpdate(warehouseType);
+
+        warehouseTypeDescriptions.forEach((warehouseTypeDescription) ->
+                deleteWarehouseTypeDescription(warehouseTypeDescription, deletedBy)
+        );
+    }
+
     // --------------------------------------------------------------------------------
     //   Warehouses
     // --------------------------------------------------------------------------------
     
-    public Warehouse createWarehouse(Party party, String warehouseName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
+    public Warehouse createWarehouse(Party party, String warehouseName, WarehouseType warehouseType, Boolean isDefault,
+            Integer sortOrder, BasePK createdBy) {
         Warehouse defaultWarehouse = getDefaultWarehouse();
         boolean defaultFound = defaultWarehouse != null;
         
@@ -144,15 +579,23 @@ public class WarehouseControl
             isDefault = Boolean.TRUE;
         }
         
-        Warehouse warehouse = WarehouseFactory.getInstance().create(party, warehouseName, isDefault, sortOrder,
+        Warehouse warehouse = WarehouseFactory.getInstance().create(party, warehouseName, warehouseType, isDefault, sortOrder,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), warehouse.getPrimaryKey(), null, createdBy);
+        sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, warehouse.getPrimaryKey(), null, createdBy);
         
         return warehouse;
     }
-    
-    private Warehouse getWarehouse(Party party, EntityPermission entityPermission) {
+
+    public long countWarehouses() {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM warehouses
+                WHERE whse_thrutime = ?
+                """, Session.MAX_TIME);
+    }
+
+    public Warehouse getWarehouse(Party party, EntityPermission entityPermission) {
         Warehouse warehouse;
         
         try {
@@ -194,7 +637,7 @@ public class WarehouseControl
         return getWarehouseForUpdate(party).getWarehouseValue().clone();
     }
     
-    private Warehouse getWarehouseByName(String warehouseName, EntityPermission entityPermission) {
+    public Warehouse getWarehouseByName(String warehouseName, EntityPermission entityPermission) {
         Warehouse warehouse;
         
         try {
@@ -232,7 +675,7 @@ public class WarehouseControl
         return getWarehouseByName(warehouseName, EntityPermission.READ_WRITE);
     }
     
-    private Warehouse getDefaultWarehouse(EntityPermission entityPermission) {
+    public Warehouse getDefaultWarehouse(EntityPermission entityPermission) {
         Warehouse warehouse;
         
         try {
@@ -283,7 +726,8 @@ public class WarehouseControl
                 query = "SELECT _ALL_ " +
                         "FROM warehouses " +
                         "WHERE whse_thrutime = ? " +
-                        "ORDER BY whse_sortorder, whse_warehousename";
+                        "ORDER BY whse_sortorder, whse_warehousename " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM warehouses " +
@@ -360,18 +804,21 @@ public class WarehouseControl
     public WarehouseTransfer getWarehouseTransfer(UserVisit userVisit, Party party) {
         return getWarehouseTransfer(userVisit, getWarehouse(party));
     }
-    
-    public List<WarehouseTransfer> getWarehouseTransfers(UserVisit userVisit) {
-        List<Warehouse> warehouses = getWarehouses();
+
+    public List<WarehouseTransfer> getWarehouseTransfers(UserVisit userVisit, Collection<Warehouse> warehouses) {
         List<WarehouseTransfer> warehouseTransfers = new ArrayList<>(warehouses.size());
-        
+
         warehouses.forEach((warehouse) -> {
             warehouseTransfers.add(getWarehouseTransferCaches(userVisit).getWarehouseTransferCache().getWarehouseTransfer(warehouse));
         });
-        
+
         return warehouseTransfers;
     }
-    
+
+    public List<WarehouseTransfer> getWarehouseTransfers(UserVisit userVisit) {
+        return getWarehouseTransfers(userVisit, getWarehouses());
+    }
+
     private void updateWarehouseFromValue(WarehouseValue warehouseValue, boolean checkDefault, BasePK updatedBy) {
         if(warehouseValue.hasBeenModified()) {
             Warehouse warehouse = WarehouseFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -382,6 +829,7 @@ public class WarehouseControl
             
             PartyPK partyPK = warehouse.getPartyPK();
             String warehouseName = warehouseValue.getWarehouseName();
+            WarehouseTypePK warehouseTypePK = warehouseValue.getWarehouseTypePK();
             Boolean isDefault = warehouseValue.getIsDefault();
             Integer sortOrder = warehouseValue.getSortOrder();
             
@@ -401,10 +849,10 @@ public class WarehouseControl
                 }
             }
             
-            warehouse = WarehouseFactory.getInstance().create(partyPK, warehouseName, isDefault, sortOrder,
+            warehouse = WarehouseFactory.getInstance().create(partyPK, warehouseName, warehouseTypePK, isDefault, sortOrder,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(partyPK, EventTypes.MODIFY.name(), warehouse.getPrimaryKey(), null, updatedBy);
+            sendEvent(partyPK, EventTypes.MODIFY, warehouse.getPrimaryKey(), null, updatedBy);
         }
     }
     
@@ -443,124 +891,7 @@ public class WarehouseControl
             }
         }
         
-        sendEventUsingNames(warehouse.getPartyPK(), EventTypes.MODIFY.name(), warehouse.getPrimaryKey(), null, deletedBy);
-    }
-    
-    // --------------------------------------------------------------------------------
-    //   Location Use Types
-    // --------------------------------------------------------------------------------
-    
-    public LocationUseType createLocationUseType(String locationUseTypeName, Boolean allowMultiple, Boolean isDefault, Integer sortOrder) {
-        return LocationUseTypeFactory.getInstance().create(locationUseTypeName, allowMultiple, isDefault, sortOrder);
-    }
-    
-    public List<LocationUseType> getLocationUseTypes() {
-        PreparedStatement ps = LocationUseTypeFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM locationusetypes " +
-                "ORDER BY locutyp_sortorder, locutyp_locationusetypename");
-        
-        return LocationUseTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
-    }
-    
-    public LocationUseType getLocationUseTypeByName(String locationUseTypeName) {
-        LocationUseType locationUseType;
-        
-        try {
-            PreparedStatement ps = LocationUseTypeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM locationusetypes " +
-                    "WHERE locutyp_locationusetypename = ?");
-            
-            ps.setString(1, locationUseTypeName);
-            
-            locationUseType = LocationUseTypeFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return locationUseType;
-    }
-    
-    public LocationUseTypeTransfer getLocationUseTypeTransfer(UserVisit userVisit, LocationUseType locationUseType) {
-        return getWarehouseTransferCaches(userVisit).getLocationUseTypeTransferCache().getLocationUseTypeTransfer(locationUseType);
-    }
-    
-    public LocationUseTypeChoicesBean getLocationUseTypeChoices(String defaultLocationUseTypeChoice, Language language,
-            boolean allowNullChoice) {
-        List<LocationUseType> locationUseTypes = getLocationUseTypes();
-        var size = locationUseTypes.size();
-        var labels = new ArrayList<String>(size);
-        var values = new ArrayList<String>(size);
-        String defaultValue = null;
-
-        if(allowNullChoice) {
-            labels.add("");
-            values.add("");
-            
-            if(defaultLocationUseTypeChoice == null) {
-                defaultValue = "";
-            }
-        }
-        
-        for(var locationUseType : locationUseTypes) {
-            var label = getBestLocationUseTypeDescription(locationUseType, language);
-            var value = locationUseType.getLocationUseTypeName();
-            
-            labels.add(label == null? value: label);
-            values.add(value);
-            
-            var usingDefaultChoice = defaultLocationUseTypeChoice != null && defaultLocationUseTypeChoice.equals(value);
-            if(usingDefaultChoice || (defaultValue == null && locationUseType.getIsDefault()))
-                defaultValue = value;
-        }
-        
-        return new LocationUseTypeChoicesBean(labels, values, defaultValue);
-    }
-    
-    // --------------------------------------------------------------------------------
-    //   Location Use Type Descriptions
-    // --------------------------------------------------------------------------------
-    
-    public LocationUseTypeDescription createLocationUseTypeDescription(LocationUseType locationUseType, Language language, String description) {
-        return LocationUseTypeDescriptionFactory.getInstance().create(locationUseType, language, description);
-    }
-    
-    public LocationUseTypeDescription getLocationUseTypeDescription(LocationUseType locationUseType, Language language) {
-        LocationUseTypeDescription locationUseTypeDescription;
-        
-        try {
-            PreparedStatement ps = LocationUseTypeDescriptionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM locationusetypedescriptions " +
-                    "WHERE locutypd_locutyp_locationusetypeid = ? AND locutypd_lang_languageid = ?");
-            
-            ps.setLong(1, locationUseType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            
-            locationUseTypeDescription = LocationUseTypeDescriptionFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return locationUseTypeDescription;
-    }
-    
-    public String getBestLocationUseTypeDescription(LocationUseType locationUseType, Language language) {
-        String description;
-        LocationUseTypeDescription locationUseTypeDescription = getLocationUseTypeDescription(locationUseType, language);
-        
-        if(locationUseTypeDescription == null && !language.getIsDefault()) {
-            locationUseTypeDescription = getLocationUseTypeDescription(locationUseType, getPartyControl().getDefaultLanguage());
-        }
-        
-        if(locationUseTypeDescription == null) {
-            description = locationUseType.getLocationUseTypeName();
-        } else {
-            description = locationUseTypeDescription.getDescription();
-        }
-        
-        return description;
+        sendEvent(warehouse.getPartyPK(), EventTypes.MODIFY, warehouse.getPrimaryKey(), null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -579,7 +910,7 @@ public class WarehouseControl
         locationType.setLastDetail(locationTypeDetail);
         locationType.store();
         
-        sendEventUsingNames(locationType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(locationType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return locationType;
     }
@@ -688,7 +1019,8 @@ public class WarehouseControl
                         "FROM locationtypes, locationtypedetails " +
                         "WHERE loctyp_locationtypeid = loctypdt_loctyp_locationtypeid AND loctypdt_warehousepartyid = ? " +
                         "AND loctypdt_thrutime = ? " +
-                        "ORDER BY loctypdt_sortorder, loctypdt_locationtypename";
+                        "ORDER BY loctypdt_sortorder, loctypdt_locationtypename " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM locationtypes, locationtypedetails " +
@@ -812,7 +1144,7 @@ public class WarehouseControl
             locationType.setActiveDetail(locationTypeDetail);
             locationType.setLastDetail(locationTypeDetail);
             
-            sendEventUsingNames(locationTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(locationTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -850,7 +1182,7 @@ public class WarehouseControl
             }
         }
         
-        sendEventUsingNames(locationType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(locationType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteLocationType(LocationType locationType, BasePK deletedBy) {
@@ -874,7 +1206,7 @@ public class WarehouseControl
         LocationTypeDescription locationTypeDescription = LocationTypeDescriptionFactory.getInstance().create(locationType, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(locationType.getPrimaryKey(), EventTypes.MODIFY.name(), locationTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(locationType.getPrimaryKey(), EventTypes.MODIFY, locationTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return locationTypeDescription;
     }
@@ -936,7 +1268,8 @@ public class WarehouseControl
                 query = "SELECT _ALL_ " +
                         "FROM locationtypedescriptions, languages " +
                         "WHERE loctypd_loctyp_locationtypeid = ? AND loctypd_thrutime = ? AND loctypd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM locationtypedescriptions " +
@@ -1016,14 +1349,14 @@ public class WarehouseControl
             locationTypeDescription = LocationTypeDescriptionFactory.getInstance().create(locationType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(locationType.getPrimaryKey(), EventTypes.MODIFY.name(), locationTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(locationType.getPrimaryKey(), EventTypes.MODIFY, locationTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteLocationTypeDescription(LocationTypeDescription locationTypeDescription, BasePK deletedBy) {
         locationTypeDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(locationTypeDescription.getLocationTypePK(), EventTypes.MODIFY.name(), locationTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(locationTypeDescription.getLocationTypePK(), EventTypes.MODIFY, locationTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -1052,7 +1385,7 @@ public class WarehouseControl
         locationNameElement.setLastDetail(locationNameElementDetail);
         locationNameElement.store();
         
-        sendEventUsingNames(locationNameElement.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(locationNameElement.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return locationNameElement;
     }
@@ -1117,7 +1450,8 @@ public class WarehouseControl
                         "FROM locationnameelements, locationnameelementdetails " +
                         "WHERE locne_locationnameelementid = locnedt_locne_locationnameelementid AND locnedt_loctyp_locationtypeid = ? " +
                         "AND locnedt_thrutime = ? " +
-                        "ORDER BY locnedt_offset";
+                        "ORDER BY locnedt_offset " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM locationnameelements, locationnameelementdetails " +
@@ -1197,7 +1531,7 @@ public class WarehouseControl
             locationNameElement.setActiveDetail(locationNameElementDetail);
             locationNameElement.setLastDetail(locationNameElementDetail);
             
-            sendEventUsingNames(locationNameElementPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(locationNameElementPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -1209,7 +1543,7 @@ public class WarehouseControl
         locationNameElementDetail.store();
         locationNameElement.setActiveDetail(null);
         
-        sendEventUsingNames(locationNameElement.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(locationNameElement.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteLocationNameElementsByLocationType(LocationType locationType, BasePK deletedBy) {
@@ -1229,7 +1563,7 @@ public class WarehouseControl
         LocationNameElementDescription locationNameElementDescription = LocationNameElementDescriptionFactory.getInstance().create(session,
                 locationNameElement, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(locationNameElement.getPrimaryKey(), EventTypes.MODIFY.name(), locationNameElementDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(locationNameElement.getPrimaryKey(), EventTypes.MODIFY, locationNameElementDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return locationNameElementDescription;
     }
@@ -1292,7 +1626,8 @@ public class WarehouseControl
                 query = "SELECT _ALL_ " +
                         "FROM locationnameelementdescriptions, languages " +
                         "WHERE locned_locne_locationnameelementid = ? AND locned_thrutime = ? AND locned_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM locationnameelementdescriptions " +
@@ -1371,14 +1706,14 @@ public class WarehouseControl
             locationNameElementDescription = LocationNameElementDescriptionFactory.getInstance().create(locationNameElement,
                     language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(locationNameElement.getPrimaryKey(), EventTypes.MODIFY.name(), locationNameElementDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(locationNameElement.getPrimaryKey(), EventTypes.MODIFY, locationNameElementDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteLocationNameElementDescription(LocationNameElementDescription locationNameElementDescription, BasePK deletedBy) {
         locationNameElementDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(locationNameElementDescription.getLocationNameElementPK(), EventTypes.MODIFY.name(), locationNameElementDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(locationNameElementDescription.getLocationNameElementPK(), EventTypes.MODIFY, locationNameElementDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -1406,11 +1741,42 @@ public class WarehouseControl
         location.setLastDetail(locationDetail);
         location.store();
         
-        sendEventUsingNames(location.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(location.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return location;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Location */
+    public Location getLocationByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new LocationPK(entityInstance.getEntityUniqueId());
+
+        return LocationFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public Location getLocationByEntityInstance(EntityInstance entityInstance) {
+        return getLocationByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Location getLocationByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getLocationByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countLocationsByWarehouseParty(Party warehouseParty) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM locations, locationdetails " +
+                        "WHERE loc_activedetailid = locdt_locationdetailid AND locdt_warehousepartyid = ? ",
+                warehouseParty);
+    }
+
+    public long countLocationsByLocationUseType(Party warehouseParty, LocationUseType locationUseType) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM locationdetails " +
+                        "WHERE locdt_warehousepartyid = ? AND locdt_locutyp_locationusetypeid = ? AND locdt_thrutime = ? ",
+                warehouseParty, locationUseType, Session.MAX_TIME);
+    }
+
     private Location getLocationByName(Party warehouseParty, String locationName, EntityPermission entityPermission) {
         Location location;
         
@@ -1459,46 +1825,86 @@ public class WarehouseControl
     public LocationDetailValue getLocationDetailValueByNameForUpdate(Party warehouseParty, String locationName) {
         return getLocationDetailValueForUpdate(getLocationByNameForUpdate(warehouseParty, locationName));
     }
-    
+
     private List<Location> getLocationsByWarehouseParty(Party warehouseParty, EntityPermission entityPermission) {
         List<Location> locations;
-        
+
         try {
             String query = null;
-            
+
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 query = "SELECT _ALL_ " +
                         "FROM locations, locationdetails " +
                         "WHERE loc_locationid = locdt_loc_locationid AND locdt_warehousepartyid = ? AND locdt_thrutime = ? " +
-                        "ORDER BY locdt_locationname";
+                        "ORDER BY locdt_locationname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM locations, locationdetails " +
                         "WHERE loc_locationid = locdt_loc_locationid AND locdt_warehousepartyid = ? AND locdt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
+
             PreparedStatement ps = LocationFactory.getInstance().prepareStatement(query);
-            
+
             ps.setLong(1, warehouseParty.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
-            
+
             locations = LocationFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
-        
+
         return locations;
     }
-    
+
     public List<Location> getLocationsByWarehouseParty(Party warehouseParty) {
         return getLocationsByWarehouseParty(warehouseParty, EntityPermission.READ_ONLY);
     }
-    
+
     public List<Location> getLocationsByWarehousePartyForUpdate(Party warehouseParty) {
         return getLocationsByWarehouseParty(warehouseParty, EntityPermission.READ_WRITE);
     }
-    
+
+    private List<Location> getLocationsByName(String locationName, EntityPermission entityPermission) {
+        List<Location> locations;
+
+        try {
+            String query = null;
+
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM locations, locationdetails " +
+                        "WHERE loc_activedetailid = locdt_locationdetailid AND locdt_locationname = ? " +
+                        "ORDER BY locdt_locationname " +
+                        "_LIMIT_";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM locations, locationdetails " +
+                        "WHERE loc_activedetailid = locdt_locationdetailid AND locdt_locationname = ? " +
+                        "FOR UPDATE";
+            }
+
+            PreparedStatement ps = LocationFactory.getInstance().prepareStatement(query);
+
+            ps.setString(1, locationName);
+
+            locations = LocationFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return locations;
+    }
+
+    public List<Location> getLocationsByName(String locationName) {
+        return getLocationsByName(locationName, EntityPermission.READ_ONLY);
+    }
+
+    public List<Location> getLocationsByNameForUpdate(String locationName) {
+        return getLocationsByName(locationName, EntityPermission.READ_WRITE);
+    }
+
     private List<Location> getLocationsByLocationType(LocationType locationType, EntityPermission entityPermission) {
         List<Location> locations;
         
@@ -1509,7 +1915,8 @@ public class WarehouseControl
                 query = "SELECT _ALL_ " +
                         "FROM locations, locationdetails " +
                         "WHERE loc_locationid = locdt_loc_locationid AND locdt_loctyp_locationtypeid = ? AND locdt_thrutime = ? " +
-                        "ORDER BY locdt_locationname";
+                        "ORDER BY locdt_locationname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM locations, locationdetails " +
@@ -1548,7 +1955,8 @@ public class WarehouseControl
                 query = "SELECT _ALL_ " +
                         "FROM locations, locationdetails " +
                         "WHERE loc_locationid = locdt_loc_locationid AND locdt_invlocgrp_inventorylocationgroupid = ? AND locdt_thrutime = ? " +
-                        "ORDER BY locdt_locationname";
+                        "ORDER BY locdt_locationname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM locations, locationdetails " +
@@ -1620,14 +2028,6 @@ public class WarehouseControl
         return new LocationChoicesBean(labels, values, defaultValue);
     }
     
-    public long countLocationsByLocationUseType(Party warehouseParty, LocationUseType locationUseType) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                    "FROM locationdetails " +
-                    "WHERE locdt_warehousepartyid = ? AND locdt_locutyp_locationusetypeid = ? AND locdt_thrutime = ? ",
-                warehouseParty, locationUseType, Session.MAX_TIME);
-    }
-    
     public LocationStatusChoicesBean getLocationStatusChoices(String defaultLocationStatusChoice, Language language,
             Location location, PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
@@ -1681,14 +2081,11 @@ public class WarehouseControl
             location.setActiveDetail(locationDetail);
             location.setLastDetail(locationDetail);
             
-            sendEventUsingNames(locationPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(locationPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
     public void deleteLocation(Location location, BasePK deletedBy) {
-        var workflowControl = getWorkflowControl();
-        EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(location.getPrimaryKey());
-        
         deleteLocationVolumeByLocation(location, deletedBy);
         deleteLocationCapacitiesByLocation(location, deletedBy);
         deleteLocationDescriptionsByLocation(location, deletedBy);
@@ -1698,7 +2095,7 @@ public class WarehouseControl
         locationDetail.store();
         location.setActiveDetail(null);
         
-        sendEventUsingNames(location.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(location.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteLocationsByWarehouseParty(Party warehouseParty, BasePK deletedBy) {
@@ -1733,7 +2130,7 @@ public class WarehouseControl
         LocationDescription locationDescription = LocationDescriptionFactory.getInstance().create(location, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(location.getPrimaryKey(), EventTypes.MODIFY.name(), locationDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(location.getPrimaryKey(), EventTypes.MODIFY, locationDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return locationDescription;
     }
@@ -1795,7 +2192,8 @@ public class WarehouseControl
                 query = "SELECT _ALL_ " +
                         "FROM locationdescriptions, languages " +
                         "WHERE locd_loc_locationid = ? AND locd_thrutime = ? AND locd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM locationdescriptions " +
@@ -1874,14 +2272,14 @@ public class WarehouseControl
             locationDescription = LocationDescriptionFactory.getInstance().create(location, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(location.getPrimaryKey(), EventTypes.MODIFY.name(), locationDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(location.getPrimaryKey(), EventTypes.MODIFY, locationDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteLocationDescription(LocationDescription locationDescription, BasePK deletedBy) {
         locationDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(locationDescription.getLocationPK(), EventTypes.MODIFY.name(), locationDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(locationDescription.getLocationPK(), EventTypes.MODIFY, locationDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -1901,7 +2299,7 @@ public class WarehouseControl
         LocationVolume locationVolume = LocationVolumeFactory.getInstance().create(location, height, width, depth,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(location.getPrimaryKey(), EventTypes.MODIFY.name(), locationVolume.getPrimaryKey(), null, createdBy);
+        sendEvent(location.getPrimaryKey(), EventTypes.MODIFY, locationVolume.getPrimaryKey(), null, createdBy);
         
         return locationVolume;
     }
@@ -1976,14 +2374,14 @@ public class WarehouseControl
             locationVolume = LocationVolumeFactory.getInstance().create(locationPK, height,
                     width, depth, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(locationPK, EventTypes.MODIFY.name(), locationVolume.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(locationPK, EventTypes.MODIFY, locationVolume.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteLocationVolume(LocationVolume locationVolume, BasePK deletedBy) {
         locationVolume.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(locationVolume.getLocation().getPrimaryKey(), EventTypes.MODIFY.name(), locationVolume.getPrimaryKey(), null, deletedBy);
+        sendEvent(locationVolume.getLocation().getPrimaryKey(), EventTypes.MODIFY, locationVolume.getPrimaryKey(), null, deletedBy);
     }
     
     public void deleteLocationVolumeByLocation(Location location, BasePK deletedBy) {
@@ -2002,7 +2400,7 @@ public class WarehouseControl
         LocationCapacity locationCapacity = LocationCapacityFactory.getInstance().create(location,
                 unitOfMeasureType, capacity, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(location.getPrimaryKey(), EventTypes.MODIFY.name(), locationCapacity.getPrimaryKey(), null, createdBy);
+        sendEvent(location.getPrimaryKey(), EventTypes.MODIFY, locationCapacity.getPrimaryKey(), null, createdBy);
         
         return locationCapacity;
     }
@@ -2019,7 +2417,8 @@ public class WarehouseControl
                         "WHERE loccap_loc_locationid = ? AND loccap_thrutime = ? " +
                         "AND loccap_uomt_unitofmeasuretypeid = uomtdt_uomt_unitofmeasuretypeid AND uomtdt_thrutime = ? " +
                         "AND uomtdt_uomk_unitofmeasurekindid = uomkdt_uomk_unitofmeasurekindid AND uomkdt_thrutime = ? " +
-                        "ORDER BY uomtdt_sortorder, uomtdt_unitofmeasuretypename, uomkdt_sortorder, uomkdt_unitofmeasurekindname";
+                        "ORDER BY uomtdt_sortorder, uomtdt_unitofmeasuretypename, uomkdt_sortorder, uomkdt_unitofmeasurekindname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM locationcapacities " +
@@ -2113,7 +2512,7 @@ public class WarehouseControl
             locationCapacity = LocationCapacityFactory.getInstance().create(locationPK, unitOfMeasureTypePK, capacity,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(unitOfMeasureTypePK, EventTypes.MODIFY.name(), locationCapacity.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(unitOfMeasureTypePK, EventTypes.MODIFY, locationCapacity.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -2136,7 +2535,7 @@ public class WarehouseControl
     public void deleteLocationCapacity(LocationCapacity locationCapacity, BasePK deletedBy) {
         locationCapacity.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(locationCapacity.getLocation().getPrimaryKey(), EventTypes.MODIFY.name(), locationCapacity.getPrimaryKey(), null, deletedBy);
+        sendEvent(locationCapacity.getLocation().getPrimaryKey(), EventTypes.MODIFY, locationCapacity.getPrimaryKey(), null, deletedBy);
     }
     
     public void deleteLocationCapacitiesByLocation(Location location, BasePK deletedBy) {
@@ -2146,5 +2545,52 @@ public class WarehouseControl
                 deleteLocationCapacity(locationCapacity, deletedBy)
         );
     }
-    
+
+    // --------------------------------------------------------------------------------
+    //   Warehouse Searches
+    // --------------------------------------------------------------------------------
+
+    public List<WarehouseResultTransfer> getWarehouseResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
+        var searchControl = Session.getModelController(SearchControl.class);
+        var warehouseResultTransfers = new ArrayList<WarehouseResultTransfer>();
+        var includeWarehouse = false;
+
+        var options = session.getOptions();
+        if(options != null) {
+            includeWarehouse = options.contains(SearchOptions.WarehouseResultIncludeWarehouse);
+        }
+
+        try (ResultSet rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
+            var warehouseControl = Session.getModelController(WarehouseControl.class);
+
+            while(rs.next()) {
+                var party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
+
+                warehouseResultTransfers.add(new WarehouseResultTransfer(party.getLastDetail().getPartyName(),
+                        includeWarehouse ? warehouseControl.getWarehouseTransfer(userVisit, party) : null));
+            }
+        } catch(SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return warehouseResultTransfers;
+    }
+
+    public List<WarehouseObject> getWarehouseObjectsFromUserVisitSearch(UserVisitSearch userVisitSearch) {
+        var searchControl = Session.getModelController(SearchControl.class);
+        var warehouseObjects = new ArrayList<WarehouseObject>();
+
+        try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
+            while(rs.next()) {
+                var party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
+
+                warehouseObjects.add(new WarehouseObject(party));
+            }
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return warehouseObjects;
+    }
+
 }

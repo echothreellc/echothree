@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package com.echothree.ui.cli.database.util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class Component {
     
@@ -54,7 +55,7 @@ public class Component {
     
     public String getPKPackage() {
         if(pkPackage == null) {
-            pkPackage = new StringBuilder("com.echothree.model.data.").append(attrName.toLowerCase()).append(".common.pk").toString();
+            pkPackage = new StringBuilder("com.echothree.model.data.").append(attrName.toLowerCase(Locale.getDefault())).append(".common.pk").toString();
         }
         
         return pkPackage;
@@ -62,7 +63,7 @@ public class Component {
     
     public String getValuePackage() {
         if(valuePackage == null) {
-            valuePackage = new StringBuilder("com.echothree.model.data.").append(attrName.toLowerCase()).append(".server.value").toString();
+            valuePackage = new StringBuilder("com.echothree.model.data.").append(attrName.toLowerCase(Locale.getDefault())).append(".server.value").toString();
         }
         
         return valuePackage;
@@ -70,7 +71,7 @@ public class Component {
     
     public String getEntityPackage() {
         if(entityPackage == null) {
-            entityPackage = new StringBuilder("com.echothree.model.data.").append(attrName.toLowerCase()).append(".server.entity").toString();
+            entityPackage = new StringBuilder("com.echothree.model.data.").append(attrName.toLowerCase(Locale.getDefault())).append(".server.entity").toString();
         }
         
         return entityPackage;
@@ -78,7 +79,7 @@ public class Component {
     
     public String getFactoryPackage() {
         if(factoryPackage == null) {
-            factoryPackage = new StringBuilder("com.echothree.model.data.").append(attrName.toLowerCase()).append(".server.factory").toString();
+            factoryPackage = new StringBuilder("com.echothree.model.data.").append(attrName.toLowerCase(Locale.getDefault())).append(".server.factory").toString();
         }
         
         return factoryPackage;
@@ -86,7 +87,7 @@ public class Component {
     
     public String getCommonPackage() {
         if(commonPackage == null) {
-            commonPackage = new StringBuilder("com.echothree.model.data.").append(attrName.toLowerCase()).append(".common").toString();
+            commonPackage = new StringBuilder("com.echothree.model.data.").append(attrName.toLowerCase(Locale.getDefault())).append(".common").toString();
         }
         
         return commonPackage;

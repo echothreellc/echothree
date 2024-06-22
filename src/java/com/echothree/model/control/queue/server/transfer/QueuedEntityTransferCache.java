@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ public class QueuedEntityTransferCache
 
         if(queuedEntityTransfer == null) {
             QueueTypeTransfer queueType = queueControl.getQueueTypeTransfer(userVisit, queuedEntity.getQueueType());
-            EntityInstanceTransfer entityInstance = coreControl.getEntityInstanceTransfer(userVisit, queuedEntity.getEntityInstance(), true, true, true, true, true);
+            EntityInstanceTransfer entityInstance = coreControl.getEntityInstanceTransfer(userVisit, queuedEntity.getEntityInstance(), true, true, true, true, true, true);
 
             queuedEntityTransfer = new QueuedEntityTransfer(queueType, entityInstance);
             put(queuedEntity, queuedEntityTransfer);

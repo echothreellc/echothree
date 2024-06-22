@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -91,7 +91,7 @@ public class OrderLineAdjustmentControl
         orderLineAdjustmentType.setLastDetail(orderLineAdjustmentTypeDetail);
         orderLineAdjustmentType.store();
 
-        sendEventUsingNames(orderLineAdjustmentType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(orderLineAdjustmentType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return orderLineAdjustmentType;
     }
@@ -295,7 +295,7 @@ public class OrderLineAdjustmentControl
             orderLineAdjustmentType.setActiveDetail(orderLineAdjustmentTypeDetail);
             orderLineAdjustmentType.setLastDetail(orderLineAdjustmentTypeDetail);
 
-            sendEventUsingNames(orderLineAdjustmentTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(orderLineAdjustmentTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -330,7 +330,7 @@ public class OrderLineAdjustmentControl
             }
         }
 
-        sendEventUsingNames(orderLineAdjustmentType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(orderLineAdjustmentType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     // --------------------------------------------------------------------------------
@@ -341,7 +341,7 @@ public class OrderLineAdjustmentControl
         OrderLineAdjustmentTypeDescription orderLineAdjustmentTypeDescription = OrderLineAdjustmentTypeDescriptionFactory.getInstance().create(orderLineAdjustmentType, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(orderLineAdjustmentType.getPrimaryKey(), EventTypes.MODIFY.name(), orderLineAdjustmentTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(orderLineAdjustmentType.getPrimaryKey(), EventTypes.MODIFY, orderLineAdjustmentTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return orderLineAdjustmentTypeDescription;
     }
@@ -463,14 +463,14 @@ public class OrderLineAdjustmentControl
             orderLineAdjustmentTypeDescription = OrderLineAdjustmentTypeDescriptionFactory.getInstance().create(orderLineAdjustmentType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(orderLineAdjustmentType.getPrimaryKey(), EventTypes.MODIFY.name(), orderLineAdjustmentTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(orderLineAdjustmentType.getPrimaryKey(), EventTypes.MODIFY, orderLineAdjustmentTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteOrderLineAdjustmentTypeDescription(OrderLineAdjustmentTypeDescription orderLineAdjustmentTypeDescription, BasePK deletedBy) {
         orderLineAdjustmentTypeDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(orderLineAdjustmentTypeDescription.getOrderLineAdjustmentTypePK(), EventTypes.MODIFY.name(), orderLineAdjustmentTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(orderLineAdjustmentTypeDescription.getOrderLineAdjustmentTypePK(), EventTypes.MODIFY, orderLineAdjustmentTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -500,7 +500,7 @@ public class OrderLineAdjustmentControl
         orderLineAdjustment.setLastDetail(orderLineAdjustmentDetail);
         orderLineAdjustment.store();
 
-        sendEventUsingNames(orderLineAdjustment.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(orderLineAdjustment.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return orderLineAdjustment;
     }
@@ -549,7 +549,7 @@ public class OrderLineAdjustmentControl
         orderLineAdjustment.setActiveDetail(null);
         orderLineAdjustment.store();
 
-        sendEventUsingNames(orderLineAdjustmentDetail.getOrderLinePK(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(orderLineAdjustmentDetail.getOrderLinePK(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteOrderLineAdjustmentsByOrderLine(OrderLine orderLine, BasePK deletedBy) {

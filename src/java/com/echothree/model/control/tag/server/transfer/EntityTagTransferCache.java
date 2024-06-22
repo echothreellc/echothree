@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,17 +29,18 @@ public class EntityTagTransferCache
         extends BaseTagTransferCache<EntityTag, EntityTagTransfer> {
     
     CoreControl coreControl = Session.getModelController(CoreControl.class);
-    
+    TagControl tagControl = Session.getModelController(TagControl.class);
+
     /** Creates a new instance of EntityTagTransferCache */
-    public EntityTagTransferCache(UserVisit userVisit, TagControl tagControl) {
-        super(userVisit, tagControl);
+    public EntityTagTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
     
     public EntityTagTransfer getEntityTagTransfer(EntityTag entityTag) {
         EntityTagTransfer entityTagTransfer = get(entityTag);
         
         if(entityTagTransfer == null) {
-            EntityInstanceTransfer taggedEntityInstance = coreControl.getEntityInstanceTransfer(userVisit, entityTag.getTaggedEntityInstance(), false, false, false, false, false);
+            EntityInstanceTransfer taggedEntityInstance = coreControl.getEntityInstanceTransfer(userVisit, entityTag.getTaggedEntityInstance(), false, false, false, false, false, false);
             TagTransfer tag = tagControl.getTagTransfer(userVisit, entityTag.getTag());
             
             entityTagTransfer = new EntityTagTransfer(taggedEntityInstance, tag);

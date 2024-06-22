@@ -4,7 +4,11 @@ Feature: Employee entity attribute
   Background:
     Given the employee Test begins using the application
     And the user is not currently logged in
-    When the user logs in as an employee with the username "Test E" and password "password" and company "TEST_COMPANY"
+    When the user begins to log in as an employee
+    And the employee sets the username to "Test E"
+    And the employee sets the password to "password"
+    And the employee sets the company to "TEST_COMPANY"
+    And the employee logs in
     Then no error should occur
 
   Scenario: Existing employee adds an entity attribute group, edits it, and then deletes it

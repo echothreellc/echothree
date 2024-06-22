@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,64 +16,177 @@
 
 package com.echothree.model.control.party.server.graphql;
 
+import com.echothree.control.user.customer.common.CustomerUtil;
+import com.echothree.control.user.customer.server.command.GetCustomerCommand;
+import com.echothree.control.user.employee.common.EmployeeUtil;
+import com.echothree.control.user.employee.server.command.GetEmployeeCommand;
+import com.echothree.control.user.party.common.PartyUtil;
 import com.echothree.control.user.party.server.command.GetCompanyCommand;
+import com.echothree.control.user.party.server.command.GetDateTimeFormatCommand;
 import com.echothree.control.user.party.server.command.GetDepartmentCommand;
 import com.echothree.control.user.party.server.command.GetDepartmentsCommand;
 import com.echothree.control.user.party.server.command.GetDivisionCommand;
 import com.echothree.control.user.party.server.command.GetDivisionsCommand;
 import com.echothree.control.user.party.server.command.GetLanguageCommand;
+import com.echothree.control.user.party.server.command.GetPartyAliasCommand;
+import com.echothree.control.user.party.server.command.GetPartyAliasTypeCommand;
+import com.echothree.control.user.party.server.command.GetPartyAliasTypesCommand;
+import com.echothree.control.user.party.server.command.GetPartyAliasesCommand;
+import com.echothree.control.user.party.server.command.GetPartyRelationshipCommand;
+import com.echothree.control.user.party.server.command.GetPartyRelationshipsCommand;
+import com.echothree.control.user.party.server.command.GetPartyTypeCommand;
+import com.echothree.control.user.party.server.command.GetPartyTypesCommand;
+import com.echothree.control.user.party.server.command.GetTimeZoneCommand;
+import com.echothree.control.user.vendor.common.VendorUtil;
 import com.echothree.control.user.vendor.server.command.GetVendorCommand;
+import com.echothree.control.user.warehouse.server.command.GetWarehouseCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.party.server.entity.Party;
+import com.echothree.util.common.form.BaseForm;
 import com.echothree.util.server.control.GraphQlSecurityCommand;
 import graphql.schema.DataFetchingEnvironment;
+import javax.naming.NamingException;
 
-public final class PartySecurityUtils
-        extends BaseGraphQl {
+public interface PartySecurityUtils {
 
-    private static class PartySecurityUtilsHolder {
-        static PartySecurityUtils instance = new PartySecurityUtils();
-    }
-    
-    public static PartySecurityUtils getInstance() {
-        return PartySecurityUtilsHolder.instance;
+    static boolean getHasPartyTypeAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetPartyTypeCommand.class);
     }
 
-    public boolean getHasLanguageAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetLanguageCommand.class);
+    static boolean getHasPartyTypesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetPartyTypesCommand.class);
     }
 
-    public boolean getHasDivisionsAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetDivisionsCommand.class);
+    static boolean getHasPartyAliasTypeAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetPartyAliasTypeCommand.class);
     }
 
-    public boolean getHasDepartmentsAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetDepartmentsCommand.class);
+    static boolean getHasPartyAliasTypesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetPartyAliasTypesCommand.class);
     }
 
-    public boolean getHasPartyAccess(final DataFetchingEnvironment env, final Party party) {
-        var partyTypeEnum = PartyTypes.valueOf(party.getLastDetail().getPartyType().getPartyTypeName());
+    static boolean getHasPartyAliasAccess(final DataFetchingEnvironment env, final Party targetParty) {
+        try {
+            var commandForm = PartyUtil.getHome().getGetPartyAliasForm();
+
+            commandForm.setPartyName(targetParty.getLastDetail().getPartyName());
+
+            return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetPartyAliasCommand.class, commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    static boolean getHasPartyAliasesAccess(final DataFetchingEnvironment env, final Party targetParty) {
+        try {
+            var commandForm = PartyUtil.getHome().getGetPartyAliasesForm();
+
+            commandForm.setPartyName(targetParty.getLastDetail().getPartyName());
+
+            return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetPartyAliasesCommand.class, commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    static boolean getHasPartyRelationshipAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetPartyRelationshipCommand.class);
+    }
+
+    static boolean getHasPartyRelationshipsAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetPartyRelationshipsCommand.class);
+    }
+
+    static boolean getHasLanguageAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetLanguageCommand.class);
+    }
+
+    static boolean getHasTimeZoneAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetTimeZoneCommand.class);
+    }
+
+    static boolean getHasDateTimeFormatAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetDateTimeFormatCommand.class);
+    }
+
+    static boolean getHasDivisionsAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetDivisionsCommand.class);
+    }
+
+    static boolean getHasDepartmentsAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetDepartmentsCommand.class);
+    }
+
+    static boolean getHasPartyAccess(final DataFetchingEnvironment env, final Party targetParty) {
+        var partyDetail = targetParty.getLastDetail();
+        var partyTypeEnum = PartyTypes.valueOf(partyDetail.getPartyType().getPartyTypeName());
         Class<? extends GraphQlSecurityCommand> command;
+        BaseForm baseForm = null;
 
         switch(partyTypeEnum) {
-            case VENDOR:
-                command = GetVendorCommand.class;
-                break;
-            case COMPANY:
-                command = GetCompanyCommand.class;
-                break;
-            case DIVISION:
-                command = GetDivisionCommand.class;
-                break;
-            case DEPARTMENT:
-                command = GetDepartmentCommand.class;
-                break;
-            default:
-                throw new RuntimeException("Unhandled PartyType");
-        }
+            case CUSTOMER ->
+            {
+                command = GetCustomerCommand.class;
 
-        return getGraphQlExecutionContext(env).hasAccess(command);
+                // GetCustomerCommand has a security() function that needs the form to be available.
+                try {
+                    var commandForm = CustomerUtil.getHome().getGetCustomerForm();
+
+                    commandForm.setPartyName(partyDetail.getPartyName());
+                    baseForm = commandForm;
+                } catch (NamingException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+            case EMPLOYEE ->
+            {
+                command = GetEmployeeCommand.class;
+
+                // GetEmployeeCommand has a security() function that needs the form to be available.
+                try {
+                    var commandForm = EmployeeUtil.getHome().getGetEmployeeForm();
+
+                    commandForm.setPartyName(partyDetail.getPartyName());
+                    baseForm = commandForm;
+                } catch (NamingException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+            case VENDOR ->
+            {
+                command = GetVendorCommand.class;
+
+                // GetVendorCommand has a security() function that needs the form to be available.
+                try {
+                    var commandForm = VendorUtil.getHome().getGetVendorForm();
+
+                    commandForm.setPartyName(partyDetail.getPartyName());
+                    baseForm = commandForm;
+                } catch (NamingException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+            case COMPANY ->
+            {
+                command = GetCompanyCommand.class;
+            }
+            case DIVISION ->
+            {
+                command = GetDivisionCommand.class;
+            }
+            case DEPARTMENT ->
+            {
+                command = GetDepartmentCommand.class;
+            }
+            case WAREHOUSE ->
+            {
+                command = GetWarehouseCommand.class;
+            }
+            default -> throw new RuntimeException("Unhandled PartyType: " + partyTypeEnum);
+        };
+
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(command, baseForm);
     }
 
 }

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -133,7 +133,7 @@ public class SequenceControl
         sequenceType.setLastDetail(sequenceTypeDetail);
         sequenceType.store();
         
-        sendEventUsingNames(sequenceType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(sequenceType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return sequenceType;
     }
@@ -145,7 +145,7 @@ public class SequenceControl
                         "WHERE sqtyp_activedetailid = sqtypdt_sequencetypedetailid");
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.SequenceType */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.SequenceType */
     public SequenceType getSequenceTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new SequenceTypePK(entityInstance.getEntityUniqueId());
         var sequenceType = SequenceTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
@@ -434,7 +434,7 @@ public class SequenceControl
         sequenceType.setLastDetail(sequenceTypeDetail);
         sequenceType.store();
         
-        sendEventUsingNames(sequenceTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+        sendEvent(sequenceTypePK, EventTypes.MODIFY, null, null, updatedBy);
     }
     
     public void updateSequenceTypeFromValue(SequenceTypeDetailValue sequenceTypeDetailValue, BasePK updatedBy) {
@@ -467,7 +467,7 @@ public class SequenceControl
             }
         }
         
-        sendEventUsingNames(sequenceType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(sequenceType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -478,7 +478,7 @@ public class SequenceControl
         SequenceTypeDescription sequenceTypeDescription = SequenceTypeDescriptionFactory.getInstance().create(sequenceType, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(sequenceType.getPrimaryKey(), EventTypes.MODIFY.name(), sequenceTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(sequenceType.getPrimaryKey(), EventTypes.MODIFY, sequenceTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return sequenceTypeDescription;
     }
@@ -615,14 +615,14 @@ public class SequenceControl
             
             sequenceTypeDescription = SequenceTypeDescriptionFactory.getInstance().create(sequenceType, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(sequenceType.getPrimaryKey(), EventTypes.MODIFY.name(), sequenceTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(sequenceType.getPrimaryKey(), EventTypes.MODIFY, sequenceTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteSequenceTypeDescription(SequenceTypeDescription sequenceTypeDescription, BasePK deletedBy) {
         sequenceTypeDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(sequenceTypeDescription.getSequenceTypePK(), EventTypes.MODIFY.name(), sequenceTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(sequenceTypeDescription.getSequenceTypePK(), EventTypes.MODIFY, sequenceTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -937,7 +937,7 @@ public class SequenceControl
         sequence.setLastDetail(sequenceDetail);
         sequence.store();
         
-        sendEventUsingNames(sequence.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(sequence.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return sequence;
     }
@@ -957,7 +957,7 @@ public class SequenceControl
                 sequenceType);
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.Sequence */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Sequence */
     public Sequence getSequenceByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new SequencePK(entityInstance.getEntityUniqueId());
         var sequence = SequenceFactory.getInstance().getEntityFromPK(entityPermission, pk);
@@ -1205,7 +1205,7 @@ public class SequenceControl
         sequence.setLastDetail(sequenceDetail);
         sequence.store();
         
-        sendEventUsingNames(sequencePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+        sendEvent(sequencePK, EventTypes.MODIFY, null, null, updatedBy);
     }
     
     public void updateSequenceFromValue(SequenceDetailValue sequenceDetailValue, BasePK updatedBy) {
@@ -1246,7 +1246,7 @@ public class SequenceControl
             }
         }
         
-        sendEventUsingNames(sequence.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(sequence.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteSequencesBySequenceType(SequenceType sequenceType, BasePK deletedBy) {
@@ -1265,7 +1265,7 @@ public class SequenceControl
         SequenceDescription sequenceDescription = SequenceDescriptionFactory.getInstance().create(sequence, language,
                 description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(sequence.getPrimaryKey(), EventTypes.MODIFY.name(), sequenceDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(sequence.getPrimaryKey(), EventTypes.MODIFY, sequenceDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return sequenceDescription;
     }
@@ -1402,14 +1402,14 @@ public class SequenceControl
             
             sequenceDescription = SequenceDescriptionFactory.getInstance().create(sequence, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(sequence.getPrimaryKey(), EventTypes.MODIFY.name(), sequenceDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(sequence.getPrimaryKey(), EventTypes.MODIFY, sequenceDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteSequenceDescription(SequenceDescription sequenceDescription, BasePK deletedBy) {
         sequenceDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(sequenceDescription.getSequencePK(), EventTypes.MODIFY.name(), sequenceDescription.getPrimaryKey(), null, deletedBy);
+        sendEvent(sequenceDescription.getSequencePK(), EventTypes.MODIFY, sequenceDescription.getPrimaryKey(), null, deletedBy);
     }
     
     public void deleteSequenceDescriptionsBySequence(Sequence sequence, BasePK deletedBy) {

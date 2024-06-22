@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ public class VendorItemSteps implements En {
                     assertThat(persona.createVendorItemForm).isNull();
                     assertThat(persona.setVendorItemStatusForm).isNull();
                     assertThat(persona.deleteVendorItemForm).isNull();
-                    assertThat(persona.vendorItemSpec).isNull();
+                    assertThat(persona.vendorItemUniversalSpec).isNull();
 
                     persona.createVendorItemForm = VendorUtil.getHome().getCreateVendorItemForm();
                 });
@@ -58,7 +58,7 @@ public class VendorItemSteps implements En {
                     assertThat(persona.createVendorItemForm).isNull();
                     assertThat(persona.setVendorItemStatusForm).isNull();
                     assertThat(persona.deleteVendorItemForm).isNull();
-                    assertThat(persona.vendorItemSpec).isNull();
+                    assertThat(persona.vendorItemUniversalSpec).isNull();
 
                     persona.setVendorItemStatusForm = VendorUtil.getHome().getSetVendorItemStatusForm();
                 });
@@ -82,7 +82,7 @@ public class VendorItemSteps implements En {
                     assertThat(persona.createVendorItemForm).isNull();
                     assertThat(persona.setVendorItemStatusForm).isNull();
                     assertThat(persona.deleteVendorItemForm).isNull();
-                    assertThat(persona.vendorItemSpec).isNull();
+                    assertThat(persona.vendorItemUniversalSpec).isNull();
 
                     persona.deleteVendorItemForm = VendorUtil.getHome().getDeleteVendorItemForm();
                 });
@@ -106,15 +106,15 @@ public class VendorItemSteps implements En {
                     assertThat(persona.createVendorItemForm).isNull();
                     assertThat(persona.setVendorItemStatusForm).isNull();
                     assertThat(persona.deleteVendorItemForm).isNull();
-                    assertThat(persona.vendorItemSpec).isNull();
+                    assertThat(persona.vendorItemUniversalSpec).isNull();
 
-                    persona.vendorItemSpec = VendorUtil.getHome().getVendorItemSpec();
+                    persona.vendorItemUniversalSpec = VendorUtil.getHome().getVendorItemUniversalSpec();
                 });
 
         When("^the user begins editing the vendor item$",
                 () -> {
                     var persona = CurrentPersona.persona;
-                    var spec = persona.vendorItemSpec;
+                    var spec = persona.vendorItemUniversalSpec;
 
                     assertThat(spec).isNotNull();
 
@@ -137,7 +137,7 @@ public class VendorItemSteps implements En {
         When("^the user finishes editing the vendor item$",
                 () -> {
                     var persona = CurrentPersona.persona;
-                    var spec = persona.vendorItemSpec;
+                    var spec = persona.vendorItemUniversalSpec;
                     var edit = persona.vendorItemEdit;
 
                     assertThat(spec).isNotNull();
@@ -152,7 +152,7 @@ public class VendorItemSteps implements En {
                     var commandResult = VendorUtil.getHome().editVendorItem(persona.userVisitPK, commandForm);
                     LastCommandResult.commandResult = commandResult;
 
-                    persona.vendorItemSpec = null;
+                    persona.vendorItemUniversalSpec = null;
                     persona.vendorItemEdit = null;
                 });
 
@@ -182,7 +182,7 @@ public class VendorItemSteps implements En {
                     var createVendorItemForm = persona.createVendorItemForm;
                     var setVendorItemStatusForm = persona.setVendorItemStatusForm;
                     var deleteVendorItemForm = persona.deleteVendorItemForm;
-                    var vendorItemSpec = persona.vendorItemSpec;
+                    var vendorItemSpec = persona.vendorItemUniversalSpec;
 
                     assertThat(createVendorItemForm != null || setVendorItemStatusForm != null || deleteVendorItemForm != null
                             || vendorItemSpec != null).isTrue();
@@ -204,7 +204,7 @@ public class VendorItemSteps implements En {
                     var createVendorItemForm = persona.createVendorItemForm;
                     var setVendorItemStatusForm = persona.setVendorItemStatusForm;
                     var deleteVendorItemForm = persona.deleteVendorItemForm;
-                    var vendorItemSpec = persona.vendorItemSpec;
+                    var vendorItemSpec = persona.vendorItemUniversalSpec;
 
                     assertThat(createVendorItemForm != null || setVendorItemStatusForm != null || deleteVendorItemForm != null
                             || vendorItemSpec != null).isTrue();
@@ -226,7 +226,7 @@ public class VendorItemSteps implements En {
                     var createVendorItemForm = persona.createVendorItemForm;
                     var setVendorItemStatusForm = persona.setVendorItemStatusForm;
                     var deleteVendorItemForm = persona.deleteVendorItemForm;
-                    var vendorItemSpec = persona.vendorItemSpec;
+                    var vendorItemSpec = persona.vendorItemUniversalSpec;
 
                     assertThat(createVendorItemForm != null || setVendorItemStatusForm != null || deleteVendorItemForm != null
                             || vendorItemSpec != null).isTrue();

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.geo.common.form;
 
-import com.echothree.control.user.geo.common.spec.GeoCodeScopeSpec;
+import com.echothree.control.user.geo.common.spec.GeoCodeScopeUniversalSpec;
 
 public interface GetGeoCodeScopeForm
-        extends GeoCodeScopeSpec {
+        extends GeoCodeScopeUniversalSpec {
     
-    // Nothing additional beyond GeoCodeScopeSpec
+    // Nothing additional beyond GeoCodeScopeUniversalSpec
     
 }

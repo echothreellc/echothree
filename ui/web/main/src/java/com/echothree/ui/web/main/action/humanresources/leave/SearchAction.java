@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import com.echothree.control.user.search.common.form.SearchLeavesForm;
 import com.echothree.control.user.search.common.result.GetLeaveResultsResult;
 import com.echothree.control.user.search.common.result.SearchLeavesResult;
 import com.echothree.model.control.employee.common.transfer.LeaveResultTransfer;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchTypes;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -64,7 +64,7 @@ public class SearchAction
         GetLeaveResultsForm commandForm = SearchUtil.getHome().getGetLeaveResultsForm();
         String leaveName = null;
         
-        commandForm.setSearchTypeName(SearchConstants.SearchType_LEAVE_MAINTENANCE);
+        commandForm.setSearchTypeName(SearchTypes.LEAVE_MAINTENANCE.name());
         
         CommandResult commandResult = SearchUtil.getHome().getLeaveResults(getUserVisitPK(request), commandForm);
         ExecutionResult executionResult = commandResult.getExecutionResult();
@@ -87,7 +87,7 @@ public class SearchAction
         if(wasPost(request)) {
             SearchLeavesForm commandForm = SearchUtil.getHome().getSearchLeavesForm();
 
-            commandForm.setSearchTypeName(SearchConstants.SearchType_LEAVE_MAINTENANCE);
+            commandForm.setSearchTypeName(SearchTypes.LEAVE_MAINTENANCE.name());
             commandForm.setLeaveName(actionForm.getLeaveName());
             commandForm.setLeaveTypeName(actionForm.getLeaveTypeChoice());
             commandForm.setLeaveReasonName(actionForm.getLeaveReasonChoice());
@@ -103,7 +103,7 @@ public class SearchAction
             } else {
                 ExecutionResult executionResult = commandResult.getExecutionResult();
                 SearchLeavesResult result = (SearchLeavesResult)executionResult.getResult();
-                int count = result.getCount();
+                var count = result.getCount();
 
                 if(count == 0 || count > 1) {
                     forwardKey = ForwardConstants.DISPLAY;

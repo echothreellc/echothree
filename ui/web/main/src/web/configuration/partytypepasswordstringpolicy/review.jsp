@@ -1,7 +1,7 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" %>
 
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -27,7 +27,7 @@
     <body>
         <div id="Header">
             <h2>
-                <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
+                <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
                 <a href="<c:url value="/action/Configuration/Main" />">Configuration</a> &gt;&gt;
                 <a href="<c:url value="/action/Configuration/PartyType/Main" />">Party Types</a> &gt;&gt;
                 Review Password Policy (<c:out value="${partyTypePasswordStringPolicy.partyType.partyTypeName}" />)
@@ -39,30 +39,30 @@
             Force Change After Create:
             <c:choose>
                 <c:when test="${partyTypePasswordStringPolicy.forceChangeAfterCreate}">
-                    Yes
+                    <fmt:message key="phrase.yes" />
                 </c:when>
                 <c:otherwise>
-                    No
+                    <fmt:message key="phrase.no" />
                 </c:otherwise>
             </c:choose>
             <br />
             Force Change After Reset:
             <c:choose>
                 <c:when test="${partyTypePasswordStringPolicy.forceChangeAfterReset}">
-                    Yes
+                    <fmt:message key="phrase.yes" />
                 </c:when>
                 <c:otherwise>
-                    No
+                    <fmt:message key="phrase.no" />
                 </c:otherwise>
             </c:choose>
             <br />
             Allow Change:
             <c:choose>
                 <c:when test="${partyTypePasswordStringPolicy.allowChange}">
-                    Yes
+                    <fmt:message key="phrase.yes" />
                 </c:when>
                 <c:otherwise>
-                    No
+                    <fmt:message key="phrase.no" />
                 </c:otherwise>
             </c:choose>
             <br />
@@ -70,7 +70,7 @@
             Password History:
             <c:choose>
                 <c:when test='${partyTypePasswordStringPolicy.passwordHistory == null}'>
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:out value="${partyTypePasswordStringPolicy.passwordHistory}" />
@@ -80,7 +80,7 @@
             Minimum Password Lifetime:
             <c:choose>
                 <c:when test='${partyTypePasswordStringPolicy.minimumPasswordLifetime == null}'>
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:out value="${partyTypePasswordStringPolicy.minimumPasswordLifetime}" />
@@ -90,7 +90,7 @@
             Maximum Password Lifetime:
             <c:choose>
                 <c:when test='${partyTypePasswordStringPolicy.maximumPasswordLifetime == null}'>
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:out value="${partyTypePasswordStringPolicy.maximumPasswordLifetime}" />
@@ -101,7 +101,7 @@
             Expiration Warning Time:
             <c:choose>
                 <c:when test='${partyTypePasswordStringPolicy.expirationWarningTime == null}'>
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:out value="${partyTypePasswordStringPolicy.expirationWarningTime}" />
@@ -111,7 +111,7 @@
             Expired Logins Permitted:
             <c:choose>
                 <c:when test='${partyTypePasswordStringPolicy.expiredLoginsPermitted == null}'>
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:out value="${partyTypePasswordStringPolicy.expiredLoginsPermitted}" />
@@ -122,7 +122,7 @@
             Minimum Length:
             <c:choose>
                 <c:when test='${partyTypePasswordStringPolicy.minimumLength == null}'>
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:out value="${partyTypePasswordStringPolicy.minimumLength}" />
@@ -132,7 +132,7 @@
             Maximum Length:
             <c:choose>
                 <c:when test='${partyTypePasswordStringPolicy.maximumLength == null}'>
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:out value="${partyTypePasswordStringPolicy.maximumLength}" />
@@ -143,7 +143,7 @@
             Required Digit Count:
             <c:choose>
                 <c:when test='${partyTypePasswordStringPolicy.requiredDigitCount == null}'>
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:out value="${partyTypePasswordStringPolicy.requiredDigitCount}" />
@@ -153,7 +153,7 @@
             Required Letter Count:
             <c:choose>
                 <c:when test='${partyTypePasswordStringPolicy.requiredLetterCount == null}'>
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:out value="${partyTypePasswordStringPolicy.requiredLetterCount}" />
@@ -163,7 +163,7 @@
             Required Upper Case Count:
             <c:choose>
                 <c:when test='${partyTypePasswordStringPolicy.requiredUpperCaseCount == null}'>
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:out value="${partyTypePasswordStringPolicy.requiredUpperCaseCount}" />
@@ -173,7 +173,7 @@
             Required Lower Case Count:
             <c:choose>
                 <c:when test='${partyTypePasswordStringPolicy.requiredLowerCaseCount == null}'>
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:out value="${partyTypePasswordStringPolicy.requiredLowerCaseCount}" />
@@ -183,7 +183,7 @@
             Maximum Repeated:
             <c:choose>
                 <c:when test='${partyTypePasswordStringPolicy.maximumRepeated == null}'>
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:out value="${partyTypePasswordStringPolicy.maximumRepeated}" />
@@ -193,7 +193,7 @@
             Minimum Character Types:
             <c:choose>
                 <c:when test='${partyTypePasswordStringPolicy.minimumCharacterTypes == null}'>
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:out value="${partyTypePasswordStringPolicy.minimumCharacterTypes}" />

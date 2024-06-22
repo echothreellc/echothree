@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -85,7 +85,7 @@ public class GetItemCategoriesCommand
     }
     
     @Override
-    protected BaseResult getTransfers(Collection<ItemCategory> entities) {
+    protected BaseResult getResult(Collection<ItemCategory> entities) {
         GetItemCategoriesResult result = ItemResultFactory.getGetItemCategoriesResult();
         var itemControl = Session.getModelController(ItemControl.class);
         UserVisit userVisit = getUserVisit();

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -22,7 +22,6 @@
             <ant dir="database" target="jar"/>
             <ant dir="dataloader" target="jar"/>
             <ant dir="form" target="compile"/>
-            <ant dir="logging" target="compile"/>
             <ant dir="mailtransfer" target="jar"/>
         </parallel>
     </target>
@@ -33,7 +32,6 @@
             <ant dir="database" target="clean"/>
             <ant dir="dataloader" target="clean"/>
             <ant dir="form" target="clean"/>
-            <ant dir="logging" target="clean"/>
             <ant dir="mailtransfer" target="clean"/>
         </parallel>
     </target>

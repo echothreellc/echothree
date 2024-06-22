@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -59,7 +59,7 @@ public class SalesOrderBatchControl
     public SalesOrderBatch createSalesOrderBatch(Batch batch, PaymentMethod paymentMethod, BasePK createdBy) {
         SalesOrderBatch salesOrderBatch = SalesOrderBatchFactory.getInstance().create(batch, paymentMethod, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(batch.getPrimaryKey(), EventTypes.MODIFY.name(), salesOrderBatch.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(batch.getPrimaryKey(), EventTypes.MODIFY, salesOrderBatch.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return salesOrderBatch;
     }
@@ -132,14 +132,14 @@ public class SalesOrderBatchControl
 
             salesOrderBatch = SalesOrderBatchFactory.getInstance().create(batchPK, paymentMethodPK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(batchPK, EventTypes.MODIFY.name(), salesOrderBatch.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(batchPK, EventTypes.MODIFY, salesOrderBatch.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteSalesOrderBatch(SalesOrderBatch salesOrderBatch, BasePK deletedBy) {
         salesOrderBatch.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(salesOrderBatch.getBatchPK(), EventTypes.MODIFY.name(), salesOrderBatch.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(salesOrderBatch.getBatchPK(), EventTypes.MODIFY, salesOrderBatch.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 
     public void deleteSalesOrderBatch(Batch batch, BasePK deletedBy) {

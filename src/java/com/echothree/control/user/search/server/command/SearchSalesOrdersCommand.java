@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ import com.echothree.model.control.order.common.OrderTypes;
 import com.echothree.model.control.order.server.logic.OrderLogic;
 import com.echothree.model.control.sales.common.workflow.SalesOrderStatusConstants;
 import com.echothree.model.control.sales.server.search.SalesOrderSearchEvaluator;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.order.server.entity.OrderAliasType;
@@ -72,7 +72,7 @@ public class SearchSalesOrdersCommand
     protected BaseResult execute() {
         SearchLogic searchLogic = SearchLogic.getInstance();
         SearchSalesOrdersResult result = SearchResultFactory.getSearchSalesOrdersResult();
-        SearchKind searchKind = searchLogic.getSearchKindByName(null, SearchConstants.SearchKind_SALES_ORDER);
+        SearchKind searchKind = searchLogic.getSearchKindByName(null, SearchKinds.SALES_ORDER.name());
 
         if(!hasExecutionErrors()) {
             String searchTypeName = form.getSearchTypeName();

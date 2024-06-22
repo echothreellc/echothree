@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import com.echothree.model.control.order.common.transfer.OrderTypeDescriptionTra
 import com.echothree.model.control.order.common.transfer.OrderTypeTransfer;
 import com.echothree.model.control.order.server.transfer.OrderTypeDescriptionTransferCache;
 import com.echothree.model.control.order.server.transfer.OrderTypeTransferCache;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.order.common.pk.OrderTypePK;
 import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.order.server.entity.OrderTypeDescription;
@@ -35,6 +36,9 @@ import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.sequence.common.pk.SequenceTypePK;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.model.data.wishlist.common.pk.WishlistTypePK;
+import com.echothree.model.data.wishlist.server.entity.WishlistType;
+import com.echothree.model.data.wishlist.server.factory.WishlistTypeFactory;
 import com.echothree.model.data.workflow.common.pk.WorkflowEntrancePK;
 import com.echothree.model.data.workflow.common.pk.WorkflowPK;
 import com.echothree.model.data.workflow.server.entity.Workflow;
@@ -43,6 +47,7 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -90,9 +95,36 @@ public class OrderTypeControl
         orderType.setLastDetail(orderTypeDetail);
         orderType.store();
 
-        sendEventUsingNames(orderType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(orderType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return orderType;
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.OrderType */
+    public OrderType getOrderTypeByEntityInstance(final EntityInstance entityInstance,
+            final EntityPermission entityPermission) {
+        var pk = new OrderTypePK(entityInstance.getEntityUniqueId());
+
+        return OrderTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public OrderType getOrderTypeByEntityInstance(final EntityInstance entityInstance) {
+        return getOrderTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public OrderType getOrderTypeByEntityInstanceForUpdate(final EntityInstance entityInstance) {
+        return getOrderTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public OrderType getOrderTypeByPK(OrderTypePK pk) {
+        return OrderTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+    }
+
+    public long countOrderTypes() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM ordertypes, ordertypedetails " +
+                "WHERE ordtyp_activedetailid = ordtypdt_ordertypedetailid");
     }
 
     private static final Map<EntityPermission, String> getOrderTypeByNameQueries;
@@ -114,7 +146,7 @@ public class OrderTypeControl
         getOrderTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private OrderType getOrderTypeByName(String orderTypeName, EntityPermission entityPermission) {
+    public OrderType getOrderTypeByName(String orderTypeName, EntityPermission entityPermission) {
         return OrderTypeFactory.getInstance().getEntityFromQuery(entityPermission, getOrderTypeByNameQueries, orderTypeName);
     }
 
@@ -153,7 +185,7 @@ public class OrderTypeControl
         getDefaultOrderTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private OrderType getDefaultOrderType(EntityPermission entityPermission) {
+    public OrderType getDefaultOrderType(EntityPermission entityPermission) {
         return OrderTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultOrderTypeQueries);
     }
 
@@ -237,8 +269,7 @@ public class OrderTypeControl
         return getOrderTransferCaches(userVisit).getOrderTypeTransferCache().getOrderTypeTransfer(orderType);
     }
 
-    public List<OrderTypeTransfer> getOrderTypeTransfers(UserVisit userVisit) {
-        List<OrderType> orderTypes = getOrderTypes();
+    public List<OrderTypeTransfer> getOrderTypeTransfers(UserVisit userVisit, Collection<OrderType> orderTypes) {
         List<OrderTypeTransfer> orderTypeTransfers = new ArrayList<>(orderTypes.size());
         OrderTypeTransferCache orderTypeTransferCache = getOrderTransferCaches(userVisit).getOrderTypeTransferCache();
 
@@ -247,6 +278,10 @@ public class OrderTypeControl
         );
 
         return orderTypeTransfers;
+    }
+
+    public List<OrderTypeTransfer> getOrderTypeTransfers(UserVisit userVisit) {
+        return getOrderTypeTransfers(userVisit, getOrderTypes());
     }
 
     public OrderTypeChoicesBean getOrderTypeChoices(String defaultOrderTypeChoice,
@@ -347,7 +382,7 @@ public class OrderTypeControl
             orderType.setActiveDetail(orderTypeDetail);
             orderType.setLastDetail(orderTypeDetail);
 
-            sendEventUsingNames(orderTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(orderTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -387,7 +422,7 @@ public class OrderTypeControl
             }
         }
 
-        sendEventUsingNames(orderType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(orderType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteOrderType(OrderType orderType, BasePK deletedBy) {
@@ -414,7 +449,7 @@ public class OrderTypeControl
         OrderTypeDescription orderTypeDescription = OrderTypeDescriptionFactory.getInstance().create(orderType, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(orderType.getPrimaryKey(), EventTypes.MODIFY.name(), orderTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(orderType.getPrimaryKey(), EventTypes.MODIFY, orderTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return orderTypeDescription;
     }
@@ -536,14 +571,14 @@ public class OrderTypeControl
             orderTypeDescription = OrderTypeDescriptionFactory.getInstance().create(orderType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(orderType.getPrimaryKey(), EventTypes.MODIFY.name(), orderTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(orderType.getPrimaryKey(), EventTypes.MODIFY, orderTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteOrderTypeDescription(OrderTypeDescription orderTypeDescription, BasePK deletedBy) {
         orderTypeDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(orderTypeDescription.getOrderTypePK(), EventTypes.MODIFY.name(), orderTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(orderTypeDescription.getOrderTypePK(), EventTypes.MODIFY, orderTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 

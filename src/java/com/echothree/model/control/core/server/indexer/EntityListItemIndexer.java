@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,6 +17,8 @@
 package com.echothree.model.control.core.server.indexer;
 
 import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.IndexFieldVariations;
+import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.server.analysis.EntityListItemAnalyzer;
 import com.echothree.model.control.index.server.indexer.BaseIndexer;
 import com.echothree.model.control.index.server.indexer.FieldTypes;
@@ -43,7 +45,7 @@ public class EntityListItemIndexer
 
     @Override
     protected Analyzer getAnalyzer() {
-        return new EntityListItemAnalyzer(eea, language, entityType, entityAttributes, tagScopes);
+        return new EntityListItemAnalyzer(eea, language, entityType, entityAliasTypes, entityAttributes, tagScopes);
     }
     
     @Override
@@ -57,38 +59,31 @@ public class EntityListItemIndexer
         EntityAttributeDetail entityAttributeDetail = entityListItemDetail.getEntityAttribute().getLastDetail();
         EntityTypeDetail entityTypeDetail = entityAttributeDetail.getEntityType().getLastDetail();
         String description = coreControl.getBestEntityListItemDescription(entityListItem, language);
-        Document document = new Document();
 
-        document.add(new Field(IndexConstants.IndexField_EntityRef, entityListItem.getPrimaryKey().getEntityRef(), FieldTypes.STORED_NOT_TOKENIZED));
-        document.add(new Field(IndexConstants.IndexField_EntityInstanceId, entityInstance.getPrimaryKey().getEntityId().toString(), FieldTypes.STORED_NOT_TOKENIZED));
+        var document = newDocumentWithEntityInstanceFields(entityInstance, entityListItem.getPrimaryKey());
 
-        document.add(new Field(IndexConstants.IndexField_ComponentVendorName,
+        document.add(new Field(IndexFields.componentVendorName.name(),
                 entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(), FieldTypes.NOT_STORED_TOKENIZED));
-        document.add(new SortedDocValuesField(IndexConstants.IndexField_ComponentVendorName + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable,
+        document.add(new SortedDocValuesField(IndexFields.componentVendorName.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
                 new BytesRef(entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName())));
-        document.add(new Field(IndexConstants.IndexField_EntityTypeName,
+        document.add(new Field(IndexFields.entityTypeName.name(),
                 entityTypeDetail.getEntityTypeName(), FieldTypes.NOT_STORED_TOKENIZED));
-        document.add(new SortedDocValuesField(IndexConstants.IndexField_EntityTypeName + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable,
+        document.add(new SortedDocValuesField(IndexFields.entityTypeName.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
                 new BytesRef(entityTypeDetail.getEntityTypeName())));
-        document.add(new Field(IndexConstants.IndexField_EntityAttributeName,
+        document.add(new Field(IndexFields.entityAttributeName.name(),
                 entityAttributeDetail.getEntityAttributeName(), FieldTypes.NOT_STORED_TOKENIZED));
-        document.add(new SortedDocValuesField(IndexConstants.IndexField_EntityAttributeName + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable,
+        document.add(new SortedDocValuesField(IndexFields.entityAttributeName.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
                 new BytesRef(entityAttributeDetail.getEntityAttributeName())));
-        document.add(new Field(IndexConstants.IndexField_EntityListItemName,
+        document.add(new Field(IndexFields.entityListItemName.name(),
                 entityListItemDetail.getEntityListItemName(), FieldTypes.NOT_STORED_TOKENIZED));
-        document.add(new SortedDocValuesField(IndexConstants.IndexField_EntityListItemName + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable,
+        document.add(new SortedDocValuesField(IndexFields.entityListItemName.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
                 new BytesRef(entityListItemDetail.getEntityListItemName())));
 
         if(description != null) {
-            document.add(new Field(IndexConstants.IndexField_Description, description, FieldTypes.NOT_STORED_TOKENIZED));
-            document.add(new SortedDocValuesField(IndexConstants.IndexField_Description + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable,
+            document.add(new Field(IndexFields.description.name(), description, FieldTypes.NOT_STORED_TOKENIZED));
+            document.add(new SortedDocValuesField(IndexFields.description.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
                     new BytesRef(description)));
         }
-        
-        indexWorkflowEntityStatuses(document, entityInstance);
-        indexEntityTimes(document, entityInstance);
-        indexEntityAttributes(document, entityInstance);
-        indexEntityTags(document, entityInstance);
 
         return document;
     }

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.subscription.common;
 
-import com.echothree.control.user.subscription.common.SubscriptionRemote;
 import com.echothree.control.user.subscription.server.SubscriptionLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -26,7 +25,8 @@ public class SubscriptionUtil {
     
     private static SubscriptionLocal cachedLocal = null;
     private static SubscriptionRemote cachedRemote = null;
-    
+
+    @SuppressWarnings("BanJNDI")
     public static SubscriptionLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
@@ -37,7 +37,8 @@ public class SubscriptionUtil {
         
         return cachedLocal;
     }
-    
+
+    @SuppressWarnings("BanJNDI")
     public static SubscriptionRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -41,6 +41,7 @@ public interface CoreProperties {
     String ENTITY_TYPE_NAME = "entityTypeName";
     String ENTITY_UNIQUE_ID = "entityUniqueId";
     String IS_DEFAULT = "isDefault";
+    String IS_EXTENSIBLE = "isExtensible";
     String KEEP_ALL_HISTORY = "keepAllHistory";
     String LOCK_TIMEOUT = "lockTimeout";
     String MAXIMUM_INTEGER_VALUE = "maximumIntegerValue";

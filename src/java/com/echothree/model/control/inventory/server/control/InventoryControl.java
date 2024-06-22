@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -36,7 +36,6 @@ import com.echothree.model.control.inventory.common.transfer.InventoryLocationGr
 import com.echothree.model.control.inventory.common.transfer.PartyInventoryLevelTransfer;
 import com.echothree.model.control.inventory.common.workflow.InventoryLocationGroupStatusConstants;
 import com.echothree.model.control.inventory.server.transfer.AllocationPriorityDescriptionTransferCache;
-import com.echothree.model.control.inventory.server.transfer.AllocationPriorityTransferCache;
 import com.echothree.model.control.inventory.server.transfer.InventoryConditionGlAccountTransferCache;
 import com.echothree.model.control.inventory.server.transfer.InventoryConditionUseTransferCache;
 import com.echothree.model.control.inventory.server.transfer.InventoryConditionUseTypeTransferCache;
@@ -160,7 +159,7 @@ public class InventoryControl
         inventoryLocationGroup.setLastDetail(inventoryLocationGroupDetail);
         inventoryLocationGroup.store();
         
-        sendEventUsingNames(inventoryLocationGroup.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(inventoryLocationGroup.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return inventoryLocationGroup;
     }
@@ -271,7 +270,8 @@ public class InventoryControl
                         "FROM inventorylocationgroups, inventorylocationgroupdetails " +
                         "WHERE invlocgrp_inventorylocationgroupid = invlocgrpdt_invlocgrp_inventorylocationgroupid " +
                         "AND invlocgrpdt_warehousepartyid = ? AND invlocgrpdt_thrutime = ? " +
-                        "ORDER BY invlocgrpdt_sortorder, invlocgrpdt_inventorylocationgroupname";
+                        "ORDER BY invlocgrpdt_sortorder, invlocgrpdt_inventorylocationgroupname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM inventorylocationgroups, inventorylocationgroupdetails " +
@@ -395,7 +395,7 @@ public class InventoryControl
         inventoryLocationGroup.setLastDetail(inventoryLocationGroupDetail);
         inventoryLocationGroup.store();
         
-        sendEventUsingNames(inventoryLocationGroupPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+        sendEvent(inventoryLocationGroupPK, EventTypes.MODIFY, null, null, updatedBy);
     }
     
     public void updateInventoryLocationGroupFromValue(InventoryLocationGroupDetailValue inventoryLocationGroupDetailValue, BasePK updatedBy) {
@@ -461,7 +461,7 @@ public class InventoryControl
             }
         }
         
-        sendEventUsingNames(inventoryLocationGroup.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(inventoryLocationGroup.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteInventoryLocationGroup(InventoryLocationGroup inventoryLocationGroup, BasePK deletedBy) {
@@ -488,7 +488,7 @@ public class InventoryControl
         InventoryLocationGroupDescription inventoryLocationGroupDescription = InventoryLocationGroupDescriptionFactory.getInstance().create(inventoryLocationGroup, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(inventoryLocationGroup.getPrimaryKey(), EventTypes.MODIFY.name(), inventoryLocationGroupDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(inventoryLocationGroup.getPrimaryKey(), EventTypes.MODIFY, inventoryLocationGroupDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return inventoryLocationGroupDescription;
     }
@@ -550,7 +550,8 @@ public class InventoryControl
                 query = "SELECT _ALL_ " +
                         "FROM inventorylocationgroupdescriptions, languages " +
                         "WHERE invlocgrpd_invlocgrp_inventorylocationgroupid = ? AND invlocgrpd_thrutime = ? AND invlocgrpd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM inventorylocationgroupdescriptions " +
@@ -629,14 +630,14 @@ public class InventoryControl
             inventoryLocationGroupDescription = InventoryLocationGroupDescriptionFactory.getInstance().create(inventoryLocationGroup, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(inventoryLocationGroup.getPrimaryKey(), EventTypes.MODIFY.name(), inventoryLocationGroupDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(inventoryLocationGroup.getPrimaryKey(), EventTypes.MODIFY, inventoryLocationGroupDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteInventoryLocationGroupDescription(InventoryLocationGroupDescription inventoryLocationGroupDescription, BasePK deletedBy) {
         inventoryLocationGroupDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(inventoryLocationGroupDescription.getInventoryLocationGroupPK(), EventTypes.MODIFY.name(), inventoryLocationGroupDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(inventoryLocationGroupDescription.getInventoryLocationGroupPK(), EventTypes.MODIFY, inventoryLocationGroupDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
     
@@ -657,7 +658,7 @@ public class InventoryControl
         InventoryLocationGroupVolume inventoryLocationGroupVolume = InventoryLocationGroupVolumeFactory.getInstance().create(inventoryLocationGroup, height, width, depth,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(inventoryLocationGroup.getPrimaryKey(), EventTypes.MODIFY.name(), inventoryLocationGroupVolume.getPrimaryKey(), null, createdBy);
+        sendEvent(inventoryLocationGroup.getPrimaryKey(), EventTypes.MODIFY, inventoryLocationGroupVolume.getPrimaryKey(), null, createdBy);
         
         return inventoryLocationGroupVolume;
     }
@@ -699,13 +700,11 @@ public class InventoryControl
     public InventoryLocationGroupVolume getInventoryLocationGroupVolumeForUpdate(InventoryLocationGroup inventoryLocationGroup) {
         return getInventoryLocationGroupVolume(inventoryLocationGroup, EntityPermission.READ_WRITE);
     }
-    
-    public InventoryLocationGroupVolumeValue getInventoryLocationGroupVolumeValueForUpdate(InventoryLocationGroup inventoryInventoryLocationGroupGroup) {
-        InventoryLocationGroupVolume inventoryInventoryLocationGroupGroupVolume = getInventoryLocationGroupVolumeForUpdate(inventoryInventoryLocationGroupGroup);
-        
-        return inventoryInventoryLocationGroupGroupVolume == null? null: inventoryInventoryLocationGroupGroupVolume.getInventoryLocationGroupVolumeValue().clone();
+
+    public InventoryLocationGroupVolumeValue getInventoryLocationGroupVolumeValueForUpdate(InventoryLocationGroupVolume inventoryLocationGroupVolume) {
+        return inventoryLocationGroupVolume == null? null: inventoryLocationGroupVolume.getInventoryLocationGroupVolumeValue().clone();
     }
-    
+
     public InventoryLocationGroupVolumeTransfer getInventoryLocationGroupVolumeTransfer(UserVisit userVisit, InventoryLocationGroupVolume inventoryInventoryLocationGroupGroupVolume) {
         return inventoryInventoryLocationGroupGroupVolume == null? null: getInventoryTransferCaches(userVisit).getInventoryLocationGroupVolumeTransferCache().getTransfer(inventoryInventoryLocationGroupGroupVolume);
     }
@@ -732,14 +731,14 @@ public class InventoryControl
             inventoryInventoryLocationGroupGroupVolume = InventoryLocationGroupVolumeFactory.getInstance().create(inventoryInventoryLocationGroupGroupPK, height,
                     width, depth, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(inventoryInventoryLocationGroupGroupPK, EventTypes.MODIFY.name(), inventoryInventoryLocationGroupGroupVolume.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(inventoryInventoryLocationGroupGroupPK, EventTypes.MODIFY, inventoryInventoryLocationGroupGroupVolume.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteInventoryLocationGroupVolume(InventoryLocationGroupVolume inventoryInventoryLocationGroupGroupVolume, BasePK deletedBy) {
         inventoryInventoryLocationGroupGroupVolume.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(inventoryInventoryLocationGroupGroupVolume.getInventoryLocationGroup().getPrimaryKey(), EventTypes.MODIFY.name(), inventoryInventoryLocationGroupGroupVolume.getPrimaryKey(), null, deletedBy);
+        sendEvent(inventoryInventoryLocationGroupGroupVolume.getInventoryLocationGroup().getPrimaryKey(), EventTypes.MODIFY, inventoryInventoryLocationGroupGroupVolume.getPrimaryKey(), null, deletedBy);
     }
     
     public void deleteInventoryLocationGroupVolumeByInventoryLocationGroup(InventoryLocationGroup inventoryInventoryLocationGroupGroup, BasePK deletedBy) {
@@ -758,7 +757,7 @@ public class InventoryControl
         InventoryLocationGroupCapacity inventoryInventoryLocationGroupGroupCapacity = InventoryLocationGroupCapacityFactory.getInstance().create(inventoryInventoryLocationGroupGroup,
                 unitOfMeasureType, capacity, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(inventoryInventoryLocationGroupGroup.getPrimaryKey(), EventTypes.MODIFY.name(), inventoryInventoryLocationGroupGroupCapacity.getPrimaryKey(), null, createdBy);
+        sendEvent(inventoryInventoryLocationGroupGroup.getPrimaryKey(), EventTypes.MODIFY, inventoryInventoryLocationGroupGroupCapacity.getPrimaryKey(), null, createdBy);
         
         return inventoryInventoryLocationGroupGroupCapacity;
     }
@@ -775,7 +774,8 @@ public class InventoryControl
                         "WHERE invlocgrpcap_invlocgrp_inventorylocationgroupid = ? AND invlocgrpcap_thrutime = ? " +
                         "AND invlocgrpcap_uomt_unitofmeasuretypeid = uomtdt_uomt_unitofmeasuretypeid AND uomtdt_thrutime = ? " +
                         "AND uomtdt_uomk_unitofmeasurekindid = uomkdt_uomk_unitofmeasurekindid AND uomkdt_thrutime = ? " +
-                        "ORDER BY uomtdt_sortorder, uomtdt_unitofmeasuretypename, uomkdt_sortorder, uomkdt_unitofmeasurekindname";
+                        "ORDER BY uomtdt_sortorder, uomtdt_unitofmeasuretypename, uomkdt_sortorder, uomkdt_unitofmeasurekindname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM inventorylocationgroupcapacities " +
@@ -871,7 +871,7 @@ public class InventoryControl
             inventoryLocationGroupCapacity = InventoryLocationGroupCapacityFactory.getInstance().create(inventoryLocationGroupPK, unitOfMeasureTypePK, capacity,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(unitOfMeasureTypePK, EventTypes.MODIFY.name(), inventoryLocationGroupCapacity.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(unitOfMeasureTypePK, EventTypes.MODIFY, inventoryLocationGroupCapacity.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -894,7 +894,7 @@ public class InventoryControl
     public void deleteInventoryLocationGroupCapacity(InventoryLocationGroupCapacity inventoryLocationGroupCapacity, BasePK deletedBy) {
         inventoryLocationGroupCapacity.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(inventoryLocationGroupCapacity.getInventoryLocationGroup().getPrimaryKey(), EventTypes.MODIFY.name(), inventoryLocationGroupCapacity.getPrimaryKey(), null, deletedBy);
+        sendEvent(inventoryLocationGroupCapacity.getInventoryLocationGroup().getPrimaryKey(), EventTypes.MODIFY, inventoryLocationGroupCapacity.getPrimaryKey(), null, deletedBy);
     }
     
     public void deleteInventoryLocationGroupCapacitiesByInventoryLocationGroup(InventoryLocationGroup inventoryLocationGroup, BasePK deletedBy) {
@@ -933,12 +933,12 @@ public class InventoryControl
         inventoryCondition.setLastDetail(inventoryConditionDetail);
         inventoryCondition.store();
         
-        sendEventUsingNames(inventoryCondition.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(inventoryCondition.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return inventoryCondition;
     }
     
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.InventoryCondition */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.InventoryCondition */
     public InventoryCondition getInventoryConditionByEntityInstance(final EntityInstance entityInstance,
             final EntityPermission entityPermission) {
         var pk = new InventoryConditionPK(entityInstance.getEntityUniqueId());
@@ -953,7 +953,14 @@ public class InventoryControl
     public InventoryCondition getInventoryConditionByEntityInstanceForUpdate(final EntityInstance entityInstance) {
         return getInventoryConditionByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
-    
+
+    public long countInventoryConditions() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM inventoryconditions, inventoryconditiondetails " +
+                "WHERE invcon_activedetailid = invcondt_inventoryconditiondetailid");
+    }
+
     private static final Map<EntityPermission, String> getInventoryConditionByNameQueries = Map.of(
             EntityPermission.READ_ONLY,
             "SELECT _ALL_ " +
@@ -1017,7 +1024,8 @@ public class InventoryControl
             EntityPermission.READ_ONLY,
             "SELECT _ALL_ " + "FROM inventoryconditions, inventoryconditiondetails " +
                     "WHERE invcon_inventoryconditionid = invcondt_invcon_inventoryconditionid AND invcondt_thrutime = ? " +
-                    "ORDER BY invcondt_sortorder, invcondt_inventoryconditionname",
+                    "ORDER BY invcondt_sortorder, invcondt_inventoryconditionname " +
+                    "_LIMIT_",
             EntityPermission.READ_WRITE,
             "SELECT _ALL_ " + "FROM inventoryconditions, inventoryconditiondetails " +
                     "WHERE invcon_inventoryconditionid = invcondt_invcon_inventoryconditionid AND invcondt_thrutime = ? " +
@@ -1165,7 +1173,7 @@ public class InventoryControl
             inventoryCondition.setActiveDetail(inventoryConditionDetail);
             inventoryCondition.setLastDetail(inventoryConditionDetail);
             
-            sendEventUsingNames(inventoryConditionPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(inventoryConditionPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -1211,7 +1219,7 @@ public class InventoryControl
             }
         }
         
-        sendEventUsingNames(inventoryCondition.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(inventoryCondition.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -1223,7 +1231,7 @@ public class InventoryControl
         var inventoryConditionDescription = InventoryConditionDescriptionFactory.getInstance().create(inventoryCondition,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(inventoryCondition.getPrimaryKey(), EventTypes.MODIFY.name(), inventoryConditionDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(inventoryCondition.getPrimaryKey(), EventTypes.MODIFY, inventoryConditionDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return inventoryConditionDescription;
     }
@@ -1269,7 +1277,8 @@ public class InventoryControl
             "SELECT _ALL_ " +
                     "FROM inventoryconditiondescriptions, languages " +
                     "WHERE invcond_invcon_inventoryconditionid = ? AND invcond_thrutime = ? AND invcond_lang_languageid = lang_languageid " +
-                    "ORDER BY lang_sortorder, lang_languageisoname",
+                    "ORDER BY lang_sortorder, lang_languageisoname " +
+                    "_LIMIT_",
             EntityPermission.READ_WRITE,
             "SELECT _ALL_ " +
                     "FROM inventoryconditiondescriptions " +
@@ -1341,14 +1350,14 @@ public class InventoryControl
             inventoryConditionDescription = InventoryConditionDescriptionFactory.getInstance().create(inventoryCondition, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(inventoryCondition.getPrimaryKey(), EventTypes.MODIFY.name(), inventoryConditionDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(inventoryCondition.getPrimaryKey(), EventTypes.MODIFY, inventoryConditionDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteInventoryConditionDescription(final InventoryConditionDescription inventoryConditionDescription, final BasePK deletedBy) {
         inventoryConditionDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(inventoryConditionDescription.getInventoryConditionPK(), EventTypes.MODIFY.name(), inventoryConditionDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(inventoryConditionDescription.getInventoryConditionPK(), EventTypes.MODIFY, inventoryConditionDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -1373,7 +1382,8 @@ public class InventoryControl
         PreparedStatement ps = InventoryConditionUseTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM inventoryconditionusetypes " +
-                "ORDER BY invconut_inventoryconditionusetypename");
+                "ORDER BY invconut_inventoryconditionusetypename " +
+                "_LIMIT_");
         
         return InventoryConditionUseTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -1514,7 +1524,7 @@ public class InventoryControl
         InventoryConditionUse inventoryConditionUse = InventoryConditionUseFactory.getInstance().create(inventoryConditionUseType,
                 inventoryCondition, isDefault, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(inventoryCondition.getPrimaryKey(), EventTypes.MODIFY.name(), inventoryConditionUse.getPrimaryKey(),
+        sendEvent(inventoryCondition.getPrimaryKey(), EventTypes.MODIFY, inventoryConditionUse.getPrimaryKey(),
                 null, createdBy);
         
         return inventoryConditionUse;
@@ -1622,7 +1632,8 @@ public class InventoryControl
                         "FROM inventoryconditionuses, inventoryconditionusetypes " +
                         "WHERE invconu_invcon_inventoryconditionid = ? AND invconu_thrutime = ? " +
                         "AND invconu_invconut_inventoryconditionusetypeid = invconut_inventoryconditionusetypeid " +
-                        "ORDER BY invconut_sortorder, invconut_inventoryconditionusetypename";
+                        "ORDER BY invconut_sortorder, invconut_inventoryconditionusetypename " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM inventoryconditionuses " +
@@ -1666,7 +1677,8 @@ public class InventoryControl
                         "FROM inventoryconditionuses, inventoryconditions, inventoryconditiondetails " +
                         "WHERE invconu_invconut_inventoryconditionusetypeid = ? AND invconu_thrutime = ? " +
                         "AND invconu_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_activedetailid = invcondt_inventoryconditiondetailid " +
-                        "ORDER BY invcondt_sortorder, invcondt_inventoryconditionname";
+                        "ORDER BY invcondt_sortorder, invcondt_inventoryconditionname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM inventoryconditionuses, inventoryconditions, inventoryconditiondetails " +
@@ -1721,16 +1733,16 @@ public class InventoryControl
         return getInventoryConditionUseTransfers(userVisit, getInventoryConditionUsesByInventoryConditionUseType(inventoryConditionUseType));
     }
     
-    public int countInventoryConditionUsesByInventoryConditionUseType(InventoryConditionUseType inventoryConditionUseType) {
-        return session.queryForInteger(
+    public long countInventoryConditionUsesByInventoryConditionUseType(InventoryConditionUseType inventoryConditionUseType) {
+        return session.queryForLong(
                 "SELECT COUNT(*) " +
                 "FROM inventoryconditionuses " +
                 "WHERE invconu_invconut_inventoryconditionusetypeid = ? AND invconu_thrutime = ?",
                 inventoryConditionUseType, Session.MAX_TIME);
     }
     
-    public int countInventoryConditionUsesByInventoryCondition(InventoryCondition inventoryCondition) {
-        return session.queryForInteger(
+    public long countInventoryConditionUsesByInventoryCondition(InventoryCondition inventoryCondition) {
+        return session.queryForLong(
                 "SELECT COUNT(*) " +
                 "FROM inventoryconditionuses " +
                 "WHERE invconu_invcon_inventoryconditionid = ? AND invconu_thrutime = ?",
@@ -1769,7 +1781,7 @@ public class InventoryControl
         inventoryConditionUse = InventoryConditionUseFactory.getInstance().create(inventoryConditionUseTypePK,
                 inventoryConditionPK, isDefault, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(inventoryConditionPK, EventTypes.MODIFY.name(), inventoryConditionUse.getPrimaryKey(), null, updatedBy);
+        sendEvent(inventoryConditionPK, EventTypes.MODIFY, inventoryConditionUse.getPrimaryKey(), null, updatedBy);
     }
     
     /** Given a InventoryConditionUseValue, update only the isDefault property.
@@ -1800,7 +1812,7 @@ public class InventoryControl
             }
         }
         
-        sendEventUsingNames(inventoryConditionUse.getInventoryConditionPK(), EventTypes.MODIFY.name(),
+        sendEvent(inventoryConditionUse.getInventoryConditionPK(), EventTypes.MODIFY,
                 inventoryConditionUse.getPrimaryKey(), null, deletedBy);
     }
     
@@ -1823,7 +1835,7 @@ public class InventoryControl
                 inventoryCondition, itemAccountingCategory, inventoryGlAccount, salesGlAccount, returnsGlAccount, cogsGlAccount,
                 returnsCogsGlAccount, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(inventoryCondition.getPrimaryKey(), EventTypes.MODIFY.name(), inventoryConditionGlAccount.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(inventoryCondition.getPrimaryKey(), EventTypes.MODIFY, inventoryConditionGlAccount.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return inventoryConditionGlAccount;
     }
@@ -1884,7 +1896,8 @@ public class InventoryControl
                         "WHERE invcongla_invcon_inventoryconditionid = ? AND invcongla_thrutime = ? " +
                         "AND invcongla_iactgc_itemaccountingcategoryid = iactgc_itemaccountingcategoryid " +
                         "AND iactgc_lastdetailid = iactgcdt_itemaccountingcategorydetailid " +
-                        "ORDER BY iactgcdt_sortorder, iactgcdt_itemaccountingcategoryname";
+                        "ORDER BY iactgcdt_sortorder, iactgcdt_itemaccountingcategoryname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM inventoryconditionglaccounts " +
@@ -1925,7 +1938,8 @@ public class InventoryControl
                         "WHERE invcongla_iactgc_itemaccountingcategoryid = ? AND invcongla_thrutime = ? " +
                         "AND invcongla_invcon_inventoryconditionid = invcon_inventoryconditionid " +
                         "AND invcon_lastdetailid = invcondt_inventoryconditiondetailid " +
-                        "ORDER BY invcondt_sortorder, invcondt_inventoryconditionname";
+                        "ORDER BY invcondt_sortorder, invcondt_inventoryconditionname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM inventoryconditionglaccounts " +
@@ -1974,7 +1988,7 @@ public class InventoryControl
                     itemAccountingCategoryPK, inventoryGlAccountPK, salesGlAccountPK, returnsGlAccountPK, cogsGlAccountPK,
                     returnsCogsGlAccountPK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(inventoryConditionPK, EventTypes.MODIFY.name(), inventoryConditionGlAccount.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(inventoryConditionPK, EventTypes.MODIFY, inventoryConditionGlAccount.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -2001,7 +2015,7 @@ public class InventoryControl
     public void deleteInventoryConditionGlAccount(InventoryConditionGlAccount inventoryConditionGlAccount, BasePK deletedBy) {
         inventoryConditionGlAccount.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(inventoryConditionGlAccount.getInventoryConditionPK(), EventTypes.MODIFY.name(), inventoryConditionGlAccount.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(inventoryConditionGlAccount.getInventoryConditionPK(), EventTypes.MODIFY, inventoryConditionGlAccount.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteInventoryConditionGlAccounts(List<InventoryConditionGlAccount> inventoryConditionGlAccounts, BasePK deletedBy) {
@@ -2036,7 +2050,7 @@ public class InventoryControl
                 inventoryCondition, minimumInventory, maximumInventory, reorderQuantity, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), partyInventoryLevel.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyInventoryLevel.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return partyInventoryLevel;
     }
@@ -2103,7 +2117,8 @@ public class InventoryControl
                         "WHERE parinvlvl_par_partyid = ? AND parinvlvl_thrutime = ? " +
                         "AND parinvlvl_itm_itemid = itm_itemid AND itm_activedetailid = itmdt_itemdetailid " +
                         "AND parinvlvl_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid " +
-                        "ORDER BY itmdt_itemname, invcondt_sortorder, invcondt_inventoryconditionname";
+                        "ORDER BY itmdt_itemname, invcondt_sortorder, invcondt_inventoryconditionname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM partyinventorylevels " +
@@ -2145,7 +2160,8 @@ public class InventoryControl
                         "AND parinvlvl_par_partyid = par_partyid AND par_activedetailid = pardt_partydetailid " +
                         "AND pardt_ptyp_partytypeid = ptyp_partytypeid " +
                         "AND parinvlvl_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid " +
-                        "ORDER BY ptyp_sortorder, ptyp_partytypename, pardt_partyname, invcondt_sortorder, invcondt_inventoryconditionname";
+                        "ORDER BY ptyp_sortorder, ptyp_partytypename, pardt_partyname, invcondt_sortorder, invcondt_inventoryconditionname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM partyinventorylevels " +
@@ -2187,7 +2203,8 @@ public class InventoryControl
                         "AND parinvlvl_par_partyid = par_partyid AND par_activedetailid = pardt_partydetailid " +
                         "AND pardt_ptyp_partytypeid = ptyp_partytypeid " +
                         "AND parinvlvl_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid " +
-                        "ORDER BY ptyp_sortorder, ptyp_partytypename, pardt_partyname, itmdt_itemname";
+                        "ORDER BY ptyp_sortorder, ptyp_partytypename, pardt_partyname, itmdt_itemname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM partyinventorylevels " +
@@ -2220,7 +2237,7 @@ public class InventoryControl
         return getInventoryTransferCaches(userVisit).getPartyInventoryLevelTransferCache().getTransfer(partyInventoryLevel);
     }
     
-    public List<PartyInventoryLevelTransfer> getPartyInventoryLevelTransfers(UserVisit userVisit, List<PartyInventoryLevel> partyInventoryLevels) {
+    public List<PartyInventoryLevelTransfer> getPartyInventoryLevelTransfers(UserVisit userVisit, Collection<PartyInventoryLevel> partyInventoryLevels) {
         List<PartyInventoryLevelTransfer> partyInventoryLevelTransfers = new ArrayList<>(partyInventoryLevels.size());
         PartyInventoryLevelTransferCache partyInventoryLevelTransferCache = getInventoryTransferCaches(userVisit).getPartyInventoryLevelTransferCache();
         
@@ -2261,14 +2278,14 @@ public class InventoryControl
             partyInventoryLevel = PartyInventoryLevelFactory.getInstance().create(partyPK, itemPK, inventoryConditionPK,
                     minimumInventory, maximumInventory, reorderQuantity, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(partyPK, EventTypes.MODIFY.name(), partyInventoryLevel.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(partyPK, EventTypes.MODIFY, partyInventoryLevel.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deletePartyInventoryLevel(PartyInventoryLevel partyInventoryLevel, BasePK deletedBy) {
         partyInventoryLevel.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(partyInventoryLevel.getPartyPK(), EventTypes.MODIFY.name(), partyInventoryLevel.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(partyInventoryLevel.getPartyPK(), EventTypes.MODIFY, partyInventoryLevel.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deletePartyInventoryLevels(List<PartyInventoryLevel> partyInventoryLevels, BasePK deletedBy) {
@@ -2319,9 +2336,32 @@ public class InventoryControl
         allocationPriority.setLastDetail(allocationPriorityDetail);
         allocationPriority.store();
 
-        sendEventUsingNames(allocationPriority.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(allocationPriority.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return allocationPriority;
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.AllocationPriority */
+    public AllocationPriority getAllocationPriorityByEntityInstance(final EntityInstance entityInstance,
+            final EntityPermission entityPermission) {
+        var pk = new AllocationPriorityPK(entityInstance.getEntityUniqueId());
+
+        return AllocationPriorityFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public AllocationPriority getAllocationPriorityByEntityInstance(final EntityInstance entityInstance) {
+        return getAllocationPriorityByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public AllocationPriority getAllocationPriorityByEntityInstanceForUpdate(final EntityInstance entityInstance) {
+        return getAllocationPriorityByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countAllocationPriorities() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM allocationpriorities, allocationprioritydetails " +
+                "WHERE allocpr_activedetailid = allocprdt_allocationprioritydetailid");
     }
 
     private static final Map<EntityPermission, String> getAllocationPriorityByNameQueries;
@@ -2343,7 +2383,7 @@ public class InventoryControl
         getAllocationPriorityByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private AllocationPriority getAllocationPriorityByName(String allocationPriorityName, EntityPermission entityPermission) {
+    public AllocationPriority getAllocationPriorityByName(String allocationPriorityName, EntityPermission entityPermission) {
         return AllocationPriorityFactory.getInstance().getEntityFromQuery(entityPermission, getAllocationPriorityByNameQueries,
                 allocationPriorityName);
     }
@@ -2383,7 +2423,7 @@ public class InventoryControl
         getDefaultAllocationPriorityQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private AllocationPriority getDefaultAllocationPriority(EntityPermission entityPermission) {
+    public AllocationPriority getDefaultAllocationPriority(EntityPermission entityPermission) {
         return AllocationPriorityFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultAllocationPriorityQueries);
     }
 
@@ -2408,7 +2448,8 @@ public class InventoryControl
                 "SELECT _ALL_ " +
                 "FROM allocationpriorities, allocationprioritydetails " +
                 "WHERE allocpr_activedetailid = allocprdt_allocationprioritydetailid " +
-                "ORDER BY allocprdt_sortorder, allocprdt_allocationpriorityname");
+                "ORDER BY allocprdt_sortorder, allocprdt_allocationpriorityname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM allocationpriorities, allocationprioritydetails " +
@@ -2433,16 +2474,19 @@ public class InventoryControl
         return getInventoryTransferCaches(userVisit).getAllocationPriorityTransferCache().getTransfer(allocationPriority);
     }
 
-    public List<AllocationPriorityTransfer> getAllocationPriorityTransfers(UserVisit userVisit) {
-        List<AllocationPriority> allocationPriorities = getAllocationPriorities();
-        List<AllocationPriorityTransfer> allocationPriorityTransfers = new ArrayList<>(allocationPriorities.size());
-        AllocationPriorityTransferCache allocationPriorityTransferCache = getInventoryTransferCaches(userVisit).getAllocationPriorityTransferCache();
+    public List<AllocationPriorityTransfer> getAllocationPriorityTransfers(UserVisit userVisit, Collection<AllocationPriority> allocationPriorities) {
+        var allocationPriorityTransfers = new ArrayList<AllocationPriorityTransfer>(allocationPriorities.size());
+        var allocationPriorityTransferCache = getInventoryTransferCaches(userVisit).getAllocationPriorityTransferCache();
 
         allocationPriorities.forEach((allocationPriority) ->
                 allocationPriorityTransfers.add(allocationPriorityTransferCache.getTransfer(allocationPriority))
         );
 
         return allocationPriorityTransfers;
+    }
+
+    public List<AllocationPriorityTransfer> getAllocationPriorityTransfers(UserVisit userVisit) {
+        return getAllocationPriorityTransfers(userVisit, getAllocationPriorities());
     }
 
     public AllocationPriorityChoicesBean getAllocationPriorityChoices(String defaultAllocationPriorityChoice, Language language, boolean allowNullChoice) {
@@ -2517,7 +2561,7 @@ public class InventoryControl
             allocationPriority.setActiveDetail(allocationPriorityDetail);
             allocationPriority.setLastDetail(allocationPriorityDetail);
 
-            sendEventUsingNames(allocationPriorityPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(allocationPriorityPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -2550,7 +2594,7 @@ public class InventoryControl
             }
         }
 
-        sendEventUsingNames(allocationPriority.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(allocationPriority.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     // --------------------------------------------------------------------------------
@@ -2561,7 +2605,7 @@ public class InventoryControl
         AllocationPriorityDescription allocationPriorityDescription = AllocationPriorityDescriptionFactory.getInstance().create(allocationPriority, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(allocationPriority.getPrimaryKey(), EventTypes.MODIFY.name(), allocationPriorityDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(allocationPriority.getPrimaryKey(), EventTypes.MODIFY, allocationPriorityDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return allocationPriorityDescription;
     }
@@ -2613,7 +2657,8 @@ public class InventoryControl
                 "SELECT _ALL_ " +
                 "FROM allocationprioritydescriptions, languages " +
                 "WHERE allocprd_allocpr_allocationpriorityid = ? AND allocprd_thrutime = ? AND allocprd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortallocation, lang_languageisoname");
+                "ORDER BY lang_sortallocation, lang_languageisoname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM allocationprioritydescriptions " +
@@ -2683,14 +2728,14 @@ public class InventoryControl
             allocationPriorityDescription = AllocationPriorityDescriptionFactory.getInstance().create(allocationPriority, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(allocationPriority.getPrimaryKey(), EventTypes.MODIFY.name(), allocationPriorityDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(allocationPriority.getPrimaryKey(), EventTypes.MODIFY, allocationPriorityDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteAllocationPriorityDescription(AllocationPriorityDescription allocationPriorityDescription, BasePK deletedBy) {
         allocationPriorityDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(allocationPriorityDescription.getAllocationPriorityPK(), EventTypes.MODIFY.name(), allocationPriorityDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(allocationPriorityDescription.getAllocationPriorityPK(), EventTypes.MODIFY, allocationPriorityDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 

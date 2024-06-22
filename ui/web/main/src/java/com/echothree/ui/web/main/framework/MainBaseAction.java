@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,24 +17,18 @@
 package com.echothree.ui.web.main.framework;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.GetCompanyForm;
 import com.echothree.control.user.party.common.result.GetCompanyResult;
 import com.echothree.control.user.user.common.UserUtil;
-import com.echothree.control.user.user.common.form.GetUserSessionForm;
 import com.echothree.control.user.user.common.result.GetUserSessionResult;
 import com.echothree.model.control.party.common.PartyOptions;
 import com.echothree.model.control.party.common.transfer.CompanyTransfer;
-import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.user.common.transfer.UserSessionTransfer;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.WebConstants;
 import com.echothree.view.client.web.struts.BaseAction;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -51,7 +45,7 @@ public abstract class MainBaseAction<A extends ActionForm>
     private boolean partyRequired;
     private boolean forceChangeCheck;
     
-    private void init(boolean partyRequired, boolean forceChangeCheck) {
+    private void init(final boolean partyRequired, final boolean forceChangeCheck) {
         this.partyRequired = partyRequired;
         this.forceChangeCheck = forceChangeCheck;
     }
@@ -62,39 +56,40 @@ public abstract class MainBaseAction<A extends ActionForm>
         init(true, true);
     }
     
-    protected MainBaseAction(boolean partyRequired, boolean forceChangeCheck) {
+    protected MainBaseAction(final boolean partyRequired, final boolean forceChangeCheck) {
         super();
         
         init(partyRequired, forceChangeCheck);
     }
     
-    protected String getFormForward(A actionForm)
+    protected String getFormForward(final A actionForm)
             throws NamingException {
         return ForwardConstants.FORM;
     }
 
-    protected String getDisplayForward(A actionForm, HttpServletRequest request)
+    protected String getDisplayForward(final A actionForm, final HttpServletRequest request)
             throws NamingException {
         return ForwardConstants.DISPLAY;
     }
 
-    protected void setupForwardParameters(A actionForm, Map<String, String> parameters)
+    protected void setupForwardParameters(final A actionForm, final Map<String, String> parameters)
             throws NamingException {
         // Optional, possibly nothing.
     }
     
-    protected void setupTransfer(A actionForm, HttpServletRequest request)
+    protected void setupTransfer(final A actionForm, final HttpServletRequest request)
             throws NamingException {
         // Optional, possibly nothing.
     }
     
-    protected ActionForward getActionForward(ActionMapping mapping, String forwardKey, A actionForm, HttpServletRequest request)
+    protected ActionForward getActionForward(final ActionMapping mapping, final String forwardKey, final A actionForm,
+            final HttpServletRequest request)
             throws NamingException {
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey == null ? getDisplayForward(actionForm, request) : forwardKey));
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey == null ? getDisplayForward(actionForm, request) : forwardKey));
         
         if(forwardKey == null || forwardKey.equals(ForwardConstants.CANCEL)) {
             // Sending them to 'Display'
-            Map<String, String> parameters = new HashMap<>();
+            var parameters = new HashMap<String, String>();
 
             setupForwardParameters(actionForm, parameters);
             customActionForward.setParameters(parameters);
@@ -106,18 +101,18 @@ public abstract class MainBaseAction<A extends ActionForm>
         return customActionForward;
     }
     
-    protected GetUserSessionResult getUserSessionResult(HttpServletRequest request)
+    protected GetUserSessionResult getUserSessionResult(final HttpServletRequest request)
             throws NamingException {
         GetUserSessionResult result = null;
-        GetUserSessionForm commandForm = UserUtil.getHome().getGetUserSessionForm();
-        
-        Set<String> options = new HashSet<>();
+        var commandForm = UserUtil.getHome().getGetUserSessionForm();
+
+        var options = new HashSet<String>();
         options.add(PartyOptions.PartyIncludeUserLogin);
         commandForm.setOptions(options);
-        
-        CommandResult commandResult = UserUtil.getHome().getUserSession(getUserVisitPK(request), commandForm);
+
+        var commandResult = UserUtil.getHome().getUserSession(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
+            var executionResult = commandResult.getExecutionResult();
             
             result = (GetUserSessionResult)executionResult.getResult();
         }
@@ -126,22 +121,23 @@ public abstract class MainBaseAction<A extends ActionForm>
     }
 
     @Override
-    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
+    public ActionForward execute(final ActionMapping mapping, final ActionForm form, final HttpServletRequest request,
+            final HttpServletResponse response)
             throws Exception {
-        GetUserSessionResult getuserSessionResult = getUserSessionResult(request);
-        UserSessionTransfer userSession = getuserSessionResult == null ? null : getuserSessionResult.getUserSession();
-        PartyTransfer party = userSession == null? null: userSession.getParty();
+        var getuserSessionResult = getUserSessionResult(request);
+        var userSession = getuserSessionResult == null ? null : getuserSessionResult.getUserSession();
+        var party = userSession == null ? null: userSession.getParty();
         ActionForward actionForward = null;
         String forwardKey = null;
         String returnUrl = null;
         
-        if(partyRequired && (party == null || (party != null && userSession.getPasswordVerifiedTime() == null))) {
+        if(partyRequired && (party == null || (party != null && userSession.getIdentityVerifiedTime() == null))) {
             if(request.getMethod().equals(WebConstants.Method_GET)) {
-                String servletPath = request.getServletPath();
-                String pathInfo = request.getPathInfo();
+                var servletPath = request.getServletPath();
+                var pathInfo = request.getPathInfo();
 
-                StringBuilder returnUrlBuilder = new StringBuilder(servletPath).append(pathInfo);
-                String queryString = request.getQueryString();
+                var returnUrlBuilder = new StringBuilder(servletPath).append(pathInfo);
+                var queryString = request.getQueryString();
 
                 if(queryString != null) {
                     returnUrlBuilder.append('?').append(queryString);
@@ -167,10 +163,10 @@ public abstract class MainBaseAction<A extends ActionForm>
         }
 
         if(forwardKey != null) {
-            CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+            var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
 
             if(returnUrl != null) {
-                Map<String, String> parameters = new HashMap<>(2);
+                var parameters = new HashMap<String, String>(2);
 
                 parameters.put(ParameterConstants.RETURN_URL, returnUrl);
                 customActionForward.setParameters(parameters);
@@ -182,36 +178,36 @@ public abstract class MainBaseAction<A extends ActionForm>
         return actionForward;
     }
     
-    public UserSessionTransfer getUserSession(HttpServletRequest request) {
+    public UserSessionTransfer getUserSession(final HttpServletRequest request) {
         return (UserSessionTransfer)request.getAttribute(AttributeConstants.USER_SESSION);
     }
     
-    public CompanyTransfer getCompany(HttpServletRequest request)
+    public CompanyTransfer getCompany(final HttpServletRequest request)
             throws NamingException {
-        GetCompanyForm commandForm = PartyUtil.getHome().getGetCompanyForm();
-        UserSessionTransfer userSession = (UserSessionTransfer)request.getAttribute(AttributeConstants.USER_SESSION);
-        String partyName = userSession.getPartyRelationship().getFromParty().getPartyName();
+        var commandForm = PartyUtil.getHome().getGetCompanyForm();
+        var userSession = (UserSessionTransfer)request.getAttribute(AttributeConstants.USER_SESSION);
+        var partyName = userSession.getPartyRelationship().getFromParty().getPartyName();
         
         commandForm.setPartyName(partyName);
-        
-        CommandResult commandResult = PartyUtil.getHome().getCompany(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        GetCompanyResult result = (GetCompanyResult)executionResult.getResult();
+
+        var commandResult = PartyUtil.getHome().getCompany(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetCompanyResult)executionResult.getResult();
         
         return result.getCompany();
     }
     
-    public String getCompanyName(HttpServletRequest request)
+    public String getCompanyName(final HttpServletRequest request)
             throws NamingException {
         return getCompany(request).getCompanyName();
     }
     
-    public String findParameter(HttpServletRequest request, String parameterName, String actionFormValue) {
+    public String findParameter(final HttpServletRequest request, final String parameterName, final String actionFormValue) {
         return actionFormValue == null ? request.getParameter(parameterName) : actionFormValue;
     }
     
-    public abstract ActionForward executeAction(ActionMapping mapping, A form, HttpServletRequest request,
-            HttpServletResponse response)
+    public abstract ActionForward executeAction(final ActionMapping mapping, final A form, final HttpServletRequest request,
+            final HttpServletResponse response)
             throws Exception;
     
 }

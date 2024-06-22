@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -101,7 +101,7 @@ public class UnitOfMeasureTypeLogic
         UnitOfMeasureType unitOfMeasureType = null;
         
         var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
-                ComponentVendors.ECHOTHREE.name(), EntityTypes.UnitOfMeasureType.name());
+                ComponentVendors.ECHO_THREE.name(), EntityTypes.UnitOfMeasureType.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {
             var uomControl = Session.getModelController(UomControl.class);

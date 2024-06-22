@@ -2,7 +2,7 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" %>
 
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -33,6 +33,12 @@
                 <jsp:param name="showAsLink" value="false"/>
             </jsp:include>
         <%@ include file="../include/breadcrumb/breadcrumbs-end.jsp" %>
-        <a href="<c:url value="/action/Warehouse/Warehouse/Main" />">Warehouses</a>
+        <et:checkSecurityRoles securityRoles="WarehouseType.List:Warehouse.List" />
+        <et:hasSecurityRole securityRoles="WarehouseType.List">
+            <a href="<c:url value="/action/Warehouse/WarehouseType/Main" />"><fmt:message key="navigation.warehouseTypes" /></a><br />
+        </et:hasSecurityRole>
+        <et:hasSecurityRole securityRoles="Warehouse.List">
+            <a href="<c:url value="/action/Warehouse/Warehouse/Main" />"><fmt:message key="navigation.warehouses" /></a><br />
+        </et:hasSecurityRole>
     <%@ include file="../include/body-end-b.jsp" %>
 </html>

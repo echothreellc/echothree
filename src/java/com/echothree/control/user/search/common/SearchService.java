@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -292,7 +292,11 @@ public interface SearchService
     CommandResult searchCustomers(UserVisitPK userVisitPK, SearchCustomersForm form);
     
     CommandResult getCustomerResults(UserVisitPK userVisitPK, GetCustomerResultsForm form);
-    
+
+    CommandResult getCustomerResultsFacet(UserVisitPK userVisitPK, GetCustomerResultsFacetForm form);
+
+    CommandResult getCustomerResultsFacets(UserVisitPK userVisitPK, GetCustomerResultsFacetsForm form);
+
     CommandResult countCustomerResults(UserVisitPK userVisitPK, CountCustomerResultsForm form);
     
     CommandResult clearCustomerResults(UserVisitPK userVisitPK, ClearCustomerResultsForm form);
@@ -348,6 +352,10 @@ public interface SearchService
     CommandResult searchEmployees(UserVisitPK userVisitPK, SearchEmployeesForm form);
 
     CommandResult getEmployeeResults(UserVisitPK userVisitPK, GetEmployeeResultsForm form);
+
+    CommandResult getEmployeeResultsFacet(UserVisitPK userVisitPK, GetEmployeeResultsFacetForm form);
+
+    CommandResult getEmployeeResultsFacets(UserVisitPK userVisitPK, GetEmployeeResultsFacetsForm form);
 
     CommandResult countEmployeeResults(UserVisitPK userVisitPK, CountEmployeeResultsForm form);
 
@@ -544,7 +552,23 @@ public interface SearchService
     CommandResult countUseTypeResults(UserVisitPK userVisitPK, CountUseTypeResultsForm form);
     
     CommandResult clearUseTypeResults(UserVisitPK userVisitPK, ClearUseTypeResultsForm form);
-    
+
+    // -------------------------------------------------------------------------
+    //   Warehouse Search
+    // -------------------------------------------------------------------------
+
+    CommandResult searchWarehouses(UserVisitPK userVisitPK, SearchWarehousesForm form);
+
+    CommandResult getWarehouseResults(UserVisitPK userVisitPK, GetWarehouseResultsForm form);
+
+    CommandResult getWarehouseResultsFacet(UserVisitPK userVisitPK, GetWarehouseResultsFacetForm form);
+
+    CommandResult getWarehouseResultsFacets(UserVisitPK userVisitPK, GetWarehouseResultsFacetsForm form);
+
+    CommandResult countWarehouseResults(UserVisitPK userVisitPK, CountWarehouseResultsForm form);
+
+    CommandResult clearWarehouseResults(UserVisitPK userVisitPK, ClearWarehouseResultsForm form);
+
     // -------------------------------------------------------------------------
     //   Identify
     // -------------------------------------------------------------------------

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -58,19 +58,19 @@ public class PaymentProcessorTransactionObject
     @GraphQLField
     @GraphQLDescription("payment processor")
     public PaymentProcessorObject getPaymentProcessor(final DataFetchingEnvironment env) {
-        return PaymentSecurityUtils.getInstance().getHasPaymentProcessorAccess(env) ? new PaymentProcessorObject(getPaymentProcessorTransactionDetail().getPaymentProcessor()) : null;
+        return PaymentSecurityUtils.getHasPaymentProcessorAccess(env) ? new PaymentProcessorObject(getPaymentProcessorTransactionDetail().getPaymentProcessor()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("payment processor action type")
     public PaymentProcessorActionTypeObject getPaymentProcessorActionType(final DataFetchingEnvironment env) {
-        return PaymentSecurityUtils.getInstance().getHasPaymentProcessorActionTypeAccess(env) ? new PaymentProcessorActionTypeObject(getPaymentProcessorTransactionDetail().getPaymentProcessorActionType()) : null;
+        return PaymentSecurityUtils.getHasPaymentProcessorActionTypeAccess(env) ? new PaymentProcessorActionTypeObject(getPaymentProcessorTransactionDetail().getPaymentProcessorActionType()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("payment processor result code")
     public PaymentProcessorResultCodeObject getPaymentProcessorResultCode(final DataFetchingEnvironment env) {
-        return PaymentSecurityUtils.getInstance().getHasPaymentProcessorResultCodeAccess(env) ? new PaymentProcessorResultCodeObject(getPaymentProcessorTransactionDetail().getPaymentProcessorResultCode()) : null;
+        return PaymentSecurityUtils.getHasPaymentProcessorResultCodeAccess(env) ? new PaymentProcessorResultCodeObject(getPaymentProcessorTransactionDetail().getPaymentProcessorResultCode()) : null;
     }
     
 }

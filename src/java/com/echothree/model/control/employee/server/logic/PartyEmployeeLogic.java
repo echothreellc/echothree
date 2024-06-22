@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -68,7 +68,7 @@ public class PartyEmployeeLogic
                 var party = partyControl.getPartyByName(partyName);
 
                 if(party != null) {
-                    PartyLogic.getInstance().checkPartyType(eea, party, PartyTypes.CUSTOMER.name());
+                    PartyLogic.getInstance().checkPartyType(eea, party, PartyTypes.EMPLOYEE.name());
 
                     partyEmployee = employeeControl.getPartyEmployee(party);
                 } else {
@@ -76,12 +76,12 @@ public class PartyEmployeeLogic
                 }
             } else if(universalEntitySpec != null) {
                 var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalEntitySpec,
-                        ComponentVendors.ECHOTHREE.name(), EntityTypes.Party.name());
+                        ComponentVendors.ECHO_THREE.name(), EntityTypes.Party.name());
 
                 if(!eea.hasExecutionErrors()) {
                     var party = partyControl.getPartyByEntityInstance(entityInstance);
 
-                    PartyLogic.getInstance().checkPartyType(eea, party, PartyTypes.CUSTOMER.name());
+                    PartyLogic.getInstance().checkPartyType(eea, party, PartyTypes.EMPLOYEE.name());
 
                     partyEmployee = employeeControl.getPartyEmployee(party);
                 }

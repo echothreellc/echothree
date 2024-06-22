@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -56,14 +56,14 @@ public class GetSearchCheckSpellingActionTypeCommand
         var searchCheckSpellingActionType = SearchCheckSpellingActionTypeLogic.getInstance().getSearchCheckSpellingActionTypeByUniversalSpec(this, form);
 
         if(searchCheckSpellingActionType != null) {
-            sendEventUsingNames(searchCheckSpellingActionType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(searchCheckSpellingActionType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return searchCheckSpellingActionType;
     }
 
     @Override
-    protected BaseResult getTransfer(SearchCheckSpellingActionType searchCheckSpellingActionType) {
+    protected BaseResult getResult(SearchCheckSpellingActionType searchCheckSpellingActionType) {
         var result = SearchResultFactory.getGetSearchCheckSpellingActionTypeResult();
 
         if(searchCheckSpellingActionType != null) {

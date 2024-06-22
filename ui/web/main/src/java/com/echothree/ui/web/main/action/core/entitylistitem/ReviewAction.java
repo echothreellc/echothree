@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,17 +19,24 @@ package com.echothree.ui.web.main.action.core.entitylistitem;
 import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.control.user.core.common.form.GetEntityListItemForm;
 import com.echothree.control.user.core.common.result.GetEntityListItemResult;
+import com.echothree.model.control.contact.common.ContactOptions;
+import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.transfer.EntityListItemTransfer;
+import com.echothree.model.control.party.common.PartyOptions;
+import com.echothree.model.control.warehouse.common.WarehouseOptions;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.ExecutionResult;
+import com.echothree.util.common.string.ContactPostalAddressUtils;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
+import java.util.HashSet;
+import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
@@ -52,20 +59,32 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetEntityListItemForm commandForm = CoreUtil.getHome().getGetEntityListItemForm();
+        String forwardKey;
+        var commandForm = CoreUtil.getHome().getGetEntityListItemForm();
 
         commandForm.setComponentVendorName(request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME));
         commandForm.setEntityTypeName(request.getParameter(ParameterConstants.ENTITY_TYPE_NAME));
         commandForm.setEntityAttributeName(request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME));
         commandForm.setEntityListItemName(request.getParameter(ParameterConstants.ENTITY_LIST_ITEM_NAME));
-        
-        CommandResult commandResult = CoreUtil.getHome().getEntityListItem(getUserVisitPK(request), commandForm);
+
+        var options = new HashSet<String>();
+        options.add(CoreOptions.EntityListItemIncludeEntityAttributeGroups);
+        options.add(CoreOptions.EntityListItemIncludeTagScopes);
+        options.add(CoreOptions.EntityAttributeGroupIncludeEntityAttributes);
+        options.add(CoreOptions.EntityAttributeIncludeValue);
+        options.add(CoreOptions.EntityStringAttributeIncludeString);
+        options.add(CoreOptions.EntityInstanceIncludeNames);
+        options.add(CoreOptions.EntityInstanceIncludeEntityAppearance);
+        options.add(CoreOptions.AppearanceIncludeTextDecorations);
+        options.add(CoreOptions.AppearanceIncludeTextTransformations);
+        commandForm.setOptions(options);
+
+        var commandResult = CoreUtil.getHome().getEntityListItem(getUserVisitPK(request), commandForm);
         EntityListItemTransfer entityListItem = null;
         
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEntityListItemResult result = (GetEntityListItemResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEntityListItemResult)executionResult.getResult();
             
             entityListItem = result.getEntityListItem();
         }

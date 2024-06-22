@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -92,7 +92,7 @@ public class GetCountiesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<GeoCode> entities) {
+    protected BaseResult getResult(Collection<GeoCode> entities) {
         var result = GeoResultFactory.getGetCountiesResult();
 
         if(entities != null) {

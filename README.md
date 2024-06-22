@@ -34,12 +34,12 @@ There are no official releases at this time other than tagged milestones availab
 
 ## Documentation
 
-- [Wiki](https://www.echothree.com/wiki/)
+- [Wiki](https://gitlab.echothree.com/echothree/echothree/-/wikis/home)
 - [Javadoc](https://www.echothree.com/javadoc/master/)
 
 ## Issues
 
-- [Bugzilla](https://www.echothree.com/bugzilla/)
+- [GitLab](https://gitlab.echothree.com/echothree/echothree/-/issues)
 
 ## Source Code Mirrors:
 

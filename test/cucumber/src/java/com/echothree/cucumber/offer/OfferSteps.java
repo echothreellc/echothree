@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -69,7 +69,7 @@ public class OfferSteps implements En {
 
                     assertThat(persona.createOfferForm).isNull();
                     assertThat(persona.deleteOfferForm).isNull();
-                    assertThat(persona.entityListItemSpec).isNull();
+                    assertThat(persona.entityListItemUniversalSpec).isNull();
 
                     persona.deleteOfferForm = OfferUtil.getHome().getDeleteOfferForm();
                 });
@@ -92,7 +92,7 @@ public class OfferSteps implements En {
 
                     assertThat(persona.createOfferForm).isNull();
                     assertThat(persona.deleteOfferForm).isNull();
-                    assertThat(persona.entityListItemSpec).isNull();
+                    assertThat(persona.entityListItemUniversalSpec).isNull();
 
                     persona.offerSpec = OfferUtil.getHome().getOfferSpec();
                 });
@@ -219,7 +219,7 @@ public class OfferSteps implements En {
                     Objects.requireNonNullElse(createOfferForm, offerEdit).setOfferItemSelectorName(offerItemSelectorName);
                 });
 
-        When("^the user sets the offer's offer item price filter name price to \"([^\"]*)\"$",
+        When("^the user sets the offer's offer item price filter name to \"([^\"]*)\"$",
                 (String offerItemPriceFilterName) -> {
                     var persona = CurrentPersona.persona;
                     var createOfferForm = persona.createOfferForm;

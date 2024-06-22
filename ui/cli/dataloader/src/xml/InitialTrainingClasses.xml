@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -16,7 +16,7 @@
 <!--                                                                                  -->
 <initialData>
     <workEffortTypes>
-        <workEffortType workEffortTypeName="TRAINING" componentVendorName="EchoThree" entityTypeName="PartyTrainingClass" sortOrder="1">
+        <workEffortType workEffortTypeName="TRAINING" componentVendorName="ECHO_THREE" entityTypeName="PartyTrainingClass" sortOrder="1">
             <workEffortTypeDescription languageIsoName="en" description="Training" />
             <workRequirementType workRequirementTypeName="TRAINING" allowReassignment="false" sortOrder="1">
                 <workRequirementTypeDescription languageIsoName="en" description="Training" />

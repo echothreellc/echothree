@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,13 +16,25 @@
 
 package com.echothree.model.control.item.server.logic;
 
+import com.echothree.control.user.item.common.spec.ItemAliasChecksumTypeUniversalSpec;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.item.common.ItemConstants;
+import com.echothree.model.control.item.common.exception.UnknownDefaultItemAliasChecksumTypeException;
+import com.echothree.model.control.item.common.exception.UnknownItemAliasChecksumTypeNameException;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemAliasChecksumType;
 import com.echothree.model.data.item.server.entity.ItemAliasType;
 import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import com.echothree.util.server.persistence.EntityPermission;
+import com.echothree.util.server.persistence.Session;
 
-public class ItemAliasChecksumTypeLogic {
+public class ItemAliasChecksumTypeLogic
+        extends BaseLogic {
     
     private ItemAliasChecksumTypeLogic() {
         super();
@@ -34,6 +46,75 @@ public class ItemAliasChecksumTypeLogic {
     
     public static ItemAliasChecksumTypeLogic getInstance() {
         return ItemAliasChecksumTypeLogicHolder.instance;
+    }
+
+    public ItemAliasChecksumType getItemAliasChecksumTypeByName(final ExecutionErrorAccumulator eea, final String itemAliasChecksumTypeName,
+            final EntityPermission entityPermission) {
+        var itemControl = Session.getModelController(ItemControl.class);
+        var itemAliasChecksumType = itemControl.getItemAliasChecksumTypeByName(itemAliasChecksumTypeName, entityPermission);
+
+        if(itemAliasChecksumType == null) {
+            handleExecutionError(UnknownItemAliasChecksumTypeNameException.class, eea, ExecutionErrors.UnknownItemAliasChecksumTypeName.name(), itemAliasChecksumTypeName);
+        }
+
+        return itemAliasChecksumType;
+    }
+
+    public ItemAliasChecksumType getItemAliasChecksumTypeByName(final ExecutionErrorAccumulator eea, final String itemAliasChecksumTypeName) {
+        return getItemAliasChecksumTypeByName(eea, itemAliasChecksumTypeName, EntityPermission.READ_ONLY);
+    }
+
+    public ItemAliasChecksumType getItemAliasChecksumTypeByNameForUpdate(final ExecutionErrorAccumulator eea, final String itemAliasChecksumTypeName) {
+        return getItemAliasChecksumTypeByName(eea, itemAliasChecksumTypeName, EntityPermission.READ_WRITE);
+    }
+
+    public ItemAliasChecksumType getItemAliasChecksumTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final ItemAliasChecksumTypeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
+        ItemAliasChecksumType itemAliasChecksumType = null;
+        var itemControl = Session.getModelController(ItemControl.class);
+        var itemAliasChecksumTypeName = universalSpec.getItemAliasChecksumTypeName();
+        var parameterCount = (itemAliasChecksumTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+
+        switch(parameterCount) {
+            case 0:
+                if(allowDefault) {
+                    itemAliasChecksumType = itemControl.getDefaultItemAliasChecksumType(entityPermission);
+
+                    if(itemAliasChecksumType == null) {
+                        handleExecutionError(UnknownDefaultItemAliasChecksumTypeException.class, eea, ExecutionErrors.UnknownDefaultItemAliasChecksumType.name());
+                    }
+                } else {
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+                }
+                break;
+            case 1:
+                if(itemAliasChecksumTypeName == null) {
+                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.ItemAliasChecksumType.name());
+
+                    if(!eea.hasExecutionErrors()) {
+                        itemAliasChecksumType = itemControl.getItemAliasChecksumTypeByEntityInstance(entityInstance, entityPermission);
+                    }
+                } else {
+                    itemAliasChecksumType = getItemAliasChecksumTypeByName(eea, itemAliasChecksumTypeName, entityPermission);
+                }
+                break;
+            default:
+                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+                break;
+        }
+
+        return itemAliasChecksumType;
+    }
+
+    public ItemAliasChecksumType getItemAliasChecksumTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final ItemAliasChecksumTypeUniversalSpec universalSpec, boolean allowDefault) {
+        return getItemAliasChecksumTypeByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_ONLY);
+    }
+
+    public ItemAliasChecksumType getItemAliasChecksumTypeByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea,
+            final ItemAliasChecksumTypeUniversalSpec universalSpec, boolean allowDefault) {
+        return getItemAliasChecksumTypeByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
     }
 
     private int getDigit(String alias, int offset) {

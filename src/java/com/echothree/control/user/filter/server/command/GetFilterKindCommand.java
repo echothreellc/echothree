@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -69,14 +69,14 @@ public class GetFilterKindCommand
         var filterKind = FilterKindLogic.getInstance().getFilterKindByUniversalSpec(this, form, true);
 
         if(filterKind != null) {
-            sendEventUsingNames(filterKind.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(filterKind.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return filterKind;
     }
 
     @Override
-    protected BaseResult getTransfer(FilterKind filterKind) {
+    protected BaseResult getResult(FilterKind filterKind) {
         var filterControl = Session.getModelController(FilterControl.class);
         var result = FilterResultFactory.getGetFilterKindResult();
 

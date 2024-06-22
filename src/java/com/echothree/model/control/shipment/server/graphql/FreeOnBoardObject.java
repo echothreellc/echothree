@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 package com.echothree.model.control.shipment.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.shipment.server.control.FreeOnBoardControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
@@ -28,7 +29,7 @@ import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
 
-@GraphQLDescription("payment processor action type object")
+@GraphQLDescription("free on board object")
 @GraphQLName("FreeOnBoard")
 public class FreeOnBoardObject
         extends BaseEntityInstanceObject {
@@ -52,7 +53,7 @@ public class FreeOnBoardObject
     }
     
     @GraphQLField
-    @GraphQLDescription("payment processor action type name")
+    @GraphQLDescription("free on board name")
     @GraphQLNonNull
     public String getFreeOnBoardName() {
         return getFreeOnBoardDetail().getFreeOnBoardName();
@@ -79,7 +80,7 @@ public class FreeOnBoardObject
         var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return freeOnBoardControl.getBestFreeOnBoardDescription(freeOnBoard, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return freeOnBoardControl.getBestFreeOnBoardDescription(freeOnBoard, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
     
 }

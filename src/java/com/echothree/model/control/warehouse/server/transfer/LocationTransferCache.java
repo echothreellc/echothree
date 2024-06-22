@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,8 +24,9 @@ import com.echothree.model.control.warehouse.common.transfer.LocationTransfer;
 import com.echothree.model.control.warehouse.common.transfer.LocationTypeTransfer;
 import com.echothree.model.control.warehouse.common.transfer.LocationUseTypeTransfer;
 import com.echothree.model.control.warehouse.common.transfer.WarehouseTransfer;
-import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.control.warehouse.common.workflow.LocationStatusConstants;
+import com.echothree.model.control.warehouse.server.control.LocationUseTypeControl;
+import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -36,14 +37,15 @@ import com.echothree.model.data.warehouse.server.entity.LocationVolume;
 import com.echothree.model.data.warehouse.server.entity.Warehouse;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class LocationTransferCache
         extends BaseWarehouseTransferCache<Location, LocationTransfer> {
     
     CoreControl coreControl = Session.getModelController(CoreControl.class);
     InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
+    LocationUseTypeControl locationUseTypeControl = Session.getModelController(LocationUseTypeControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+
     boolean includeCapacities;
     boolean includeVolume;
     
@@ -55,6 +57,8 @@ public class LocationTransferCache
         if(options != null) {
             includeCapacities = options.contains(WarehouseOptions.LocationIncludeCapacities);
             includeVolume = options.contains(WarehouseOptions.LocationIncludeVolume);
+            setIncludeEntityAttributeGroups(options.contains(WarehouseOptions.LocationIncludeEntityAttributeGroups));
+            setIncludeTagScopes(options.contains(WarehouseOptions.LocationIncludeTagScopes));
         }
         
         setIncludeEntityInstance(true);
@@ -69,7 +73,7 @@ public class LocationTransferCache
             WarehouseTransfer warehouseTransfer = warehouseControl.getWarehouseTransfer(userVisit, warehouse);
             String locationName = locationDetail.getLocationName();
             LocationTypeTransfer locationTypeTransfer = warehouseControl.getLocationTypeTransfer(userVisit, locationDetail.getLocationType());
-            LocationUseTypeTransfer locationUseTypeTransfer = warehouseControl.getLocationUseTypeTransfer(userVisit, locationDetail.getLocationUseType());
+            LocationUseTypeTransfer locationUseTypeTransfer = locationUseTypeControl.getLocationUseTypeTransfer(userVisit, locationDetail.getLocationUseType());
             Integer velocity = locationDetail.getVelocity();
             InventoryLocationGroupTransfer inventoryLocationGroup = inventoryControl.getInventoryLocationGroupTransfer(userVisit, locationDetail.getInventoryLocationGroup());
             String description = warehouseControl.getBestLocationDescription(location, getLanguage());

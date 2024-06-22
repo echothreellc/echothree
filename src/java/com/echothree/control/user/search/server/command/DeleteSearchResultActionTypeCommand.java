@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,20 +18,17 @@ package com.echothree.control.user.search.server.command;
 
 import com.echothree.control.user.search.common.form.DeleteSearchResultActionTypeForm;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.search.server.control.SearchControl;
+import com.echothree.model.control.search.server.logic.SearchResultActionTypeLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.search.server.entity.SearchResultActionType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -51,7 +48,11 @@ public class DeleteSearchResultActionTypeCommand
                 )));
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("SearchResultActionTypeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("SearchResultActionTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
                 ));
     }
     
@@ -59,19 +60,15 @@ public class DeleteSearchResultActionTypeCommand
     public DeleteSearchResultActionTypeCommand(UserVisitPK userVisitPK, DeleteSearchResultActionTypeForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
-    
+
     @Override
     protected BaseResult execute() {
-        var searchControl = Session.getModelController(SearchControl.class);
-        String searchResultActionTypeName = form.getSearchResultActionTypeName();
-        SearchResultActionType searchResultActionType = searchControl.getSearchResultActionTypeByNameForUpdate(searchResultActionTypeName);
-        
-        if(searchResultActionType != null) {
-            searchControl.deleteSearchResultActionType(searchResultActionType, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownSearchResultActionTypeName.name(), searchResultActionTypeName);
+        var searchResultActionType = SearchResultActionTypeLogic.getInstance().getSearchResultActionTypeByUniversalSpecForUpdate(this, form, false);
+
+        if(!hasExecutionErrors()) {
+            SearchResultActionTypeLogic.getInstance().deleteSearchResultActionType(this, searchResultActionType, getPartyPK());
         }
-        
+
         return null;
     }
     

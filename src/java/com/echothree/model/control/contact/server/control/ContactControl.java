@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -189,6 +189,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -376,7 +377,7 @@ public class ContactControl
         contactMechanismAliasType.setLastDetail(contactMechanismAliasTypeDetail);
         contactMechanismAliasType.store();
 
-        sendEventUsingNames(contactMechanismAliasType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(contactMechanismAliasType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return contactMechanismAliasType;
     }
@@ -529,7 +530,7 @@ public class ContactControl
         return getContactTransferCaches(userVisit).getContactMechanismAliasTypeTransferCache().getContactMechanismAliasTypeTransfer(contactMechanismAliasType);
     }
 
-    public List<ContactMechanismAliasTypeTransfer> getContactMechanismAliasTypeTransfers(UserVisit userVisit, List<ContactMechanismAliasType> contactMechanismAliasTypes) {
+    public List<ContactMechanismAliasTypeTransfer> getContactMechanismAliasTypeTransfers(UserVisit userVisit, Collection<ContactMechanismAliasType> contactMechanismAliasTypes) {
         List<ContactMechanismAliasTypeTransfer> contactMechanismAliasTypeTransfers = new ArrayList<>(contactMechanismAliasTypes.size());
         ContactMechanismAliasTypeTransferCache contactMechanismAliasTypeTransferCache = getContactTransferCaches(userVisit).getContactMechanismAliasTypeTransferCache();
 
@@ -621,7 +622,7 @@ public class ContactControl
             contactMechanismAliasType.setActiveDetail(contactMechanismAliasTypeDetail);
             contactMechanismAliasType.setLastDetail(contactMechanismAliasTypeDetail);
 
-            sendEventUsingNames(contactMechanismAliasTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(contactMechanismAliasTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -655,7 +656,7 @@ public class ContactControl
             }
         }
 
-        sendEventUsingNames(contactMechanismAliasType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(contactMechanismAliasType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     // --------------------------------------------------------------------------------
@@ -667,7 +668,7 @@ public class ContactControl
         ContactMechanismAliasTypeDescription contactMechanismAliasTypeDescription = ContactMechanismAliasTypeDescriptionFactory.getInstance().create(contactMechanismAliasType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(contactMechanismAliasType.getPrimaryKey(), EventTypes.MODIFY.name(), contactMechanismAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(contactMechanismAliasType.getPrimaryKey(), EventTypes.MODIFY, contactMechanismAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return contactMechanismAliasTypeDescription;
     }
@@ -792,14 +793,14 @@ public class ContactControl
             contactMechanismAliasTypeDescription = ContactMechanismAliasTypeDescriptionFactory.getInstance().create(contactMechanismAliasType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(contactMechanismAliasType.getPrimaryKey(), EventTypes.MODIFY.name(), contactMechanismAliasTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(contactMechanismAliasType.getPrimaryKey(), EventTypes.MODIFY, contactMechanismAliasTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteContactMechanismAliasTypeDescription(ContactMechanismAliasTypeDescription contactMechanismAliasTypeDescription, BasePK deletedBy) {
         contactMechanismAliasTypeDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(contactMechanismAliasTypeDescription.getContactMechanismAliasTypePK(), EventTypes.MODIFY.name(), contactMechanismAliasTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(contactMechanismAliasTypeDescription.getContactMechanismAliasTypePK(), EventTypes.MODIFY, contactMechanismAliasTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -972,7 +973,7 @@ public class ContactControl
         return getContactTransferCaches(userVisit).getContactMechanismPurposeTransferCache().getContactMechanismPurposeTransfer(contactMechanismPurpose);
     }
     
-    public List<ContactMechanismPurposeTransfer> getContactMechanismPurposeTransfers(UserVisit userVisit, List<ContactMechanismPurpose> entities) {
+    public List<ContactMechanismPurposeTransfer> getContactMechanismPurposeTransfers(UserVisit userVisit, Collection<ContactMechanismPurpose> entities) {
         List<ContactMechanismPurposeTransfer> transfers = new ArrayList<>(entities.size());
         ContactMechanismPurposeTransferCache cache = getContactTransferCaches(userVisit).getContactMechanismPurposeTransferCache();
         
@@ -1055,12 +1056,12 @@ public class ContactControl
         contactMechanism.setLastDetail(contactMechanismDetail);
         contactMechanism.store();
         
-        sendEventUsingNames(contactMechanism.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(contactMechanism.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return contactMechanism;
     }
     
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.ContactMechanism */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ContactMechanism */
     public ContactMechanism getContactMechanismByEntityInstance(EntityInstance entityInstance) {
         ContactMechanismPK pk = new ContactMechanismPK(entityInstance.getEntityUniqueId());
         ContactMechanism contactMechanism = ContactMechanismFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
@@ -1299,7 +1300,7 @@ public class ContactControl
             contactMechanism.setActiveDetail(contactMechanismDetail);
             contactMechanism.setLastDetail(contactMechanismDetail);
             
-            sendEventUsingNames(contactMechanismPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(contactMechanismPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -1329,7 +1330,7 @@ public class ContactControl
             deleteContactWebAddressByContactMechanism(contactMechanism, deletedBy);
         }
         
-        sendEventUsingNames(contactMechanism.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(contactMechanism.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -1342,7 +1343,7 @@ public class ContactControl
         ContactMechanismAlias contactMechanismAlias = ContactMechanismAliasFactory.getInstance().create(contactMechanism,
                 contactMechanismAliasType, alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(contactMechanism.getPrimaryKey(), EventTypes.MODIFY.name(), contactMechanismAlias.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(contactMechanism.getPrimaryKey(), EventTypes.MODIFY, contactMechanismAlias.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return contactMechanismAlias;
     }
@@ -1486,7 +1487,7 @@ public class ContactControl
     public void deleteContactMechanismAlias(ContactMechanismAlias contactMechanismAlias, BasePK deletedBy) {
         contactMechanismAlias.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(contactMechanismAlias.getContactMechanismPK(), EventTypes.MODIFY.name(), contactMechanismAlias.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(contactMechanismAlias.getContactMechanismPK(), EventTypes.MODIFY, contactMechanismAlias.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteContactMechanismAliases(List<ContactMechanismAlias> contactMechanismAliases, BasePK deletedBy) {
@@ -1511,7 +1512,7 @@ public class ContactControl
         ContactEmailAddress contactEmailAddress = ContactEmailAddressFactory.getInstance().create(contactMechanism,
                 emailAddress, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(contactMechanism.getPrimaryKey(), EventTypes.MODIFY.name(), contactEmailAddress.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(contactMechanism.getPrimaryKey(), EventTypes.MODIFY, contactEmailAddress.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return contactEmailAddress;
     }
@@ -1575,14 +1576,14 @@ public class ContactControl
             contactEmailAddress = ContactEmailAddressFactory.getInstance().create(contactMechanismPK, emailAddress,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(contactMechanismPK, EventTypes.MODIFY.name(), contactEmailAddress.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(contactMechanismPK, EventTypes.MODIFY, contactEmailAddress.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteContactEmailAddress(ContactEmailAddress contactEmailAddress, BasePK deletedBy) {
         contactEmailAddress.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(contactEmailAddress.getContactMechanismPK(), EventTypes.MODIFY.name(), contactEmailAddress.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(contactEmailAddress.getContactMechanismPK(), EventTypes.MODIFY, contactEmailAddress.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteContactEmailAddressByContactMechanism(ContactMechanism contactMechanism, BasePK deletedBy) {
@@ -1597,7 +1598,7 @@ public class ContactControl
         ContactInet4Address contactInet4Address = ContactInet4AddressFactory.getInstance().create(contactMechanism,
                 inet4Address, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(contactMechanism.getPrimaryKey(), EventTypes.MODIFY.name(), contactInet4Address.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(contactMechanism.getPrimaryKey(), EventTypes.MODIFY, contactInet4Address.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return contactInet4Address;
     }
@@ -1661,14 +1662,14 @@ public class ContactControl
             contactInet4Address = ContactInet4AddressFactory.getInstance().create(contactMechanismPK, inet4Address,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(contactMechanismPK, EventTypes.MODIFY.name(), contactInet4Address.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(contactMechanismPK, EventTypes.MODIFY, contactInet4Address.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteContactInet4Address(ContactInet4Address contactInet4Address, BasePK deletedBy) {
         contactInet4Address.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(contactInet4Address.getContactMechanismPK(), EventTypes.MODIFY.name(), contactInet4Address.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(contactInet4Address.getContactMechanismPK(), EventTypes.MODIFY, contactInet4Address.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteContactInet4AddressByContactMechanism(ContactMechanism contactMechanism, BasePK deletedBy) {
@@ -1684,7 +1685,7 @@ public class ContactControl
         ContactInet6Address contactInet6Address = ContactInet6AddressFactory.getInstance().create(contactMechanism,
                 inet6AddressLow, inet6AddressHigh, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(contactMechanism.getPrimaryKey(), EventTypes.MODIFY.name(), contactInet6Address.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(contactMechanism.getPrimaryKey(), EventTypes.MODIFY, contactInet6Address.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return contactInet6Address;
     }
@@ -1745,14 +1746,14 @@ public class ContactControl
             contactInet6Address = ContactInet6AddressFactory.getInstance().create(contactMechanismPK, inet6AddressLow,
                     inet6AddressHigh, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(contactMechanismPK, EventTypes.MODIFY.name(), contactInet6Address.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(contactMechanismPK, EventTypes.MODIFY, contactInet6Address.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteContactInet6Address(ContactInet6Address contactInet6Address, BasePK deletedBy) {
         contactInet6Address.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(contactInet6Address.getContactMechanismPK(), EventTypes.MODIFY.name(), contactInet6Address.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(contactInet6Address.getContactMechanismPK(), EventTypes.MODIFY, contactInet6Address.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteContactInet6AddressByContactMechanism(ContactMechanism contactMechanism, BasePK deletedBy) {
@@ -1773,7 +1774,7 @@ public class ContactControl
                 address1, address2, address3, city, cityGeoCode, countyGeoCode, state, stateGeoCode, postalCode, postalCodeGeoCode,
                 countryGeoCode, isCommercial, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(contactMechanism.getPrimaryKey(), EventTypes.MODIFY.name(), contactPostalAddress.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(contactMechanism.getPrimaryKey(), EventTypes.MODIFY, contactPostalAddress.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return contactPostalAddress;
     }
@@ -1916,14 +1917,14 @@ public class ContactControl
                     address2, address3, city, cityGeoCodePK, countyGeoCodePK, state, stateGeoCodePK, postalCode, postalCodeGeoCodePK,
                     countryGeoCodePK, isCommercial, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(contactMechanismPK, EventTypes.MODIFY.name(), contactPostalAddress.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(contactMechanismPK, EventTypes.MODIFY, contactPostalAddress.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteContactPostalAddress(ContactPostalAddress contactPostalAddress, BasePK deletedBy) {
         contactPostalAddress.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(contactPostalAddress.getContactMechanismPK(), EventTypes.MODIFY.name(), contactPostalAddress.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(contactPostalAddress.getContactMechanismPK(), EventTypes.MODIFY, contactPostalAddress.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteContactPostalAddressByContactMechanism(ContactMechanism contactMechanism, BasePK deletedBy) {
@@ -1941,7 +1942,7 @@ public class ContactControl
                 contactMechanism, address1, address2, address3, city, cityGeoCode, countyGeoCode, state, stateGeoCode, postalCode,
                 postalCodeGeoCode, countryGeoCode, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(contactMechanism.getPrimaryKey(), EventTypes.MODIFY.name(), contactPostalAddressCorrection.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(contactMechanism.getPrimaryKey(), EventTypes.MODIFY, contactPostalAddressCorrection.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return contactPostalAddressCorrection;
     }
@@ -2052,14 +2053,14 @@ public class ContactControl
                     address1, address2, address3, city, cityGeoCodePK, countyGeoCodePK, state, stateGeoCodePK, postalCode,
                     postalCodeGeoCodePK, countryGeoCodePK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(contactMechanismPK, EventTypes.MODIFY.name(), contactPostalAddressCorrection.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(contactMechanismPK, EventTypes.MODIFY, contactPostalAddressCorrection.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteContactPostalAddressCorrection(ContactPostalAddressCorrection contactPostalAddressCorrection, BasePK deletedBy) {
         contactPostalAddressCorrection.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(contactPostalAddressCorrection.getContactMechanismPK(), EventTypes.MODIFY.name(), contactPostalAddressCorrection.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(contactPostalAddressCorrection.getContactMechanismPK(), EventTypes.MODIFY, contactPostalAddressCorrection.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteContactPostalAddressCorrectionByContactMechanism(ContactMechanism contactMechanism, BasePK deletedBy) {
@@ -2079,7 +2080,7 @@ public class ContactControl
         ContactTelephone contactTelephone = ContactTelephoneFactory.getInstance().create(contactMechanism, countryGeoCode,
                 areaCode, telephoneNumber, telephoneExtension, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(contactMechanism.getPrimaryKey(), EventTypes.MODIFY.name(), contactTelephone.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(contactMechanism.getPrimaryKey(), EventTypes.MODIFY, contactTelephone.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return contactTelephone;
     }
@@ -2154,14 +2155,14 @@ public class ContactControl
             contactTelephone = ContactTelephoneFactory.getInstance().create(contactMechanismPK, countryGeoCodePK,
                     areaCode, telephoneNumber, telephoneExtension, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(contactMechanismPK, EventTypes.MODIFY.name(), contactTelephone.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(contactMechanismPK, EventTypes.MODIFY, contactTelephone.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteContactTelephone(ContactTelephone contactTelephone, BasePK deletedBy) {
         contactTelephone.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(contactTelephone.getContactMechanismPK(), EventTypes.MODIFY.name(), contactTelephone.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(contactTelephone.getContactMechanismPK(), EventTypes.MODIFY, contactTelephone.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteContactTelephoneByContactMechanism(ContactMechanism contactMechanism, BasePK deletedBy) {
@@ -2176,7 +2177,7 @@ public class ContactControl
         ContactWebAddress contactWebAddress = ContactWebAddressFactory.getInstance().create(contactMechanism, url,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(contactMechanism.getPrimaryKey(), EventTypes.MODIFY.name(), contactWebAddress.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(contactMechanism.getPrimaryKey(), EventTypes.MODIFY, contactWebAddress.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return contactWebAddress;
     }
@@ -2240,14 +2241,14 @@ public class ContactControl
             contactWebAddress = ContactWebAddressFactory.getInstance().create(contactMechanismPK, url, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(contactMechanismPK, EventTypes.MODIFY.name(), contactWebAddress.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(contactMechanismPK, EventTypes.MODIFY, contactWebAddress.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteContactWebAddress(ContactWebAddress contactWebAddress, BasePK deletedBy) {
         contactWebAddress.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(contactWebAddress.getContactMechanismPK(), EventTypes.MODIFY.name(), contactWebAddress.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(contactWebAddress.getContactMechanismPK(), EventTypes.MODIFY, contactWebAddress.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteContactWebAddressByContactMechanism(ContactMechanism contactMechanism, BasePK deletedBy) {
@@ -2283,7 +2284,7 @@ public class ContactControl
         partyContactMechanism.setLastDetail(partyContactMechanismDetail);
         partyContactMechanism.store();
         
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), partyContactMechanism.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyContactMechanism.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return partyContactMechanism;
     }
@@ -2636,7 +2637,7 @@ public class ContactControl
             partyContactMechanism.setActiveDetail(partyContactMechanismDetail);
             partyContactMechanism.setLastDetail(partyContactMechanismDetail);
             
-            sendEventUsingNames(partyPK, EventTypes.MODIFY.name(), partyContactMechanism.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(partyPK, EventTypes.MODIFY, partyContactMechanism.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -2689,7 +2690,7 @@ public class ContactControl
             }
         }
         
-        sendEventUsingNames(partyContactMechanismDetail.getPartyPK(), EventTypes.MODIFY.name(), partyContactMechanism.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(partyContactMechanismDetail.getPartyPK(), EventTypes.MODIFY, partyContactMechanism.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deletePartyContactMechanismsByParty(Party party, BasePK deletedBy) {
@@ -2794,7 +2795,7 @@ public class ContactControl
         PartyContactMechanismAlias partyContactMechanismAlias = PartyContactMechanismAliasFactory.getInstance().create(session,
                 party, contactMechanism, contactMechanismAliasType, alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), partyContactMechanismAlias.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyContactMechanismAlias.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return partyContactMechanismAlias;
     }
@@ -2934,7 +2935,7 @@ public class ContactControl
     public void deletePartyContactMechanismAlias(PartyContactMechanismAlias partyContactMechanismAlias, BasePK deletedBy) {
         partyContactMechanismAlias.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(partyContactMechanismAlias.getPartyPK(), EventTypes.MODIFY.name(), partyContactMechanismAlias.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(partyContactMechanismAlias.getPartyPK(), EventTypes.MODIFY, partyContactMechanismAlias.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deletePartyContactMechanismAliasesByParty(Party party, BasePK deletedBy) {
@@ -2983,7 +2984,7 @@ public class ContactControl
         partyContactMechanismPurpose.setLastDetail(partyContactMechanismPurposeDetail);
         partyContactMechanismPurpose.store();
         
-        sendEventUsingNames(partyContactMechanism.getLastDetail().getPartyPK(), EventTypes.MODIFY.name(), partyContactMechanismPurpose.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(partyContactMechanism.getLastDetail().getPartyPK(), EventTypes.MODIFY, partyContactMechanismPurpose.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return partyContactMechanismPurpose;
     }
@@ -3236,7 +3237,7 @@ public class ContactControl
             partyContactMechanismPurpose.setActiveDetail(partyContactMechanismPurposeDetail);
             partyContactMechanismPurpose.setLastDetail(partyContactMechanismPurposeDetail);
             
-            sendEventUsingNames(partyContactMechanism.getLastDetail().getPartyPK(), EventTypes.MODIFY.name(), partyContactMechanismPurpose.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(partyContactMechanism.getLastDetail().getPartyPK(), EventTypes.MODIFY, partyContactMechanismPurpose.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -3269,7 +3270,7 @@ public class ContactControl
             }
         }
         
-        sendEventUsingNames(partyContactMechanism.getLastDetail().getPartyPK(), EventTypes.MODIFY.name(), partyContactMechanismPurpose.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(partyContactMechanism.getLastDetail().getPartyPK(), EventTypes.MODIFY, partyContactMechanismPurpose.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deletePartyContactMechanismPurposesByPartyContactMechanism(PartyContactMechanism partyContactMechanism,
@@ -3290,13 +3291,13 @@ public class ContactControl
         PartyContactMechanismRelationship partyContactMechanismRelationship = PartyContactMechanismRelationshipFactory.getInstance().create(fromPartyContactMechanism,
                 toPartyContactMechanism, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(fromPartyContactMechanism.getPrimaryKey(), EventTypes.MODIFY.name(), partyContactMechanismRelationship.getPrimaryKey(), null, createdBy);
+        sendEvent(fromPartyContactMechanism.getPrimaryKey(), EventTypes.MODIFY, partyContactMechanismRelationship.getPrimaryKey(), null, createdBy);
         
         return partyContactMechanismRelationship;
     }
     
     public boolean partyContactMechanismRelationshipExists(PartyContactMechanism fromPartyContactMechanism, PartyContactMechanism toPartyContactMechanism) {
-        return session.queryForInteger(
+        return session.queryForLong(
                 "SELECT COUNT(*) "
                 + "FROM partycontactmechanismrelationships "
                 + "WHERE pcmr_frompartycontactmechanismid = ? AND pcmr_topartycontactmechanismid = ? AND pcmr_thrutime = ?",
@@ -3423,7 +3424,7 @@ public class ContactControl
         return getContactTransferCaches(userVisit).getPartyContactMechanismRelationshipTransferCache().getPartyContactMechanismRelationshipTransfer(partyContactMechanismRelationship);
     }
 
-    public List<PartyContactMechanismRelationshipTransfer> getPartyContactMechanismRelationshipTransfers(UserVisit userVisit, List<PartyContactMechanismRelationship> partyContactMechanismRelationships) {
+    public List<PartyContactMechanismRelationshipTransfer> getPartyContactMechanismRelationshipTransfers(UserVisit userVisit, Collection<PartyContactMechanismRelationship> partyContactMechanismRelationships) {
         List<PartyContactMechanismRelationshipTransfer> partyContactMechanismRelationshipTransfers = new ArrayList<>(partyContactMechanismRelationships.size());
         PartyContactMechanismRelationshipTransferCache partyContactMechanismRelationshipTransferCache = getContactTransferCaches(userVisit).getPartyContactMechanismRelationshipTransferCache();
         
@@ -3614,7 +3615,7 @@ public class ContactControl
         postalAddressFormat.setLastDetail(postalAddressFormatDetail);
         postalAddressFormat.store();
         
-        sendEventUsingNames(postalAddressFormat.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(postalAddressFormat.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return postalAddressFormat;
     }
@@ -3810,7 +3811,7 @@ public class ContactControl
             postalAddressFormat.setActiveDetail(postalAddressFormatDetail);
             postalAddressFormat.setLastDetail(postalAddressFormatDetail);
             
-            sendEventUsingNames(postalAddressFormatPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(postalAddressFormatPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -3844,7 +3845,7 @@ public class ContactControl
             }
         }
         
-        sendEventUsingNames(postalAddressFormat.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(postalAddressFormat.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -3856,7 +3857,7 @@ public class ContactControl
         PostalAddressFormatDescription postalAddressFormatDescription = PostalAddressFormatDescriptionFactory.getInstance().create(session,
                 postalAddressFormat, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(postalAddressFormat.getPrimaryKey(), EventTypes.MODIFY.name(), postalAddressFormatDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(postalAddressFormat.getPrimaryKey(), EventTypes.MODIFY, postalAddressFormatDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return postalAddressFormatDescription;
     }
@@ -3994,14 +3995,14 @@ public class ContactControl
             postalAddressFormatDescription = PostalAddressFormatDescriptionFactory.getInstance().create(postalAddressFormat, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(postalAddressFormat.getPrimaryKey(), EventTypes.MODIFY.name(), postalAddressFormatDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(postalAddressFormat.getPrimaryKey(), EventTypes.MODIFY, postalAddressFormatDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deletePostalAddressFormatDescription(PostalAddressFormatDescription postalAddressFormatDescription, BasePK deletedBy) {
         postalAddressFormatDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(postalAddressFormatDescription.getPostalAddressFormatPK(), EventTypes.MODIFY.name(), postalAddressFormatDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(postalAddressFormatDescription.getPostalAddressFormatPK(), EventTypes.MODIFY, postalAddressFormatDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -4032,7 +4033,7 @@ public class ContactControl
         postalAddressLine.setLastDetail(postalAddressLineDetail);
         postalAddressLine.store();
         
-        sendEventUsingNames(postalAddressFormat.getPrimaryKey(), EventTypes.MODIFY.name(), postalAddressLine.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(postalAddressFormat.getPrimaryKey(), EventTypes.MODIFY, postalAddressLine.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return postalAddressLine;
     }
@@ -4168,7 +4169,7 @@ public class ContactControl
             postalAddressLine.setActiveDetail(postalAddressLineDetail);
             postalAddressLine.setLastDetail(postalAddressLineDetail);
             
-            sendEventUsingNames(postalAddressFormatPK, EventTypes.MODIFY.name(), postalAddressLinePK, EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(postalAddressFormatPK, EventTypes.MODIFY, postalAddressLinePK, EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -4180,7 +4181,7 @@ public class ContactControl
         postalAddressLine.setActiveDetail(null);
         postalAddressLine.store();
         
-        sendEventUsingNames(postalAddressLineDetail.getPostalAddressFormatPK(), EventTypes.MODIFY.name(), postalAddressLine.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(postalAddressLineDetail.getPostalAddressFormatPK(), EventTypes.MODIFY, postalAddressLine.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deletePostalAddressLinesByPostalAddressFormat(PostalAddressFormat postalAddressFormat, BasePK deletedBy) {
@@ -4203,7 +4204,7 @@ public class ContactControl
                 postalAddressLine, postalAddressLineElementSortOrder, postalAddressElementType, prefix, alwaysIncludePrefix, suffix,
                 alwaysIncludeSuffix, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(postalAddressLine.getLastDetail().getPostalAddressFormatPK(), EventTypes.MODIFY.name(), postalAddressLineElement.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(postalAddressLine.getLastDetail().getPostalAddressFormatPK(), EventTypes.MODIFY, postalAddressLineElement.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return postalAddressLineElement;
     }
@@ -4318,14 +4319,14 @@ public class ContactControl
                     postalAddressLineElementSortOrder, postalAddressElementTypePK, prefix, alwaysIncludePrefix, suffix, alwaysIncludeSuffix,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(postalAddressLineElement.getPostalAddressLine().getLastDetail().getPostalAddressFormatPK(), EventTypes.MODIFY.name(), postalAddressLineElement.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(postalAddressLineElement.getPostalAddressLine().getLastDetail().getPostalAddressFormatPK(), EventTypes.MODIFY, postalAddressLineElement.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deletePostalAddressLineElement(PostalAddressLineElement postalAddressLineElement, BasePK deletedBy) {
         postalAddressLineElement.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(postalAddressLineElement.getPostalAddressLine().getLastDetail().getPostalAddressFormatPK(), EventTypes.MODIFY.name(), postalAddressLineElement.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(postalAddressLineElement.getPostalAddressLine().getLastDetail().getPostalAddressFormatPK(), EventTypes.MODIFY, postalAddressLineElement.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deletePostalAddressLineElementsByPostalAddressLine(PostalAddressLine postalAddressLine, BasePK deletedBy) {

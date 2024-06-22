@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,68 +17,75 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.GetItemImageTypeForm;
-import com.echothree.control.user.item.common.result.GetItemImageTypeResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.item.server.logic.ItemImageTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.item.server.entity.ItemImageType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class GetItemImageTypeCommand
-        extends BaseSimpleCommand<GetItemImageTypeForm> {
+        extends BaseSingleEntityCommand<ItemImageType, GetItemImageTypeForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
-                        new SecurityRoleDefinition(SecurityRoleGroups.ItemImageType.name(), SecurityRoles.Review.name())
-                        )))
-                )));
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.ItemImageType.name(), SecurityRoles.Review.name()
+                        )
+                ))
+        ));
         
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("ItemImageTypeName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+        FORM_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("ItemImageTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
+        );
     }
-    
+
     /** Creates a new instance of GetItemImageTypeCommand */
     public GetItemImageTypeCommand(UserVisitPK userVisitPK, GetItemImageTypeForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var itemControl = Session.getModelController(ItemControl.class);
-        GetItemImageTypeResult result = ItemResultFactory.getGetItemImageTypeResult();
-        String itemImageTypeName = form.getItemImageTypeName();
-        ItemImageType itemImageType = itemControl.getItemImageTypeByName(itemImageTypeName);
-        
+    protected ItemImageType getEntity() {
+        var itemImageType = ItemImageTypeLogic.getInstance().getItemImageTypeByUniversalSpec(this, form, true);
+
         if(itemImageType != null) {
-            result.setItemImageType(itemControl.getItemImageTypeTransfer(getUserVisit(), itemImageType));
-            
-            sendEventUsingNames(itemImageType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownItemImageTypeName.name(), itemImageTypeName);
+            sendEvent(itemImageType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
-        
+
+        return itemImageType;
+    }
+
+    @Override
+    protected BaseResult getResult(ItemImageType itemImageType) {
+        var itemImageTypeControl = Session.getModelController(ItemControl.class);
+        var result = ItemResultFactory.getGetItemImageTypeResult();
+
+        if(itemImageType != null) {
+            result.setItemImageType(itemImageTypeControl.getItemImageTypeTransfer(getUserVisit(), itemImageType));
+        }
+
         return result;
     }
-    
+
 }

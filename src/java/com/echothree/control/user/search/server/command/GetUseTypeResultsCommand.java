@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,10 +20,9 @@ import com.echothree.control.user.search.common.form.GetUseTypeResultsForm;
 import com.echothree.control.user.search.common.result.GetUseTypeResultsResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.offer.server.control.UseTypeControl;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.search.server.logic.SearchLogic;
-import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.search.server.entity.SearchKind;
 import com.echothree.model.data.search.server.entity.SearchType;
 import com.echothree.model.data.search.server.entity.UserVisitSearch;
@@ -59,7 +58,7 @@ public class GetUseTypeResultsCommand
     protected BaseResult execute() {
         GetUseTypeResultsResult result = SearchResultFactory.getGetUseTypeResultsResult();
         var searchControl = Session.getModelController(SearchControl.class);
-        SearchKind searchKind = searchControl.getSearchKindByName(SearchConstants.SearchKind_USE_TYPE);
+        SearchKind searchKind = searchControl.getSearchKindByName(SearchKinds.USE_TYPE.name());
         
         if(searchKind != null) {
             String searchTypeName = form.getSearchTypeName();
@@ -81,10 +80,10 @@ public class GetUseTypeResultsCommand
                     addExecutionError(ExecutionErrors.UnknownUserVisitSearch.name());
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownSearchTypeName.name(), SearchConstants.SearchKind_USE_TYPE, searchTypeName);
+                addExecutionError(ExecutionErrors.UnknownSearchTypeName.name(), SearchKinds.USE_TYPE.name(), searchTypeName);
             }
         } else {
-            addExecutionError(ExecutionErrors.UnknownSearchKindName.name(), SearchConstants.SearchKind_USE_TYPE);
+            addExecutionError(ExecutionErrors.UnknownSearchKindName.name(), SearchKinds.USE_TYPE.name());
         }
         
         return result;

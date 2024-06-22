@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,61 +17,68 @@
 package com.echothree.control.user.wishlist.server.command;
 
 import com.echothree.control.user.wishlist.common.form.CreateWishlistTypeForm;
-import com.echothree.model.control.wishlist.server.control.WishlistControl;
-import com.echothree.model.data.party.common.pk.PartyPK;
+import com.echothree.control.user.wishlist.common.result.WishlistResultFactory;
+import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.control.wishlist.server.logic.WishlistTypeLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.wishlist.server.entity.WishlistType;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class CreateWishlistTypeCommand
         extends BaseSimpleCommand<CreateWishlistTypeForm> {
-    
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                        new SecurityRoleDefinition(SecurityRoleGroups.WishlistType.name(), SecurityRoles.Create.name())
+                )))
+        )));
+
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
             new FieldDefinition("WishlistTypeName", FieldType.ENTITY_NAME, true, null, null),
             new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
             new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
-            new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+            new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         ));
     }
     
     /** Creates a new instance of CreateWishlistTypeCommand */
     public CreateWishlistTypeCommand(UserVisitPK userVisitPK, CreateWishlistTypeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
-        var wishlistControl = Session.getModelController(WishlistControl.class);
-        String wishlistTypeName = form.getWishlistTypeName();
-        WishlistType wishlistType = wishlistControl.getWishlistTypeByName(wishlistTypeName);
-        
-        if(wishlistType == null) {
-            PartyPK createdBy = getPartyPK();
-            var isDefault = Boolean.valueOf(form.getIsDefault());
-            var sortOrder = Integer.valueOf(form.getSortOrder());
-            var description = form.getDescription();
-            
-            wishlistType = wishlistControl.createWishlistType(wishlistTypeName, isDefault, sortOrder, createdBy);
-            
-            if(description != null) {
-                wishlistControl.createWishlistTypeDescription(wishlistType, getPreferredLanguage(), description, createdBy);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.DuplicateWishlistTypeName.name(), wishlistTypeName);
+        var result = WishlistResultFactory.getCreateWishlistTypeResult();
+        var wishlistTypeName = form.getWishlistTypeName();
+        var isDefault = Boolean.valueOf(form.getIsDefault());
+        var sortOrder = Integer.valueOf(form.getSortOrder());
+        var description = form.getDescription();
+        var createdBy = getPartyPK();
+
+        var wishlistType = WishlistTypeLogic.getInstance().createWishlistType(this, wishlistTypeName, isDefault,
+                sortOrder, getPreferredLanguage(),  description, createdBy);
+
+        if(wishlistType != null) {
+            result.setEntityRef(wishlistType.getPrimaryKey().getEntityRef());
+            result.setWishlistTypeName(wishlistType.getLastDetail().getWishlistTypeName());
         }
-        
-        return null;
+
+        return result;
     }
     
 }

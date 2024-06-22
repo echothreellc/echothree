@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -77,7 +77,7 @@ public class GetCommandMessageCommand
             if(commandMessage != null) {
                 result.setCommandMessage(coreControl.getCommandMessageTransfer(getUserVisit(), commandMessage));
 
-                sendEventUsingNames(commandMessage.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                sendEvent(commandMessage.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownCommandMessageKey.name(), commandMessageTypeName, commandMessageKey);
             }

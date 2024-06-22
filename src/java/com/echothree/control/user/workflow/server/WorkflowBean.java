@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -36,40 +36,7 @@ public class WorkflowBean
     public String ping() {
         return "WorkflowBean is alive!";
     }
-    
-    // --------------------------------------------------------------------------------
-    //   Workflow Types
-    // --------------------------------------------------------------------------------
-    
-    @Override
-    public CommandResult createWorkflowType(UserVisitPK userVisitPK, CreateWorkflowTypeForm form) {
-        return new CreateWorkflowTypeCommand(userVisitPK, form).run();
-    }
 
-    @Override
-    public CommandResult getWorkflowType(UserVisitPK userVisitPK, GetWorkflowTypeForm form) {
-        return new GetWorkflowTypeCommand(userVisitPK, form).run();
-    }
-
-    @Override
-    public CommandResult getWorkflowTypes(UserVisitPK userVisitPK, GetWorkflowTypesForm form) {
-        return new GetWorkflowTypesCommand(userVisitPK, form).run();
-    }
-
-    @Override
-    public CommandResult getWorkflowTypeChoices(UserVisitPK userVisitPK, GetWorkflowTypeChoicesForm form) {
-        return new GetWorkflowTypeChoicesCommand(userVisitPK, form).run();
-    }
-    
-    // --------------------------------------------------------------------------------
-    //   Workflow Type Descriptions
-    // --------------------------------------------------------------------------------
-    
-    @Override
-    public CommandResult createWorkflowTypeDescription(UserVisitPK userVisitPK, CreateWorkflowTypeDescriptionForm form) {
-        return new CreateWorkflowTypeDescriptionCommand(userVisitPK, form).run();
-    }
-    
     // --------------------------------------------------------------------------------
     //   Workflow Step Types
     // --------------------------------------------------------------------------------
@@ -120,6 +87,11 @@ public class WorkflowBean
     @Override
     public CommandResult getWorkflows(UserVisitPK userVisitPK, GetWorkflowsForm form) {
         return new GetWorkflowsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getWorkflowChoices(UserVisitPK userVisitPK, GetWorkflowChoicesForm form) {
+        return new GetWorkflowChoicesCommand(userVisitPK, form).run();
     }
     
     @Override

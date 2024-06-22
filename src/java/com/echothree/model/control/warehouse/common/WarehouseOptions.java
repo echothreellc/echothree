@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,11 +19,20 @@ package com.echothree.model.control.warehouse.common;
 public interface WarehouseOptions {
     
     String LocationIncludeCapacities = "LocationIncludeCapacities";
-    String LocationIncludeVolume     = "LocationIncludeVolume";
-    
+    String LocationIncludeVolume = "LocationIncludeVolume";
+    String LocationIncludeEntityAttributeGroups = "LocationIncludeEntityAttributeGroups";
+    String LocationIncludeTagScopes = "LocationIncludeTagScopes";
+
+    String WarehouseIncludeLocationsCount = "WarehouseIncludeLocationsCount";
+    String WarehouseIncludeLocations = "WarehouseIncludeLocations";
     String WarehouseIncludeKey = "WarehouseIncludeKey";
     String WarehouseIncludeGuid = "WarehouseIncludeGuid";
     String WarehouseIncludeEntityAttributeGroups = "WarehouseIncludeEntityAttributeGroups";
     String WarehouseIncludeTagScopes = "WarehouseIncludeTagScopes";
-    
+
+    String WarehouseTypeIncludeKey = "WarehouseTypeIncludeKey";
+    String WarehouseTypeIncludeGuid = "WarehouseTypeIncludeGuid";
+    String WarehouseTypeIncludeEntityAttributeGroups = "WarehouseTypeIncludeEntityAttributeGroups";
+    String WarehouseTypeIncludeTagScopes = "WarehouseTypeIncludeTagScopes";
+
 }

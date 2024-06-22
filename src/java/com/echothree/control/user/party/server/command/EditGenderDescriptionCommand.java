@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -52,7 +52,7 @@ public class EditGenderDescriptionCommand
         SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(temp);
         
         temp = new ArrayList<>(1);
-        temp.add(new FieldDefinition("Description", FieldType.STRING, true, 1L, 80L));
+        temp.add(new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L));
         EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(temp);
     }
     

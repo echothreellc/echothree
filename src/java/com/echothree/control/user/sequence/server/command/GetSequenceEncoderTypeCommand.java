@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -70,7 +70,7 @@ public class GetSequenceEncoderTypeCommand
     }
 
     @Override
-    protected BaseResult getTransfer(SequenceEncoderType sequenceEncoderType) {
+    protected BaseResult getResult(SequenceEncoderType sequenceEncoderType) {
         var sequenceControl = Session.getModelController(SequenceControl.class);
         var result = SequenceResultFactory.getGetSequenceEncoderTypeResult();
 

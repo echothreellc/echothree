@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -39,6 +39,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class OrderPaymentPreferenceControl
@@ -66,7 +67,7 @@ public class OrderPaymentPreferenceControl
         orderPaymentPreference.setLastDetail(orderPaymentPreferenceDetail);
         orderPaymentPreference.store();
 
-        sendEventUsingNames(orderPaymentPreference.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(orderPaymentPreference.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return orderPaymentPreference;
     }
@@ -260,7 +261,7 @@ public class OrderPaymentPreferenceControl
         return getOrderTransferCaches(userVisit).getOrderPaymentPreferenceTransferCache().getOrderPaymentPreferenceTransfer(orderPaymentPreference);
     }
 
-    public List<OrderPaymentPreferenceTransfer> getOrderPaymentPreferenceTransfers(UserVisit userVisit, List<OrderPaymentPreference> orderPaymentPreferences) {
+    public List<OrderPaymentPreferenceTransfer> getOrderPaymentPreferenceTransfers(UserVisit userVisit, Collection<OrderPaymentPreference> orderPaymentPreferences) {
         List<OrderPaymentPreferenceTransfer> orderPaymentPreferenceTransfers = new ArrayList<>(orderPaymentPreferences.size());
         OrderPaymentPreferenceTransferCache orderPaymentPreferenceTransferCache = getOrderTransferCaches(userVisit).getOrderPaymentPreferenceTransferCache();
 
@@ -308,7 +309,7 @@ public class OrderPaymentPreferenceControl
             orderPaymentPreference.setActiveDetail(orderPaymentPreferenceDetail);
             orderPaymentPreference.setLastDetail(orderPaymentPreferenceDetail);
 
-            sendEventUsingNames(orderPaymentPreferencePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(orderPaymentPreferencePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -319,7 +320,7 @@ public class OrderPaymentPreferenceControl
         orderPaymentPreference.setActiveDetail(null);
         orderPaymentPreference.store();
 
-        sendEventUsingNames(orderPaymentPreference.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(orderPaymentPreference.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteOrderPaymentPreferencesByOrder(List<OrderPaymentPreference> orderPaymentPreferences, BasePK deletedBy) {

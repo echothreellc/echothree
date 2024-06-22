@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -103,6 +103,7 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -160,7 +161,7 @@ public class PrinterControl
         printerGroup.setLastDetail(printerGroupDetail);
         printerGroup.store();
 
-        sendEventUsingNames(printerGroup.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(printerGroup.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return printerGroup;
     }
@@ -274,7 +275,7 @@ public class PrinterControl
         return getPrinterTransferCaches(userVisit).getPrinterGroupTransferCache().getPrinterGroupTransfer(printerGroup);
     }
 
-    public List<PrinterGroupTransfer> getPrinterGroupTransfers(UserVisit userVisit, List<PrinterGroup> printerGroups) {
+    public List<PrinterGroupTransfer> getPrinterGroupTransfers(UserVisit userVisit, Collection<PrinterGroup> printerGroups) {
         List<PrinterGroupTransfer> printerGroupTransfers = new ArrayList<>(printerGroups.size());
         PrinterGroupTransferCache printerGroupTransferCache = getPrinterTransferCaches(userVisit).getPrinterGroupTransferCache();
 
@@ -361,7 +362,7 @@ public class PrinterControl
             printerGroup.setActiveDetail(printerGroupDetail);
             printerGroup.setLastDetail(printerGroupDetail);
 
-            sendEventUsingNames(printerGroupPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(printerGroupPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -426,7 +427,7 @@ public class PrinterControl
             }
         }
 
-        sendEventUsingNames(printerGroup.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(printerGroup.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     // --------------------------------------------------------------------------------
@@ -438,7 +439,7 @@ public class PrinterControl
         PrinterGroupDescription printerGroupDescription = PrinterGroupDescriptionFactory.getInstance().create(printerGroup,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(printerGroup.getPrimaryKey(), EventTypes.MODIFY.name(), printerGroupDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(printerGroup.getPrimaryKey(), EventTypes.MODIFY, printerGroupDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return printerGroupDescription;
     }
@@ -563,14 +564,14 @@ public class PrinterControl
             printerGroupDescription = PrinterGroupDescriptionFactory.getInstance().create(printerGroup, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(printerGroup.getPrimaryKey(), EventTypes.MODIFY.name(), printerGroupDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(printerGroup.getPrimaryKey(), EventTypes.MODIFY, printerGroupDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deletePrinterGroupDescription(PrinterGroupDescription printerGroupDescription, BasePK deletedBy) {
         printerGroupDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(printerGroupDescription.getPrinterGroupPK(), EventTypes.MODIFY.name(), printerGroupDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(printerGroupDescription.getPrinterGroupPK(), EventTypes.MODIFY, printerGroupDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -598,7 +599,7 @@ public class PrinterControl
         printer.setLastDetail(printerDetail);
         printer.store();
 
-        sendEventUsingNames(printer.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(printer.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return printer;
     }
@@ -754,7 +755,7 @@ public class PrinterControl
         return getPrinterTransferCaches(userVisit).getPrinterTransferCache().getPrinterTransfer(printer);
     }
 
-    public List<PrinterTransfer> getPrinterTransfers(UserVisit userVisit, List<Printer> printers) {
+    public List<PrinterTransfer> getPrinterTransfers(UserVisit userVisit, Collection<Printer> printers) {
         List<PrinterTransfer> printerTransfers = new ArrayList<>(printers.size());
         PrinterTransferCache printerTransferCache = getPrinterTransferCaches(userVisit).getPrinterTransferCache();
 
@@ -792,7 +793,7 @@ public class PrinterControl
             printer.setActiveDetail(printerDetail);
             printer.setLastDetail(printerDetail);
 
-            sendEventUsingNames(printerPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(printerPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -832,7 +833,7 @@ public class PrinterControl
         printer.setActiveDetail(null);
         printer.store();
 
-        sendEventUsingNames(printer.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(printer.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deletePrinters(List<Printer> printers, BasePK deletedBy) {
@@ -853,7 +854,7 @@ public class PrinterControl
         PrinterDescription printerDescription = PrinterDescriptionFactory.getInstance().create(printer, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(printer.getPrimaryKey(), EventTypes.MODIFY.name(), printerDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(printer.getPrimaryKey(), EventTypes.MODIFY, printerDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return printerDescription;
     }
@@ -978,14 +979,14 @@ public class PrinterControl
             printerDescription = PrinterDescriptionFactory.getInstance().create(printer, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(printer.getPrimaryKey(), EventTypes.MODIFY.name(), printerDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(printer.getPrimaryKey(), EventTypes.MODIFY, printerDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deletePrinterDescription(PrinterDescription printerDescription, BasePK deletedBy) {
         printerDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(printerDescription.getPrinterPK(), EventTypes.MODIFY.name(), printerDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(printerDescription.getPrinterPK(), EventTypes.MODIFY, printerDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 
     public void deletePrinterDescriptionsByPrinter(Printer printer, BasePK deletedBy) {
@@ -1021,12 +1022,12 @@ public class PrinterControl
         printerGroupJob.setLastDetail(printerGroupJobDetail);
         printerGroupJob.store();
 
-        sendEventUsingNames(printerGroupJob.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(printerGroupJob.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return printerGroupJob;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.PrinterGroupJob */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.PrinterGroupJob */
     public PrinterGroupJob getPrinterGroupJobByEntityInstance(EntityInstance entityInstance) {
         PrinterGroupJobPK pk = new PrinterGroupJobPK(entityInstance.getEntityUniqueId());
         PrinterGroupJob printerGroupJob = PrinterGroupJobFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
@@ -1038,7 +1039,7 @@ public class PrinterControl
         var coreControl = Session.getModelController(CoreControl.class);
         PrinterGroupJob printerGroupJob = null;
 
-        if(coreControl.verifyEntityInstance(entityInstance, ComponentVendors.ECHOTHREE.name(), EntityTypes.PrinterGroupJob.name())) {
+        if(coreControl.verifyEntityInstance(entityInstance, ComponentVendors.ECHO_THREE.name(), EntityTypes.PrinterGroupJob.name())) {
             printerGroupJob = PrinterGroupJobFactory.getInstance().getEntityFromPK(entityPermission, new PrinterGroupJobPK(entityInstance.getEntityUniqueId()));
         }
 
@@ -1233,7 +1234,7 @@ public class PrinterControl
 
     private List<PrinterGroupJob> getPrinterGroupJobsByPrinterGroupJobStatus(WorkflowStep workflowStep, EntityPermission entityPermission) {
         return PrinterGroupJobFactory.getInstance().getEntitiesFromQuery(entityPermission, getPrinterGroupJobsByPrinterGroupJobStatusQueries,
-                ComponentVendors.ECHOTHREE.name(), EntityTypes.PrinterGroupJob.name(), workflowStep, Session.MAX_TIME);
+                ComponentVendors.ECHO_THREE.name(), EntityTypes.PrinterGroupJob.name(), workflowStep, Session.MAX_TIME);
     }
 
     public List<PrinterGroupJob> getPrinterGroupJobsByPrinterGroupJobStatus(WorkflowStep workflowStep) {
@@ -1248,7 +1249,7 @@ public class PrinterControl
         return getPrinterTransferCaches(userVisit).getPrinterGroupJobTransferCache().getPrinterGroupJobTransfer(printerGroupJob);
     }
 
-    public List<PrinterGroupJobTransfer> getPrinterGroupJobTransfers(UserVisit userVisit, List<PrinterGroupJob> printerGroupJobs) {
+    public List<PrinterGroupJobTransfer> getPrinterGroupJobTransfers(UserVisit userVisit, Collection<PrinterGroupJob> printerGroupJobs) {
         List<PrinterGroupJobTransfer> printerGroupJobTransfers = new ArrayList<>(printerGroupJobs.size());
         PrinterGroupJobTransferCache printerGroupJobTransferCache = getPrinterTransferCaches(userVisit).getPrinterGroupJobTransferCache();
 
@@ -1293,7 +1294,7 @@ public class PrinterControl
             printerGroupJob.setActiveDetail(printerGroupJobDetail);
             printerGroupJob.setLastDetail(printerGroupJobDetail);
 
-            sendEventUsingNames(printerGroupJobPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(printerGroupJobPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -1351,7 +1352,7 @@ public class PrinterControl
         printerGroupJob.setActiveDetail(null);
         printerGroupJob.store();
 
-        sendEventUsingNames(printerGroupJob.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(printerGroupJob.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deletePrinterGroupJobs(List<PrinterGroupJob> printerGroupJobs, BasePK deletedBy) {
@@ -1411,7 +1412,7 @@ public class PrinterControl
         printerGroupUseType.setLastDetail(printerGroupUseTypeDetail);
         printerGroupUseType.store();
 
-        sendEventUsingNames(printerGroupUseType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(printerGroupUseType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return printerGroupUseType;
     }
@@ -1525,7 +1526,7 @@ public class PrinterControl
         return getPrinterTransferCaches(userVisit).getPrinterGroupUseTypeTransferCache().getPrinterGroupUseTypeTransfer(printerGroupUseType);
     }
 
-    public List<PrinterGroupUseTypeTransfer> getPrinterGroupUseTypeTransfers(UserVisit userVisit, List<PrinterGroupUseType> printerGroupUseTypes) {
+    public List<PrinterGroupUseTypeTransfer> getPrinterGroupUseTypeTransfers(UserVisit userVisit, Collection<PrinterGroupUseType> printerGroupUseTypes) {
         List<PrinterGroupUseTypeTransfer> printerGroupUseTypeTransfers = new ArrayList<>(printerGroupUseTypes.size());
         PrinterGroupUseTypeTransferCache printerGroupUseTypeTransferCache = getPrinterTransferCaches(userVisit).getPrinterGroupUseTypeTransferCache();
 
@@ -1611,7 +1612,7 @@ public class PrinterControl
             printerGroupUseType.setActiveDetail(printerGroupUseTypeDetail);
             printerGroupUseType.setLastDetail(printerGroupUseTypeDetail);
 
-            sendEventUsingNames(printerGroupUseTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(printerGroupUseTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -1645,7 +1646,7 @@ public class PrinterControl
             }
         }
 
-        sendEventUsingNames(printerGroupUseType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(printerGroupUseType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     // --------------------------------------------------------------------------------
@@ -1657,7 +1658,7 @@ public class PrinterControl
         PrinterGroupUseTypeDescription printerGroupUseTypeDescription = PrinterGroupUseTypeDescriptionFactory.getInstance().create(printerGroupUseType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(printerGroupUseType.getPrimaryKey(), EventTypes.MODIFY.name(), printerGroupUseTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(printerGroupUseType.getPrimaryKey(), EventTypes.MODIFY, printerGroupUseTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return printerGroupUseTypeDescription;
     }
@@ -1782,14 +1783,14 @@ public class PrinterControl
             printerGroupUseTypeDescription = PrinterGroupUseTypeDescriptionFactory.getInstance().create(printerGroupUseType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(printerGroupUseType.getPrimaryKey(), EventTypes.MODIFY.name(), printerGroupUseTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(printerGroupUseType.getPrimaryKey(), EventTypes.MODIFY, printerGroupUseTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deletePrinterGroupUseTypeDescription(PrinterGroupUseTypeDescription printerGroupUseTypeDescription, BasePK deletedBy) {
         printerGroupUseTypeDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(printerGroupUseTypeDescription.getPrinterGroupUseTypePK(), EventTypes.MODIFY.name(), printerGroupUseTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(printerGroupUseTypeDescription.getPrinterGroupUseTypePK(), EventTypes.MODIFY, printerGroupUseTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -1809,7 +1810,7 @@ public class PrinterControl
         PartyPrinterGroupUse partyPrinterGroupUse = PartyPrinterGroupUseFactory.getInstance().create(party, printerGroupUseType, printerGroup,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), partyPrinterGroupUse.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyPrinterGroupUse.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return partyPrinterGroupUse;
     }
@@ -1969,7 +1970,7 @@ public class PrinterControl
         return getPrinterTransferCaches(userVisit).getPartyPrinterGroupUseTransferCache().getPartyPrinterGroupUseTransfer(partyPrinterGroupUse);
     }
 
-    public List<PartyPrinterGroupUseTransfer> getPartyPrinterGroupUseTransfers(UserVisit userVisit, List<PartyPrinterGroupUse> partyPrinterGroupUses) {
+    public List<PartyPrinterGroupUseTransfer> getPartyPrinterGroupUseTransfers(UserVisit userVisit, Collection<PartyPrinterGroupUse> partyPrinterGroupUses) {
         List<PartyPrinterGroupUseTransfer> partyPrinterGroupUseTransfers = new ArrayList<>(partyPrinterGroupUses.size());
         PartyPrinterGroupUseTransferCache partyPrinterGroupUseTransferCache = getPrinterTransferCaches(userVisit).getPartyPrinterGroupUseTransferCache();
 
@@ -1999,14 +2000,14 @@ public class PrinterControl
             partyPrinterGroupUse = PartyPrinterGroupUseFactory.getInstance().create(partyPK, printerGroupUseTypePK,
                     printerGroupPK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(partyPK, EventTypes.MODIFY.name(), partyPrinterGroupUse.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(partyPK, EventTypes.MODIFY, partyPrinterGroupUse.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deletePartyPrinterGroupUse(PartyPrinterGroupUse partyPrinterGroupUse, BasePK deletedBy) {
         partyPrinterGroupUse.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(partyPrinterGroupUse.getPartyPK(), EventTypes.MODIFY.name(), partyPrinterGroupUse.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(partyPrinterGroupUse.getPartyPK(), EventTypes.MODIFY, partyPrinterGroupUse.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 
     public void deletePartyPrinterGroupUses(List<PartyPrinterGroupUse> partyPrinterGroupUses, BasePK deletedBy) {

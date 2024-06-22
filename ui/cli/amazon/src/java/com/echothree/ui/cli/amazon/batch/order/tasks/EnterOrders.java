@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -53,21 +53,21 @@ import com.echothree.model.control.geo.common.transfer.CountryTransfer;
 import com.echothree.model.control.party.common.PartyOptions;
 import com.echothree.model.control.party.common.transfer.NameSuffixTransfer;
 import com.echothree.model.control.party.common.transfer.PersonalTitleTransfer;
-import com.echothree.model.control.search.common.SearchConstants;
-import com.echothree.model.control.search.common.SearchOptions;
 import com.echothree.model.control.sales.common.workflow.SalesOrderBatchStatusConstants;
 import com.echothree.model.control.sales.common.workflow.SalesOrderStatusConstants;
+import com.echothree.model.control.search.common.SearchOptions;
+import com.echothree.model.control.search.common.SearchTypes;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.ui.cli.amazon.batch.order.content.AmazonOrder;
 import com.echothree.ui.cli.amazon.batch.order.content.AmazonOrderLine;
 import com.echothree.ui.cli.amazon.batch.order.content.AmazonOrderShipmentGroup;
 import com.echothree.ui.cli.amazon.batch.order.content.AmazonOrders;
 import com.echothree.util.client.string.NameCleaner;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.string.ContactPostalAddressUtils;
 import com.echothree.util.common.string.NameResult;
 import com.echothree.util.common.string.StringUtils;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.google.common.base.Splitter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -306,7 +306,7 @@ public class EnterOrders {
         List<CustomerResultTransfer> customerResults = null;
         SearchCustomersForm searchCustomersForm = SearchUtil.getHome().getSearchCustomersForm();
 
-        searchCustomersForm.setSearchTypeName(SearchConstants.SearchType_ORDER_ENTRY);
+        searchCustomersForm.setSearchTypeName(SearchTypes.ORDER_ENTRY.name());
         searchCustomersForm.setCustomerTypeName(customerTypeName);
         searchCustomersForm.setFirstName(nameResult.getFirstName());
         searchCustomersForm.setFirstNameSoundex(Boolean.FALSE.toString());
@@ -321,7 +321,7 @@ public class EnterOrders {
         } else {
             GetCustomerResultsForm getCustomerResultsForm = SearchUtil.getHome().getGetCustomerResultsForm();
 
-            getCustomerResultsForm.setSearchTypeName(SearchConstants.SearchType_ORDER_ENTRY);
+            getCustomerResultsForm.setSearchTypeName(SearchTypes.ORDER_ENTRY.name());
 
             Set<String> options = new HashSet<>();
             options.add(SearchOptions.CustomerResultIncludeCustomer);

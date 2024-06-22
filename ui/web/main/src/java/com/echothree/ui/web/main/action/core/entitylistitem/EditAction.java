@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -69,7 +69,7 @@ public class EditAction
             if(forwardKey == null) {
                 EditActionForm actionForm = (EditActionForm)form;
                 EditEntityListItemForm commandForm = CoreUtil.getHome().getEditEntityListItemForm();
-                EntityListItemSpec spec = CoreUtil.getHome().getEntityListItemSpec();
+                var spec = CoreUtil.getHome().getEntityListItemUniversalSpec();
                 String originalEntityListItemName = request.getParameter(ParameterConstants.ORIGINAL_ENTITY_LIST_ITEM_NAME);
                 
                 if(componentVendorName == null)

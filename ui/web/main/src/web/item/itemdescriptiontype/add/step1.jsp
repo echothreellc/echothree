@@ -1,7 +1,7 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" %>
 
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -34,7 +34,8 @@
             </h2>
         </div>
         <div id="Content">
-            Mime Type Usage Type:<br /><br />
+            <a href="<c:url value="/action/Item/ItemDescriptionType/Add/Step2" />">String Description</a><br /><br />
+            Or Mime Type Usage Type:<br /><br />
             <c:forEach items="${mimeTypeUsageTypes}" var="mimeTypeUsageType">
                 <c:url var="addUrl" value="/action/Item/ItemDescriptionType/Add/Step2">
                     <c:param name="MimeTypeUsageTypeName" value="${mimeTypeUsageType.mimeTypeUsageTypeName}" />

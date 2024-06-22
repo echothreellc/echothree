@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,6 +16,14 @@
 
 package com.echothree.cucumber.util.persona;
 
+import com.echothree.control.user.authentication.common.form.CustomerLoginForm;
+import com.echothree.control.user.authentication.common.form.EmployeeLoginForm;
+import com.echothree.control.user.authentication.common.form.VendorLoginForm;
+import com.echothree.control.user.campaign.common.form.CreateUserVisitCampaignForm;
+import com.echothree.control.user.comment.common.edit.CommentTypeEdit;
+import com.echothree.control.user.comment.common.form.CreateCommentTypeForm;
+import com.echothree.control.user.comment.common.form.DeleteCommentTypeForm;
+import com.echothree.control.user.comment.common.spec.CommentTypeSpec;
 import com.echothree.control.user.contact.common.edit.ContactEmailAddressEdit;
 import com.echothree.control.user.contact.common.edit.ContactPostalAddressEdit;
 import com.echothree.control.user.contact.common.edit.ContactTelephoneEdit;
@@ -49,22 +57,42 @@ import com.echothree.control.user.content.common.spec.ContentCategorySpec;
 import com.echothree.control.user.content.common.spec.ContentCollectionSpec;
 import com.echothree.control.user.content.common.spec.ContentPageSpec;
 import com.echothree.control.user.content.common.spec.ContentSectionSpec;
+import com.echothree.control.user.core.common.edit.ComponentVendorEdit;
+import com.echothree.control.user.core.common.edit.EntityAliasEdit;
+import com.echothree.control.user.core.common.edit.EntityAliasTypeEdit;
 import com.echothree.control.user.core.common.edit.EntityAttributeEdit;
 import com.echothree.control.user.core.common.edit.EntityAttributeEntityAttributeGroupEdit;
 import com.echothree.control.user.core.common.edit.EntityAttributeGroupEdit;
 import com.echothree.control.user.core.common.edit.EntityListItemEdit;
+import com.echothree.control.user.core.common.edit.EntityTypeEdit;
+import com.echothree.control.user.core.common.form.CreateComponentVendorForm;
+import com.echothree.control.user.core.common.form.CreateEntityAliasForm;
+import com.echothree.control.user.core.common.form.CreateEntityAliasTypeForm;
 import com.echothree.control.user.core.common.form.CreateEntityAttributeEntityAttributeGroupForm;
 import com.echothree.control.user.core.common.form.CreateEntityAttributeForm;
 import com.echothree.control.user.core.common.form.CreateEntityAttributeGroupForm;
+import com.echothree.control.user.core.common.form.CreateEntityInstanceForm;
 import com.echothree.control.user.core.common.form.CreateEntityListItemForm;
+import com.echothree.control.user.core.common.form.CreateEntityTypeForm;
+import com.echothree.control.user.core.common.form.DeleteComponentVendorForm;
+import com.echothree.control.user.core.common.form.DeleteEntityAliasForm;
+import com.echothree.control.user.core.common.form.DeleteEntityAliasTypeForm;
 import com.echothree.control.user.core.common.form.DeleteEntityAttributeEntityAttributeGroupForm;
 import com.echothree.control.user.core.common.form.DeleteEntityAttributeForm;
 import com.echothree.control.user.core.common.form.DeleteEntityAttributeGroupForm;
+import com.echothree.control.user.core.common.form.DeleteEntityInstanceForm;
 import com.echothree.control.user.core.common.form.DeleteEntityListItemForm;
+import com.echothree.control.user.core.common.form.DeleteEntityTypeForm;
+import com.echothree.control.user.core.common.form.RemoveEntityInstanceForm;
+import com.echothree.control.user.core.common.form.SendEventForm;
+import com.echothree.control.user.core.common.spec.ComponentVendorSpec;
+import com.echothree.control.user.core.common.spec.EntityAliasSpec;
+import com.echothree.control.user.core.common.spec.EntityAliasTypeUniversalSpec;
 import com.echothree.control.user.core.common.spec.EntityAttributeEntityAttributeGroupSpec;
 import com.echothree.control.user.core.common.spec.EntityAttributeGroupSpec;
-import com.echothree.control.user.core.common.spec.EntityAttributeSpec;
-import com.echothree.control.user.core.common.spec.EntityListItemSpec;
+import com.echothree.control.user.core.common.spec.EntityAttributeUniversalSpec;
+import com.echothree.control.user.core.common.spec.EntityListItemUniversalSpec;
+import com.echothree.control.user.core.common.spec.EntityTypeSpec;
 import com.echothree.control.user.filter.common.edit.FilterEdit;
 import com.echothree.control.user.filter.common.edit.FilterKindEdit;
 import com.echothree.control.user.filter.common.edit.FilterStepEdit;
@@ -81,17 +109,46 @@ import com.echothree.control.user.filter.common.spec.FilterKindSpec;
 import com.echothree.control.user.filter.common.spec.FilterSpec;
 import com.echothree.control.user.filter.common.spec.FilterStepSpec;
 import com.echothree.control.user.filter.common.spec.FilterTypeSpec;
+import com.echothree.control.user.inventory.common.edit.AllocationPriorityEdit;
+import com.echothree.control.user.inventory.common.edit.InventoryConditionEdit;
+import com.echothree.control.user.inventory.common.edit.InventoryLocationGroupEdit;
+import com.echothree.control.user.inventory.common.form.CreateAllocationPriorityForm;
+import com.echothree.control.user.inventory.common.form.CreateInventoryConditionForm;
+import com.echothree.control.user.inventory.common.form.CreateInventoryLocationGroupForm;
+import com.echothree.control.user.inventory.common.form.DeleteAllocationPriorityForm;
+import com.echothree.control.user.inventory.common.form.DeleteInventoryConditionForm;
+import com.echothree.control.user.inventory.common.form.DeleteInventoryLocationGroupForm;
+import com.echothree.control.user.inventory.common.form.SetInventoryLocationGroupStatusForm;
+import com.echothree.control.user.inventory.common.spec.AllocationPriorityUniversalSpec;
+import com.echothree.control.user.inventory.common.spec.InventoryConditionUniversalSpec;
+import com.echothree.control.user.inventory.common.spec.InventoryLocationGroupSpec;
+import com.echothree.control.user.item.common.edit.ItemAliasTypeEdit;
+import com.echothree.control.user.item.common.edit.ItemDescriptionTypeUseTypeEdit;
 import com.echothree.control.user.item.common.edit.ItemEdit;
+import com.echothree.control.user.item.common.edit.ItemImageTypeEdit;
 import com.echothree.control.user.item.common.edit.ItemPriceEdit;
 import com.echothree.control.user.item.common.edit.ItemUnitOfMeasureTypeEdit;
+import com.echothree.control.user.item.common.form.CreateItemAliasTypeForm;
+import com.echothree.control.user.item.common.form.CreateItemDescriptionTypeUseTypeForm;
 import com.echothree.control.user.item.common.form.CreateItemForm;
+import com.echothree.control.user.item.common.form.CreateItemImageTypeForm;
 import com.echothree.control.user.item.common.form.CreateItemPriceForm;
 import com.echothree.control.user.item.common.form.CreateItemUnitOfMeasureTypeForm;
+import com.echothree.control.user.item.common.form.DeleteItemAliasTypeForm;
+import com.echothree.control.user.item.common.form.DeleteItemDescriptionTypeUseTypeForm;
+import com.echothree.control.user.item.common.form.DeleteItemImageTypeForm;
 import com.echothree.control.user.item.common.form.DeleteItemPriceForm;
 import com.echothree.control.user.item.common.form.DeleteItemUnitOfMeasureTypeForm;
+import com.echothree.control.user.item.common.spec.ItemAliasTypeUniversalSpec;
+import com.echothree.control.user.item.common.spec.ItemDescriptionTypeUseTypeUniversalSpec;
+import com.echothree.control.user.item.common.spec.ItemImageTypeUniversalSpec;
 import com.echothree.control.user.item.common.spec.ItemPriceSpec;
 import com.echothree.control.user.item.common.spec.ItemSpec;
 import com.echothree.control.user.item.common.spec.ItemUnitOfMeasureTypeSpec;
+import com.echothree.control.user.message.common.edit.MessageTypeEdit;
+import com.echothree.control.user.message.common.form.CreateMessageTypeForm;
+import com.echothree.control.user.message.common.form.DeleteMessageTypeForm;
+import com.echothree.control.user.message.common.spec.MessageTypeSpec;
 import com.echothree.control.user.offer.common.edit.OfferEdit;
 import com.echothree.control.user.offer.common.edit.OfferItemPriceEdit;
 import com.echothree.control.user.offer.common.edit.OfferUseEdit;
@@ -117,15 +174,59 @@ import com.echothree.control.user.offer.common.spec.OfferSpec;
 import com.echothree.control.user.offer.common.spec.OfferUseSpec;
 import com.echothree.control.user.offer.common.spec.SourceSpec;
 import com.echothree.control.user.offer.common.spec.UseSpec;
-import com.echothree.control.user.offer.common.spec.UseTypeSpec;
 import com.echothree.control.user.offer.common.spec.UseTypeUniversalSpec;
+import com.echothree.control.user.party.common.edit.PartyAliasEdit;
+import com.echothree.control.user.party.common.edit.PartyAliasTypeEdit;
 import com.echothree.control.user.party.common.form.CreateCustomerWithLoginForm;
+import com.echothree.control.user.party.common.form.CreatePartyAliasForm;
+import com.echothree.control.user.party.common.form.CreatePartyAliasTypeForm;
 import com.echothree.control.user.party.common.form.CreateVendorForm;
+import com.echothree.control.user.party.common.form.DeletePartyAliasForm;
+import com.echothree.control.user.party.common.form.DeletePartyAliasTypeForm;
+import com.echothree.control.user.party.common.spec.PartyAliasSpec;
+import com.echothree.control.user.party.common.spec.PartyAliasTypeUniversalSpec;
 import com.echothree.control.user.payment.common.form.CreatePartyPaymentMethodForm;
 import com.echothree.control.user.purchase.common.edit.PurchaseOrderEdit;
 import com.echothree.control.user.purchase.common.form.CreatePurchaseOrderForm;
 import com.echothree.control.user.purchase.common.form.SetPurchaseOrderStatusForm;
 import com.echothree.control.user.purchase.common.spec.PurchaseOrderSpec;
+import com.echothree.control.user.rating.common.edit.RatingTypeEdit;
+import com.echothree.control.user.rating.common.form.CreateRatingTypeForm;
+import com.echothree.control.user.rating.common.form.DeleteRatingTypeForm;
+import com.echothree.control.user.rating.common.spec.RatingTypeSpec;
+import com.echothree.control.user.search.common.form.CheckItemSpellingForm;
+import com.echothree.control.user.search.common.form.ClearItemResultsForm;
+import com.echothree.control.user.search.common.form.CreateItemSearchResultActionForm;
+import com.echothree.control.user.search.common.form.GetItemResultsFacetForm;
+import com.echothree.control.user.search.common.form.GetItemResultsForm;
+import com.echothree.control.user.search.common.form.SearchItemsForm;
+import com.echothree.control.user.selector.common.edit.SelectorEdit;
+import com.echothree.control.user.selector.common.edit.SelectorKindEdit;
+import com.echothree.control.user.selector.common.edit.SelectorNodeEdit;
+import com.echothree.control.user.selector.common.edit.SelectorTypeEdit;
+import com.echothree.control.user.selector.common.form.CreateSelectorForm;
+import com.echothree.control.user.selector.common.form.CreateSelectorKindForm;
+import com.echothree.control.user.selector.common.form.CreateSelectorNodeForm;
+import com.echothree.control.user.selector.common.form.CreateSelectorTypeForm;
+import com.echothree.control.user.selector.common.form.DeleteSelectorForm;
+import com.echothree.control.user.selector.common.form.DeleteSelectorKindForm;
+import com.echothree.control.user.selector.common.form.DeleteSelectorNodeForm;
+import com.echothree.control.user.selector.common.form.DeleteSelectorTypeForm;
+import com.echothree.control.user.selector.common.spec.SelectorKindSpec;
+import com.echothree.control.user.selector.common.spec.SelectorNodeSpec;
+import com.echothree.control.user.selector.common.spec.SelectorSpec;
+import com.echothree.control.user.selector.common.spec.SelectorTypeSpec;
+import com.echothree.control.user.tag.common.edit.TagEdit;
+import com.echothree.control.user.tag.common.edit.TagScopeEdit;
+import com.echothree.control.user.tag.common.form.CreateTagForm;
+import com.echothree.control.user.tag.common.form.CreateTagScopeEntityTypeForm;
+import com.echothree.control.user.tag.common.form.CreateTagScopeForm;
+import com.echothree.control.user.tag.common.form.DeleteTagForm;
+import com.echothree.control.user.tag.common.form.DeleteTagScopeEntityTypeForm;
+import com.echothree.control.user.tag.common.form.DeleteTagScopeForm;
+import com.echothree.control.user.tag.common.spec.TagScopeSpec;
+import com.echothree.control.user.tag.common.spec.TagSpec;
+import com.echothree.control.user.track.common.form.CreateUserVisitTrackForm;
 import com.echothree.control.user.vendor.common.edit.VendorEdit;
 import com.echothree.control.user.vendor.common.edit.VendorItemCostEdit;
 import com.echothree.control.user.vendor.common.edit.VendorItemEdit;
@@ -135,8 +236,29 @@ import com.echothree.control.user.vendor.common.form.DeleteVendorItemCostForm;
 import com.echothree.control.user.vendor.common.form.DeleteVendorItemForm;
 import com.echothree.control.user.vendor.common.form.SetVendorItemStatusForm;
 import com.echothree.control.user.vendor.common.spec.VendorItemCostSpec;
-import com.echothree.control.user.vendor.common.spec.VendorItemSpec;
-import com.echothree.control.user.vendor.common.spec.VendorSpec;
+import com.echothree.control.user.vendor.common.spec.VendorItemUniversalSpec;
+import com.echothree.control.user.vendor.common.spec.VendorUniversalSpec;
+import com.echothree.control.user.warehouse.common.edit.LocationEdit;
+import com.echothree.control.user.warehouse.common.edit.LocationNameElementEdit;
+import com.echothree.control.user.warehouse.common.edit.LocationTypeEdit;
+import com.echothree.control.user.warehouse.common.edit.WarehouseEdit;
+import com.echothree.control.user.warehouse.common.edit.WarehouseTypeEdit;
+import com.echothree.control.user.warehouse.common.form.CreateLocationForm;
+import com.echothree.control.user.warehouse.common.form.CreateLocationNameElementForm;
+import com.echothree.control.user.warehouse.common.form.CreateLocationTypeForm;
+import com.echothree.control.user.warehouse.common.form.CreateWarehouseForm;
+import com.echothree.control.user.warehouse.common.form.CreateWarehouseTypeForm;
+import com.echothree.control.user.warehouse.common.form.DeleteLocationForm;
+import com.echothree.control.user.warehouse.common.form.DeleteLocationNameElementForm;
+import com.echothree.control.user.warehouse.common.form.DeleteLocationTypeForm;
+import com.echothree.control.user.warehouse.common.form.DeleteWarehouseForm;
+import com.echothree.control.user.warehouse.common.form.DeleteWarehouseTypeForm;
+import com.echothree.control.user.warehouse.common.form.SetLocationStatusForm;
+import com.echothree.control.user.warehouse.common.spec.LocationNameElementSpec;
+import com.echothree.control.user.warehouse.common.spec.LocationSpec;
+import com.echothree.control.user.warehouse.common.spec.LocationTypeSpec;
+import com.echothree.control.user.warehouse.common.spec.WarehouseTypeSpec;
+import com.echothree.control.user.warehouse.common.spec.WarehouseUniversalSpec;
 import com.echothree.cucumber.authentication.UserVisits;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import javax.naming.NamingException;
@@ -151,6 +273,14 @@ public class BasePersona {
         this.persona = persona;
         userVisitPK = UserVisits.getUserVisitPK();
     }
+
+    // Authentication
+    public CustomerLoginForm customerLoginForm;
+    public EmployeeLoginForm employeeLoginForm;
+    public VendorLoginForm vendorLoginForm;
+
+    // Campaign
+    public CreateUserVisitCampaignForm createUserVisitCampaignForm;
 
     // Contact
     public PartyContactMechanismSpec partyContactMechanismSpec;
@@ -204,6 +334,26 @@ public class BasePersona {
     public ContentCategoryItemEdit contentCategoryItemEdit;
 
     // Core
+    public CreateComponentVendorForm createComponentVendorForm;
+    public DeleteComponentVendorForm deleteComponentVendorForm;
+    public ComponentVendorSpec componentVendorSpec;
+    public ComponentVendorEdit componentVendorEdit;
+
+    public CreateEntityTypeForm createEntityTypeForm;
+    public DeleteEntityTypeForm deleteEntityTypeForm;
+    public EntityTypeSpec entityTypeSpec;
+    public EntityTypeEdit entityTypeEdit;
+
+    public CreateEntityAliasTypeForm createEntityAliasTypeForm;
+    public DeleteEntityAliasTypeForm deleteEntityAliasTypeForm;
+    public EntityAliasTypeUniversalSpec entityAliasTypeUniversalSpec;
+    public EntityAliasTypeEdit entityAliasTypeEdit;
+
+    public CreateEntityAliasForm createEntityAliasForm;
+    public DeleteEntityAliasForm deleteEntityAliasForm;
+    public EntityAliasSpec entityAliasSpec;
+    public EntityAliasEdit entityAliasEdit;
+
     public CreateEntityAttributeGroupForm createEntityAttributeGroupForm;
     public DeleteEntityAttributeGroupForm deleteEntityAttributeGroupForm;
     public EntityAttributeGroupSpec entityAttributeGroupSpec;
@@ -211,12 +361,12 @@ public class BasePersona {
 
     public CreateEntityAttributeForm createEntityAttributeForm;
     public DeleteEntityAttributeForm deleteEntityAttributeForm;
-    public EntityAttributeSpec entityAttributeSpec;
+    public EntityAttributeUniversalSpec entityAttributeUniversalSpec;
     public EntityAttributeEdit entityAttributeEdit;
 
     public CreateEntityListItemForm createEntityListItemForm;
     public DeleteEntityListItemForm deleteEntityListItemForm;
-    public EntityListItemSpec entityListItemSpec;
+    public EntityListItemUniversalSpec entityListItemUniversalSpec;
     public EntityListItemEdit entityListItemEdit;
 
     public CreateEntityAttributeEntityAttributeGroupForm createEntityAttributeEntityAttributeGroupForm;
@@ -224,10 +374,27 @@ public class BasePersona {
     public EntityAttributeEntityAttributeGroupSpec entityAttributeEntityAttributeGroupSpec;
     public EntityAttributeEntityAttributeGroupEdit entityAttributeEntityAttributeGroupEdit;
 
+    public CreateEntityInstanceForm createEntityInstanceForm;
+    public DeleteEntityInstanceForm deleteEntityInstanceForm;
+    public RemoveEntityInstanceForm removeEntityInstanceForm;
+
+    public SendEventForm sendEventForm;
+
+    public String lastComponentVendorName;
+    public String lastEntityTypeName;
+    public String lastEntityAliasTypeName;
     public String lastEntityAttributeGroupName;
     public String lastEntityAttributeName;
     public String lastEntityListItemName;
     public String lastEntityRef;
+
+    // Comment
+    public CreateCommentTypeForm createCommentTypeForm;
+    public DeleteCommentTypeForm deleteCommentTypeForm;
+    public CommentTypeSpec commentTypeSpec;
+    public CommentTypeEdit commentTypeEdit;
+
+    public String lastCommentTypeName;
 
     // Customer
     public CreateCustomerWithLoginForm createCustomerWithLoginForm;
@@ -263,6 +430,27 @@ public class BasePersona {
     public String lastFilterName;
     public String lastFilterStepName;
 
+    // Inventory
+    public CreateInventoryLocationGroupForm createInventoryLocationGroupForm;
+    public SetInventoryLocationGroupStatusForm setInventoryLocationGroupStatusForm;
+    public DeleteInventoryLocationGroupForm deleteInventoryLocationGroupForm;
+    public InventoryLocationGroupSpec inventoryLocationGroupSpec;
+    public InventoryLocationGroupEdit inventoryLocationGroupEdit;
+
+    public CreateInventoryConditionForm createInventoryConditionForm;
+    public DeleteInventoryConditionForm deleteInventoryConditionForm;
+    public InventoryConditionUniversalSpec inventoryConditionSpec;
+    public InventoryConditionEdit inventoryConditionEdit;
+
+    public CreateAllocationPriorityForm createAllocationPriorityForm;
+    public DeleteAllocationPriorityForm deleteAllocationPriorityForm;
+    public AllocationPriorityUniversalSpec allocationPrioritySpec;
+    public AllocationPriorityEdit allocationPriorityEdit;
+
+    public String lastInventoryLocationGroupName;
+    public String lastInventoryConditionName;
+    public String lastAllocationPriorityName;
+
     // Item
     public CreateItemForm createItemForm;
     public ItemSpec itemSpec;
@@ -278,7 +466,33 @@ public class BasePersona {
     public ItemUnitOfMeasureTypeSpec itemUnitOfMeasureTypeSpec;
     public ItemUnitOfMeasureTypeEdit itemUnitOfMeasureTypeEdit;
 
+    public CreateItemImageTypeForm createItemImageTypeForm;
+    public DeleteItemImageTypeForm deleteItemImageTypeForm;
+    public ItemImageTypeUniversalSpec itemImageTypeSpec;
+    public ItemImageTypeEdit itemImageTypeEdit;
+
+    public CreateItemDescriptionTypeUseTypeForm createItemDescriptionTypeUseTypeForm;
+    public DeleteItemDescriptionTypeUseTypeForm deleteItemDescriptionTypeUseTypeForm;
+    public ItemDescriptionTypeUseTypeUniversalSpec itemDescriptionTypeUseTypeSpec;
+    public ItemDescriptionTypeUseTypeEdit itemDescriptionTypeUseTypeEdit;
+
+    public CreateItemAliasTypeForm createItemAliasTypeForm;
+    public DeleteItemAliasTypeForm deleteItemAliasTypeForm;
+    public ItemAliasTypeUniversalSpec itemAliasTypeSpec;
+    public ItemAliasTypeEdit itemAliasTypeEdit;
+
     public String lastItemName;
+    public String lastItemImageTypeName;
+    public String lastItemDescriptionTypeUseTypeName;
+    public String lastItemAliasTypeName;
+
+    // Message
+    public CreateMessageTypeForm createMessageTypeForm;
+    public DeleteMessageTypeForm deleteMessageTypeForm;
+    public MessageTypeSpec messageTypeSpec;
+    public MessageTypeEdit messageTypeEdit;
+
+    public String lastMessageTypeName;
 
     // Offer
     public CreateOfferForm createOfferForm;
@@ -320,7 +534,18 @@ public class BasePersona {
     public String lastSourceName;
 
     // Party
+    public CreatePartyAliasTypeForm createPartyAliasTypeForm;
+    public DeletePartyAliasTypeForm deletePartyAliasTypeForm;
+    public PartyAliasTypeUniversalSpec partyAliasTypeSpec;
+    public PartyAliasTypeEdit partyAliasTypeEdit;
+
+    public CreatePartyAliasForm createPartyAliasForm;
+    public DeletePartyAliasForm deletePartyAliasForm;
+    public PartyAliasSpec partyAliasSpec;
+    public PartyAliasEdit partyAliasEdit;
+
     public String lastPartyName;
+    public String lastPartyAliasTypeName;
 
     // Payment
     public CreatePartyPaymentMethodForm createPartyPaymentMethodForm;
@@ -335,20 +560,84 @@ public class BasePersona {
 
     public String lastPurchaseOrderName;
 
+    // Rating
+    public CreateRatingTypeForm createRatingTypeForm;
+    public DeleteRatingTypeForm deleteRatingTypeForm;
+    public RatingTypeSpec ratingTypeSpec;
+    public RatingTypeEdit ratingTypeEdit;
+
+    public String lastRatingTypeName;
+
     // Sales
     public String lastSalesOrderBatchName;
     public String lastSalesOrderName;
     public String lastSalesOrderLineSequence;
-    
+
+    // Search
+    public SearchItemsForm searchItemsForm;
+    public GetItemResultsForm getItemResultsForm;
+    public GetItemResultsFacetForm getItemResultsFacetForm;
+    public CreateItemSearchResultActionForm createItemSearchResultActionForm;
+    public ClearItemResultsForm clearItemResultsForm;
+    public CheckItemSpellingForm checkItemSpellingForm;
+
+    public Long lastSearchItemsCount;
+
+    // Selector
+    public CreateSelectorKindForm createSelectorKindForm;
+    public DeleteSelectorKindForm deleteSelectorKindForm;
+    public SelectorKindSpec selectorKindSpec;
+    public SelectorKindEdit selectorKindEdit;
+
+    public CreateSelectorTypeForm createSelectorTypeForm;
+    public DeleteSelectorTypeForm deleteSelectorTypeForm;
+    public SelectorTypeSpec selectorTypeSpec;
+    public SelectorTypeEdit selectorTypeEdit;
+
+    public CreateSelectorForm createSelectorForm;
+    public DeleteSelectorForm deleteSelectorForm;
+    public SelectorSpec selectorSpec;
+    public SelectorEdit selectorEdit;
+
+    public CreateSelectorNodeForm createSelectorNodeForm;
+    public DeleteSelectorNodeForm deleteSelectorNodeForm;
+    public SelectorNodeSpec selectorNodeSpec;
+    public SelectorNodeEdit selectorNodeEdit;
+
+    public String lastSelectorKindName;
+    public String lastSelectorTypeName;
+    public String lastSelectorName;
+    public String lastSelectorNodeName;
+
+    // Tag
+    public CreateTagScopeForm createTagScopeForm;
+    public DeleteTagScopeForm deleteTagScopeForm;
+    public TagScopeSpec tagScopeSpec;
+    public TagScopeEdit tagScopeEdit;
+
+    public CreateTagScopeEntityTypeForm createTagScopeEntityTypeForm;
+    public DeleteTagScopeEntityTypeForm deleteTagScopeEntityTypeForm;
+
+    public CreateTagForm createTagForm;
+    public DeleteTagForm deleteTagForm;
+    public TagSpec tagSpec;
+    public TagEdit tagEdit;
+
+    public String lastTagScopeName;
+    public String lastTagName;
+
+    // Track
+    public CreateUserVisitTrackForm createUserVisitTrackForm;
+
     // Vendor
     public CreateVendorForm createVendorForm;
-    public VendorSpec vendorSpec;
+    public VendorUniversalSpec vendorUniversalSpec;
     public VendorEdit vendorEdit;
 
     public CreateVendorItemForm createVendorItemForm;
     public SetVendorItemStatusForm setVendorItemStatusForm;
     public DeleteVendorItemForm deleteVendorItemForm;
-    public VendorItemSpec vendorItemSpec;
+    public VendorItemUniversalSpec vendorItemUniversalSpec;
     public VendorItemEdit vendorItemEdit;
 
     public CreateVendorItemCostForm createVendorItemCostForm;
@@ -359,6 +648,36 @@ public class BasePersona {
     public String lastVendorName;
 
     // Warehouse
+    public CreateWarehouseTypeForm createWarehouseTypeForm;
+    public DeleteWarehouseTypeForm deleteWarehouseTypeForm;
+    public WarehouseTypeSpec warehouseTypeSpec;
+    public WarehouseTypeEdit warehouseTypeEdit;
+
+    public CreateWarehouseForm createWarehouseForm;
+    public DeleteWarehouseForm deleteWarehouseForm;
+    public WarehouseUniversalSpec warehouseUniversalSpec;
+    public WarehouseEdit warehouseEdit;
+
+    public CreateLocationTypeForm createLocationTypeForm;
+    public DeleteLocationTypeForm deleteLocationTypeForm;
+    public LocationTypeSpec locationTypeSpec;
+    public LocationTypeEdit locationTypeEdit;
+
+    public CreateLocationNameElementForm createLocationNameElementForm;
+    public DeleteLocationNameElementForm deleteLocationNameElementForm;
+    public LocationNameElementSpec locationNameElementSpec;
+    public LocationNameElementEdit locationNameElementEdit;
+
+    public CreateLocationForm createLocationForm;
+    public SetLocationStatusForm setLocationStatusForm;
+    public DeleteLocationForm deleteLocationForm;
+    public LocationSpec locationSpec;
+    public LocationEdit locationEdit;
+
+    public String lastWarehouseTypeName;
     public String lastWarehouseName;
+    public String lastLocationTypeName;
+    public String lastLocationNameElementName;
+    public String lastLocationName;
 
 }

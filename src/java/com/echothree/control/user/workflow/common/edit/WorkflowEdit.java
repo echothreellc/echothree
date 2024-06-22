@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,10 +19,9 @@ package com.echothree.control.user.workflow.common.edit;
 import com.echothree.control.user.security.common.spec.SecurityRoleGroupSpec;
 import com.echothree.control.user.selector.common.spec.SelectorTypeSpec;
 import com.echothree.control.user.workflow.common.spec.WorkflowSpec;
-import com.echothree.control.user.workflow.common.spec.WorkflowTypeSpec;
 
 public interface WorkflowEdit
-        extends WorkflowSpec, WorkflowTypeSpec, SelectorTypeSpec, SecurityRoleGroupSpec, WorkflowDescriptionEdit {
+        extends WorkflowSpec, SelectorTypeSpec, SecurityRoleGroupSpec, WorkflowDescriptionEdit {
     
     String getSortOrder();
     void setSortOrder(String sortOrder);

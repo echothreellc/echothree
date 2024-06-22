@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,57 +17,65 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.GetItemImageTypesForm;
-import com.echothree.control.user.item.common.result.GetItemImageTypesResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.item.server.entity.ItemImageType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.Collection;
 import java.util.List;
 
 public class GetItemImageTypesCommand
-        extends BaseSimpleCommand<GetItemImageTypesForm> {
-    
+        extends BaseMultipleEntitiesCommand<ItemImageType, GetItemImageTypesForm> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
-                        new SecurityRoleDefinition(SecurityRoleGroups.ItemImageType.name(), SecurityRoles.List.name())
-                        )))
-                )));
-        
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                ));
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.ItemImageType.name(), SecurityRoles.List.name()
+                        )
+                ))
+        ));
+
+        FORM_FIELD_DEFINITIONS = List.of(
+        );
     }
-    
+
     /** Creates a new instance of GetItemImageTypesCommand */
     public GetItemImageTypesCommand(UserVisitPK userVisitPK, GetItemImageTypesForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
-    @Override
-    protected BaseResult execute() {
-        var itemControl = Session.getModelController(ItemControl.class);
-        GetItemImageTypesResult result = ItemResultFactory.getGetItemImageTypesResult();
-        UserVisit userVisit = getUserVisit();
 
-        result.setItemImageTypes(itemControl.getItemImageTypeTransfers(userVisit));
+    @Override
+    protected Collection<ItemImageType> getEntities() {
+        var itemControl = Session.getModelController(ItemControl.class);
+
+        return itemControl.getItemImageTypes();
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<ItemImageType> entities) {
+        var result = ItemResultFactory.getGetItemImageTypesResult();
+
+        if(entities != null) {
+            var itemControl = Session.getModelController(ItemControl.class);
+
+            result.setItemImageTypes(itemControl.getItemImageTypeTransfers(getUserVisit(), entities));
+        }
 
         return result;
     }
-    
+
 }

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -35,6 +35,8 @@ public class WarehouseTransferCaches
     WarehouseTransferCache warehouseTransferCache;
     LocationVolumeTransferCache locationVolumeTransferCache;
     LocationCapacityTransferCache locationCapacityTransferCache;
+    WarehouseTypeTransferCache warehouseTypeTransferCache;
+    WarehouseTypeDescriptionTransferCache warehouseTypeDescriptionTransferCache;
     
     /** Creates a new instance of WarehouseTransferCaches */
     public WarehouseTransferCaches(UserVisit userVisit, WarehouseControl warehouseControl) {
@@ -112,5 +114,19 @@ public class WarehouseTransferCaches
         
         return locationCapacityTransferCache;
     }
-    
+
+    public WarehouseTypeTransferCache getWarehouseTypeTransferCache() {
+        if(warehouseTypeTransferCache == null)
+            warehouseTypeTransferCache = new WarehouseTypeTransferCache(userVisit, warehouseControl);
+
+        return warehouseTypeTransferCache;
+    }
+
+    public WarehouseTypeDescriptionTransferCache getWarehouseTypeDescriptionTransferCache() {
+        if(warehouseTypeDescriptionTransferCache == null)
+            warehouseTypeDescriptionTransferCache = new WarehouseTypeDescriptionTransferCache(userVisit, warehouseControl);
+
+        return warehouseTypeDescriptionTransferCache;
+    }
+
 }

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,11 +17,11 @@
 package com.echothree.control.user.search.common.form;
 
 import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
-import com.echothree.control.user.search.common.spec.SearchResultActionTypeSpec;
+import com.echothree.control.user.search.common.spec.SearchResultActionTypeUniversalSpec;
 
 public interface GetSearchResultActionTypeForm
-        extends SearchResultActionTypeSpec, UniversalEntitySpec {
+        extends SearchResultActionTypeUniversalSpec, UniversalEntitySpec {
     
-    // Nothing additional beyond SearchResultActionTypeSpec, UniversalEntitySpec
+    // Nothing additional beyond SearchResultActionTypeUniversalSpec, UniversalEntitySpec
     
 }

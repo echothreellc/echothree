@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ package com.echothree.ui.cli.dataloader.util.data.handler.wishlist;
 import com.echothree.control.user.wishlist.common.WishlistUtil;
 import com.echothree.control.user.wishlist.common.WishlistService;
 import com.echothree.control.user.wishlist.common.form.CreateWishlistTypeDescriptionForm;
-import com.echothree.control.user.wishlist.common.form.CreateWishlistTypePriorityForm;
+import com.echothree.control.user.wishlist.common.form.CreateWishlistPriorityForm;
 import com.echothree.control.user.wishlist.common.form.WishlistFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -71,15 +71,15 @@ public class WishlistTypeHandler
             } catch (Exception e) {
                 throw new SAXException(e);
             }
-        } else if(localName.equals("wishlistTypePriority")) {
-            String wishlistTypePriorityName = null;
+        } else if(localName.equals("wishlistPriority")) {
+            String wishlistPriorityName = null;
             String isDefault = null;
             String sortOrder = null;
             
             int count = attrs.getLength();
             for(int i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("wishlistTypePriorityName"))
-                    wishlistTypePriorityName = attrs.getValue(i);
+                if(attrs.getQName(i).equals("wishlistPriorityName"))
+                    wishlistPriorityName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("isDefault"))
                     isDefault = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("sortOrder"))
@@ -87,16 +87,16 @@ public class WishlistTypeHandler
             }
             
             try {
-                CreateWishlistTypePriorityForm form = WishlistFormFactory.getCreateWishlistTypePriorityForm();
+                CreateWishlistPriorityForm form = WishlistFormFactory.getCreateWishlistPriorityForm();
                 
                 form.setWishlistTypeName(wishlistTypeName);
-                form.setWishlistTypePriorityName(wishlistTypePriorityName);
+                form.setWishlistPriorityName(wishlistPriorityName);
                 form.setIsDefault(isDefault);
                 form.setSortOrder(sortOrder);
                 
-                wishlistService.createWishlistTypePriority(initialDataParser.getUserVisit(), form);
+                wishlistService.createWishlistPriority(initialDataParser.getUserVisit(), form);
                 
-                initialDataParser.pushHandler(new WishlistTypePriorityHandler(initialDataParser, this, wishlistTypeName, wishlistTypePriorityName));
+                initialDataParser.pushHandler(new WishlistPriorityHandler(initialDataParser, this, wishlistTypeName, wishlistPriorityName));
             } catch (Exception e) {
                 throw new SAXException(e);
             }

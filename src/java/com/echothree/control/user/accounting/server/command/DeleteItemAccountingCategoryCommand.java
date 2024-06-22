@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,22 +17,18 @@
 package com.echothree.control.user.accounting.server.command;
 
 import com.echothree.control.user.accounting.common.form.DeleteItemAccountingCategoryForm;
-import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.accounting.server.logic.ItemAccountingCategoryLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.accounting.server.entity.ItemAccountingCategory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -50,9 +46,13 @@ public class DeleteItemAccountingCategoryCommand
                         new SecurityRoleDefinition(SecurityRoleGroups.ItemAccountingCategory.name(), SecurityRoles.Delete.name())
                         )))
                 )));
-        
+
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-            new FieldDefinition("ItemAccountingCategoryName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("ItemAccountingCategoryName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
         ));
     }
     
@@ -63,22 +63,12 @@ public class DeleteItemAccountingCategoryCommand
     
     @Override
     protected BaseResult execute() {
-        var accountingControl = Session.getModelController(AccountingControl.class);
-        String itemAccountingCategoryName = form.getItemAccountingCategoryName();
-        ItemAccountingCategory itemAccountingCategory = accountingControl.getItemAccountingCategoryByNameForUpdate(itemAccountingCategoryName);
-        
-        if(itemAccountingCategory != null) {
-            ItemAccountingCategoryLogic itemAccountingCategoryLogic = ItemAccountingCategoryLogic.getInstance();
+        var itemAccountingCategory = ItemAccountingCategoryLogic.getInstance().getItemAccountingCategoryByUniversalSpecForUpdate(this, form, false);
 
-            itemAccountingCategoryLogic.checkDeleteItemAccountingCategory(this, itemAccountingCategory);
-
-            if(!hasExecutionErrors()) {
-                itemAccountingCategoryLogic.deleteItemAccountingCategory(itemAccountingCategory, getPartyPK());
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownItemAccountingCategoryName.name(), itemAccountingCategoryName);
+        if(!hasExecutionErrors()) {
+            ItemAccountingCategoryLogic.getInstance().deleteItemAccountingCategory(this, itemAccountingCategory, getPartyPK());
         }
-        
+
         return null;
     }
     

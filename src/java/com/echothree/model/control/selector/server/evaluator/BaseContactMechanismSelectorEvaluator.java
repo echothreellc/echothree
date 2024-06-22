@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -60,15 +60,15 @@ public class BaseContactMechanismSelectorEvaluator
         return result;
     }
     
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.ContactMechanism or a
-     * ECHOTHREE.PartyPaymentMethodContactMechanism */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ContactMechanism or a
+     * ECHO_THREE.PartyPaymentMethodContactMechanism */
     protected ContactMechanism getContactMechanismFromEntityInstance(EntityInstance entityInstance) {
         EntityTypeDetail entityTypeDetail = entityInstance.getEntityType().getLastDetail();
         String componentVendorName = entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName();
         String entityTypeName = entityTypeDetail.getEntityTypeName();
         ContactMechanism contactMechanism = null;
         
-        if(componentVendorName.equals(ComponentVendors.ECHOTHREE.name())) {
+        if(componentVendorName.equals(ComponentVendors.ECHO_THREE.name())) {
             if(entityTypeName.equals(EntityTypes.ContactMechanism.name())) {
                 ContactMechanismPK pk = new ContactMechanismPK(entityInstance.getEntityUniqueId());
                 contactMechanism = ContactMechanismFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);

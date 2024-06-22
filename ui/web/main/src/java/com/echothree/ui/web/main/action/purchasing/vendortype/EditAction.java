@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -64,7 +64,7 @@ public class EditAction
             if(forwardKey == null) {
                 EditActionForm actionForm = (EditActionForm)form;
                 EditVendorTypeForm commandForm = VendorUtil.getHome().getEditVendorTypeForm();
-                VendorTypeSpec spec = VendorUtil.getHome().getVendorTypeSpec();
+                var spec = VendorUtil.getHome().getVendorTypeUniversalSpec();
                 
                 if(originalVendorTypeName == null)
                     originalVendorTypeName = actionForm.getOriginalVendorTypeName();

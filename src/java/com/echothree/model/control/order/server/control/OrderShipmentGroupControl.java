@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -38,6 +38,7 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -82,7 +83,7 @@ public class OrderShipmentGroupControl
         orderShipmentGroup.setLastDetail(orderShipmentGroupDetail);
         orderShipmentGroup.store();
         
-        sendEventUsingNames(orderShipmentGroup.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(orderShipmentGroup.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return orderShipmentGroup;
     }
@@ -233,7 +234,7 @@ public class OrderShipmentGroupControl
         return getOrderTransferCaches(userVisit).getOrderShipmentGroupTransferCache().getOrderShipmentGroupTransfer(orderShipmentGroup);
     }
 
-    public List<OrderShipmentGroupTransfer> getOrderShipmentGroupTransfers(UserVisit userVisit, List<OrderShipmentGroup> orderShipmentGroups) {
+    public List<OrderShipmentGroupTransfer> getOrderShipmentGroupTransfers(UserVisit userVisit, Collection<OrderShipmentGroup> orderShipmentGroups) {
         List<OrderShipmentGroupTransfer> orderShipmentGroupTransfers = new ArrayList<>(orderShipmentGroups.size());
         OrderShipmentGroupTransferCache orderShipmentGroupTransferCache = getOrderTransferCaches(userVisit).getOrderShipmentGroupTransferCache();
 
@@ -291,7 +292,7 @@ public class OrderShipmentGroupControl
             orderShipmentGroup.setActiveDetail(orderShipmentGroupDetail);
             orderShipmentGroup.setLastDetail(orderShipmentGroupDetail);
 
-            sendEventUsingNames(orderShipmentGroupPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(orderShipmentGroupPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -328,7 +329,7 @@ public class OrderShipmentGroupControl
             }
         }
 
-        sendEventUsingNames(orderShipmentGroup.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(orderShipmentGroup.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteOrderShipmentGroupsByPartyContactMechanism(PartyContactMechanism partyContactMechanism, BasePK deletedBy) {

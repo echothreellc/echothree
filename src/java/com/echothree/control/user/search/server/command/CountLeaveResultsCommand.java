@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import com.echothree.control.user.search.common.form.CountLeaveResultsForm;
 import com.echothree.control.user.search.common.result.CountLeaveResultsResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -51,7 +51,7 @@ public class CountLeaveResultsCommand
     
     @Override
     protected BaseResult execute() {
-        return execute(SearchConstants.SearchKind_LEAVE, SearchResultFactory.getCountLeaveResultsResult());
+        return execute(SearchKinds.LEAVE.name(), SearchResultFactory.getCountLeaveResultsResult());
     }
     
 }

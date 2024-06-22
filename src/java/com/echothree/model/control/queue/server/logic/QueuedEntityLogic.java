@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.queue.server.logic;
 
-import com.echothree.model.control.queue.common.QueueConstants;
+import com.echothree.model.control.queue.common.QueueTypes;
 import com.echothree.model.control.queue.server.control.QueueControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.queue.server.entity.QueueType;
@@ -41,7 +41,7 @@ public class QueuedEntityLogic
     }
     
     public QueuedEntity createQueuedEntityUsingNames(final ExecutionErrorAccumulator eea, final String queueTypeName, final EntityInstance entityInstance) {
-        QueueType queueType = QueueTypeLogic.getInstance().getQueueTypeByName(eea, QueueConstants.QueueType_INDEXING);
+        QueueType queueType = QueueTypeLogic.getInstance().getQueueTypeByName(eea, QueueTypes.INDEXING.name());
         QueuedEntity queuedEntity = null;
         
         if(!hasExecutionErrors(eea)) {

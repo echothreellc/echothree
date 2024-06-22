@@ -1,7 +1,7 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" %>
 
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -27,7 +27,7 @@
     <body>
         <div id="Header">
             <h2>
-                <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
+                <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
                 <a href="<c:url value="/action/Purchasing/Main" />">Purchasing</a> &gt;&gt;
                 <a href="<c:url value="/action/Purchasing/Vendor/Main" />">Vendors</a> &gt;&gt;
                 <et:countVendorResults searchTypeName="VENDOR_REVIEW" countVar="vendorResultsCount" commandResultVar="countVendorResultsCommandResult" logErrors="false" />
@@ -91,7 +91,7 @@
                     </c:choose>
                 </c:when>
                 <c:otherwise>
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:otherwise>
             </c:choose>
             <br />
@@ -112,7 +112,7 @@
                     </c:choose>
                 </c:when>
                 <c:otherwise>
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:otherwise>
             </c:choose>
             <br />
@@ -393,6 +393,11 @@
             <c:set var="partyCarrierAccounts" scope="request" value="${vendor.partyCarrierAccounts}" />
             <jsp:include page="../../include/partyCarrierAccounts.jsp" />
 
+            <c:set var="commonUrl" scope="request" value="Purchasing/VendorAlias" />
+            <c:set var="partyAliases" scope="request" value="${vendor.partyAliases}" />
+            <c:set var="securityRoleGroupNamePrefix" scope="request" value="Vendor" />
+            <jsp:include page="../../include/partyAliases.jsp" />
+            
             <c:set var="tagScopes" scope="request" value="${vendor.tagScopes}" />
             <c:set var="entityAttributeGroups" scope="request" value="${vendor.entityAttributeGroups}" />
             <c:set var="entityInstance" scope="request" value="${vendor.entityInstance}" />

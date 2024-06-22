@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -120,7 +120,7 @@ public class WorkflowStepLogic
         var workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, workflowName);
         WorkflowStep workflowStep = null;
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             workflowStep = getWorkflowStepByName(UnknownWorkflowStepNameException.class, ExecutionErrors.UnknownWorkflowStepName,
                     eea, workflow, workflowStepName, entityPermission);
         }
@@ -171,7 +171,7 @@ public class WorkflowStepLogic
             }
         } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
             var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                    ComponentVendors.ECHOTHREE.name(), EntityTypes.WorkflowStep.name());
+                    ComponentVendors.ECHO_THREE.name(), EntityTypes.WorkflowStep.name());
 
             if(!eea.hasExecutionErrors()) {
                 workflowStep = workflowControl.getWorkflowStepByEntityInstance(entityInstance, entityPermission);

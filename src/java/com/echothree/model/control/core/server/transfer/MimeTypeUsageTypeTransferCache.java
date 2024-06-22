@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,11 +22,14 @@ import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
+import com.echothree.util.server.persistence.Session;
 import java.util.Set;
 
 public class MimeTypeUsageTypeTransferCache
         extends BaseCoreTransferCache<MimeTypeUsageType, MimeTypeUsageTypeTransfer> {
-    
+
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+
     TransferProperties transferProperties;
     boolean filterMimeTypeUsageTypeName;
     boolean filterIsDefault;
@@ -34,12 +37,12 @@ public class MimeTypeUsageTypeTransferCache
     boolean filterDescription;
     
     /** Creates a new instance of MimeTypeUsageTypeTransferCache */
-    public MimeTypeUsageTypeTransferCache(UserVisit userVisit, CoreControl coreControl) {
-        super(userVisit, coreControl);
+    public MimeTypeUsageTypeTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
-            Set<String> properties = transferProperties.getProperties(MimeTypeUsageTypeTransfer.class);
+            var properties = transferProperties.getProperties(MimeTypeUsageTypeTransfer.class);
             
             if(properties != null) {
                 filterMimeTypeUsageTypeName = !properties.contains(CoreProperties.MIME_TYPE_USAGE_TYPE_NAME);

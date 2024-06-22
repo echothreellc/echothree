@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,30 +17,22 @@
 package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.CreateOfferItemForm;
-import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.control.offer.server.control.OfferControl;
-import com.echothree.model.control.offer.server.control.OfferItemControl;
+import com.echothree.control.user.offer.common.result.OfferResultFactory;
+import com.echothree.model.control.item.server.logic.ItemLogic;
 import com.echothree.model.control.offer.server.logic.OfferItemLogic;
+import com.echothree.model.control.offer.server.logic.OfferLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferItem;
-import com.echothree.model.data.party.server.entity.PartyCompany;
-import com.echothree.model.data.party.server.entity.PartyDepartment;
-import com.echothree.model.data.party.server.entity.PartyDivision;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -72,41 +64,22 @@ public class CreateOfferItemCommand
     
     @Override
     protected BaseResult execute() {
-        String offerName = form.getOfferName();
-        var offerControl = Session.getModelController(OfferControl.class);
-        Offer offer = offerControl.getOfferByName(offerName);
-        
-        if(offer != null) {
-            var itemControl = Session.getModelController(ItemControl.class);
-            String itemName = form.getItemName();
-            Item item = itemControl.getItemByName(itemName);
-            
-            if(item != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
-                PartyDepartment partyDepartment = partyControl.getPartyDepartment(offer.getLastDetail().getDepartmentParty());
-                PartyDivision partyDivision = partyControl.getPartyDivision(partyDepartment.getDivisionParty());
-                PartyCompany partyCompany = partyControl.getPartyCompany(partyDivision.getCompanyParty());
-                
-                if(partyCompany.getParty().equals(item.getLastDetail().getCompanyParty())) {
-                    var offerItemControl = Session.getModelController(OfferItemControl.class);
-                    OfferItem offerItem = offerItemControl.getOfferItem(offer, item);
-                    
-                    if(offerItem == null) {
-                        OfferItemLogic.getInstance().createOfferItem(offer, item, getPartyPK());
-                    } else {
-                        addExecutionError(ExecutionErrors.DuplicateOfferItem.name(), offerName, itemName);
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.InvalidItemCompany.name());
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownItemName.name(), itemName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownOfferName.name(), offerName);
+        var result = OfferResultFactory.getCreateOfferItemResult();
+        OfferItem offerItem = null;
+        var offer = OfferLogic.getInstance().getOfferByName(this, form.getOfferName());
+        var item = ItemLogic.getInstance().getItemByName(this, form.getItemName());
+
+        if(!hasExecutionErrors()) {
+            offerItem = OfferItemLogic.getInstance().createOfferItem(this, offer, item, getPartyPK());
         }
-        
-        return null;
+
+        if(offerItem != null) {
+            result.setOfferName(offerItem.getOffer().getLastDetail().getOfferName());
+            result.setItemName(offerItem.getItem().getLastDetail().getItemName());
+            result.setEntityRef(offerItem.getPrimaryKey().getEntityRef());
+        }
+
+        return result;
     }
     
 }

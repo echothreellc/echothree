@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import com.echothree.control.user.search.common.form.GetForumMessageResultsForm;
 import com.echothree.control.user.search.common.result.GetForumMessageResultsResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.forum.server.control.ForumMessageControl;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.data.search.server.entity.SearchKind;
@@ -62,7 +62,7 @@ public class GetForumMessageResultsCommand
         
         if(!hasExecutionErrors()) {
             var searchControl = Session.getModelController(SearchControl.class);
-            SearchKind searchKind = searchControl.getSearchKindByName(SearchConstants.SearchKind_FORUM_MESSAGE);
+            SearchKind searchKind = searchControl.getSearchKindByName(SearchKinds.FORUM_MESSAGE.name());
 
             if(searchKind != null) {
                 String searchTypeName = form.getSearchTypeName();
@@ -84,10 +84,10 @@ public class GetForumMessageResultsCommand
                         addExecutionError(ExecutionErrors.UnknownUserVisitSearch.name());
                     }
                 } else {
-                    addExecutionError(ExecutionErrors.UnknownSearchTypeName.name(), SearchConstants.SearchKind_FORUM_MESSAGE, searchTypeName);
+                    addExecutionError(ExecutionErrors.UnknownSearchTypeName.name(), SearchKinds.FORUM_MESSAGE.name(), searchTypeName);
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownSearchKindName.name(), SearchConstants.SearchKind_FORUM_MESSAGE);
+                addExecutionError(ExecutionErrors.UnknownSearchKindName.name(), SearchKinds.FORUM_MESSAGE.name());
             }
         }
         

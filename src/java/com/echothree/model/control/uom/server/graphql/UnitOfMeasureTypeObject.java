@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,12 +16,23 @@
 
 package com.echothree.model.control.uom.server.graphql;
 
-import com.echothree.control.user.accounting.server.command.GetSymbolPositionCommand;
-import com.echothree.control.user.uom.server.command.GetUnitOfMeasureKindCommand;
+import com.echothree.model.control.accounting.server.graphql.AccountingSecurityUtils;
 import com.echothree.model.control.accounting.server.graphql.SymbolPositionObject;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
+import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.item.server.graphql.ItemAliasObject;
+import com.echothree.model.control.item.server.graphql.ItemSecurityUtils;
+import com.echothree.model.control.item.server.graphql.ItemUnitOfMeasureTypeObject;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.item.common.ItemAliasConstants;
+import com.echothree.model.data.item.common.ItemUnitOfMeasureTypeConstants;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureTypeDescription;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureTypeDetail;
@@ -30,7 +41,10 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("unit of measure type object")
 @GraphQLName("UnitOfMeasureType")
@@ -62,44 +76,16 @@ public class UnitOfMeasureTypeObject
             var uomControl = Session.getModelController(UomControl.class);
             var userControl = Session.getModelController(UserControl.class);
 
-            unitOfMeasureTypeDescription = uomControl.getBestUnitOfMeasureTypeDescription(unitOfMeasureType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+            unitOfMeasureTypeDescription = uomControl.getBestUnitOfMeasureTypeDescription(unitOfMeasureType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
         }
         
         return unitOfMeasureTypeDescription;
     }
     
-    private Boolean hasUnitOfMeasureKindAccess;
-    
-    private boolean getHasUnitOfMeasureKindAccess(final DataFetchingEnvironment env) {
-        if(hasUnitOfMeasureKindAccess == null) {
-            var baseSingleEntityCommand = new GetUnitOfMeasureKindCommand(getUserVisitPK(env), null);
-            
-            baseSingleEntityCommand.security();
-            
-            hasUnitOfMeasureKindAccess = !baseSingleEntityCommand.hasSecurityMessages();
-        }
-        
-        return hasUnitOfMeasureKindAccess;
-    }
-    
-    private Boolean hasSymbolPositionAccess;
-    
-    private boolean getHasSymbolPositionAccess(final DataFetchingEnvironment env) {
-        if(hasSymbolPositionAccess == null) {
-            var baseSingleEntityCommand = new GetSymbolPositionCommand(getUserVisitPK(env), null);
-            
-            baseSingleEntityCommand.security();
-            
-            hasSymbolPositionAccess = !baseSingleEntityCommand.hasSecurityMessages();
-        }
-        
-        return hasSymbolPositionAccess;
-    }
-    
     @GraphQLField
     @GraphQLDescription("unit of measure kind")
     public UnitOfMeasureKindObject getUnitOfMeasureKind(final DataFetchingEnvironment env) {
-        return getHasUnitOfMeasureKindAccess(env) ? new UnitOfMeasureKindObject(getUnitOfMeasureTypeDetail().getUnitOfMeasureKind()) : null;
+        return UomSecurityUtils.getHasUnitOfMeasureKindAccess(env) ? new UnitOfMeasureKindObject(getUnitOfMeasureTypeDetail().getUnitOfMeasureKind()) : null;
     }
     
     @GraphQLField
@@ -112,7 +98,7 @@ public class UnitOfMeasureTypeObject
     @GraphQLField
     @GraphQLDescription("symbol position")
     public SymbolPositionObject getSymbolPosition(final DataFetchingEnvironment env) {
-        return getHasSymbolPositionAccess(env) ? new SymbolPositionObject(getUnitOfMeasureTypeDetail().getSymbolPosition()) : null;
+        return AccountingSecurityUtils.getHasSymbolPositionAccess(env) ? new SymbolPositionObject(getUnitOfMeasureTypeDetail().getSymbolPosition()) : null;
     }
     
     @GraphQLField
@@ -162,5 +148,45 @@ public class UnitOfMeasureTypeObject
         
         return uomControl.getBestUnitOfMeasureTypeDescriptionSymbol(unitOfMeasureType, getUnitOfMeasureTypeDescription(env));
     }
-    
+
+    @GraphQLField
+    @GraphQLDescription("item unit of measure types")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<ItemUnitOfMeasureTypeObject> getItemUnitOfMeasureTypes(final DataFetchingEnvironment env) {
+        if(ItemSecurityUtils.getHasItemUnitOfMeasureTypesAccess(env)) {
+            var itemControl = Session.getModelController(ItemControl.class);
+            var totalCount = itemControl.countItemUnitOfMeasureTypesByUnitOfMeasureType(unitOfMeasureType);
+
+            try(var objectLimiter = new ObjectLimiter(env, ItemUnitOfMeasureTypeConstants.COMPONENT_VENDOR_NAME, ItemUnitOfMeasureTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = itemControl.getItemUnitOfMeasureTypesByUnitOfMeasureType(unitOfMeasureType);
+                var itemAliass = entities.stream().map(ItemUnitOfMeasureTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, itemAliass);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("item aliases")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<ItemAliasObject> getItemAliases(final DataFetchingEnvironment env) {
+        if(ItemSecurityUtils.getHasItemAliasesAccess(env)) {
+            var itemControl = Session.getModelController(ItemControl.class);
+            var totalCount = itemControl.countItemAliasesByUnitOfMeasureType(unitOfMeasureType);
+
+            try(var objectLimiter = new ObjectLimiter(env, ItemAliasConstants.COMPONENT_VENDOR_NAME, ItemAliasConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = itemControl.getItemAliasesByUnitOfMeasureType(unitOfMeasureType);
+                var itemAliases = entities.stream().map(ItemAliasObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, itemAliases);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
 }

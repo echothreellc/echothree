@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("mime type usage type object")
 @GraphQLName("MimeTypeUsageType")
 public class MimeTypeUsageTypeObject
-        extends BaseGraphQl {
+        implements BaseGraphQl {
     
     private final MimeTypeUsageType mimeTypeUsageType; // Always Present
     
@@ -66,7 +66,7 @@ public class MimeTypeUsageTypeObject
         var coreControl = Session.getModelController(CoreControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return coreControl.getBestMimeTypeUsageTypeDescription(mimeTypeUsageType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return coreControl.getBestMimeTypeUsageTypeDescription(mimeTypeUsageType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
     
 }

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -36,15 +36,15 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 @SproutAction(
-    path = "/Warehouse/InventoryLocationGroup/VolumeAdd",
+    path = "/Inventory/InventoryLocationGroup/VolumeAdd",
     mappingClass = SecureActionMapping.class,
     name = "InventoryLocationGroupVolumeAdd",
     properties = {
         @SproutProperty(property = "secure", value = "true")
     },
     forwards = {
-        @SproutForward(name = "Display", path = "/action/Warehouse/InventoryLocationGroup/Main", redirect = true),
-        @SproutForward(name = "Form", path = "/warehouse/inventorylocationgroup/volumeAdd.jsp")
+        @SproutForward(name = "Display", path = "/action/Inventory/InventoryLocationGroup/Main", redirect = true),
+        @SproutForward(name = "Form", path = "/inventory/inventorylocationgroup/volumeAdd.jsp")
     }
 )
 public class VolumeAddAction

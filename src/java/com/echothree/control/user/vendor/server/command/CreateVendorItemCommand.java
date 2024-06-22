@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 package com.echothree.control.user.vendor.server.command;
 
 import com.echothree.control.user.vendor.common.form.CreateVendorItemForm;
+import com.echothree.control.user.vendor.common.result.VendorResultFactory;
 import com.echothree.model.control.cancellationpolicy.common.CancellationKinds;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.item.server.control.ItemControl;
@@ -75,7 +76,7 @@ public class CreateVendorItemCommand
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("VendorName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("VendorItemName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L),
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L),
                 new FieldDefinition("Priority", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("CancellationPolicyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("ReturnPolicyName", FieldType.ENTITY_NAME, false, null, null)
@@ -89,6 +90,8 @@ public class CreateVendorItemCommand
     
     @Override
     protected BaseResult execute() {
+        var result = VendorResultFactory.getCreateVendorItemResult();
+        VendorItem vendorItem = null;
         var vendorControl = Session.getModelController(VendorControl.class);
         String vendorName = form.getVendorName();
         Vendor vendor = vendorControl.getVendorByName(vendorName);
@@ -129,7 +132,8 @@ public class CreateVendorItemCommand
                 
                 if(!hasExecutionErrors()) {
                     Party vendorParty = vendor.getParty();
-                    VendorItem vendorItem = vendorControl.getVendorItemByVendorPartyAndVendorItemName(vendorParty, vendorItemName);
+                    
+                    vendorItem = vendorControl.getVendorItemByVendorPartyAndVendorItemName(vendorParty, vendorItemName);
                     
                     if(vendorItem == null) {
                         String cancellationPolicyName = form.getCancellationPolicyName();
@@ -182,8 +186,13 @@ public class CreateVendorItemCommand
         } else {
             addExecutionError(ExecutionErrors.UnknownVendorName.name(), vendorName);
         }
-        
-        return null;
+
+        if(vendorItem != null) {
+            result.setEntityRef(vendorItem.getPrimaryKey().getEntityRef());
+            result.setVendorItemName(vendorItem.getLastDetail().getVendorItemName());
+        }
+
+        return result;
     }
     
 }

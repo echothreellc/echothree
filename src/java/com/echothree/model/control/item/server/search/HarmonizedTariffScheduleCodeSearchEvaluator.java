@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,8 +19,12 @@ package com.echothree.model.control.item.server.search;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.IndexFieldVariations;
+import com.echothree.model.control.index.common.IndexFields;
+import com.echothree.model.control.index.common.IndexTypes;
 import com.echothree.model.control.index.server.analysis.HarmonizedTariffScheduleCodeAnalyzer;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchSortOrders;
+import com.echothree.model.control.search.common.SearchSortDirections;
 import com.echothree.model.control.search.server.search.BaseSearchEvaluator;
 import com.echothree.model.control.search.server.search.EntityInstancePKHolder;
 import com.echothree.model.data.party.server.entity.Language;
@@ -40,30 +44,30 @@ public class HarmonizedTariffScheduleCodeSearchEvaluator
     /** Creates a new instance of HarmonizedTariffScheduleCodeSearchEvaluator */
     public HarmonizedTariffScheduleCodeSearchEvaluator(UserVisit userVisit, Language language, SearchType searchType, SearchDefaultOperator searchDefaultOperator,
             SearchSortOrder searchSortOrder, SearchSortDirection searchSortDirection, SearchUseType searchUseType) {
-        super(userVisit, searchDefaultOperator, searchType, searchSortOrder, searchSortDirection, searchUseType, ComponentVendors.ECHOTHREE.name(),
-                EntityTypes.HarmonizedTariffScheduleCode.name(), IndexConstants.IndexType_HARMONIZED_TARIFF_SCHEDULE_CODE, language, null);
+        super(userVisit, searchDefaultOperator, searchType, searchSortOrder, searchSortDirection, searchUseType, ComponentVendors.ECHO_THREE.name(),
+                EntityTypes.HarmonizedTariffScheduleCode.name(), IndexTypes.HARMONIZED_TARIFF_SCHEDULE_CODE.name(), language, null);
         
-        setField(IndexConstants.IndexField_Description);
+        setField(IndexFields.description.name());
     }
 
     @Override
     public SortField[] getSortFields(String searchSortOrderName) {
         SortField[] sortFields = null;
-        boolean reverse = searchSortDirection.getLastDetail().getSearchSortDirectionName().equals(SearchConstants.SearchSortDirection_DESCENDING);
+        boolean reverse = searchSortDirection.getLastDetail().getSearchSortDirectionName().equals(SearchSortDirections.DESCENDING.name());
         
-        if(searchSortOrderName.equals(SearchConstants.SearchSortOrder_SCORE)) {
+        if(searchSortOrderName.equals(SearchSortOrders.SCORE.name())) {
             sortFields = new SortField[]{
                 new SortField(null, SortField.Type.SCORE, reverse),
-                new SortField(IndexConstants.IndexField_Description + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)
+                new SortField(IndexFields.description.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(), SortField.Type.STRING, reverse)
             };
-        } else if(searchSortOrderName.equals(SearchConstants.SearchSortOrder_DESCRIPTION)) {
-            sortFields = new SortField[]{new SortField(IndexConstants.IndexField_Description + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)};
-        } else if(searchSortOrderName.equals(SearchConstants.SearchSortOrder_HARMONIZED_TARIFF_SCHEDULE_CODE_NAME)) {
-            sortFields = new SortField[]{new SortField(IndexConstants.IndexField_HarmonizedTariffScheduleCodeName + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)};
-        } else if(searchSortOrderName.equals(SearchConstants.SearchSortOrder_CREATED_TIME)) {
-            sortFields = new SortField[]{new SortField(IndexConstants.IndexField_CreatedTime, SortField.Type.LONG, reverse)};
-        } else if(searchSortOrderName.equals(SearchConstants.SearchSortOrder_MODIFIED_TIME)) {
-            sortFields = new SortField[]{new SortField(IndexConstants.IndexField_ModifiedTime, SortField.Type.LONG, reverse)};
+        } else if(searchSortOrderName.equals(SearchSortOrders.DESCRIPTION.name())) {
+            sortFields = new SortField[]{new SortField(IndexFields.description.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(), SortField.Type.STRING, reverse)};
+        } else if(searchSortOrderName.equals(SearchSortOrders.HARMONIZED_TARIFF_SCHEDULE_CODE_NAME.name())) {
+            sortFields = new SortField[]{new SortField(IndexFields.harmonizedTariffScheduleCodeName.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(), SortField.Type.STRING, reverse)};
+        } else if(searchSortOrderName.equals(SearchSortOrders.CREATED_TIME.name())) {
+            sortFields = new SortField[]{new SortField(IndexFields.createdTime.name(), SortField.Type.LONG, reverse)};
+        } else if(searchSortOrderName.equals(SearchSortOrders.MODIFIED_TIME.name())) {
+            sortFields = new SortField[]{new SortField(IndexFields.modifiedTime.name(), SortField.Type.LONG, reverse)};
         }
         
         return sortFields;

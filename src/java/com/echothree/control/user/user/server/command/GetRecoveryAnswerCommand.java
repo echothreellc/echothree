@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -123,7 +123,7 @@ public class GetRecoveryAnswerCommand
                 if(recoveryAnswer != null) {
                     result.setRecoveryAnswer(userControl.getRecoveryAnswerTransfer(getUserVisit(), recoveryAnswer));
                     
-                    sendEventUsingNames(recoveryAnswer.getPrimaryKey(), EventTypes.READ.name(), null, null, self.getPrimaryKey());
+                    sendEvent(recoveryAnswer.getPrimaryKey(), EventTypes.READ, null, null, self.getPrimaryKey());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownRecoveryAnswer.name());
                 }

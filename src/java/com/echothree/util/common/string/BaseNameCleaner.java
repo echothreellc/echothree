@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import com.google.common.base.Splitter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class BaseNameCleaner {
@@ -33,7 +34,7 @@ public class BaseNameCleaner {
     private int maxPersonalTitleSpaces = 0;
 
     protected String cleanStringForTitleOrSuffix(String str) {
-        return stringUtils.cleanString(str, true, true, true).toLowerCase();
+        return stringUtils.cleanString(str, true, true, true).toLowerCase(Locale.getDefault());
     }
 
     public Map<String, String> getPersonalTitles() {

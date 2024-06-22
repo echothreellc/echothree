@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -69,7 +69,7 @@ public class GetOfferNameElementsCommand
     }
     
     @Override
-    protected BaseResult getTransfers(Collection<OfferNameElement> entities) {
+    protected BaseResult getResult(Collection<OfferNameElement> entities) {
         GetOfferNameElementsResult result = OfferResultFactory.getGetOfferNameElementsResult();
         var offerNameElementControl = Session.getModelController(OfferNameElementControl.class);
         

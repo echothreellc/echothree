@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -106,12 +106,12 @@ public class QueueControl
         queueType.setLastDetail(queueTypeDetail);
         queueType.store();
 
-        sendEventUsingNames(queueType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(queueType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return queueType;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.QueueType */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.QueueType */
     public QueueType getQueueTypeByEntityInstance(EntityInstance entityInstance) {
         QueueTypePK pk = new QueueTypePK(entityInstance.getEntityUniqueId());
         QueueType queueType = QueueTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
@@ -313,7 +313,7 @@ public class QueueControl
             queueType.setActiveDetail(queueTypeDetail);
             queueType.setLastDetail(queueTypeDetail);
 
-            sendEventUsingNames(queueTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(queueTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -351,7 +351,7 @@ public class QueueControl
             }
         }
 
-        sendEventUsingNames(queueType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(queueType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteQueueType(QueueType queueType, BasePK deletedBy) {
@@ -374,7 +374,7 @@ public class QueueControl
         QueueTypeDescription queueTypeDescription = QueueTypeDescriptionFactory.getInstance().create(queueType, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(queueType.getPrimaryKey(), EventTypes.MODIFY.name(), queueTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(queueType.getPrimaryKey(), EventTypes.MODIFY, queueTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return queueTypeDescription;
     }
@@ -496,14 +496,14 @@ public class QueueControl
             queueTypeDescription = QueueTypeDescriptionFactory.getInstance().create(queueType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(queueType.getPrimaryKey(), EventTypes.MODIFY.name(), queueTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(queueType.getPrimaryKey(), EventTypes.MODIFY, queueTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteQueueTypeDescription(QueueTypeDescription queueTypeDescription, BasePK deletedBy) {
         queueTypeDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(queueTypeDescription.getQueueTypePK(), EventTypes.MODIFY.name(), queueTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(queueTypeDescription.getQueueTypePK(), EventTypes.MODIFY, queueTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -692,7 +692,7 @@ public class QueueControl
         return getQueueTransferCaches(userVisit).getQueuedEntityTransferCache().getQueuedEntityTransfer(queuedEntity);
     }
     
-    public List<QueuedEntityTransfer> getQueuedEntityTransfers(UserVisit userVisit, List<QueuedEntity> queuedEntities) {
+    public List<QueuedEntityTransfer> getQueuedEntityTransfers(UserVisit userVisit, Collection<QueuedEntity> queuedEntities) {
         List<QueuedEntityTransfer> queuedEntityTransfers = new ArrayList<>(queuedEntities.size());
         QueuedEntityTransferCache queuedEntityTransferCache = getQueueTransferCaches(userVisit).getQueuedEntityTransferCache();
 

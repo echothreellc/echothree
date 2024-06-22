@@ -1,5 +1,682 @@
 # Changelog
 
+## 2024-06-09-01
+
+* GraphQL Pagination Prototype [197](https://gitlab.echothree.com/echothree/echothree/-/issues/197)
+* queryForLong(...) Fails With NPE When No Rows Returned [1118](https://gitlab.echothree.com/echothree/echothree/-/issues/1118)
+* Convert GetEntityAttributeTypes UC to Use BasePaginatedMultipleEntitiesCommand [1141](https://gitlab.echothree.com/echothree/echothree/-/issues/1141)
+* Add Security to ResetLockout UC [1281](https://gitlab.echothree.com/echothree/echothree/-/issues/1281)
+* Add resetLockout Mutation [1282](https://gitlab.echothree.com/echothree/echothree/-/issues/1282)
+* Suppress Display of "Reset Lockout" If Account Not Locked [1283](https://gitlab.echothree.com/echothree/echothree/-/issues/1283)
+* Implement UUID v7 [1284](https://gitlab.echothree.com/echothree/echothree/-/issues/1284)
+* UlidUtils.generateUlid(EntityInstance entityInstance) Not Using Entity Instance [1285](https://gitlab.echothree.com/echothree/echothree/-/issues/1285)
+* Remove Jenkinsfile [1286](https://gitlab.echothree.com/echothree/echothree/-/issues/1286)
+* Add Specific Entity Alias Type as a Field to Base Entity Instance Object [1291](https://gitlab.echothree.com/echothree/echothree/-/issues/1291)
+* Add Specific Entity Attribute as a Field to Base Entity Instance Object [1292](https://gitlab.echothree.com/echothree/echothree/-/issues/1292)
+* Add Specific Tag Scope as a Field to Base Entity Instance Object [1293](https://gitlab.echothree.com/echothree/echothree/-/issues/1293)
+* Apache Lucene 9.11.0 Upgrade [1294](https://gitlab.echothree.com/echothree/echothree/-/issues/1294)
+
+## 2024-05-26-01
+
+* Add Entity Alias Types and Entity Aliases [1112](https://gitlab.echothree.com/echothree/echothree/-/issues/1112)
+* Error Prone 2.27.1 Upgrade [1117](https://gitlab.echothree.com/echothree/echothree/-/issues/1117)
+
+## 2024-05-12-01
+
+* graphql-java-annotations 21.2 Upgrade [1111](https://gitlab.echothree.com/echothree/echothree/-/issues/1111)
+* MySQL and MySQL Connector/J 8.4.0 Upgrade [1113](https://gitlab.echothree.com/echothree/echothree/-/issues/1113)
+* jOOQ 3.19.8 Upgrade [1114](https://gitlab.echothree.com/echothree/echothree/-/issues/1114)
+
+## 2024-04-28-01
+
+* Clarify Naming of entityInstancePK and relatedPK Parameters [1104](https://gitlab.echothree.com/echothree/echothree/-/issues/1104)
+* Remove UNKNOWN Component Vendor [1105](https://gitlab.echothree.com/echothree/echothree/-/issues/1105)
+* Eliminated Repeated Calling of getEntityAttributeTypeName() [1106](https://gitlab.echothree.com/echothree/echothree/-/issues/1106)
+* Add CreateEntityInstance, SendEvent, DeleteEntityInstance, and RemoveEntityInstance UCs [1107](https://gitlab.echothree.com/echothree/echothree/-/issues/1107)
+* cucumber-java8/cucumber-junit 7.17.0 Upgrade [1108](https://gitlab.echothree.com/echothree/echothree/-/issues/1108)
+* Guava 33.1.0-jre Upgrade [1109](https://gitlab.echothree.com/echothree/echothree/-/issues/1109)
+* ICU4J 75.1 Upgrade [1110](https://gitlab.echothree.com/echothree/echothree/-/issues/1110)
+
+## 2024-04-14-01
+
+* jOOQ 3.19.7 Upgrade [1103](https://gitlab.echothree.com/echothree/echothree/-/issues/1103)
+
+## 2024-03-31-01
+
+* Error Prone 2.26.1 Upgrade [1096](https://gitlab.echothree.com/echothree/echothree/-/issues/1096)
+* graphql-java 21.5 Upgrade [1097](https://gitlab.echothree.com/echothree/echothree/-/issues/1097)
+
+## 2024-03-17-01
+
+* Include Field vendorTypeName When Indexing and Searching Vendors [1075](https://gitlab.echothree.com/echothree/echothree/-/issues/1075)
+* Include Field customerTypeName When Indexing and Searching Customers [1076](https://gitlab.echothree.com/echothree/echothree/-/issues/1076)
+* Include Field warehouseTypeName When Indexing and Searching Warehouses [1077](https://gitlab.echothree.com/echothree/echothree/-/issues/1077)
+* Apache Lucene 9.10.0 Upgrade [1095](https://gitlab.echothree.com/echothree/echothree/-/issues/1095)
+
+## 2024-03-03-01
+
+* jOOQ 3.19.4 Upgrade [1092](https://gitlab.echothree.com/echothree/echothree/-/issues/1092)
+* MySQL and MySQL Connector/J 8.3.0 Upgrade [1093](https://gitlab.echothree.com/echothree/echothree/-/issues/1093)
+* jOOQ 3.19.5 Upgrade [1094](https://gitlab.echothree.com/echothree/echothree/-/issues/1094)
+
+## 2024-02-18-01
+
+* Error Prone 2.24.1 Upgrade [1089](https://gitlab.echothree.com/echothree/echothree/-/issues/1089)
+* Correct StringCaseLocaleUsage Warnings From Error Prone [1090](https://gitlab.echothree.com/echothree/echothree/-/issues/1090)
+* Apache Lucene 9.9.2 Upgrade [1091](https://gitlab.echothree.com/echothree/echothree/-/issues/1091)
+
+## 2024-02-04-01
+
+* Migrate Usage of java.util.Date to Modern Implementation [1080](https://gitlab.echothree.com/echothree/echothree/-/issues/1080)
+* jOOQ 3.19.3 Upgrade [1086](https://gitlab.echothree.com/echothree/echothree/-/issues/1086)
+* Remove "logging" [1087](https://gitlab.echothree.com/echothree/echothree/-/issues/1087)
+* ICU4J 74.2 Upgrade [1088](https://gitlab.echothree.com/echothree/echothree/-/issues/1088)
+
+## 2024-01-21-01
+
+* Add Inventory Condition Tests [1066](https://gitlab.echothree.com/echothree/echothree/-/issues/1066)
+* Add Allocation Priority Tests [1067](https://gitlab.echothree.com/echothree/echothree/-/issues/1067)
+* Add UI for Maintaining Warehouse Types [1078](https://gitlab.echothree.com/echothree/echothree/-/issues/1078)
+* Apache Ivy 2.5.2 Upgrade [1079](https://gitlab.echothree.com/echothree/echothree/-/issues/1079)
+* jQuery 3.7.1 Upgrade [1081](https://gitlab.echothree.com/echothree/echothree/-/issues/1081)
+* NPE When Indexing Warehouses [1084](https://gitlab.echothree.com/echothree/echothree/-/issues/1084)
+* IndexField partyEmployeeName Incorrectly Capitalized [1085](https://gitlab.echothree.com/echothree/echothree/-/issues/1085)
+
+## 2024-01-07-01
+
+* Add Warehouse Types [845](https://gitlab.echothree.com/echothree/echothree/-/issues/845)
+* Adding Location with Null Validation for Location Name Element Always Fails [856](https://gitlab.echothree.com/echothree/echothree/-/issues/856)
+* Add Confirmation When Deleting Locations [857](https://gitlab.echothree.com/echothree/echothree/-/issues/857)
+* Add Confirmation When Deleting Location Name Elements [858](https://gitlab.echothree.com/echothree/echothree/-/issues/858)
+* Add Confirmation When Deleting Location Types [859](https://gitlab.echothree.com/echothree/echothree/-/issues/859)
+* Add Confirmation When Deleting Inventory Location Groups [860](https://gitlab.echothree.com/echothree/echothree/-/issues/860)
+* Add Confirmation When Deleting Warehouses [861](https://gitlab.echothree.com/echothree/echothree/-/issues/861)
+* 2024 Copyright Update [1057](https://gitlab.echothree.com/echothree/echothree/-/issues/1057)
+* kafka-clients 3.6.1 Upgrade [1062](https://gitlab.echothree.com/echothree/echothree/-/issues/1062)
+* cucumber-java8/cucumber-junit 7.15.0 Upgrade [1063](https://gitlab.echothree.com/echothree/echothree/-/issues/1063)
+* Remove Unnecessary BaseForm and BaseResult Casts [1064](https://gitlab.echothree.com/echothree/echothree/-/issues/1064)
+* Guava 33.0.0-jre Upgrade [1065](https://gitlab.echothree.com/echothree/echothree/-/issues/1065)
+* Remove Extra Commas and Adding Missing Quotes on Delete Pages [1068](https://gitlab.echothree.com/echothree/echothree/-/issues/1068)
+* Prevent Security Cache from Expiring Keys [1082](https://gitlab.echothree.com/echothree/echothree/-/issues/1082)
+
+## 2023-12-24-01
+
+* Encapsulate Amounts/Prices/Costs in Objects for GraphQL [1058](https://gitlab.echothree.com/echothree/echothree/-/issues/1058)
+* Encapsulate Percent Field in Percent Object for FilterAdjustmentPercent [1059](https://gitlab.echothree.com/echothree/echothree/-/issues/1059)
+* Apache Lucene 9.9.1 Upgrade [1060](https://gitlab.echothree.com/echothree/echothree/-/issues/1060)
+* jOOQ 3.19.1 Upgrade [1061](https://gitlab.echothree.com/echothree/echothree/-/issues/1061)
+
+## 2023-12-10-01
+
+* Upgrade to Custom kafka-rar 1.0.0 [1054](https://gitlab.echothree.com/echothree/echothree/-/issues/1054)
+* kafka-clients 3.6.0 Upgrade [1055](https://gitlab.echothree.com/echothree/echothree/-/issues/1055)
+* Document Support for Kafka Transactions [1056](https://gitlab.echothree.com/echothree/echothree/-/issues/1056)
+
+## 2023-11-26-01
+
+* MySQL Connector/J 8.2.0 Upgrade [854](https://gitlab.echothree.com/echothree/echothree/-/issues/854)
+* Add Location Use Type Object and Queries [855](https://gitlab.echothree.com/echothree/echothree/-/issues/855)
+* Incorrect Paths for Inventory Location Group Volumes [867](https://gitlab.echothree.com/echothree/echothree/-/issues/867)
+* cucumber-java8/cucumber-junit 7.14.0 Upgrade [1052](https://gitlab.echothree.com/echothree/echothree/-/issues/1052)
+* ClassGraph 4.8.165 Upgrade [1053](https://gitlab.echothree.com/echothree/echothree/-/issues/1053)
+
+## 2023-11-12-01
+
+* Add Specific Entity Attribute Group as a Field to Base Entity Instance Object [825](https://gitlab.echothree.com/echothree/echothree/-/issues/825)
+
+## 2023-10-29-01
+
+* graphql-java-annotations 21.1, graphql-java 21.2 and graphql-java-extended-scalars 21.0 Upgrade [851](https://gitlab.echothree.com/echothree/echothree/-/issues/851)
+* graphql-java 21.3 Upgrade [852](https://gitlab.echothree.com/echothree/echothree/-/issues/852)
+* Convert Query and Mutation Classes to Interfaces [853](https://gitlab.echothree.com/echothree/echothree/-/issues/853)
+
+## 2023-10-15-01
+
+* jOOQ 3.18.7 Upgrade [849](https://gitlab.echothree.com/echothree/echothree/-/issues/849)
+* Apache Lucene 9.8.0 Upgrade [850](https://gitlab.echothree.com/echothree/echothree/-/issues/850)
+
+## 2023-10-01-01
+
+* Guava 32.1.2-jre Upgrade [847](https://gitlab.echothree.com/echothree/echothree/-/issues/847)
+* Move Database Migration Scripts to Database Utility [848](https://gitlab.echothree.com/echothree/echothree/-/issues/848)
+
+## 2023-09-17-01
+
+* Permissions on Warehouse Component UCs [844](https://gitlab.echothree.com/echothree/echothree/-/issues/844)
+
+## 2023-09-03-01
+
+* Add GL Accounts to Item Accounting Category Object [846](https://gitlab.echothree.com/echothree/echothree/-/issues/846)
+
+## 2023-08-20-01
+
+* jOOQ 3.18.6 Upgrade [838](https://gitlab.echothree.com/echothree/echothree/-/issues/838)
+* Add Geo Code Type Object and Queries [839](https://gitlab.echothree.com/echothree/echothree/-/issues/839)
+* Add Geo Code Scope Object and Queries [840](https://gitlab.echothree.com/echothree/echothree/-/issues/840)
+* Add Geo Code Object and Queries [841](https://gitlab.echothree.com/echothree/echothree/-/issues/841)
+* Remove Workflow Types [842](https://gitlab.echothree.com/echothree/echothree/-/issues/842)
+* Convert WorkflowStepTypes to an Enum [843](https://gitlab.echothree.com/echothree/echothree/-/issues/843)
+
+## 2023-08-06-01
+
+* commons-fileupload 1.5 Upgrade [834](https://gitlab.echothree.com/echothree/echothree/-/issues/834)
+* commons-io 2.13.0 Upgrade [835](https://gitlab.echothree.com/echothree/echothree/-/issues/835)
+* ICU4J 73.2 Upgrade [836](https://gitlab.echothree.com/echothree/echothree/-/issues/836)
+* commons-codec 1.16.0 Upgrade [837](https://gitlab.echothree.com/echothree/echothree/-/issues/837)
+
+## 2023-07-23-01
+
+* Update Wiki and Issues Links [830](https://gitlab.echothree.com/echothree/echothree/-/issues/830)
+* Allow GetPartyAlias and GetPartyAliases UCs to Also Get Aliases by Party Alias Types [831](https://gitlab.echothree.com/echothree/echothree/-/issues/831)
+* Switch to echothree/ant for Builds [832](https://gitlab.echothree.com/echothree/echothree/-/issues/832)
+* Use Message Resources on Accounting Home Page [833](https://gitlab.echothree.com/echothree/echothree/-/issues/833)
+
+## 2023-07-09-01
+
+* NullPointerException Attempting to Index ContactMechanism [457](https://gitlab.echothree.com/echothree/echothree/-/issues/457)
+* Add Indexing and Searching of Party Aliases [806](https://gitlab.echothree.com/echothree/echothree/-/issues/806)
+* Add Party Aliases to Vendors [815](https://gitlab.echothree.com/echothree/echothree/-/issues/815)
+* Add Party Aliases to Employees [816](https://gitlab.echothree.com/echothree/echothree/-/issues/816)
+* Add Party Alias Type Mutations [818](https://gitlab.echothree.com/echothree/echothree/-/issues/818)
+* Add Party Alias Mutations [819](https://gitlab.echothree.com/echothree/echothree/-/issues/819)
+* Add Entity Appearance Field to Indexes [826](https://gitlab.echothree.com/echothree/echothree/-/issues/826)
+* Guava 32.1.1-jre Upgrade [827](https://gitlab.echothree.com/echothree/echothree/-/issues/827)
+* Simplify BaseObject [828](https://gitlab.echothree.com/echothree/echothree/-/issues/828)
+* Apache Lucene 9.7.0 Upgrade [829](https://gitlab.echothree.com/echothree/echothree/-/issues/829)
+
+## 2023-06-25-01
+
+* Add "Is Extensible" Column to Entity Types [784](https://gitlab.echothree.com/echothree/echothree/-/issues/784)
+* Enforce "Is Extensible" for Tag Scope Entity Types [785](https://gitlab.echothree.com/echothree/echothree/-/issues/785)
+* Enforce "Is Extensible" for Entity Type Attributes [786](https://gitlab.echothree.com/echothree/echothree/-/issues/786)
+* Enforce "Is Extensible" for Comment Types [787](https://gitlab.echothree.com/echothree/echothree/-/issues/787)
+* Enforce "Is Extensible" for Rating Types [788](https://gitlab.echothree.com/echothree/echothree/-/issues/788)
+* Enforce "Is Extensible" for Message Types [789](https://gitlab.echothree.com/echothree/echothree/-/issues/789)
+* Add Additional Columns and Appearances to Entity Types Listing and Review Pages [795](https://gitlab.echothree.com/echothree/echothree/-/issues/795)
+* Add Entity Attributes and Appearances to Entity List Items [796](https://gitlab.echothree.com/echothree/echothree/-/issues/796)
+* Include Track Revisions and Sort Order on Entity Attributes List [800](https://gitlab.echothree.com/echothree/echothree/-/issues/800)
+* Replace Yes, No, and Not Set with Message Resources [801](https://gitlab.echothree.com/echothree/echothree/-/issues/801)
+* Deleting Rating Type With Multiple List Items Results in Database Error [802](https://gitlab.echothree.com/echothree/echothree/-/issues/802)
+* GetContentCatalogItems UC Returns No Content Catalog Items [803](https://gitlab.echothree.com/echothree/echothree/-/issues/803)
+* Do Not Expose Entity Instance Information for Content Category Items [804](https://gitlab.echothree.com/echothree/echothree/-/issues/804)
+* Expose Entity Instance Information for Content Catalog Items [805](https://gitlab.echothree.com/echothree/echothree/-/issues/805)
+* Add Party Aliases to Warehouses [809](https://gitlab.echothree.com/echothree/echothree/-/issues/809)
+* Add Parent Party Type to Party Type Listing [810](https://gitlab.echothree.com/echothree/echothree/-/issues/810)
+* Touch Dependent Content Catalogs When Content Collection Is Modified [811](https://gitlab.echothree.com/echothree/echothree/-/issues/811)
+* Touch Dependent Content Categories When Content Catalog Is Modified [812](https://gitlab.echothree.com/echothree/echothree/-/issues/812)
+* Touch Dependent Content Catalog Items When Content Category Is Modified [813](https://gitlab.echothree.com/echothree/echothree/-/issues/813)
+* Convert AppearanceModificationSubscriber to Use BaseEventSubscriber [814](https://gitlab.echothree.com/echothree/echothree/-/issues/814)
+* Add Party Alias Type Object and Queries [817](https://gitlab.echothree.com/echothree/echothree/-/issues/817)
+* Add Party Alias Object and Queries [820](https://gitlab.echothree.com/echothree/echothree/-/issues/820)
+* Correct Link to Party Alias Type Review Page [821](https://gitlab.echothree.com/echothree/echothree/-/issues/821)
+* jOOQ 3.18.5 Upgrade [822](https://gitlab.echothree.com/echothree/echothree/-/issues/822)
+* Add Tags and Attributes to Party Alias Types [823](https://gitlab.echothree.com/echothree/echothree/-/issues/823)
+
+## 2023-06-11-01
+
+* Add Support for Updating Component Vendors When Loading From XML [745](https://gitlab.echothree.com/echothree/echothree/-/issues/745)
+* Add Support for Updating Entity Types When Loading From XML [746](https://gitlab.echothree.com/echothree/echothree/-/issues/746)
+* Add Support for Updating Workflows When Loading From XML [752](https://gitlab.echothree.com/echothree/echothree/-/issues/752)
+* Add Facet UCs for Employees [761](https://gitlab.echothree.com/echothree/echothree/-/issues/761)
+* Add Facet UCs for Customers [762](https://gitlab.echothree.com/echothree/echothree/-/issues/762)
+* Add Order Object [763](https://gitlab.echothree.com/echothree/echothree/-/issues/763)
+* Add Order Line Object [764](https://gitlab.echothree.com/echothree/echothree/-/issues/764)
+* Add Order Time Object [765](https://gitlab.echothree.com/echothree/echothree/-/issues/765)
+* Add Order Line Time Object [767](https://gitlab.echothree.com/echothree/echothree/-/issues/767)
+* MySQL Connector/J 8.0.33 Upgrade [775](https://gitlab.echothree.com/echothree/echothree/-/issues/775)
+* Convert Warehouse and Location Page Titles to Use Message Resources [776](https://gitlab.echothree.com/echothree/echothree/-/issues/776)
+* Convert Warehouse and Location Breadcrumbs to Use Message Resources [777](https://gitlab.echothree.com/echothree/echothree/-/issues/777)
+* Simple Warehouse Search [778](https://gitlab.echothree.com/echothree/echothree/-/issues/778)
+* Change Formatting of Multiple List Item Attribute Values to One per Line [779](https://gitlab.echothree.com/echothree/echothree/-/issues/779)
+* Apache POI 3.2-FINAL Downgrade [780](https://gitlab.echothree.com/echothree/echothree/-/issues/780)
+* Warehouse List and Search Results Export [781](https://gitlab.echothree.com/echothree/echothree/-/issues/781)
+* Convert Company/Division/Department Page Titles to Use Message Resources [782](https://gitlab.echothree.com/echothree/echothree/-/issues/782)
+* Convert Employee Page Titles to Use Message Resources [783](https://gitlab.echothree.com/echothree/echothree/-/issues/783)
+* Add Module Dependencies Linking Appropriate Modules Back to src [791](https://gitlab.echothree.com/echothree/echothree/-/issues/791)
+* Add Order Role Type Object [792](https://gitlab.echothree.com/echothree/echothree/-/issues/792)
+* Add Order Role Object [793](https://gitlab.echothree.com/echothree/echothree/-/issues/793)
+* cucumber-java8/cucumber-junit 7.12.1 Upgrade [794](https://gitlab.echothree.com/echothree/echothree/-/issues/794)
+
+## 2023-05-28-01
+
+* Add Warehouse Mutations [721](https://gitlab.echothree.com/echothree/echothree/-/issues/721)
+* Apache Lucene 9.6.0 Upgrade [724](https://gitlab.echothree.com/echothree/echothree/-/issues/724)
+* Add Support for Indexing and Searching Boolean Attributes [725](https://gitlab.echothree.com/echothree/echothree/-/issues/725)
+* Add Locations to Identify Command [726](https://gitlab.echothree.com/echothree/echothree/-/issues/726)
+* Add Divisions to Identify Command [727](https://gitlab.echothree.com/echothree/echothree/-/issues/727)
+* Add Departments to Identify Command [728](https://gitlab.echothree.com/echothree/echothree/-/issues/728)
+* Add Indexing of Warehouses [731](https://gitlab.echothree.com/echothree/echothree/-/issues/731)
+* Add Searching of Warehouses [732](https://gitlab.echothree.com/echothree/echothree/-/issues/732)
+* Add Tags, Attributes, and Events to Location Review [734](https://gitlab.echothree.com/echothree/echothree/-/issues/734)
+* Add Appearance to Warehouse List and Review Pages [735](https://gitlab.echothree.com/echothree/echothree/-/issues/735)
+* Add GetWorkflowChoices UC [737](https://gitlab.echothree.com/echothree/echothree/-/issues/737)
+* Add Component Vendors to Identify Command [739](https://gitlab.echothree.com/echothree/echothree/-/issues/739)
+* Add Entity Types to Identify Command [740](https://gitlab.echothree.com/echothree/echothree/-/issues/740)
+* Add Additional Information to Entity Type Review Page [741](https://gitlab.echothree.com/echothree/echothree/-/issues/741)
+* Link Component Vendor and Entity Type on Events Page [742](https://gitlab.echothree.com/echothree/echothree/-/issues/742)
+* Add Facet UCs for Warehouses [743](https://gitlab.echothree.com/echothree/echothree/-/issues/743)
+* Security Role CommandMessage.Edit Is Missing [744](https://gitlab.echothree.com/echothree/echothree/-/issues/744)
+* Include Apache License Notice in Page Footer [749](https://gitlab.echothree.com/echothree/echothree/-/issues/749)
+* Include Locations on Warehouse Review Page [750](https://gitlab.echothree.com/echothree/echothree/-/issues/750)
+* Add Yellow Highlighter as a Sample Appearance [751](https://gitlab.echothree.com/echothree/echothree/-/issues/751)
+* Add Entity Visit and Appearance to Location List and Review Pages [756](https://gitlab.echothree.com/echothree/echothree/-/issues/756)
+* Add Entity Visit to Warehouse List Page [757](https://gitlab.echothree.com/echothree/echothree/-/issues/757)
+* Installation Directions Improvements [758](https://gitlab.echothree.com/echothree/echothree/-/issues/758)
+* Remaining Usage of Component Vendor of "EchoThree" [759](https://gitlab.echothree.com/echothree/echothree/-/issues/759)
+* reload4j 1.2.25 Upgrade [760](https://gitlab.echothree.com/echothree/echothree/-/issues/760)
+
+## 2023-05-14-01
+
+* Add Order Time Type Object and Queries [702](https://gitlab.echothree.com/echothree/echothree/-/issues/702)
+* Add Order Time Type Mutations [703](https://gitlab.echothree.com/echothree/echothree/-/issues/703)
+* Add GL Account Object and Queries [704](https://gitlab.echothree.com/echothree/echothree/-/issues/704)
+* Add GL Account Mutations [705](https://gitlab.echothree.com/echothree/echothree/-/issues/705)
+* Add Customer Type Object and Queries [708](https://gitlab.echothree.com/echothree/echothree/-/issues/708)
+* Add Customer Type Mutations [709](https://gitlab.echothree.com/echothree/echothree/-/issues/709)
+* Rename Component Vendor ECHOTHREE to ECHO_THREE [719](https://gitlab.echothree.com/echothree/echothree/-/issues/719)
+* Add Warehouse Object and Queries [720](https://gitlab.echothree.com/echothree/echothree/-/issues/720)
+* Add Companies and Warehouses to Identify UC [722](https://gitlab.echothree.com/echothree/echothree/-/issues/722)
+* jOOQ 3.18.4 Upgrade [723](https://gitlab.echothree.com/echothree/echothree/-/issues/723)
+
+## 2023-04-30-01
+
+* Add Term Type Object and Queries [684](https://gitlab.echothree.com/echothree/echothree/-/issues/684)
+* Add Term Object and Queries [686](https://gitlab.echothree.com/echothree/echothree/-/issues/686)
+* Allow Entity Lock Recovery [701](https://gitlab.echothree.com/echothree/echothree/-/issues/701)
+* Add Allocation Priorty Object and Queries [706](https://gitlab.echothree.com/echothree/echothree/-/issues/706)
+* Add Allocation Priority Mutations [707](https://gitlab.echothree.com/echothree/echothree/-/issues/707)
+* ICU4J 73.1 Upgrade [713](https://gitlab.echothree.com/echothree/echothree/-/issues/713)
+* ClassGraph 4.8.157 Upgrade [714](https://gitlab.echothree.com/echothree/echothree/-/issues/714)
+* graphql-java 17.6 Upgrade [715](https://gitlab.echothree.com/echothree/echothree/-/issues/715)
+* Null passwordVerifiedTime Throws Exception [716](https://gitlab.echothree.com/echothree/echothree/-/issues/716)
+* Null offerUse Throws Exception [717](https://gitlab.echothree.com/echothree/echothree/-/issues/717)
+* Rename UserSession's PasswordVerifiedTime to IdentityVerifiedTime [718](https://gitlab.echothree.com/echothree/echothree/-/issues/718)
+
+## 2023-04-16-01
+
+* Add Wishlist Type Mutations [640](https://gitlab.echothree.com/echothree/echothree/-/issues/640)
+* Add Wishlist Priority Mutations [642](https://gitlab.echothree.com/echothree/echothree/-/issues/642)
+* Add Order Type Mutations [644](https://gitlab.echothree.com/echothree/echothree/-/issues/644)
+* Add Order Priority Mutations [646](https://gitlab.echothree.com/echothree/echothree/-/issues/646)
+* Add Vendor Item Mutations [689](https://gitlab.echothree.com/echothree/echothree/-/issues/689)
+* Add Vendor Item Cost Mutations [691](https://gitlab.echothree.com/echothree/echothree/-/issues/691)
+* Add Vendor Type Mutations [693](https://gitlab.echothree.com/echothree/echothree/-/issues/693)
+* jOOQ 3.18.2 Upgrade [697](https://gitlab.echothree.com/echothree/echothree/-/issues/697)
+* Apache Lucene 9.5.0 Upgrade [698](https://gitlab.echothree.com/echothree/echothree/-/issues/698)
+* canSpecifyParty() Throwing NPE [699](https://gitlab.echothree.com/echothree/echothree/-/issues/699)
+* Add Vendor Mutations [700](https://gitlab.echothree.com/echothree/echothree/-/issues/700)
+* jOOQ 3.18.3 Upgrade [710](https://gitlab.echothree.com/echothree/echothree/-/issues/710)
+* Rename Wishlist Type Priorities to Wishlist Priorities [711](https://gitlab.echothree.com/echothree/echothree/-/issues/711)
+
+## 2023-04-02-01
+
+* Add Vendor Item Object and Queries [688](https://gitlab.echothree.com/echothree/echothree/-/issues/688)
+* Add Vendor Item Cost Object and Queries [690](https://gitlab.echothree.com/echothree/echothree/-/issues/690)
+* cucumber-java8/cucumber-junit 7.11.2 Upgrade [695](https://gitlab.echothree.com/echothree/echothree/-/issues/695)
+* jOOQ 3.17.11 Upgrade [696](https://gitlab.echothree.com/echothree/echothree/-/issues/696)
+
+## 2023-03-19-01
+
+* Add Workflow Entrance Security Roles Object and Queries [654](https://gitlab.echothree.com/echothree/echothree/-/issues/654)
+* Add Workflow Destination Party Type Object and Queries [676](https://gitlab.echothree.com/echothree/echothree/-/issues/676)
+* Add Workflow Destination Security Role Object and Queries [678](https://gitlab.echothree.com/echothree/echothree/-/issues/678)
+* Add Workflow Destination Selector Object and Queries [680](https://gitlab.echothree.com/echothree/echothree/-/issues/680)
+* Add Vendor Type Object and Queries [692](https://gitlab.echothree.com/echothree/echothree/-/issues/692)
+* WildFly 26.1.3 Upgrade [694](https://gitlab.echothree.com/echothree/echothree/-/issues/694)
+
+## 2023-03-05-01
+
+* Add Workflow Entrance Party Types Object and Queries [653](https://gitlab.echothree.com/echothree/echothree/-/issues/653)
+* Add Workflow Entrance Selectors Object and Queries [655](https://gitlab.echothree.com/echothree/echothree/-/issues/655)
+* Add Workflow Destinations Object and Queries [662](https://gitlab.echothree.com/echothree/echothree/-/issues/662)
+* Add Workflow Destination Steps Object and Queries [664](https://gitlab.echothree.com/echothree/echothree/-/issues/664)
+* Add Workflow Selector Kind Object and Queries [666](https://gitlab.echothree.com/echothree/echothree/-/issues/666)
+* Add Workflow Entity Type Object and Queries [668](https://gitlab.echothree.com/echothree/echothree/-/issues/668)
+* Add Security Role Object and Queries [682](https://gitlab.echothree.com/echothree/echothree/-/issues/682)
+
+## 2023-02-19-01
+
+* Add Workflow Entrance Object and Queries [651](https://gitlab.echothree.com/echothree/echothree/-/issues/651)
+* Add Workflow Entrance Steps Object and Queries [656](https://gitlab.echothree.com/echothree/echothree/-/issues/656)
+* MySQL Connector/J 8.0.32 Upgrade [661](https://gitlab.echothree.com/echothree/echothree/-/issues/661)
+
+## 2023-02-05-01
+
+* Add Wishlist Type Object and Queries [639](https://gitlab.echothree.com/echothree/echothree/-/issues/639)
+* Add Wishlist Type Priority Object and Queries [641](https://gitlab.echothree.com/echothree/echothree/-/issues/641)
+* Add Order Type Object and Queries [643](https://gitlab.echothree.com/echothree/echothree/-/issues/643)
+* Add Order Priority Object and Queries [645](https://gitlab.echothree.com/echothree/echothree/-/issues/645)
+* Gson 2.10.1 Upgrade [647](https://gitlab.echothree.com/echothree/echothree/-/issues/647)
+* Apache Lucene 9.4.2 Upgrade [648](https://gitlab.echothree.com/echothree/echothree/-/issues/648)
+* Replace Date and Time Strings with Date and Time Objects [649](https://gitlab.echothree.com/echothree/echothree/-/issues/649)
+* cucumber-java8/cucumber-junit 7.11.1 Upgrade [650](https://gitlab.echothree.com/echothree/echothree/-/issues/650)
+
+## 2023-01-22-01
+
+* Add Content Category Item Mutations [615](https://gitlab.echothree.com/echothree/echothree/-/issues/615)
+* Add Content Catalog Mutations [616](https://gitlab.echothree.com/echothree/echothree/-/issues/616)
+* Add Content Category Mutations [617](https://gitlab.echothree.com/echothree/echothree/-/issues/617)
+* Add Content Collection Mutations [618](https://gitlab.echothree.com/echothree/echothree/-/issues/618)
+* jOOQ 3.17.7 Upgrade [634](https://gitlab.echothree.com/echothree/echothree/-/issues/634)
+* Add Role Type object [635](https://gitlab.echothree.com/echothree/echothree/-/issues/635)
+* Add Party Relationship object [636](https://gitlab.echothree.com/echothree/echothree/-/issues/636)
+* Replace Role Type of SUPPLIER with VENDOR [637](https://gitlab.echothree.com/echothree/echothree/-/issues/637)
+* Add Party Relationship Type Object [638](https://gitlab.echothree.com/echothree/echothree/-/issues/638)
+
+## 2023-01-08-01
+
+* Modifying Appearance Should TOUCH Entity Instances With That Appearance [601](https://gitlab.echothree.com/echothree/echothree/-/issues/601)
+* Add Entity Attribute Entity Attribute Group Mutations [610](https://gitlab.echothree.com/echothree/echothree/-/issues/610)
+* 2023 Copyright Update [612](https://gitlab.echothree.com/echothree/echothree/-/issues/612)
+* ICU4J 72.1 Upgrade [613](https://gitlab.echothree.com/echothree/echothree/-/issues/613)
+* Remove setDefault* Mutations [614](https://gitlab.echothree.com/echothree/echothree/-/issues/614)
+* Move CommandResult fields to CommandResult object [633](https://gitlab.echothree.com/echothree/echothree/-/issues/633)
+
+## 2022-12-25-01
+
+* Add Related Item Type Object and Queries [545](https://gitlab.echothree.com/echothree/echothree/-/issues/545)
+* Add Related Item Type Mutations [546](https://gitlab.echothree.com/echothree/echothree/-/issues/546)
+* Add Related Item Object and Queries [547](https://gitlab.echothree.com/echothree/echothree/-/issues/547)
+* Add Related Item Mutations [548](https://gitlab.echothree.com/echothree/echothree/-/issues/548)
+* Add Search Result Action Type Object and Queries [567](https://gitlab.echothree.com/echothree/echothree/-/issues/567)
+* Add Search Result Action Type Mutations [568](https://gitlab.echothree.com/echothree/echothree/-/issues/568)
+* Add Item Unit of Measure Type Object and Queries [598](https://gitlab.echothree.com/echothree/echothree/-/issues/598)
+* Add Item Unit of Measure Type Mutations [599](https://gitlab.echothree.com/echothree/echothree/-/issues/599)
+
+## 2022-12-11-01
+
+* jOOQ 3.17.6 Upgrade [611](https://gitlab.echothree.com/echothree/echothree/-/issues/611)
+
+## 2022-11-27-01
+
+* Add Tag Scope Mutations [554](https://gitlab.echothree.com/echothree/echothree/-/issues/554)
+* Add Tag Scope Entity Type Object and Queries [555](https://gitlab.echothree.com/echothree/echothree/-/issues/555)
+* Add Tag Scope Entity Type Mutations [556](https://gitlab.echothree.com/echothree/echothree/-/issues/556)
+* Add Tag Object and Queries [557](https://gitlab.echothree.com/echothree/echothree/-/issues/557)
+* Add Tag Mutations [558](https://gitlab.echothree.com/echothree/echothree/-/issues/558)
+* Add Entity Tag Object and Queries [559](https://gitlab.echothree.com/echothree/echothree/-/issues/559)
+* Add Entity Tag Mutations [560](https://gitlab.echothree.com/echothree/echothree/-/issues/560)
+* Add Pagination to languages Query [602](https://gitlab.echothree.com/echothree/echothree/-/issues/602)
+* Add Pagination to currencies Query [603](https://gitlab.echothree.com/echothree/echothree/-/issues/603)
+* Add Pagination to timeZones Query [604](https://gitlab.echothree.com/echothree/echothree/-/issues/604)
+* Add Pagination to dateTimeFormats Query [605](https://gitlab.echothree.com/echothree/echothree/-/issues/605)
+* Add Pagination to personalTitles Query [606](https://gitlab.echothree.com/echothree/echothree/-/issues/606)
+* Add Pagination to nameSuffixes Query [607](https://gitlab.echothree.com/echothree/echothree/-/issues/607)
+* Apache Ivy 2.5.1 Upgrade [608](https://gitlab.echothree.com/echothree/echothree/-/issues/608)
+* Add Entity Attribute Group Mutations [609](https://gitlab.echothree.com/echothree/echothree/-/issues/609)
+
+## 2022-11-13-01
+
+* jOOQ 3.17.5 Upgrade [600](https://gitlab.echothree.com/echothree/echothree/-/issues/600)
+
+## 2022-10-30-01
+
+* Editing Offer to Add Offer Item Price Filter Should Remove All Offer Item Prices [542](https://gitlab.echothree.com/echothree/echothree/-/issues/542)
+* Add Pagination to customers Query [588](https://gitlab.echothree.com/echothree/echothree/-/issues/588)
+* Add Pagination to employees Query [589](https://gitlab.echothree.com/echothree/echothree/-/issues/589)
+* Add Pagination to vendors Query [590](https://gitlab.echothree.com/echothree/echothree/-/issues/590)
+* Add UniversalEntitySpec to GetOfferItem UC [593](https://gitlab.echothree.com/echothree/echothree/-/issues/593)
+* Add Id to Events Sent to Kafka Topics [594](https://gitlab.echothree.com/echothree/echothree/-/issues/594)
+* entityInstance Query Not Correctly Handling Ids [595](https://gitlab.echothree.com/echothree/echothree/-/issues/595)
+* Increase Build Memory to 6G [596](https://gitlab.echothree.com/echothree/echothree/-/issues/596)
+
+## 2022-10-16-01
+
+* Editing Offer to Add Offer Item Selector Should Remove All Offer Items [541](https://gitlab.echothree.com/echothree/echothree/-/issues/541)
+* Add Tag Scope Object and Queries [553](https://gitlab.echothree.com/echothree/echothree/-/issues/553)
+* Apache Lucene 9.4.0 Upgrade [579](https://gitlab.echothree.com/echothree/echothree/-/issues/579)
+* Send Kafka Events in Avro Format [580](https://gitlab.echothree.com/echothree/echothree/-/issues/580)
+* Gson 2.9.1 Upgrade [581](https://gitlab.echothree.com/echothree/echothree/-/issues/581)
+* graphql-java 17.4 and graphql-java-extended-scalars 17.1 Upgrade [582](https://gitlab.echothree.com/echothree/echothree/-/issues/582)
+* Send Kafka Events in JSON Format [583](https://gitlab.echothree.com/echothree/echothree/-/issues/583)
+* SLF4J 1.7.36 Upgrade [584](https://gitlab.echothree.com/echothree/echothree/-/issues/584)
+* Include Content-Type Header for JSON Kafka Events [585](https://gitlab.echothree.com/echothree/echothree/-/issues/585)
+* Allow entityInstance Query to Accept All Types of Entity Instance References [586](https://gitlab.echothree.com/echothree/echothree/-/issues/586)
+* Add Party Queries [587](https://gitlab.echothree.com/echothree/echothree/-/issues/587)
+* Replace Periods With Dashes in Kafka Topic Name [591](https://gitlab.echothree.com/echothree/echothree/-/issues/591)
+* Add lucene-backward-codecs [592](https://gitlab.echothree.com/echothree/echothree/-/issues/592)
+
+## 2022-10-02-01
+
+* Add Item Description Type Use Type Object and Queries [549](https://gitlab.echothree.com/echothree/echothree/-/issues/549)
+* Add Item Description Type Use Type Type Mutations [550](https://gitlab.echothree.com/echothree/echothree/-/issues/550)
+* Add Item Description Type Use Object and Queries [551](https://gitlab.echothree.com/echothree/echothree/-/issues/551)
+* Add Item Description Type Use Mutations [552](https://gitlab.echothree.com/echothree/echothree/-/issues/552)
+* WildFly 26.1.2 Upgrade [561](https://gitlab.echothree.com/echothree/echothree/-/issues/561)
+* jOOQ 3.17.4 Upgrade [562](https://gitlab.echothree.com/echothree/echothree/-/issues/562)
+* jQuery 3.6.1 Upgrade [563](https://gitlab.echothree.com/echothree/echothree/-/issues/563)
+* Apache Lucene 9.3.0 Upgrade [569](https://gitlab.echothree.com/echothree/echothree/-/issues/569)
+* Add Entity Visit TO [570](https://gitlab.echothree.com/echothree/echothree/-/issues/570)
+* Add New/Updated/Unchanged Column to Item Search Results [571](https://gitlab.echothree.com/echothree/echothree/-/issues/571)
+* GetEmployee and GetVendor UCs Incorrectly Handling No Parameters [572](https://gitlab.echothree.com/echothree/echothree/-/issues/572)
+* Add Default partySecurityRoleTemplate With No Roles [573](https://gitlab.echothree.com/echothree/echothree/-/issues/573)
+* Get UCs for Multiple Entities Sending READ Events [574](https://gitlab.echothree.com/echothree/echothree/-/issues/574)
+* GetGeoCode UC Not Sending READ Event [575](https://gitlab.echothree.com/echothree/echothree/-/issues/575)
+* sendEvent(...) Should Format EntityInstance Before Logging [576](https://gitlab.echothree.com/echothree/echothree/-/issues/576)
+* Send Events Using Kafka [577](https://gitlab.echothree.com/echothree/echothree/-/issues/577)
+* Remove Documentation for Apache Ivy [578](https://gitlab.echothree.com/echothree/echothree/-/issues/578)
+
+## 2022-09-18-01
+
+* Prohibit Manual Offer Item Modifications if Offer Item Selector Set [539](https://gitlab.echothree.com/echothree/echothree/-/issues/539)
+* Prohibit Manual Offer Item Price Modifications if Offer Item Price Filter Set [540](https://gitlab.echothree.com/echothree/echothree/-/issues/540)
+* Editing GL Account With Null GL Account Category Fails With NPE [543](https://gitlab.echothree.com/echothree/echothree/-/issues/543)
+* Add createItemSearchResultAction Mutation [564](https://gitlab.echothree.com/echothree/echothree/-/issues/564)
+* Add createUserVisitCampaign Mutation [565](https://gitlab.echothree.com/echothree/echothree/-/issues/565)
+* Add createUserVisitTrack Mutation [566](https://gitlab.echothree.com/echothree/echothree/-/issues/566)
+
+## 2022-09-04-01
+
+* Add Pronouns to Profiles [324](https://gitlab.echothree.com/echothree/echothree/-/issues/324)
+* Add Pronunciation to Profiles [325](https://gitlab.echothree.com/echothree/echothree/-/issues/325)
+* Add Opaque GraphQL Pagination Cursors [378](https://gitlab.echothree.com/echothree/echothree/-/issues/378)
+* Impossible to Add Item Alias Unless One Already Exists On Item Review Page [530](https://gitlab.echothree.com/echothree/echothree/-/issues/530)
+* Remove "TEST_PAYMENT_PROCESSOR_TYPE" [531](https://gitlab.echothree.com/echothree/echothree/-/issues/531)
+* Switch "TEST_PAYMENT_PROCESSOR" to "SIMULATION" [532](https://gitlab.echothree.com/echothree/echothree/-/issues/532)
+* Increase Maximum Description Length to 132 Characters [534](https://gitlab.echothree.com/echothree/echothree/-/issues/534)
+* Break Apart IndexConstants into Enums [536](https://gitlab.echothree.com/echothree/echothree/-/issues/536)
+* Break Apart QueueConstants into Enums [537](https://gitlab.echothree.com/echothree/echothree/-/issues/537)
+* Break Apart SearchConstants into Enums [538](https://gitlab.echothree.com/echothree/echothree/-/issues/538)
+
+## 2022-08-21-01
+
+* Add Payment Processor Type Code Types for Monetra [14](https://gitlab.echothree.com/echothree/echothree/-/issues/14)
+* Add Payment Processor Type Codes for Monetra [15](https://gitlab.echothree.com/echothree/echothree/-/issues/15)
+* Add Payment Processor Type for Monetra [20](https://gitlab.echothree.com/echothree/echothree/-/issues/20)
+* Add Payment Processor Type for Simulation [21](https://gitlab.echothree.com/echothree/echothree/-/issues/21)
+* Add Payment Processor Type Actions for Monetra [23](https://gitlab.echothree.com/echothree/echothree/-/issues/23)
+* Add Pagination to entityInstances Field on Entity Type Object [427](https://gitlab.echothree.com/echothree/echothree/-/issues/427)
+* MySQL Connector/J 8.0.30 Upgrade [523](https://gitlab.echothree.com/echothree/echothree/-/issues/523)
+* Add Item Alias Checksum Type Queries [524](https://gitlab.echothree.com/echothree/echothree/-/issues/524)
+* Modifying ItemAliasTypeName Should Reindex All Items Utilizing It [525](https://gitlab.echothree.com/echothree/echothree/-/issues/525)
+* queueEntityInstanceToIndexing(...) Called Too Frequently [526](https://gitlab.echothree.com/echothree/echothree/-/issues/526)
+* ClassGraph 4.8.149 Upgrade [528](https://gitlab.echothree.com/echothree/echothree/-/issues/528)
+* jOOQ 3.17.3 Upgrade [533](https://gitlab.echothree.com/echothree/echothree/-/issues/533)
+
+## 2022-08-07-01
+
+* Add Item Accounting Category Object and Queries [502](https://gitlab.echothree.com/echothree/echothree/-/issues/502)
+* Add Item Accounting Category Mutations [503](https://gitlab.echothree.com/echothree/echothree/-/issues/503)
+* Add Item Purchasing Category Object and Queries [504](https://gitlab.echothree.com/echothree/echothree/-/issues/504)
+* Add Item Purchasing Category Mutations [505](https://gitlab.echothree.com/echothree/echothree/-/issues/505)
+* Add Item Alias Type Object and Queries [506](https://gitlab.echothree.com/echothree/echothree/-/issues/506)
+* Add Item Alias Type Mutations [507](https://gitlab.echothree.com/echothree/echothree/-/issues/507)
+* Add Item Alias Object and Queries [508](https://gitlab.echothree.com/echothree/echothree/-/issues/508)
+* Add Item Alias Mutations [509](https://gitlab.echothree.com/echothree/echothree/-/issues/509)
+* Don't Log IP Address if Login is Local [517](https://gitlab.echothree.com/echothree/echothree/-/issues/517)
+* Cannot Add Item Description Type Without a Mime Type Usage Type [519](https://gitlab.echothree.com/echothree/echothree/-/issues/519)
+* Item Description Type Review Shouldn't Show Mime Type Usage Type if Null [520](https://gitlab.echothree.com/echothree/echothree/-/issues/520)
+* Use GraphQL Unions for Entity Attributes [522](https://gitlab.echothree.com/echothree/echothree/-/issues/522)
+
+## 2022-07-24-01
+
+* GraphQL Mutations for Item Description Types [413](https://gitlab.echothree.com/echothree/echothree/-/issues/413)
+* GraphQL Mutations for Item Image Types [415](https://gitlab.echothree.com/echothree/echothree/-/issues/415)
+* GraphQL Mutations for Item Descriptions [417](https://gitlab.echothree.com/echothree/echothree/-/issues/417)
+* Add Queries for Entity Attributes [429](https://gitlab.echothree.com/echothree/echothree/-/issues/429)
+* Add Entity Attribute Mutations for Collections [467](https://gitlab.echothree.com/echothree/echothree/-/issues/467)
+* Add Entity Attribute Mutations for Entities [469](https://gitlab.echothree.com/echothree/echothree/-/issues/469)
+* jOOQ 3.17.2 Upgrade [513](https://gitlab.echothree.com/echothree/echothree/-/issues/513)
+* Add Entity Names Object [514](https://gitlab.echothree.com/echothree/echothree/-/issues/514)
+* Add Description Field to Entity Instance Object [518](https://gitlab.echothree.com/echothree/echothree/-/issues/518)
+
+## 2022-07-10-01
+
+* Add entityAttributeGroups to Entity Attribute Object [426](https://gitlab.echothree.com/echothree/echothree/-/issues/426)
+* Add Cancellation Policy Queries [443](https://gitlab.echothree.com/echothree/echothree/-/issues/443)
+* Add Return Policy Queries [449](https://gitlab.echothree.com/echothree/echothree/-/issues/449)
+* Add Entity Attribute Mutations for CLOBs [466](https://gitlab.echothree.com/echothree/echothree/-/issues/466)
+* Add Entity Attribute Mutations for GeoPoints [470](https://gitlab.echothree.com/echothree/echothree/-/issues/470)
+* Add CLOB to Entity Attribute Object [473](https://gitlab.echothree.com/echothree/echothree/-/issues/473)
+* Add Collection to Entity Attribute Object [474](https://gitlab.echothree.com/echothree/echothree/-/issues/474)
+* Add Entity to Entity Attribute Object [476](https://gitlab.echothree.com/echothree/echothree/-/issues/476)
+* Add GeoPoint to Entity Attribute Object [477](https://gitlab.echothree.com/echothree/echothree/-/issues/477)
+* jOOQ 3.17.1 Upgrade [501](https://gitlab.echothree.com/echothree/echothree/-/issues/501)
+* UserVisits Not Being Invalidated by Servlet Container for GraphQL [512](https://gitlab.echothree.com/echothree/echothree/-/issues/512)
+
+## 2022-06-26-01
+
+* GraphQL Queries for Getting Item Results Facets [405](https://gitlab.echothree.com/echothree/echothree/-/issues/405)
+* Add Cancellation Kind Queries [440](https://gitlab.echothree.com/echothree/echothree/-/issues/440)
+* Add Return Kind Queries [446](https://gitlab.echothree.com/echothree/echothree/-/issues/446)
+* Add Entity Attribute Mutations for Dates [468](https://gitlab.echothree.com/echothree/echothree/-/issues/468)
+* Add Entity Attribute Mutations for Names [471](https://gitlab.echothree.com/echothree/echothree/-/issues/471)
+* Add Entity Attribute Mutations for Times [472](https://gitlab.echothree.com/echothree/echothree/-/issues/472)
+* Add Date to Entity Attribute Object [475](https://gitlab.echothree.com/echothree/echothree/-/issues/475)
+* Add Name to Entity Attribute Object [478](https://gitlab.echothree.com/echothree/echothree/-/issues/478)
+* Add Time to Entity Attribute Object [479](https://gitlab.echothree.com/echothree/echothree/-/issues/479)
+* Error Prone 2.14.0 Upgrade [487](https://gitlab.echothree.com/echothree/echothree/-/issues/487)
+* cucumber-java8/cucumber-junit 7.3.4 Upgrade [488](https://gitlab.echothree.com/echothree/echothree/-/issues/488)
+* ClassGraph 4.8.147 Upgrade [489](https://gitlab.echothree.com/echothree/echothree/-/issues/489)
+* commons-codec 1.15 Upgrade [490](https://gitlab.echothree.com/echothree/echothree/-/issues/490)
+* commons-cli 1.5.0 Upgrade [491](https://gitlab.echothree.com/echothree/echothree/-/issues/491)
+* ROME 1.18.0 Upgrade [492](https://gitlab.echothree.com/echothree/echothree/-/issues/492)
+* Gson 2.9.0 Upgrade [493](https://gitlab.echothree.com/echothree/echothree/-/issues/493)
+* commons-collections4 4.4 Upgrade [494](https://gitlab.echothree.com/echothree/echothree/-/issues/494)
+* httpcore 4.4.15 Upgrade [495](https://gitlab.echothree.com/echothree/echothree/-/issues/495)
+* javassist 3.29.0-GA Upgrade [496](https://gitlab.echothree.com/echothree/echothree/-/issues/496)
+* freemarker 2.3.31 Upgrade [497](https://gitlab.echothree.com/echothree/echothree/-/issues/497)
+* assertj-guava 3.5.0 Upgrade [498](https://gitlab.echothree.com/echothree/echothree/-/issues/498)
+* assertj-core 3.23.1 Upgrade [499](https://gitlab.echothree.com/echothree/echothree/-/issues/499)
+* xercesImpl 2.12.2 Upgrade [500](https://gitlab.echothree.com/echothree/echothree/-/issues/500)
+* GetItemDescriptions UC Not Setting Item in Result [510](https://gitlab.echothree.com/echothree/echothree/-/issues/510)
+
+## 2022-06-12-01
+
+* Additional Item Object FIelds [438](https://gitlab.echothree.com/echothree/echothree/-/issues/438)
+* Add Cancellation Kind Object [439](https://gitlab.echothree.com/echothree/echothree/-/issues/439)
+* Add Cancellation Policy Object [442](https://gitlab.echothree.com/echothree/echothree/-/issues/442)
+* Add Return Kind Object [445](https://gitlab.echothree.com/echothree/echothree/-/issues/445)
+* Add Return Policy Object [448](https://gitlab.echothree.com/echothree/echothree/-/issues/448)
+* Add Entity Attribute Mutations [481](https://gitlab.echothree.com/echothree/echothree/-/issues/481)
+* Add Entity List Item Mutations [482](https://gitlab.echothree.com/echothree/echothree/-/issues/482)
+* WildFly 26.1.1 Upgrade [484](https://gitlab.echothree.com/echothree/echothree/-/issues/484)
+* Rename partyId to id for User Login Mutations [486](https://gitlab.echothree.com/echothree/echothree/-/issues/486)
+
+## 2022-05-29-01
+
+* Add EntityListItemSequence to Entity Attribute Object [480](https://gitlab.echothree.com/echothree/echothree/-/issues/480)
+* Apache Lucene 9.2.0 Upgrade [483](https://gitlab.echothree.com/echothree/echothree/-/issues/483)
+
+## 2022-05-15-01
+
+* MySQL Connector/J 8.0.29 Upgrade [464](https://gitlab.echothree.com/echothree/echothree/-/issues/464)
+* Entity Attribute Mutations for Booleans, Integers, Longs, and Strings [465](https://gitlab.echothree.com/echothree/echothree/-/issues/465)
+
+## 2022-05-01-01
+
+* GraphQL Objects and Queries for Item Descriptions [416](https://gitlab.echothree.com/echothree/echothree/-/issues/416)
+* WildFly 26.1.0 Upgrade [453](https://gitlab.echothree.com/echothree/echothree/-/issues/453)
+* jOOQ 3.16.6 Upgrade [458](https://gitlab.echothree.com/echothree/echothree/-/issues/458)
+* ICU4J 71.1 Upgrade [459](https://gitlab.echothree.com/echothree/echothree/-/issues/459)
+* Convert Boolean to a BIT(1) [460](https://gitlab.echothree.com/echothree/echothree/-/issues/460)
+* Missing Initial Entity Types [461](https://gitlab.echothree.com/echothree/echothree/-/issues/461)
+* Switch IntelliJ Project from JDK_17_PREVIEW to JDK_17 [462](https://gitlab.echothree.com/echothree/echothree/-/issues/462)
+* Remove Dependency on Spring [463](https://gitlab.echothree.com/echothree/echothree/-/issues/463)
+
+## 2022-04-17-01
+
+* Spring 5.3.18 Upgrade [452](https://gitlab.echothree.com/echothree/echothree/-/issues/452)
+* Error Prone 2.13.0 Upgrade [454](https://gitlab.echothree.com/echothree/echothree/-/issues/454)
+* ClassGraph 4.8.143 Upgrade [455](https://gitlab.echothree.com/echothree/echothree/-/issues/455)
+* JaCoCo 0.8.8 Upgrade [456](https://gitlab.echothree.com/echothree/echothree/-/issues/456)
+
+## 2022-04-03-01
+
+* Apache Lucene 9.1.0 Upgrade [451](https://gitlab.echothree.com/echothree/echothree/-/issues/451)
+
+## 2022-03-20-01
+
+* GraphQL Objects and Queries for Item Image Types [414](https://gitlab.echothree.com/echothree/echothree/-/issues/414)
+* CreateEntityListItemAttributeForm Extends Incorrect Interface [423](https://gitlab.echothree.com/echothree/echothree/-/issues/423)
+* GraphQL Mutations for Entity List Item Attributes [424](https://gitlab.echothree.com/echothree/echothree/-/issues/424)
+* GraphQL Mutations for Entity Multiple List Item Attributes [425](https://gitlab.echothree.com/echothree/echothree/-/issues/425)
+* Allow Anyone to Call GetEntityListItems and Get EntityListItem UCs [428](https://gitlab.echothree.com/echothree/echothree/-/issues/428)
+* Correct GraphQL Description for Entity Attribute Group Object [430](https://gitlab.echothree.com/echothree/echothree/-/issues/430)
+* Guava 31.1-jre Upgrade [431](https://gitlab.echothree.com/echothree/echothree/-/issues/431)
+* GraphQL Objects and Queries for Item Delivery Types [432](https://gitlab.echothree.com/echothree/echothree/-/issues/432)
+* GraphQL Objects and Queries for Item Inventory Types [433](https://gitlab.echothree.com/echothree/echothree/-/issues/433)
+* GraphQL Queries for Item Price Types [434](https://gitlab.echothree.com/echothree/echothree/-/issues/434)
+* GraphQL Queries for Item Types [435](https://gitlab.echothree.com/echothree/echothree/-/issues/435)
+* GraphQL Objects and Queries for Item Use Types [436](https://gitlab.echothree.com/echothree/echothree/-/issues/436)
+* Additional Item Description Type Object FIelds [437](https://gitlab.echothree.com/echothree/echothree/-/issues/437)
+
+## 2022-03-06-01
+
+* GraphQL Objects for Item Description Types [412](https://gitlab.echothree.com/echothree/echothree/-/issues/412)
+* jOOQ 3.16.4 Upgrade [419](https://gitlab.echothree.com/echothree/echothree/-/issues/419)
+* cucumber-java8/cucumber-junit 7.2.3 Upgrade [420](https://gitlab.echothree.com/echothree/echothree/-/issues/420)
+* ClassGraph 4.8.141 Upgrade [421](https://gitlab.echothree.com/echothree/echothree/-/issues/421)
+* Add Permissions to Entity Attribute Commands [422](https://gitlab.echothree.com/echothree/echothree/-/issues/422)
+
+## 2022-02-20-01
+
+* Remove Jakarta Standard Taglib [418](https://gitlab.echothree.com/echothree/echothree/-/issues/418)
+
+## 2022-02-06-01
+
+* GraphQL Mutations for Offer Items [135](https://gitlab.echothree.com/echothree/echothree/-/issues/135)
+* GraphQL Mutations for Offer Item Prices [136](https://gitlab.echothree.com/echothree/echothree/-/issues/136)
+* GraphQL Mutations for Item Prices [403](https://gitlab.echothree.com/echothree/echothree/-/issues/403)
+* Error Prone 2.11.0 Upgrade [407](https://gitlab.echothree.com/echothree/echothree/-/issues/407)
+* jOOQ 3.16.3 Upgrade [408](https://gitlab.echothree.com/echothree/echothree/-/issues/408)
+* JFreeChart 1.5.3 Upgrade [409](https://gitlab.echothree.com/echothree/echothree/-/issues/409)
+* WildFly 26.0.1 Upgrade [410](https://gitlab.echothree.com/echothree/echothree/-/issues/410)
+* GraphQL Mutations for Items [411](https://gitlab.echothree.com/echothree/echothree/-/issues/411)
+
+## 2022-01-23-01
+
+* Convert all count* Functions to Return longs [393](https://gitlab.echothree.com/echothree/echothree/-/issues/393)
+* Apply Appearances in Item Category List [396](https://gitlab.echothree.com/echothree/echothree/-/issues/396)
+* GraphQL Objects for Item Prices [397](https://gitlab.echothree.com/echothree/echothree/-/issues/397)
+* GraphQL Objects for Offer Items [398](https://gitlab.echothree.com/echothree/echothree/-/issues/398)
+* GraphQL Objects for Offer Item Prices [399](https://gitlab.echothree.com/echothree/echothree/-/issues/399)
+* CountedObjects Should Allow Any Object [400](https://gitlab.echothree.com/echothree/echothree/-/issues/400)
+* jOOQ 3.16.2 Upgrade [401](https://gitlab.echothree.com/echothree/echothree/-/issues/401)
+* ClassGraph 4.8.138 Upgrade [402](https://gitlab.echothree.com/echothree/echothree/-/issues/402)
+* Gson 2.8.9 Upgrade [404](https://gitlab.echothree.com/echothree/echothree/-/issues/404)
+* MySQL Connector/J 8.0.28 Upgrade [406](https://gitlab.echothree.com/echothree/echothree/-/issues/406)
+
+## 2022-01-09-01
+
+* 2022 Copyright Update [358](https://gitlab.echothree.com/echothree/echothree/-/issues/358)
+* Add totalCount to GraphQL Pagination [379](https://gitlab.echothree.com/echothree/echothree/-/issues/379)
+* Implement Alternative to Deprecated GraphQL Context [380](https://gitlab.echothree.com/echothree/echothree/-/issues/380)
+* Add Pagination to items Query [381](https://gitlab.echothree.com/echothree/echothree/-/issues/381)
+* Add Pagination to items in Company, Remove itemCount [382](https://gitlab.echothree.com/echothree/echothree/-/issues/382)
+* Remove itemCount from ItemCategory Object [383](https://gitlab.echothree.com/echothree/echothree/-/issues/383)
+* Session.prepareStatement(...) Caching Prepared Statements Before Substitutions [384](https://gitlab.echothree.com/echothree/echothree/-/issues/384)
+* Apache Lucene 9.0.0 Upgrade [385](https://gitlab.echothree.com/echothree/echothree/-/issues/385)
+* ICU4J 70.1 Upgrade [386](https://gitlab.echothree.com/echothree/echothree/-/issues/386)
+* SLF4J 1.7.32 Upgrade [387](https://gitlab.echothree.com/echothree/echothree/-/issues/387)
+* Add Pagination to customerResults, employeeResults and vendorResults Queries [388](https://gitlab.echothree.com/echothree/echothree/-/issues/388)
+* Add Pagination to divisions in Company, Remove divisionCount [389](https://gitlab.echothree.com/echothree/echothree/-/issues/389)
+* Add Pagination to departments in Division, Remove departmentCount [390](https://gitlab.echothree.com/echothree/echothree/-/issues/390)
+* Add Pagination to offers in Department, Remove offerCount [391](https://gitlab.echothree.com/echothree/echothree/-/issues/391)
+* Add description to Item Object [392](https://gitlab.echothree.com/echothree/echothree/-/issues/392)
+* jOOQ 3.16.0 Upgrade [394](https://gitlab.echothree.com/echothree/echothree/-/issues/394)
+* jOOQ 3.16.1 Upgrade [395](https://gitlab.echothree.com/echothree/echothree/-/issues/395)
+
 ## 2021-12-26-01
 
 * Prototype GraphQL Pagination [362](https://gitlab.echothree.com/echothree/echothree/-/issues/362)

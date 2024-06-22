@@ -1,7 +1,7 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" %>
 
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -27,10 +27,10 @@
     <body>
         <div id="Header">
             <h2>
-                <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
+                <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
                 <a href="<c:url value="/action/Item/Main" />">Items</a> &gt;&gt;
                 <a href="<c:url value="/action/Item/Item/Main" />">Search</a> &gt;&gt;
-                Results
+                <fmt:message key="navigation.results" />
             </h2>
         </div>
         <div id="Content">
@@ -65,6 +65,23 @@
                                 <display:setProperty name="export.pdf.filename" value="Items.pdf" />
                                 <display:setProperty name="export.rtf.filename" value="Items.rtf" />
                                 <display:setProperty name="export.xml.filename" value="Items.xml" />
+                                <display:column media="html">
+                                    <c:choose>
+                                        <c:when test="${itemResult.item.entityInstance.entityVisit == null}">
+                                            New
+                                        </c:when>
+                                        <c:otherwise>
+                                            <c:choose>
+                                                <c:when test="${itemResult.item.entityInstance.entityVisit.unformattedVisitedTime >= itemResult.item.entityInstance.entityTime.unformattedModifiedTime}">
+                                                    Unchanged
+                                                </c:when>
+                                                <c:otherwise>
+                                                    Updated
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </display:column>
                                 <display:column titleKey="columnTitle.name" media="html" sortable="true" sortProperty="item.itemName">
                                     <c:choose>
                                         <c:when test="${includeReviewUrl}">
@@ -198,6 +215,23 @@
                         </c:when>
                         <c:otherwise>
                             <display:table name="itemResults.list" id="itemResult" class="displaytag" partialList="true" pagesize="20" size="itemResultCount" requestURI="/action/Item/Item/Result">
+                                <display:column>
+                                    <c:choose>
+                                        <c:when test="${itemResult.item.entityInstance.entityVisit == null}">
+                                            New
+                                        </c:when>
+                                        <c:otherwise>
+                                            <c:choose>
+                                                <c:when test="${itemResult.item.entityInstance.entityVisit.unformattedVisitedTime >= itemResult.item.entityInstance.entityTime.unformattedModifiedTime}">
+                                                    Unchanged
+                                                </c:when>
+                                                <c:otherwise>
+                                                    Updated
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </display:column>
                                 <display:column titleKey="columnTitle.name">
                                     <c:choose>
                                         <c:when test="${includeReviewUrl}">

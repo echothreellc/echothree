@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,15 +17,15 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateComponentVendorForm;
+import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -50,7 +50,7 @@ public class CreateComponentVendorCommand
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("Description", FieldType.STRING, true, 1L, 80L)
+                new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 ));
     }
     
@@ -61,19 +61,27 @@ public class CreateComponentVendorCommand
     
     @Override
     protected BaseResult execute() {
-        String componentVendorName = form.getComponentVendorName();
+        var result = CoreResultFactory.getCreateComponentVendorResult();
+        var componentVendorName = form.getComponentVendorName();
         var coreControl = getCoreControl();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor == null) {
             var description = form.getDescription();
-            
-            coreControl.createComponentVendor(componentVendorName, description, getPartyPK());
+
+            componentVendor = coreControl.createComponentVendor(componentVendorName, description, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.DuplicateComponentVendorName.name(), componentVendorName);
         }
-        
-        return null;
+
+        if(componentVendor != null) {
+            var basePK = componentVendor.getPrimaryKey();
+
+            result.setComponentVendorName(componentVendor.getLastDetail().getComponentVendorName());
+            result.setEntityRef(basePK.getEntityRef());
+        }
+
+        return result;
     }
     
 }

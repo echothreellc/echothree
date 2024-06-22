@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -19,45 +19,6 @@
     <components>
         <component name="Workflow">
             <tables>
-                <table namePlural="WorkflowTypes" nameSingular="WorkflowType" columnPrefix="wkflt">
-                    <columns>
-                        <column name="WorkflowTypeId" type="EID" nullAllowed="false" />
-                        <column name="WorkflowTypeName" type="Name" nullAllowed="false" />
-                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
-                        <column name="SortOrder" type="Integer" nullAllowed="false" />
-                    </columns>
-                    <indexes>
-                        <index type="PrimaryKey">
-                            <indexColumn name="WorkflowTypeId" />
-                        </index>
-                        <index type="Unique">
-                            <indexColumn name="WorkflowTypeName" />
-                        </index>
-                        <index type="Multiple">
-                            <indexColumn name="IsDefault" />
-                        </index>
-                    </indexes>
-                </table>
-                <table namePlural="WorkflowTypeDescriptions" nameSingular="WorkflowTypeDescription" columnPrefix="wkfltd">
-                    <columns>
-                        <column name="WorkflowTypeDescriptionId" type="EID" nullAllowed="false" />
-                        <column name="WorkflowTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkflowTypes" destinationColumn="WorkflowTypeId" />
-                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
-                        <column name="Description" type="Description" nullAllowed="false" />
-                    </columns>
-                    <indexes>
-                        <index type="PrimaryKey">
-                            <indexColumn name="WorkflowTypeDescriptionId" />
-                        </index>
-                        <index type="Unique" name="Index1">
-                            <indexColumn name="WorkflowTypeId" />
-                            <indexColumn name="LanguageId" />
-                        </index>
-                        <index type="Multiple">
-                            <indexColumn name="LanguageId" />
-                        </index>
-                    </indexes>
-                </table>
                 <table namePlural="WorkflowStepTypes" nameSingular="WorkflowStepType" columnPrefix="wkflst">
                     <columns>
                         <column name="WorkflowStepTypeId" type="EID" nullAllowed="false" />
@@ -120,7 +81,6 @@
                         <column name="WorkflowDetailId" type="EID" nullAllowed="false" />
                         <column name="WorkflowId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Workflows" destinationColumn="WorkflowId" />
                         <column name="WorkflowName" type="Name" nullAllowed="false" />
-                        <column name="WorkflowTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkflowTypes" destinationColumn="WorkflowTypeId" />
                         <column name="SelectorTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="SelectorTypes" destinationColumn="SelectorTypeId" />
                         <column name="SecurityRoleGroupId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="SecurityRoleGroups" destinationColumn="SecurityRoleGroupId" />
                         <column name="SortOrder" type="Integer" nullAllowed="false" />
@@ -140,14 +100,10 @@
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index3">
-                            <indexColumn name="WorkflowTypeId" />
-                            <indexColumn name="ThruTime" />
-                        </index>
-                        <index type="Multiple" name="Index4">
                             <indexColumn name="SelectorTypeId" />
                             <indexColumn name="ThruTime" />
                         </index>
-                        <index type="Multiple" name="Index5">
+                        <index type="Multiple" name="Index4">
                             <indexColumn name="SecurityRoleGroupId" />
                             <indexColumn name="ThruTime" />
                         </index>

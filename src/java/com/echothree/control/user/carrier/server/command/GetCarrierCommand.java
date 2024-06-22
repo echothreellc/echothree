@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -104,7 +104,7 @@ public class GetCarrierCommand
             if(!hasExecutionErrors()) {
                 result.setCarrier(carrierControl.getCarrierTransfer(getUserVisit(), carrier));
                 
-                sendEventUsingNames(carrier.getPartyPK(), EventTypes.READ.name(), null, null, getPartyPK());
+                sendEvent(carrier.getPartyPK(), EventTypes.READ, null, null, getPartyPK());
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());

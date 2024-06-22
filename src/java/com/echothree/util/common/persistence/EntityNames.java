@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,8 +22,8 @@ import java.io.Serializable;
 public class EntityNames
         implements Serializable {
     
-    private String target;
-    private MapWrapper<String> names;
+    private final String target;
+    private final MapWrapper<String> names;
     
     /** Creates a new instance of EntityNames */
     public EntityNames(String target, MapWrapper<String> names) {
@@ -35,16 +35,8 @@ public class EntityNames
         return target;
     }
 
-    public void setTarget(String target) {
-        this.target = target;
-    }
-
     public MapWrapper<String> getNames() {
         return names;
     }
 
-    public void setNames(MapWrapper<String> names) {
-        this.names = names;
-    }
-    
 }

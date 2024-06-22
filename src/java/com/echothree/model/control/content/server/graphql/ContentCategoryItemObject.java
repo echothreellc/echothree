@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 package com.echothree.model.control.content.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.BaseObject;
 import com.echothree.model.data.content.server.entity.ContentCategoryItem;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -27,26 +28,24 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("content category item object")
 @GraphQLName("ContentCategoryItem")
 public class ContentCategoryItemObject
-        extends BaseEntityInstanceObject {
+        extends BaseObject {
     
     private final ContentCategoryItem contentCategoryItem; // Always Present
     
     public ContentCategoryItemObject(ContentCategoryItem contentCategoryItem) {
-        super(contentCategoryItem.getPrimaryKey());
-        
         this.contentCategoryItem = contentCategoryItem;
     }
 
     @GraphQLField
     @GraphQLDescription("content category")
     public ContentCategoryObject getContentCategory(final DataFetchingEnvironment env) {
-        return ContentSecurityUtils.getInstance().getHasContentCategoryAccess(env) ? new ContentCategoryObject(contentCategoryItem.getContentCategory()) : null;
+        return ContentSecurityUtils.getHasContentCategoryAccess(env) ? new ContentCategoryObject(contentCategoryItem.getContentCategory()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("content catalog item")
     public ContentCatalogItemObject getContentCatalogItem(final DataFetchingEnvironment env) {
-        return ContentSecurityUtils.getInstance().getHasContentCatalogItemAccess(env) ? new ContentCatalogItemObject(contentCategoryItem.getContentCatalogItem()) : null;
+        return ContentSecurityUtils.getHasContentCatalogItemAccess(env) ? new ContentCatalogItemObject(contentCategoryItem.getContentCatalogItem()) : null;
     }
 
     @GraphQLField

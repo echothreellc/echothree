@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -53,7 +53,7 @@ public class GetWorkflowDestinationSelectorCommand
 
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("WorkflowSelectorName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("WorkflowStepName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("WorkflowDestinationName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("SelectorName", FieldType.ENTITY_NAME, true, null, null)
                 ));
@@ -76,7 +76,7 @@ public class GetWorkflowDestinationSelectorCommand
     }
 
     @Override
-    protected BaseResult getTransfer(WorkflowDestinationSelector entity) {
+    protected BaseResult getResult(WorkflowDestinationSelector entity) {
         var result = WorkflowResultFactory.getGetWorkflowDestinationSelectorResult();
 
         if(entity != null) {

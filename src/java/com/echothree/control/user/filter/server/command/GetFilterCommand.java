@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -71,14 +71,14 @@ public class GetFilterCommand
         var filter = FilterLogic.getInstance().getFilterByUniversalSpec(this, form, true);
 
         if(filter != null) {
-            sendEventUsingNames(filter.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(filter.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return filter;
     }
 
     @Override
-    protected BaseResult getTransfer(Filter filter) {
+    protected BaseResult getResult(Filter filter) {
         var result = FilterResultFactory.getGetFilterResult();
 
         if(filter != null) {

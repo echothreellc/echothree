@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -242,7 +242,7 @@
                         <column name="UserVisitId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UserVisits" destinationColumn="UserVisitId" />
                         <column name="PartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
                         <column name="PartyRelationshipId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PartyRelationships" destinationColumn="PartyRelationshipId" />
-                        <column name="PasswordVerifiedTime" type="Time" nullAllowed="true" />
+                        <column name="IdentityVerifiedTime" type="Time" nullAllowed="true" />
                         <column name="FromTime" type="Time" nullAllowed="false" />
                         <column name="ThruTime" type="Time" nullAllowed="false" />
                     </columns>

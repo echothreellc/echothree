@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -112,14 +112,14 @@ public class GetCustomerCommand
         }
 
         if(customer != null) {
-            sendEventUsingNames(customer.getPartyPK(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(customer.getPartyPK(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return customer;
     }
 
     @Override
-    protected BaseResult getTransfer(Customer customer) {
+    protected BaseResult getResult(Customer customer) {
         var result = CustomerResultFactory.getGetCustomerResult();
 
         if(customer != null) {

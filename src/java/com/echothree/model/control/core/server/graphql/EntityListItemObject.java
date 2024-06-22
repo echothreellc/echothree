@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 
 package com.echothree.model.control.core.server.graphql;
 
-import com.echothree.control.user.core.server.command.GetEntityAttributeCommand;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.core.server.entity.EntityListItem;
 import com.echothree.model.data.core.server.entity.EntityListItemDetail;
@@ -51,23 +51,15 @@ public class EntityListItemObject
         
         return entityListItemDetail;
     }
-    
-    private Boolean hasEntityAttributeAccess;
-    
-    private boolean getHasEntityAttributeAccess(final DataFetchingEnvironment env) {
-        if(hasEntityAttributeAccess == null) {
-            var baseSingleEntityCommand = new GetEntityAttributeCommand(getUserVisitPK(env), null);
-            
-            baseSingleEntityCommand.security();
-            
-            hasEntityAttributeAccess = !baseSingleEntityCommand.hasSecurityMessages();
-        }
-        
-        return hasEntityAttributeAccess;
-    }
-        
+
     @GraphQLField
-    @GraphQLDescription("entity type name")
+    @GraphQLDescription("entity attribute")
+    public EntityAttributeObject getEntityAttribute(final DataFetchingEnvironment env) {
+        return CoreSecurityUtils.getHasEntityAttributeAccess(env) ? new EntityAttributeObject(getEntityListItemDetail().getEntityAttribute(), null) : null;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("entity list item name")
     @GraphQLNonNull
     public String getEntityListItemName() {
         return getEntityListItemDetail().getEntityListItemName();
@@ -94,13 +86,7 @@ public class EntityListItemObject
         var coreControl = Session.getModelController(CoreControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return coreControl.getBestEntityListItemDescription(entityListItem, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
-    }
-    
-    @GraphQLField
-    @GraphQLDescription("entity attribute")
-    public EntityAttributeObject getEntityAttribute(final DataFetchingEnvironment env) {
-        return getHasEntityAttributeAccess(env) ? new EntityAttributeObject(getEntityListItemDetail().getEntityAttribute(), null) : null;
+        return coreControl.getBestEntityListItemDescription(entityListItem, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
     
 }

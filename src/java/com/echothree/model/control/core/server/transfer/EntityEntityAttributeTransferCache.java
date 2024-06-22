@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,13 +23,16 @@ import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.EntityEntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class EntityEntityAttributeTransferCache
         extends BaseCoreTransferCache<EntityEntityAttribute, EntityEntityAttributeTransfer> {
-    
+
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+
     /** Creates a new instance of EntityEntityAttributeTransferCache */
-    public EntityEntityAttributeTransferCache(UserVisit userVisit, CoreControl coreControl) {
-        super(userVisit, coreControl);
+    public EntityEntityAttributeTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
     
     public EntityEntityAttributeTransfer getEntityEntityAttributeTransfer(EntityEntityAttribute entityEntityAttribute, EntityInstance entityInstance) {
@@ -37,8 +40,8 @@ public class EntityEntityAttributeTransferCache
         
         if(entityEntityAttributeTransfer == null) {
             EntityAttributeTransfer entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityEntityAttribute.getEntityAttribute(), entityInstance) : null;
-            EntityInstanceTransfer entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityEntityAttribute.getEntityInstance(), false, false, false, false, false);
-            EntityInstanceTransfer entityInstanceAttribute = coreControl.getEntityInstanceTransfer(userVisit, entityEntityAttribute.getEntityInstanceAttribute(), false, false, false, false, false);
+            EntityInstanceTransfer entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityEntityAttribute.getEntityInstance(), false, false, false, false, false, false);
+            EntityInstanceTransfer entityInstanceAttribute = coreControl.getEntityInstanceTransfer(userVisit, entityEntityAttribute.getEntityInstanceAttribute(), false, false, false, false, false, false);
             
             entityEntityAttributeTransfer = new EntityEntityAttributeTransfer(entityAttribute, entityInstanceTransfer, entityInstanceAttribute);
             put(entityEntityAttribute, entityEntityAttributeTransfer);

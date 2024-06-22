@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -36,6 +36,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -138,7 +139,7 @@ public class OrderRoleControl
     public OrderRole createOrderRole(Order order, Party party, OrderRoleType orderRoleType, BasePK createdBy) {
         OrderRole orderRole = OrderRoleFactory.getInstance().create(order, party, orderRoleType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(order.getPrimaryKey(), EventTypes.MODIFY.name(), orderRole.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(order.getPrimaryKey(), EventTypes.MODIFY, orderRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return orderRole;
     }
@@ -257,7 +258,7 @@ public class OrderRoleControl
         return getOrderTransferCaches(userVisit).getOrderRoleTransferCache().getOrderRoleTransfer(orderRole);
     }
 
-    public List<OrderRoleTransfer> getOrderRoleTransfers(UserVisit userVisit, List<OrderRole> orderRoles) {
+    public List<OrderRoleTransfer> getOrderRoleTransfers(UserVisit userVisit, Collection<OrderRole> orderRoles) {
         List<OrderRoleTransfer> orderRoleTransfers = new ArrayList<>(orderRoles.size());
 
         orderRoles.forEach((orderRole) -> {
@@ -274,7 +275,7 @@ public class OrderRoleControl
     public void deleteOrderRole(OrderRole orderRole, BasePK deletedBy) {
         orderRole.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(orderRole.getOrderPK(), EventTypes.MODIFY.name(), orderRole.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(orderRole.getOrderPK(), EventTypes.MODIFY, orderRole.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 
     public void deleteOrderRoles(List<OrderRole> orderRoles, BasePK deletedBy) {

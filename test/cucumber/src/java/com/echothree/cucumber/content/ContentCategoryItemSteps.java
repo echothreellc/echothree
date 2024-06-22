@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -61,7 +61,7 @@ public class ContentCategoryItemSteps implements En {
 
                     assertThat(persona.createContentCategoryItemForm).isNull();
                     assertThat(persona.deleteContentCategoryItemForm).isNull();
-                    assertThat(persona.entityListItemSpec).isNull();
+                    assertThat(persona.entityListItemUniversalSpec).isNull();
 
                     persona.deleteContentCategoryItemForm = ContentUtil.getHome().getDeleteContentCategoryItemForm();
                 });
@@ -84,7 +84,7 @@ public class ContentCategoryItemSteps implements En {
 
                     assertThat(persona.createContentCategoryItemForm).isNull();
                     assertThat(persona.deleteContentCategoryItemForm).isNull();
-                    assertThat(persona.entityListItemSpec).isNull();
+                    assertThat(persona.entityListItemUniversalSpec).isNull();
 
                     persona.contentCategoryItemSpec = ContentUtil.getHome().getContentCategoryItemSpec();
                 });

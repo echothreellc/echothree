@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -43,7 +43,7 @@ import com.echothree.model.data.party.server.entity.PartyDivision;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.wishlist.server.entity.WishlistType;
-import com.echothree.model.data.wishlist.server.entity.WishlistTypePriority;
+import com.echothree.model.data.wishlist.server.entity.WishlistPriority;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
@@ -86,7 +86,7 @@ public class WishlistLogic
     }
 
     public void createWishlistLine(final Session session, final ExecutionErrorAccumulator ema, final UserVisit userVisit, final Party party, final Source source,
-            final OfferItemPrice offerItemPrice, final WishlistType wishlistType, final WishlistTypePriority wishlistTypePriority, final Long quantity,
+            final OfferItemPrice offerItemPrice, final WishlistType wishlistType, final WishlistPriority wishlistPriority, final Long quantity,
             final String comment, final PartyPK createdBy) {
         Item item = offerItemPrice.getOfferItem().getItem();
         String itemPriceTypeName = item.getLastDetail().getItemPriceType().getItemPriceTypeName();
@@ -136,7 +136,7 @@ public class WishlistLogic
                             quantity, unitAmount, null, null, null, null, createdBy);
 
                     if(!ema.hasExecutionErrors()) {
-                        wishlistControl.createWishlistLine(orderLine, offerUse, wishlistTypePriority, associateReferral, comment, createdBy);
+                        wishlistControl.createWishlistLine(orderLine, offerUse, wishlistPriority, associateReferral, comment, createdBy);
                     }
                 } else {
                     // TODO: add to wishlist quantity?

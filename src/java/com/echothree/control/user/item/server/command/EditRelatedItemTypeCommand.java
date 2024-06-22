@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,21 +21,19 @@ import com.echothree.control.user.item.common.edit.RelatedItemTypeEdit;
 import com.echothree.control.user.item.common.form.EditRelatedItemTypeForm;
 import com.echothree.control.user.item.common.result.EditRelatedItemTypeResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
-import com.echothree.control.user.item.common.spec.RelatedItemTypeSpec;
+import com.echothree.control.user.item.common.spec.RelatedItemTypeUniversalSpec;
 import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.item.server.logic.RelatedItemTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.item.server.entity.ItemAliasChecksumType;
 import com.echothree.model.data.item.server.entity.RelatedItemType;
-import com.echothree.model.data.item.server.entity.RelatedItemTypeDescription;
-import com.echothree.model.data.item.server.entity.RelatedItemTypeDetail;
 import com.echothree.model.data.item.server.value.RelatedItemTypeDescriptionValue;
-import com.echothree.model.data.item.server.value.RelatedItemTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -46,85 +44,74 @@ import java.util.Collections;
 import java.util.List;
 
 public class EditRelatedItemTypeCommand
-        extends BaseAbstractEditCommand<RelatedItemTypeSpec, RelatedItemTypeEdit, EditRelatedItemTypeResult, RelatedItemType, RelatedItemType> {
-    
+        extends BaseAbstractEditCommand<RelatedItemTypeUniversalSpec, RelatedItemTypeEdit, EditRelatedItemTypeResult, RelatedItemType, RelatedItemType> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
                         new SecurityRoleDefinition(SecurityRoleGroups.RelatedItemType.name(), SecurityRoles.Edit.name())
-                        )))
-                )));
-        
+                )))
+        )));
+
         SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("RelatedItemTypeName", FieldType.ENTITY_NAME, true, null, null)
-                ));
-        
+                new FieldDefinition("RelatedItemTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
+        ));
+
         EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("RelatedItemTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
-                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
-                ));
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
+        ));
     }
-    
+
     /** Creates a new instance of EditRelatedItemTypeCommand */
     public EditRelatedItemTypeCommand(UserVisitPK userVisitPK, EditRelatedItemTypeForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
     public EditRelatedItemTypeResult getResult() {
         return ItemResultFactory.getEditRelatedItemTypeResult();
     }
-    
+
     @Override
     public RelatedItemTypeEdit getEdit() {
         return ItemEditFactory.getRelatedItemTypeEdit();
     }
-    
+
     @Override
     public RelatedItemType getEntity(EditRelatedItemTypeResult result) {
-        var itemControl = Session.getModelController(ItemControl.class);
-        RelatedItemType relatedItemType = null;
-        String relatedItemTypeName = spec.getRelatedItemTypeName();
-
-        if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            relatedItemType = itemControl.getRelatedItemTypeByName(relatedItemTypeName);
-        } else { // EditMode.UPDATE
-            relatedItemType = itemControl.getRelatedItemTypeByNameForUpdate(relatedItemTypeName);
-        }
-
-        if(relatedItemType != null) {
-            result.setRelatedItemType(itemControl.getRelatedItemTypeTransfer(getUserVisit(), relatedItemType));
-        } else {
-            addExecutionError(ExecutionErrors.UnknownRelatedItemTypeName.name(), relatedItemTypeName);
-        }
-
-        return relatedItemType;
+        return RelatedItemTypeLogic.getInstance().getRelatedItemTypeByUniversalSpec(this,
+                spec, false, editModeToEntityPermission(editMode));
     }
-    
+
     @Override
     public RelatedItemType getLockEntity(RelatedItemType relatedItemType) {
         return relatedItemType;
     }
-    
+
     @Override
     public void fillInResult(EditRelatedItemTypeResult result, RelatedItemType relatedItemType) {
-        var itemControl = Session.getModelController(ItemControl.class);
-        
+        final var itemControl = Session.getModelController(ItemControl.class);
+
         result.setRelatedItemType(itemControl.getRelatedItemTypeTransfer(getUserVisit(), relatedItemType));
     }
-    
+
     @Override
     public void doLock(RelatedItemTypeEdit edit, RelatedItemType relatedItemType) {
-        var itemControl = Session.getModelController(ItemControl.class);
-        RelatedItemTypeDescription relatedItemTypeDescription = itemControl.getRelatedItemTypeDescription(relatedItemType, getPreferredLanguage());
-        RelatedItemTypeDetail relatedItemTypeDetail = relatedItemType.getLastDetail();
+        final var itemControl = Session.getModelController(ItemControl.class);
+        final var relatedItemTypeDescription = itemControl.getRelatedItemTypeDescription(relatedItemType, getPreferredLanguage());
+        final var relatedItemTypeDetail = relatedItemType.getLastDetail();
 
         edit.setRelatedItemTypeName(relatedItemTypeDetail.getRelatedItemTypeName());
         edit.setIsDefault(relatedItemTypeDetail.getIsDefault().toString());
@@ -134,31 +121,31 @@ public class EditRelatedItemTypeCommand
             edit.setDescription(relatedItemTypeDescription.getDescription());
         }
     }
-        
+
     @Override
     public void canUpdate(RelatedItemType relatedItemType) {
-        var itemControl = Session.getModelController(ItemControl.class);
-        String relatedItemTypeName = edit.getRelatedItemTypeName();
-        RelatedItemType duplicateRelatedItemType = itemControl.getRelatedItemTypeByName(relatedItemTypeName);
+        final var itemControl = Session.getModelController(ItemControl.class);
+        final var relatedItemTypeName = edit.getRelatedItemTypeName();
+        final var duplicateRelatedItemType = itemControl.getRelatedItemTypeByName(relatedItemTypeName);
 
         if(duplicateRelatedItemType != null && !relatedItemType.equals(duplicateRelatedItemType)) {
             addExecutionError(ExecutionErrors.DuplicateRelatedItemTypeName.name(), relatedItemTypeName);
         }
     }
-    
+
     @Override
     public void doUpdate(RelatedItemType relatedItemType) {
-        var itemControl = Session.getModelController(ItemControl.class);
-        var partyPK = getPartyPK();
-        RelatedItemTypeDetailValue relatedItemTypeDetailValue = itemControl.getRelatedItemTypeDetailValueForUpdate(relatedItemType);
-        RelatedItemTypeDescription relatedItemTypeDescription = itemControl.getRelatedItemTypeDescriptionForUpdate(relatedItemType, getPreferredLanguage());
-        String description = edit.getDescription();
+        final var itemControl = Session.getModelController(ItemControl.class);
+        final var partyPK = getPartyPK();
+        final var relatedItemTypeDetailValue = itemControl.getRelatedItemTypeDetailValueForUpdate(relatedItemType);
+        final var relatedItemTypeDescription = itemControl.getRelatedItemTypeDescriptionForUpdate(relatedItemType, getPreferredLanguage());
+        final var description = edit.getDescription();
 
         relatedItemTypeDetailValue.setRelatedItemTypeName(edit.getRelatedItemTypeName());
         relatedItemTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         relatedItemTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        itemControl.updateRelatedItemTypeFromValue(relatedItemTypeDetailValue, partyPK);
+        RelatedItemTypeLogic.getInstance().updateRelatedItemTypeFromValue(relatedItemTypeDetailValue, partyPK);
 
         if(relatedItemTypeDescription == null && description != null) {
             itemControl.createRelatedItemTypeDescription(relatedItemType, getPreferredLanguage(), description, partyPK);
@@ -171,5 +158,5 @@ public class EditRelatedItemTypeCommand
             itemControl.updateRelatedItemTypeDescriptionFromValue(relatedItemTypeDescriptionValue, partyPK);
         }
     }
-    
+
 }

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,6 +16,9 @@
 
 package com.echothree.ui.cli.dataloader.util.data.handler.vendor;
 
+import com.echothree.control.user.party.common.PartyService;
+import com.echothree.control.user.party.common.PartyUtil;
+import com.echothree.control.user.party.common.form.PartyFormFactory;
 import com.echothree.control.user.term.common.TermService;
 import com.echothree.control.user.term.common.TermUtil;
 import com.echothree.control.user.term.common.form.TermFormFactory;
@@ -36,6 +39,7 @@ import org.xml.sax.SAXException;
 public class VendorHandler
         extends BaseHandler {
 
+    PartyService partyService = PartyUtil.getHome();
     TermService termService = TermUtil.getHome();
     VendorService vendorService = VendorUtil.getHome();
 
@@ -57,7 +61,14 @@ public class VendorHandler
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException, NamingException {
-        if(localName.equals("partyCreditLimit")) {
+        if(localName.equals("partyAlias")) {
+            var commandForm = PartyFormFactory.getCreatePartyAliasForm();
+
+            commandForm.setPartyName(partyName);
+            commandForm.set(getAttrsMap(attrs));
+
+            partyService.createPartyAlias(initialDataParser.getUserVisit(), commandForm);
+        } if(localName.equals("partyCreditLimit")) {
             var form = TermFormFactory.getCreatePartyCreditLimitForm();
             
             form.setPartyName(partyName);

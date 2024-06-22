@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -65,7 +65,7 @@ public class ChainInstanceStatusLogic {
         if(contactList != null) {
             var coreControl = Session.getModelController(CoreControl.class);
             ChainType chainType = chainInstance.getLastDetail().getChain().getLastDetail().getChainType();
-            EntityType partyEntityType = coreControl.getEntityTypeByName(coreControl.getComponentVendorByName(ComponentVendors.ECHOTHREE.name()), EntityTypes.Party.name());
+            EntityType partyEntityType = coreControl.getEntityTypeByName(coreControl.getComponentVendorByName(ComponentVendors.ECHO_THREE.name()), EntityTypes.Party.name());
             
             for(ChainEntityRoleType chainEntityRoleType: chainControl.getChainEntityRoleTypes(chainType)) {
                 if(chainEntityRoleType.getLastDetail().getEntityType().equals(partyEntityType)) {

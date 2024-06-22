@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -110,7 +110,7 @@ public abstract class CmsBaseAction<A extends ActionForm>
             UserSessionTransfer userSession = result.getUserSession();
             PartyTransfer party = userSession == null? null: userSession.getParty();
 
-            if(partyRequired && (party == null || (party != null && userSession.getPasswordVerifiedTime() == null))) {
+            if(partyRequired && (party == null || (party != null && userSession.getIdentityVerifiedTime() == null))) {
                 forwardKey = ForwardConstants.LOGIN;
             } else {
                 if(userSession != null) {

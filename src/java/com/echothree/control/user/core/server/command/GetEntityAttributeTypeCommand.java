@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -57,12 +57,12 @@ public class GetEntityAttributeTypeCommand
     }
     
     @Override
-    protected BaseResult getTransfer(EntityAttributeType entityAttributeType) {
+    protected BaseResult getResult(EntityAttributeType entityAttributeType) {
         var coreControl = getCoreControl();
         GetEntityAttributeTypeResult result = CoreResultFactory.getGetEntityAttributeTypeResult();
 
         if(entityAttributeType != null) {
-            sendEventUsingNames(entityAttributeType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(entityAttributeType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
 
             result.setEntityAttributeType(coreControl.getEntityAttributeTypeTransfer(getUserVisit(), entityAttributeType));
         }

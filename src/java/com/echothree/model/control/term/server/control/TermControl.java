@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -33,6 +33,7 @@ import com.echothree.model.control.term.server.transfer.TermTransferCaches;
 import com.echothree.model.control.term.server.transfer.TermTypeTransferCache;
 import com.echothree.model.data.accounting.common.pk.CurrencyPK;
 import com.echothree.model.data.accounting.server.entity.Currency;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.customer.common.pk.CustomerTypePK;
 import com.echothree.model.data.customer.server.entity.CustomerType;
 import com.echothree.model.data.party.common.pk.PartyPK;
@@ -76,8 +77,12 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class TermControl
@@ -105,132 +110,225 @@ public class TermControl
     // --------------------------------------------------------------------------------
     //   Term Types
     // --------------------------------------------------------------------------------
-    
-    public TermType createTermType(String termTypeName, Boolean isDefault, Integer sortOrder) {
-        return TermTypeFactory.getInstance().create(termTypeName, isDefault, sortOrder);
-    }
-    
-    public TermType getTermTypeByName(String termTypeName) {
-        TermType termType;
-        
-        try {
-            PreparedStatement ps = TermTypeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM termtypes " +
-                    "WHERE trmtyp_termtypename = ?");
-            
-            ps.setString(1, termTypeName);
-            
-            termType = TermTypeFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
+
+    public TermType createTermType(String termTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
+        var termType = TermTypeFactory.getInstance().create(termTypeName, isDefault, sortOrder);
+
+        sendEvent(termType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+
         return termType;
     }
-    
-    public List<TermType> getTermTypes() {
-        PreparedStatement ps = TermTypeFactory.getInstance().prepareStatement(
+
+    public long countTermTypes() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                    "FROM termtypes");
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.TermType */
+    public TermType getTermTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new TermTypePK(entityInstance.getEntityUniqueId());
+
+        return TermTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public TermType getTermTypeByEntityInstance(EntityInstance entityInstance) {
+        return getTermTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public TermType getTermTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getTermTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    private static final Map<EntityPermission, String> getTermTypeByNameQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
                 "SELECT _ALL_ " +
                 "FROM termtypes " +
-                "ORDER BY trmtyp_sortorder, trmtyp_termtypename");
-        
-        return TermTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+                "WHERE trmtyp_termtypename = ?");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ " +
+                "FROM termtypes " +
+                "WHERE trmtyp_termtypename = ? " +
+                "FOR UPDATE");
+        getTermTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
-    
-    public TermTypeChoicesBean getTermTypeChoices(String defaultTermTypeChoice, Language language, boolean allowNullChoice) {
+
+    public TermType getTermTypeByName(String termTypeName, EntityPermission entityPermission) {
+        return TermTypeFactory.getInstance().getEntityFromQuery(entityPermission, getTermTypeByNameQueries, termTypeName);
+    }
+
+    public TermType getTermTypeByName(String termTypeName) {
+        return getTermTypeByName(termTypeName, EntityPermission.READ_ONLY);
+    }
+
+    public TermType getTermTypeByNameForUpdate(String termTypeName) {
+        return getTermTypeByName(termTypeName, EntityPermission.READ_WRITE);
+    }
+
+    private static final Map<EntityPermission, String> getDefaultTermTypeQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ " +
+                "FROM termtypes " +
+                "WHERE trmtyp_isdefault = 1");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ " +
+                "FROM termtypes " +
+                "WHERE trmtyp_isdefault = 1 " +
+                "FOR UPDATE");
+        getDefaultTermTypeQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    public TermType getDefaultTermType(EntityPermission entityPermission) {
+        return TermTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultTermTypeQueries);
+    }
+
+    public TermType getDefaultTermType() {
+        return getDefaultTermType(EntityPermission.READ_ONLY);
+    }
+
+    public TermType getDefaultTermTypeForUpdate() {
+        return getDefaultTermType(EntityPermission.READ_WRITE);
+    }
+
+    private static final Map<EntityPermission, String> getTermTypesQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ " +
+                "FROM termtypes " +
+                "ORDER BY trmtyp_sortorder, trmtyp_termtypename " +
+                "_LIMIT_");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ " +
+                "FROM termtypes " +
+                "FOR UPDATE");
+        getTermTypesQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    private List<TermType> getTermTypes(EntityPermission entityPermission) {
+        return TermTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getTermTypesQueries);
+    }
+
+    public List<TermType> getTermTypes() {
+        return getTermTypes(EntityPermission.READ_ONLY);
+    }
+
+    public List<TermType> getTermTypesForUpdate() {
+        return getTermTypes(EntityPermission.READ_WRITE);
+    }
+
+    public TermTypeTransfer getTermTypeTransfer(UserVisit userVisit, TermType termType) {
+        return getTermTransferCaches(userVisit).getTermTypeTransferCache().getTermTypeTransfer(termType);
+    }
+
+    public List<TermTypeTransfer> getTermTypeTransfers(UserVisit userVisit, Collection<TermType> termTypes) {
+        List<TermTypeTransfer> termTypeTransfers = new ArrayList<>(termTypes.size());
+        TermTypeTransferCache termTypeTransferCache = getTermTransferCaches(userVisit).getTermTypeTransferCache();
+
+        termTypes.forEach((termType) ->
+                termTypeTransfers.add(termTypeTransferCache.getTermTypeTransfer(termType))
+        );
+
+        return termTypeTransfers;
+    }
+
+    public List<TermTypeTransfer> getTermTypeTransfers(UserVisit userVisit) {
+        return getTermTypeTransfers(userVisit, getTermTypes());
+    }
+
+    public TermTypeChoicesBean getTermTypeChoices(String defaultTermTypeChoice,
+            Language language, boolean allowNullChoice) {
         List<TermType> termTypes = getTermTypes();
         var size = termTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
         String defaultValue = null;
-        
+
         if(allowNullChoice) {
             labels.add("");
             values.add("");
-            
+
             if(defaultTermTypeChoice == null) {
                 defaultValue = "";
             }
         }
-        
+
         for(var termType : termTypes) {
             var label = getBestTermTypeDescription(termType, language);
             var value = termType.getTermTypeName();
-            
+
             labels.add(label == null? value: label);
             values.add(value);
-            
+
             var usingDefaultChoice = defaultTermTypeChoice != null && defaultTermTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && termType.getIsDefault())) {
                 defaultValue = value;
             }
         }
-        
+
         return new TermTypeChoicesBean(labels, values, defaultValue);
     }
-    
-    public TermTypeTransfer getTermTypeTransfer(UserVisit userVisit, TermType termType) {
-        return getTermTransferCaches(userVisit).getTermTypeTransferCache().getTermTypeTransfer(termType);
-    }
-    
-    public List<TermTypeTransfer> getTermTypeTransfers(UserVisit userVisit) {
-        List<TermType> termTypes = getTermTypes();
-        List<TermTypeTransfer> termTypeTransfers = new ArrayList<>(termTypes.size());
-        TermTypeTransferCache termTypeTransferCache = getTermTransferCaches(userVisit).getTermTypeTransferCache();
-        
-        termTypes.forEach((termType) ->
-                termTypeTransfers.add(termTypeTransferCache.getTermTypeTransfer(termType))
-        );
-        
-        return termTypeTransfers;
-    }
-    
+
     // --------------------------------------------------------------------------------
     //   Term Type Descriptions
     // --------------------------------------------------------------------------------
-    
-    public TermTypeDescription createTermTypeDescription(TermType termType, Language language, String description) {
-        return TermTypeDescriptionFactory.getInstance().create(termType, language, description);
+
+    public TermTypeDescription createTermTypeDescription(TermType termType, Language language,
+            String description, BasePK createdBy) {
+        var termTypeDescription = TermTypeDescriptionFactory.getInstance().create(termType, language, description);
+
+        sendEvent(termType.getPrimaryKey(), EventTypes.MODIFY, termTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+
+        return termTypeDescription;
     }
-    
+
     public TermTypeDescription getTermTypeDescription(TermType termType, Language language) {
         TermTypeDescription termTypeDescription;
-        
+
         try {
             PreparedStatement ps = TermTypeDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM termtypedescriptions " +
                     "WHERE trmtypd_trmtyp_termtypeid = ? AND trmtypd_lang_languageid = ?");
-            
+
             ps.setLong(1, termType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
-            
+
             termTypeDescription = TermTypeDescriptionFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
-        
+
         return termTypeDescription;
     }
-    
+
     public String getBestTermTypeDescription(TermType termType, Language language) {
         String description;
         TermTypeDescription termTypeDescription = getTermTypeDescription(termType, language);
-        
+
         if(termTypeDescription == null && !language.getIsDefault()) {
             termTypeDescription = getTermTypeDescription(termType, getPartyControl().getDefaultLanguage());
         }
-        
+
         if(termTypeDescription == null) {
             description = termType.getTermTypeName();
         } else {
             description = termTypeDescription.getDescription();
         }
-        
+
         return description;
     }
-    
+
     // --------------------------------------------------------------------------------
     //   Terms
     // --------------------------------------------------------------------------------
@@ -259,12 +357,34 @@ public class TermControl
         term.setLastDetail(termDetail);
         term.store();
         
-        sendEventUsingNames(term.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(term.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return term;
     }
-    
-    private Term getTermByName(String termName, EntityPermission entityPermission) {
+
+    public long countTerms() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM terms, termtypes " +
+                "WHERE trm_activedetailid = trmtyp_termtypeid");
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Term */
+    public Term getTermByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new TermPK(entityInstance.getEntityUniqueId());
+
+        return TermFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public Term getTermByEntityInstance(EntityInstance entityInstance) {
+        return getTermByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Term getTermByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getTermByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public Term getTermByName(String termName, EntityPermission entityPermission) {
         Term term;
         
         try {
@@ -305,7 +425,7 @@ public class TermControl
         return getTermByName(termName, EntityPermission.READ_WRITE).getLastDetailForUpdate().getTermDetailValue();
     }
     
-    private Term getDefaultTerm(EntityPermission entityPermission) {
+    public Term getDefaultTerm(EntityPermission entityPermission) {
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
@@ -343,7 +463,8 @@ public class TermControl
             query = "SELECT _ALL_ " +
                     "FROM terms, termdetails " +
                     "WHERE trm_activedetailid = trmdt_termdetailid " +
-                    "ORDER BY trmdt_sortorder, trmdt_termname";
+                    "ORDER BY trmdt_sortorder, trmdt_termname " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM terms, termdetails " +
@@ -401,19 +522,22 @@ public class TermControl
     public TermTransfer getTermTransfer(UserVisit userVisit, Term term) {
         return getTermTransferCaches(userVisit).getTermTransferCache().getTermTransfer(term);
     }
-    
-    public List<TermTransfer> getTermTransfers(UserVisit userVisit) {
-        List<Term> terms = getTerms();
+
+    public List<TermTransfer> getTermTransfers(UserVisit userVisit, Collection<Term> terms) {
         List<TermTransfer> termTransfers = new ArrayList<>(terms.size());
         TermTransferCache termTransferCache = getTermTransferCaches(userVisit).getTermTransferCache();
-        
+
         terms.forEach((term) ->
                 termTransfers.add(termTransferCache.getTermTransfer(term))
         );
-        
+
         return termTransfers;
     }
-    
+
+    public List<TermTransfer> getTermTransfers(UserVisit userVisit) {
+        return getTermTransfers(userVisit, getTerms());
+    }
+
     private void updateTermFromValue(TermDetailValue termDetailValue, boolean checkDefault, BasePK updatedBy) {
         Term term = TermFactory.getInstance().getEntityFromPK(session,
                 EntityPermission.READ_WRITE, termDetailValue.getTermPK());
@@ -451,7 +575,7 @@ public class TermControl
         term.setLastDetail(termDetail);
         term.store();
         
-        sendEventUsingNames(termPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+        sendEvent(termPK, EventTypes.MODIFY, null, null, updatedBy);
     }
     
     public void updateTermFromValue(TermDetailValue termDetailValue, BasePK updatedBy) {
@@ -491,7 +615,7 @@ public class TermControl
             }
         }
         
-        sendEventUsingNames(term.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(term.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -502,7 +626,7 @@ public class TermControl
         TermDescription termDescription = TermDescriptionFactory.getInstance().create(term, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(term.getPrimaryKey(), EventTypes.MODIFY.name(), termDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(term.getPrimaryKey(), EventTypes.MODIFY, termDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return termDescription;
     }
@@ -639,14 +763,14 @@ public class TermControl
             termDescription = TermDescriptionFactory.getInstance().create(term, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(term.getPrimaryKey(), EventTypes.MODIFY.name(), termDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(term.getPrimaryKey(), EventTypes.MODIFY, termDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteTermDescription(TermDescription termDescription, BasePK deletedBy) {
         termDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(termDescription.getTermPK(), EventTypes.MODIFY.name(), termDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(termDescription.getTermPK(), EventTypes.MODIFY, termDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -667,7 +791,7 @@ public class TermControl
         StandardTerm standardTerm = StandardTermFactory.getInstance().create(term, netDueDays, discountPercentage,
                 discountDays, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(term.getPrimaryKey(), EventTypes.MODIFY.name(), standardTerm.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(term.getPrimaryKey(), EventTypes.MODIFY, standardTerm.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return standardTerm;
     }
@@ -734,14 +858,14 @@ public class TermControl
             standardTerm = StandardTermFactory.getInstance().create(termPK, netDueDays, discountPercentage, discountDays,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(termPK, EventTypes.MODIFY.name(), standardTerm.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(termPK, EventTypes.MODIFY, standardTerm.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteStandardTerm(StandardTerm standardTerm, BasePK deletedBy) {
         standardTerm.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(standardTerm.getTermPK(), EventTypes.MODIFY.name(), standardTerm.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(standardTerm.getTermPK(), EventTypes.MODIFY, standardTerm.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteStandardTermByTerm(Term term, BasePK deletedBy) {
@@ -761,7 +885,7 @@ public class TermControl
         DateDrivenTerm dateDrivenTerm = DateDrivenTermFactory.getInstance().create(term, netDueDayOfMonth,
                 dueNextMonthDays, discountPercentage, discountBeforeDayOfMonth, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(term.getPrimaryKey(), EventTypes.MODIFY.name(), dateDrivenTerm.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(term.getPrimaryKey(), EventTypes.MODIFY, dateDrivenTerm.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return dateDrivenTerm;
     }
@@ -829,14 +953,14 @@ public class TermControl
             dateDrivenTerm = DateDrivenTermFactory.getInstance().create(termPK, netDueDayOfMonth, dueNextMonthDays,
                     discountPercentage, discountBeforeDayOfMonth, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(termPK, EventTypes.MODIFY.name(), dateDrivenTerm.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(termPK, EventTypes.MODIFY, dateDrivenTerm.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteDateDrivenTerm(DateDrivenTerm dateDrivenTerm, BasePK deletedBy) {
         dateDrivenTerm.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(dateDrivenTerm.getTermPK(), EventTypes.MODIFY.name(), dateDrivenTerm.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(dateDrivenTerm.getTermPK(), EventTypes.MODIFY, dateDrivenTerm.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteDateDrivenTermByTerm(Term term, BasePK deletedBy) {
@@ -856,7 +980,7 @@ public class TermControl
         CustomerTypeCreditLimit customerTypeCreditLimit = CustomerTypeCreditLimitFactory.getInstance().create(customerType,
                 currency, creditLimit, potentialCreditLimit, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(customerType.getPrimaryKey(), EventTypes.MODIFY.name(), customerTypeCreditLimit.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(customerType.getPrimaryKey(), EventTypes.MODIFY, customerTypeCreditLimit.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return customerTypeCreditLimit;
     }
@@ -981,14 +1105,14 @@ public class TermControl
             customerTypeCreditLimit = CustomerTypeCreditLimitFactory.getInstance().create(customerTypePK, currencyPK, creditLimit,
                     potentialCreditLimit, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(customerTypePK, EventTypes.MODIFY.name(), customerTypeCreditLimit.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(customerTypePK, EventTypes.MODIFY, customerTypeCreditLimit.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteCustomerTypeCreditLimit(CustomerTypeCreditLimit customerTypeCreditLimit, BasePK deletedBy) {
         customerTypeCreditLimit.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(customerTypeCreditLimit.getCustomerTypePK(), EventTypes.MODIFY.name(), customerTypeCreditLimit.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(customerTypeCreditLimit.getCustomerTypePK(), EventTypes.MODIFY, customerTypeCreditLimit.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteCustomerTypeCreditLimitsByCustomerType(CustomerType customerType, BasePK deletedBy) {
@@ -1008,7 +1132,7 @@ public class TermControl
         PartyCreditLimit partyCreditLimit = PartyCreditLimitFactory.getInstance().create(party, currency, creditLimit,
                 potentialCreditLimit, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), partyCreditLimit.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyCreditLimit.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return partyCreditLimit;
     }
@@ -1132,14 +1256,14 @@ public class TermControl
             partyCreditLimit = PartyCreditLimitFactory.getInstance().create(partyPK, currencyPK, creditLimit,
                     potentialCreditLimit, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(partyPK, EventTypes.MODIFY.name(), partyCreditLimit.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(partyPK, EventTypes.MODIFY, partyCreditLimit.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deletePartyCreditLimit(PartyCreditLimit partyCreditLimit, BasePK deletedBy) {
         partyCreditLimit.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(partyCreditLimit.getPartyPK(), EventTypes.MODIFY.name(), partyCreditLimit.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(partyCreditLimit.getPartyPK(), EventTypes.MODIFY, partyCreditLimit.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deletePartyCreditLimitsByParty(Party party, BasePK deletedBy) {
@@ -1158,7 +1282,7 @@ public class TermControl
         PartyTerm partyTerm = PartyTermFactory.getInstance().create(party, term, taxable, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), partyTerm.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyTerm.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return partyTerm;
     }
@@ -1274,14 +1398,14 @@ public class TermControl
             partyTerm = PartyTermFactory.getInstance().create(partyPK, termPK, taxable, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(partyPK, EventTypes.MODIFY.name(), partyTerm.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(partyPK, EventTypes.MODIFY, partyTerm.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deletePartyTerm(PartyTerm partyTerm, BasePK deletedBy) {
         partyTerm.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(partyTerm.getPartyPK(), EventTypes.MODIFY.name(), partyTerm.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(partyTerm.getPartyPK(), EventTypes.MODIFY, partyTerm.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deletePartyTermByParty(Party party, BasePK deletedBy) {

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ package com.echothree.model.control.inventory.server.graphql;
 import com.echothree.model.control.accounting.server.graphql.AccountingSecurityUtils;
 import com.echothree.model.control.accounting.server.graphql.CurrencyObject;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.UnitCostObject;
 import com.echothree.model.control.item.server.graphql.ItemObject;
 import com.echothree.model.control.item.server.graphql.ItemSecurityUtils;
 import com.echothree.model.control.party.server.graphql.PartyObject;
@@ -27,7 +28,6 @@ import com.echothree.model.control.uom.server.graphql.UnitOfMeasureTypeObject;
 import com.echothree.model.control.uom.server.graphql.UomSecurityUtils;
 import com.echothree.model.data.inventory.server.entity.Lot;
 import com.echothree.model.data.inventory.server.entity.LotDetail;
-import com.echothree.util.server.string.AmountUtils;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
@@ -69,25 +69,25 @@ public class LotObject
     public PartyObject getOwnerParty(final DataFetchingEnvironment env) {
         var ownerParty = getLotDetail().getOwnerParty();
 
-        return PartySecurityUtils.getInstance().getHasPartyAccess(env, ownerParty) ? new PartyObject(ownerParty) : null;
+        return PartySecurityUtils.getHasPartyAccess(env, ownerParty) ? new PartyObject(ownerParty) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("item")
     public ItemObject getItem(final DataFetchingEnvironment env) {
-        return ItemSecurityUtils.getInstance().getHasItemAccess(env) ? new ItemObject(getLotDetail().getItem()) : null;
+        return ItemSecurityUtils.getHasItemAccess(env) ? new ItemObject(getLotDetail().getItem()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("inventory condition")
     public InventoryConditionObject getInventoryCondition(final DataFetchingEnvironment env) {
-        return InventorySecurityUtils.getInstance().getHasInventoryConditionAccess(env) ? new InventoryConditionObject(getLotDetail().getInventoryCondition()) : null;
+        return InventorySecurityUtils.getHasInventoryConditionAccess(env) ? new InventoryConditionObject(getLotDetail().getInventoryCondition()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("unit of measure type")
     public UnitOfMeasureTypeObject getUnitOfMeasureType(final DataFetchingEnvironment env) {
-        return UomSecurityUtils.getInstance().getHasUnitOfMeasureTypeAccess(env) ? new UnitOfMeasureTypeObject(getLotDetail().getUnitOfMeasureType()) : null;
+        return UomSecurityUtils.getHasUnitOfMeasureTypeAccess(env) ? new UnitOfMeasureTypeObject(getLotDetail().getUnitOfMeasureType()) : null;
     }
 
     @GraphQLField
@@ -99,19 +99,13 @@ public class LotObject
     @GraphQLField
     @GraphQLDescription("currency")
     public CurrencyObject getCurrency(final DataFetchingEnvironment env) {
-        return AccountingSecurityUtils.getInstance().getHasCurrencyAccess(env) ? new CurrencyObject(getLotDetail().getCurrency()) : null;
-    }
-
-    @GraphQLField
-    @GraphQLDescription("unformatted unit cost")
-    public Long getUnformattedUnitCost() {
-        return getLotDetail().getUnitCost();
+        return AccountingSecurityUtils.getHasCurrencyAccess(env) ? new CurrencyObject(getLotDetail().getCurrency()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("unit cost")
-    public String getUnitCost(final DataFetchingEnvironment env) {
-        return AmountUtils.getInstance().formatCostUnit(getLotDetail().getCurrency(), getLotDetail().getUnitCost());
+    public UnitCostObject getUnitCost() {
+        return new UnitCostObject(getLotDetail().getCurrency(), getLotDetail().getUnitCost());
     }
 
 }

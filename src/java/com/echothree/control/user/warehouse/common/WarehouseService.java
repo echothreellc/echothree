@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,6 +16,18 @@
 
 package com.echothree.control.user.warehouse.common;
 
+import com.echothree.control.user.filter.common.form.CreateFilterKindDescriptionForm;
+import com.echothree.control.user.filter.common.form.CreateFilterKindForm;
+import com.echothree.control.user.filter.common.form.DeleteFilterKindDescriptionForm;
+import com.echothree.control.user.filter.common.form.DeleteFilterKindForm;
+import com.echothree.control.user.filter.common.form.EditFilterKindDescriptionForm;
+import com.echothree.control.user.filter.common.form.EditFilterKindForm;
+import com.echothree.control.user.filter.common.form.GetFilterKindChoicesForm;
+import com.echothree.control.user.filter.common.form.GetFilterKindDescriptionForm;
+import com.echothree.control.user.filter.common.form.GetFilterKindDescriptionsForm;
+import com.echothree.control.user.filter.common.form.GetFilterKindForm;
+import com.echothree.control.user.filter.common.form.GetFilterKindsForm;
+import com.echothree.control.user.filter.common.form.SetDefaultFilterKindForm;
 import com.echothree.control.user.warehouse.common.form.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
@@ -34,7 +46,11 @@ public interface WarehouseService
     // -------------------------------------------------------------------------
     
     CommandResult createLocationUseType(UserVisitPK userVisitPK, CreateLocationUseTypeForm form);
-    
+
+    CommandResult getLocationUseTypes(UserVisitPK userVisitPK, GetLocationUseTypesForm form);
+
+    CommandResult getLocationUseType(UserVisitPK userVisitPK, GetLocationUseTypeForm form);
+
     CommandResult getLocationUseTypeChoices(UserVisitPK userVisitPK, GetLocationUseTypeChoicesForm form);
     
     // -------------------------------------------------------------------------
@@ -42,7 +58,39 @@ public interface WarehouseService
     // -------------------------------------------------------------------------
     
     CommandResult createLocationUseTypeDescription(UserVisitPK userVisitPK, CreateLocationUseTypeDescriptionForm form);
-    
+
+    // -------------------------------------------------------------------------
+    //   WarehouseT ypes
+    // -------------------------------------------------------------------------
+
+    CommandResult createWarehouseType(UserVisitPK userVisitPK, CreateWarehouseTypeForm form);
+
+    CommandResult getWarehouseTypes(UserVisitPK userVisitPK, GetWarehouseTypesForm form);
+
+    CommandResult getWarehouseType(UserVisitPK userVisitPK, GetWarehouseTypeForm form);
+
+    CommandResult getWarehouseTypeChoices(UserVisitPK userVisitPK, GetWarehouseTypeChoicesForm form);
+
+    CommandResult setDefaultWarehouseType(UserVisitPK userVisitPK, SetDefaultWarehouseTypeForm form);
+
+    CommandResult editWarehouseType(UserVisitPK userVisitPK, EditWarehouseTypeForm form);
+
+    CommandResult deleteWarehouseType(UserVisitPK userVisitPK, DeleteWarehouseTypeForm form);
+
+    // -------------------------------------------------------------------------
+    //   Warehouse Type Descriptions
+    // -------------------------------------------------------------------------
+
+    CommandResult createWarehouseTypeDescription(UserVisitPK userVisitPK, CreateWarehouseTypeDescriptionForm form);
+
+    CommandResult getWarehouseTypeDescriptions(UserVisitPK userVisitPK, GetWarehouseTypeDescriptionsForm form);
+
+    CommandResult getWarehouseTypeDescription(UserVisitPK userVisitPK, GetWarehouseTypeDescriptionForm form);
+
+    CommandResult editWarehouseTypeDescription(UserVisitPK userVisitPK, EditWarehouseTypeDescriptionForm form);
+
+    CommandResult deleteWarehouseTypeDescription(UserVisitPK userVisitPK, DeleteWarehouseTypeDescriptionForm form);
+
     // -------------------------------------------------------------------------
     //   Warehouses
     // -------------------------------------------------------------------------
@@ -98,7 +146,9 @@ public interface WarehouseService
     CommandResult createLocationNameElement(UserVisitPK userVisitPK, CreateLocationNameElementForm form);
     
     CommandResult getLocationNameElements(UserVisitPK userVisitPK, GetLocationNameElementsForm form);
-    
+
+    CommandResult getLocationNameElement(UserVisitPK userVisitPK, GetLocationNameElementForm form);
+
     CommandResult editLocationNameElement(UserVisitPK userVisitPK, EditLocationNameElementForm form);
     
     CommandResult deleteLocationNameElement(UserVisitPK userVisitPK, DeleteLocationNameElementForm form);

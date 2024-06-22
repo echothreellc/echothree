@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -99,7 +99,7 @@ public class GetVendorCommand
         if(parameterCount == 0) {
             var party = getParty();
 
-            PartyLogic.getInstance().checkPartyType(this, party, PartyTypes.CUSTOMER.name());
+            PartyLogic.getInstance().checkPartyType(this, party, PartyTypes.VENDOR.name());
 
             if(!hasExecutionErrors()) {
                 var vendorControl = Session.getModelController(VendorControl.class);
@@ -111,14 +111,14 @@ public class GetVendorCommand
         }
 
         if(vendor != null) {
-            sendEventUsingNames(vendor.getPartyPK(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(vendor.getPartyPK(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return vendor;
     }
 
     @Override
-    protected BaseResult getTransfer(Vendor vendor) {
+    protected BaseResult getResult(Vendor vendor) {
         var result = VendorResultFactory.getGetVendorResult();
 
         if(vendor != null) {

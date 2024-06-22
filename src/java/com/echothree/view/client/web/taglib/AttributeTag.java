@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 // Copyright 1999-2004 The Apache Software Foundation.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,6 +19,7 @@ package com.echothree.view.client.web.taglib;
 
 import com.echothree.view.client.web.WebConstants;
 import com.echothree.view.client.web.taglib.util.HtmlFilterHolder;
+import java.util.Locale;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import static javax.servlet.jsp.tagext.Tag.SKIP_BODY;
@@ -54,7 +55,7 @@ public class AttributeTag
         HtmlFilterHolder currentHtmlFilterHolder = (HtmlFilterHolder)pageContext.getAttribute(WebConstants.Attribute_HTML_FILTER_HOLDER, PageContext.REQUEST_SCOPE);
 
         if(currentHtmlFilterHolder.hasCurrentHtmlTagHolder()) {
-            currentHtmlFilterHolder.addAttribute(attribute.toLowerCase());
+            currentHtmlFilterHolder.addAttribute(attribute.toLowerCase(Locale.getDefault()));
         } else {
             throw new JspException("attribute may only be used inside the body of a tag tag.");
         }

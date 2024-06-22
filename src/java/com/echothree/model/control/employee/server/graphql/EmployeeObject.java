@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -68,7 +68,7 @@ public class EmployeeObject
 //    @GraphQLDescription("employee type")
 //    @GraphQLNonNull
 //    public EmployeeTypeObject getEmployeeType(final DataFetchingEnvironment env) {
-//        return EmployeeSecurityUtils.getInstance().getHasEmployeeTypeAccess(env) ?
+//        return EmployeeSecurityUtils.getHasEmployeeTypeAccess(env) ?
 //                new EmployeeTypeObject(getEmployee().getEmployeeType()) : null;
 //    }
 

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -87,7 +87,9 @@ public class CustomerProfileEditAction
 
                 edit.setNickname(actionForm.getNickname());
                 edit.setIconName(actionForm.getIconChoice());
+                edit.setPronunciation(actionForm.getPronunciation());
                 edit.setGenderName(actionForm.getGenderChoice());
+                edit.setPronouns(actionForm.getPronouns());
                 edit.setBirthday(actionForm.getBirthday());
                 edit.setBirthdayFormatName(actionForm.getBirthdayFormatChoice());
                 edit.setOccupation(actionForm.getOccupation());
@@ -131,7 +133,9 @@ public class CustomerProfileEditAction
                     actionForm.setCustomerName(customerName);
                     actionForm.setNickname(edit.getNickname());
                     actionForm.setIconChoice(edit.getIconName());
+                    actionForm.setPronunciation(edit.getPronunciation());
                     actionForm.setGenderChoice(edit.getGenderName());
+                    actionForm.setPronouns(edit.getPronouns());
                     actionForm.setBirthday(edit.getBirthday());
                     actionForm.setBirthdayFormatChoice(edit.getBirthdayFormatName());
                     actionForm.setOccupation(edit.getOccupation());

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,7 +16,13 @@
 
 package com.echothree.model.control.party.server.graphql;
 
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.data.item.common.ItemConstants;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyDivision;
 import com.echothree.util.server.persistence.Session;
@@ -24,9 +30,9 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @GraphQLDescription("division object")
@@ -60,7 +66,7 @@ public class DivisionObject
     public CompanyObject getCompany(final DataFetchingEnvironment env) {
         var companyParty = getPartyDivision().getCompanyParty();
 
-        return PartySecurityUtils.getInstance().getHasPartyAccess(env, companyParty) ? new CompanyObject(companyParty) : null;
+        return PartySecurityUtils.getHasPartyAccess(env, companyParty) ? new CompanyObject(companyParty) : null;
     }
 
     @GraphQLField
@@ -86,26 +92,21 @@ public class DivisionObject
 
     @GraphQLField
     @GraphQLDescription("departments")
-    public List<DepartmentObject> getDepartments(final DataFetchingEnvironment env) {
-        if(PartySecurityUtils.getInstance().getHasDepartmentsAccess(env)) {
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<DepartmentObject> getDepartments(final DataFetchingEnvironment env) {
+        if(PartySecurityUtils.getHasDepartmentsAccess(env)) {
             var partyControl = Session.getModelController(PartyControl.class);
-            var entities = partyControl.getDepartmentsByDivision(party);
+            var totalCount = partyControl.countPartyDepartments(party);
 
-            return entities.stream().map(DepartmentObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+            try(var objectLimiter = new ObjectLimiter(env, ItemConstants.COMPONENT_VENDOR_NAME, ItemConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = partyControl.getDepartmentsByDivision(party);
+                var departments = entities.stream().map(DepartmentObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, departments);
+            }
         } else {
-            return null;
-        }
-    }
-
-    @GraphQLField
-    @GraphQLDescription("department count")
-    public Long getDepartmentCount(final DataFetchingEnvironment env) {
-        if(PartySecurityUtils.getInstance().getHasDepartmentsAccess(env)) {
-            var partyControl = Session.getModelController(PartyControl.class);
-
-            return partyControl.countPartyDepartments(party);
-        } else {
-            return null;
+            return Connections.emptyConnection();
         }
     }
 

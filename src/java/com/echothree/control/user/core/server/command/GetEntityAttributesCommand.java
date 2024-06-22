@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,99 +18,143 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetEntityAttributesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetEntityAttributesResult;
-import com.echothree.model.control.core.common.transfer.EntityAttributeTransfer;
+import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.ComponentVendor;
+import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityAttributeType;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.google.common.base.Splitter;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.Collection;
 import java.util.List;
 
 public class GetEntityAttributesCommand
-        extends BaseSimpleCommand<GetEntityAttributesForm> {
-    
+        extends BasePaginatedMultipleEntitiesCommand<EntityAttribute, GetEntityAttributesForm> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.EntityAttribute.name(), SecurityRoles.List.name())
-                        )))
-                )));
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
+                ))
+        ));
+
+        FORM_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null),
                 new FieldDefinition("EntityAttributeTypeNames", FieldType.STRING, false, null, null)
-                ));
+        );
     }
     
     /** Creates a new instance of GetEntityAttributesCommand */
     public GetEntityAttributesCommand(UserVisitPK userVisitPK, GetEntityAttributesForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    EntityType entityType;
+    Collection<EntityAttributeType> entityAttributeTypes;
+
     @Override
-    protected BaseResult execute() {
-        var coreControl = getCoreControl();
-        GetEntityAttributesResult result = CoreResultFactory.getGetEntityAttributesResult();
-        String componentVendorName = form.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
-        
-        if(componentVendor != null) {
-            String entityTypeName = form.getEntityTypeName();
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
-            
-            if(entityType != null) {
-                String entityAttributeTypeNames = form.getEntityAttributeTypeNames();
-                
-                if(entityAttributeTypeNames == null) {
-                    result.setEntityAttributes(coreControl.getEntityAttributeTransfersByEntityType(getUserVisit(), entityType, null));
+    protected void handleForm() {
+        var entityAttributeTypeNames = form.getEntityAttributeTypeNames();
+
+        entityType = EntityTypeLogic.getInstance().getEntityTypeByUniversalSpec(this, form);
+
+        if(!hasExecutionErrors() && entityAttributeTypeNames != null) {
+            var coreControl = getCoreControl();
+            var entityAttributeTypeNamesToCheck = Splitter.on(':').trimResults().omitEmptyStrings().splitToList(entityAttributeTypeNames).toArray(new String[0]);
+            var entityAttributeTypeNamesToCheckLength = entityAttributeTypeNamesToCheck.length;
+
+            entityAttributeTypes = new ArrayList<>();
+
+            for(int i = 0; i < entityAttributeTypeNamesToCheckLength && !hasExecutionErrors(); i++) {
+                var entityAttributeTypeName = entityAttributeTypeNamesToCheck[i];
+                var entityAttributeType = coreControl.getEntityAttributeTypeByName(entityAttributeTypeName);
+
+                if(entityAttributeType != null) {
+                    entityAttributeTypes.add(entityAttributeType);
                 } else {
-                    List<EntityAttributeTransfer> entityAttributeTransfers = new ArrayList<>();
-                    String []entityAttributeTypeNamesToCheck = Splitter.on(':').trimResults().omitEmptyStrings().splitToList(entityAttributeTypeNames).toArray(new String[0]);
-                    int entityAttributeTypeNamesToCheckLength = entityAttributeTypeNamesToCheck.length;
-                    
-                    for(int i = 0; i < entityAttributeTypeNamesToCheckLength && !hasExecutionErrors(); i++) {
-                        String entityAttributeTypeName = entityAttributeTypeNamesToCheck[i];
-                        EntityAttributeType entityAttributeType = coreControl.getEntityAttributeTypeByName(entityAttributeTypeName);
-                        
-                        if(entityAttributeType != null) {
-                            entityAttributeTransfers.addAll(coreControl.getEntityAttributeTransfersByEntityTypeAndEntityAttributeType(getUserVisit(),
-                                    entityType, entityAttributeType, null));
-                        } else {
-                            addExecutionError(ExecutionErrors.UnknownEntityAttributeTypeName.name(), entityAttributeTypeName);
-                        }
-                    }
-                    
-                    if(!hasExecutionErrors()) {
-                        result.setEntityAttributes(entityAttributeTransfers);
-                    }
+                    addExecutionError(ExecutionErrors.UnknownEntityAttributeTypeName.name(), entityAttributeTypeName);
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownEntityTypeName.name(), entityTypeName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
         }
-        
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        Long totalEntities = null;
+
+        if(!hasExecutionErrors()) {
+            if(entityAttributeTypes == null) {
+                totalEntities = getCoreControl().countEntityAttributesByEntityType(entityType);
+            } else {
+                var coreControl = getCoreControl();
+                var totalEntitiesTally = 0L;
+
+                for(var entityAttributeType : entityAttributeTypes) {
+                    totalEntitiesTally += coreControl.countEntityAttributesByEntityTypeAndEntityAttributeType(
+                            entityType, entityAttributeType);
+                }
+
+                totalEntities = totalEntitiesTally;
+            }
+        }
+
+        return totalEntities;
+    }
+
+    @Override
+    protected Collection<EntityAttribute> getEntities() {
+        Collection<EntityAttribute> entityAttributes = null;
+
+        if(!hasExecutionErrors()) {
+            if(entityAttributeTypes == null) {
+                entityAttributes = getCoreControl().getEntityAttributesByEntityType(entityType);
+            } else {
+                var coreControl = getCoreControl();
+
+                entityAttributes = new ArrayList<>();
+
+                for(var entityAttributeType : entityAttributeTypes) {
+                    entityAttributes.addAll(coreControl.getEntityAttributesByEntityTypeAndEntityAttributeType(
+                            entityType, entityAttributeType));
+
+                }
+            }
+        }
+
+        return entityAttributes;
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<EntityAttribute> entities) {
+        var result = CoreResultFactory.getGetEntityAttributesResult();
+
+        if(entities != null) {
+            var coreControl = getCoreControl();
+
+            result.setEntityAttributes(coreControl.getEntityAttributeTransfers(getUserVisit(), entities, null));
+        }
+
         return result;
     }
-    
+
 }

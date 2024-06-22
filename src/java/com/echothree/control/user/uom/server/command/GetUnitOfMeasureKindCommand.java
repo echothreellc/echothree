@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -54,14 +54,14 @@ public class GetUnitOfMeasureKindCommand
         UnitOfMeasureKind unitOfMeasureKind = UnitOfMeasureKindLogic.getInstance().getUnitOfMeasureKindByName(this, form.getUnitOfMeasureKindName());
         
         if(!hasExecutionErrors()) {
-            sendEventUsingNames(unitOfMeasureKind.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(unitOfMeasureKind.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
         
         return unitOfMeasureKind;
     }
     
     @Override
-    protected BaseResult getTransfer(UnitOfMeasureKind unitOfMeasureKind) {
+    protected BaseResult getResult(UnitOfMeasureKind unitOfMeasureKind) {
         var uomControl = Session.getModelController(UomControl.class);
         GetUnitOfMeasureKindResult result = UomResultFactory.getGetUnitOfMeasureKindResult();
         

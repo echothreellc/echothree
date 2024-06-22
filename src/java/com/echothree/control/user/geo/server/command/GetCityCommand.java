@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -109,7 +109,7 @@ public class GetCityCommand
         if(geoCodeAlias != null) {
             geoCode = geoCodeAlias.getGeoCode();
 
-            sendEventUsingNames(geoCode.getPrimaryKey(), EventTypes.READ.name(), null, null, createdBy);
+            sendEvent(geoCode.getPrimaryKey(), EventTypes.READ, null, null, createdBy);
         } else {
             addExecutionError(ExecutionErrors.UnknownCityName.name());
         }
@@ -118,7 +118,7 @@ public class GetCityCommand
     }
 
     @Override
-    protected BaseResult getTransfer(GeoCode entity) {
+    protected BaseResult getResult(GeoCode entity) {
         var result = GeoResultFactory.getGetCityResult();
 
         if(entity != null) {

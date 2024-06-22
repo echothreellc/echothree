@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -54,7 +54,7 @@ public class CreateInventoryConditionCommand
                 new FieldDefinition("InventoryConditionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
-                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 ));
     }
     
@@ -65,13 +65,13 @@ public class CreateInventoryConditionCommand
     
     @Override
     protected BaseResult execute() {
-        CreateInventoryConditionResult result = InventoryResultFactory.getCreateInventoryConditionResult();
-        String inventoryConditionName = form.getInventoryConditionName();
+        var result = InventoryResultFactory.getCreateInventoryConditionResult();
+        var inventoryConditionName = form.getInventoryConditionName();
         var isDefault = Boolean.valueOf(form.getIsDefault());
         var sortOrder = Integer.valueOf(form.getSortOrder());
         var description = form.getDescription();
 
-        InventoryCondition inventoryCondition = InventoryConditionLogic.getInstance().createInventoryCondition(this,
+        var inventoryCondition = InventoryConditionLogic.getInstance().createInventoryCondition(this,
                 inventoryConditionName, isDefault, sortOrder, getPreferredLanguage(), description, getPartyPK());
 
         if(inventoryCondition != null && !hasExecutionErrors()) {

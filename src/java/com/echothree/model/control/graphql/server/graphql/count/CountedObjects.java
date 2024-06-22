@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
 
 package com.echothree.model.control.graphql.server.graphql.count;
 
-import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.graphql.ObjectLimiter;
+import com.echothree.model.control.graphql.server.util.count.GraphQlCursorUtils;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import graphql.relay.DefaultConnectionCursor;
 import graphql.relay.DefaultEdge;
 import graphql.relay.DefaultPageInfo;
@@ -27,19 +27,19 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class CountedObjects<BEIO extends BaseEntityInstanceObject>
-        implements CountingPaginatedData<BEIO> {
+public class CountedObjects<T>
+        implements CountingPaginatedData<T> {
 
-    ObjectLimiter objectLimiter;
-    Iterable<BEIO> data;
+    private final ObjectLimiter objectLimiter;
+    private final List<T> entities;
 
-    boolean hasPreviousPage;
-    boolean hasNextPage;
-    long cursor;
+    private final boolean hasPreviousPage;
+    private final boolean hasNextPage;
+    private long cursor;
 
-    public CountedObjects(ObjectLimiter objectLimiter, Iterable<BEIO> data) {
+    public CountedObjects(final ObjectLimiter objectLimiter, final List<T> entities) {
         this.objectLimiter = objectLimiter;
-        this.data = data;
+        this.entities = entities;
 
         hasPreviousPage = objectLimiter.getLimitOffset() > 0;
         hasNextPage = objectLimiter.getLimitCount() < (objectLimiter.getTotalCount() - objectLimiter.getLimitOffset());
@@ -52,15 +52,15 @@ public class CountedObjects<BEIO extends BaseEntityInstanceObject>
     }
 
     @Override
-    public String getCursor(BEIO beio) {
-        return Long.toString(cursor += 1);
+    public String getCursor(final T entity) {
+        return GraphQlCursorUtils.getInstance().toCursor(objectLimiter.getComponentVendorName(), objectLimiter.getEntityTypeName(), cursor += 1);
     }
 
     @Override
-    public List<Edge<BEIO>> getEdges() {
-        var edges = new ArrayList<Edge<BEIO>>();
+    public List<Edge<T>> getEdges() {
+        var edges = new ArrayList<Edge<T>>();
 
-        for(final BEIO beio : this) {
+        for(final T beio : this) {
             edges.add(new DefaultEdge<>(beio, new DefaultConnectionCursor(getCursor(null))));
         }
 
@@ -69,8 +69,11 @@ public class CountedObjects<BEIO extends BaseEntityInstanceObject>
 
     @Override
     public PageInfo getPageInfo() {
-        var startCursor = new DefaultConnectionCursor(Long.toString(objectLimiter.getLimitOffset() + 1));
-        var endCursor = new DefaultConnectionCursor(Long.toString(objectLimiter.getLimitOffset() + objectLimiter.getLimitCount()));
+        var entitiesCount = entities.size();
+        var startCursor = entitiesCount == 0 ? null : new DefaultConnectionCursor(
+                GraphQlCursorUtils.getInstance().toCursor(objectLimiter.getComponentVendorName(), objectLimiter.getEntityTypeName(), objectLimiter.getLimitOffset() + 1));
+        var endCursor = entitiesCount == 0 ? null : new DefaultConnectionCursor(
+                GraphQlCursorUtils.getInstance().toCursor(objectLimiter.getComponentVendorName(), objectLimiter.getEntityTypeName(), objectLimiter.getLimitOffset() + objectLimiter.getLimitCount()));
 
         return new DefaultPageInfo(startCursor, endCursor, hasPreviousPage, hasNextPage);
     }
@@ -86,8 +89,8 @@ public class CountedObjects<BEIO extends BaseEntityInstanceObject>
     }
 
     @Override
-    public Iterator<BEIO> iterator() {
-        return data.iterator();
+    public Iterator<T> iterator() {
+        return entities.iterator();
     }
 
 }

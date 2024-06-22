@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -69,7 +69,7 @@ public class OfferNameElementControl
         offerNameElement.setLastDetail(offerNameElementDetail);
         offerNameElement.store();
         
-        sendEventUsingNames(offerNameElement.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(offerNameElement.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return offerNameElement;
     }
@@ -81,7 +81,7 @@ public class OfferNameElementControl
                 "WHERE ofrne_activedetailid = ofrnedt_offernameelementdetailid");
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.OfferNameElement */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.OfferNameElement */
     public OfferNameElement getOfferNameElementByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new OfferNameElementPK(entityInstance.getEntityUniqueId());
         var offerNameElement = OfferNameElementFactory.getInstance().getEntityFromPK(entityPermission, pk);
@@ -210,7 +210,7 @@ public class OfferNameElementControl
             offerNameElement.setActiveDetail(offerNameElementDetail);
             offerNameElement.setLastDetail(offerNameElementDetail);
             
-            sendEventUsingNames(offerNameElementPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(offerNameElementPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -222,7 +222,7 @@ public class OfferNameElementControl
         offerNameElement.setActiveDetail(null);
         offerNameElement.store();
         
-        sendEventUsingNames(offerNameElement.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(offerNameElement.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -234,8 +234,8 @@ public class OfferNameElementControl
         OfferNameElementDescription offerNameElementDescription = OfferNameElementDescriptionFactory.getInstance().create(session,
                 offerNameElement, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(offerNameElement.getPrimaryKey(), EventTypes.MODIFY.name(),
-                offerNameElementDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(offerNameElement.getPrimaryKey(), EventTypes.MODIFY,
+                offerNameElementDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return offerNameElementDescription;
     }
@@ -377,16 +377,16 @@ public class OfferNameElementControl
             offerNameElementDescription = OfferNameElementDescriptionFactory.getInstance().create(offerNameElement,
                     language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(offerNameElement.getPrimaryKey(), EventTypes.MODIFY.name(),
-                    offerNameElementDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(offerNameElement.getPrimaryKey(), EventTypes.MODIFY,
+                    offerNameElementDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteOfferNameElementDescription(OfferNameElementDescription offerNameElementDescription, BasePK deletedBy) {
         offerNameElementDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(offerNameElementDescription.getOfferNameElementPK(), EventTypes.MODIFY.name(),
-                offerNameElementDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(offerNameElementDescription.getOfferNameElementPK(), EventTypes.MODIFY,
+                offerNameElementDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteOfferNameElementDescriptionsByOfferNameElement(OfferNameElement offerNameElement, BasePK deletedBy) {

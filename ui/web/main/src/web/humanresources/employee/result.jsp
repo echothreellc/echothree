@@ -1,7 +1,7 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" %>
 
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -20,17 +20,17 @@
 
 <html:html xhtml="true">
     <head>
-        <title>Employee Results</title>
+        <title><fmt:message key="pageTitle.employeeResults" /></title>
         <html:base/>
         <%@ include file="../../include/environment.jsp" %>
     </head>
     <body>
         <div id="Header">
             <h2>
-                <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
-                <a href="<c:url value="/action/HumanResources/Main" />">Human Resources</a> &gt;&gt;
-                <a href="<c:url value="/action/HumanResources/Employee/Main" />">Employees</a> &gt;&gt;
-                Results
+                <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
+                <a href="<c:url value="/action/HumanResources/Main" />"><fmt:message key="navigation.humanResources" /></a> &gt;&gt;
+                <a href="<c:url value="/action/HumanResources/Employee/Main" />"><fmt:message key="navigation.employees" /></a> &gt;&gt;
+                <fmt:message key="navigation.results" />
             </h2>
         </div>
         <div id="Content">
@@ -130,11 +130,13 @@
                                         </c:otherwise>
                                     </c:choose>
                                     <a href="${changePasswordUrl}">Change Password</a><br />
-                                    <c:url var="resetLockoutUrl" value="/action/HumanResources/Employee/ResetLockout">
-                                        <c:param name="EmployeeName" value="${employeeResult.employee.employeeName}" />
-                                        <c:param name="ReturnUrl" value="Result" />
-                                    </c:url>
-                                    <a href="${resetLockoutUrl}">Reset Lockout</a>
+                                    <c:if test="${employeeResult.employee.userLogin.failureCount > partyType.partyTypeLockoutPolicy.lockoutFailureCount}">
+                                        <c:url var="resetLockoutUrl" value="/action/HumanResources/Employee/ResetLockout">
+                                            <c:param name="PartyName" value="${employeeResult.employee.partyName}" />
+                                            <c:param name="ReturnUrl" value="Result" />
+                                        </c:url>
+                                        <a href="${resetLockoutUrl}">Reset Lockout</a>
+                                    </c:if>
                                 </display:column>
                                 <display:column media="html">
                                     <c:url var="employeeContactMechanismsUrl" value="/action/HumanResources/EmployeeContactMechanism/Main">
@@ -270,11 +272,13 @@
                                         </c:otherwise>
                                     </c:choose>
                                     <a href="${changePasswordUrl}">Change Password</a><br />
-                                    <c:url var="resetLockoutUrl" value="/action/HumanResources/Employee/ResetLockout">
-                                        <c:param name="EmployeeName" value="${employeeResult.employee.employeeName}" />
-                                        <c:param name="ReturnUrl" value="Result" />
-                                    </c:url>
-                                    <a href="${resetLockoutUrl}">Reset Lockout</a>
+                                    <c:if test="${employeeResult.employee.userLogin.failureCount > partyType.partyTypeLockoutPolicy.lockoutFailureCount}">
+                                        <c:url var="resetLockoutUrl" value="/action/HumanResources/Employee/ResetLockout">
+                                            <c:param name="PartyName" value="${employeeResult.employee.partyName}" />
+                                            <c:param name="ReturnUrl" value="Result" />
+                                        </c:url>
+                                        <a href="${resetLockoutUrl}">Reset Lockout</a>
+                                    </c:if>
                                 </display:column>
                                 <display:column>
                                     <c:url var="employeeContactMechanismsUrl" value="/action/HumanResources/EmployeeContactMechanism/Main">

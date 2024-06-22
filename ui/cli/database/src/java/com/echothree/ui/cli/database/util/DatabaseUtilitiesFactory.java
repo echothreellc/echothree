@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ public final class DatabaseUtilitiesFactory {
     private static String BASE = "com.echothree.ui.cli.database.db.";
     private static String DEFAULT = "default";
     
-    private static String DB_ECHOTHREE = "echothree";
+    private static String DB_ECHO_THREE = "echothree";
     private static String DB_REPORTING = "reporting";
     
     private static Log log = LogFactory.getLog(DatabaseUtilitiesFactory.class);
@@ -77,12 +77,12 @@ public final class DatabaseUtilitiesFactory {
     public DatabaseUtilities getDatabaseUtilities(Configuration configuration, boolean verbose, Database database)
             throws Exception {
         DatabaseUtilities result = null;
-        String connectionClass = getProperty(configuration, DB_ECHOTHREE, "class", true);
-        String connectionUrl  = getProperty(configuration, DB_ECHOTHREE, "url", true);
-        String connectionUser = getProperty(configuration, DB_ECHOTHREE, "user", true);
-        String connectionPassword = getProperty(configuration, DB_ECHOTHREE, "password", true);
-        String connectionCharacterSet = getProperty(configuration, DB_ECHOTHREE, "characterSet", true);
-        String connectionCollation = getProperty(configuration, DB_ECHOTHREE, "collation", true);
+        String connectionClass = getProperty(configuration, DB_ECHO_THREE, "class", true);
+        String connectionUrl  = getProperty(configuration, DB_ECHO_THREE, "url", true);
+        String connectionUser = getProperty(configuration, DB_ECHO_THREE, "user", true);
+        String connectionPassword = getProperty(configuration, DB_ECHO_THREE, "password", true);
+        String connectionCharacterSet = getProperty(configuration, DB_ECHO_THREE, "characterSet", true);
+        String connectionCollation = getProperty(configuration, DB_ECHO_THREE, "collation", true);
         
         if(connectionClass.equals("com.mysql.cj.jdbc.Driver")) {
             result = new DatabaseUtilitiesForMySQL(verbose, database, connectionClass, connectionUrl, connectionUser,

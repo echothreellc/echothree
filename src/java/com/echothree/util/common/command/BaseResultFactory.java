@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,15 +17,14 @@
 package com.echothree.util.common.command;
 
 import java.io.Serializable;
-import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 
 public class BaseResultFactory {
     
-    static public BaseResult createResult(Class result) {
-        InvocationHandler pih = new ProxyInvocationHandler();
+    static public <F extends BaseResult> F createResult(Class<F> result) {
+        var pih = new ProxyInvocationHandler();
 
-        return (BaseResult)Proxy.newProxyInstance(result.getClassLoader(), new Class[]{result, Serializable.class}, pih);
+        return (F)Proxy.newProxyInstance(result.getClassLoader(), new Class[]{result, Serializable.class}, pih);
     }
     
 }

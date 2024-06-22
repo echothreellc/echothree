@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -40,7 +40,6 @@ public class WorkflowTransferCaches
     protected WorkflowStepTransferCache workflowStepTransferCache;
     protected WorkflowStepTypeTransferCache workflowStepTypeTransferCache;
     protected WorkflowTransferCache workflowTransferCache;
-    protected WorkflowTypeTransferCache workflowTypeTransferCache;
     protected WorkflowSelectorKindTransferCache workflowSelectorKindTransferCache;
     protected WorkflowDestinationPartyTypeTransferCache workflowDestinationPartyTypeTransferCache;
     protected WorkflowDestinationSecurityRoleTransferCache workflowDestinationSecurityRoleTransferCache;
@@ -157,13 +156,6 @@ public class WorkflowTransferCaches
             workflowTransferCache = new WorkflowTransferCache(userVisit, workflowControl);
         
         return workflowTransferCache;
-    }
-    
-    public WorkflowTypeTransferCache getWorkflowTypeTransferCache() {
-        if(workflowTypeTransferCache == null)
-            workflowTypeTransferCache = new WorkflowTypeTransferCache(userVisit, workflowControl);
-        
-        return workflowTypeTransferCache;
     }
     
     public WorkflowSelectorKindTransferCache getWorkflowSelectorKindTransferCache() {

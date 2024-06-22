@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,8 +19,8 @@ package com.echothree.ui.web.main.action.salesorder.salesorderbatch;
 import com.echothree.control.user.search.common.SearchUtil;
 import com.echothree.control.user.search.common.form.GetSalesOrderBatchResultsForm;
 import com.echothree.control.user.search.common.result.GetSalesOrderBatchResultsResult;
-import com.echothree.model.control.search.common.SearchConstants;
 import com.echothree.model.control.search.common.SearchOptions;
+import com.echothree.model.control.search.common.SearchTypes;
 import com.echothree.model.data.search.common.SearchResultConstants;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -34,6 +34,7 @@ import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
+import static java.lang.Math.toIntExact;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -65,14 +66,14 @@ public class ResultAction
         GetSalesOrderBatchResultsForm commandForm = SearchUtil.getHome().getGetSalesOrderBatchResultsForm();
         String results = request.getParameter(ParameterConstants.RESULTS);
 
-        commandForm.setSearchTypeName(SearchConstants.SearchType_SALES_ORDER_BATCH_MAINTENANCE);
+        commandForm.setSearchTypeName(SearchTypes.SALES_ORDER_BATCH_MAINTENANCE.name());
 
         Set<String> options = new HashSet<>();
         options.add(SearchOptions.SalesOrderBatchResultIncludeSalesOrderBatch);
         commandForm.setOptions(options);
 
         if(results == null) {
-            String offsetParameter = request.getParameter((new ParamEncoder("salesOrderBatchResult").encodeParameterName(TableTagParameters.PARAMETER_PAGE)));
+            String offsetParameter = request.getParameter(new ParamEncoder("salesOrderBatchResult").encodeParameterName(TableTagParameters.PARAMETER_PAGE));
             Integer offset = offsetParameter == null ? null : (Integer.parseInt(offsetParameter) - 1) * 20;
 
             Map<String, Limit> limits = new HashMap<>();
@@ -85,9 +86,9 @@ public class ResultAction
             ExecutionResult executionResult = commandResult.getExecutionResult();
             GetSalesOrderBatchResultsResult result = (GetSalesOrderBatchResultsResult)executionResult.getResult();
 
-            Integer salesOrderBatchResultCount = result.getSalesOrderBatchResultCount();
+            var salesOrderBatchResultCount = result.getSalesOrderBatchResultCount();
             if(salesOrderBatchResultCount != null) {
-                request.setAttribute(AttributeConstants.SALES_ORDER_BATCH_RESULT_COUNT, salesOrderBatchResultCount);
+                request.setAttribute(AttributeConstants.SALES_ORDER_BATCH_RESULT_COUNT, toIntExact(salesOrderBatchResultCount));
             }
 
             request.setAttribute(AttributeConstants.SALES_ORDER_BATCH_RESULTS, new ListWrapper<>(result.getSalesOrderBatchResults()));

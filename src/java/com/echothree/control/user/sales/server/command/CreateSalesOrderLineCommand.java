@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -61,7 +61,7 @@ public class CreateSalesOrderLineCommand
                 new FieldDefinition("Quantity", FieldType.UNSIGNED_LONG, true, null, null),
                 new FieldDefinition("UnitAmount", FieldType.UNSIGNED_PRICE_UNIT, false, null, null),
                 new FieldDefinition("Taxable", FieldType.BOOLEAN, false, null, null),
-                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L),
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L),
                 new FieldDefinition("CancellationPolicyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("ReturnPolicyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("SourceName", FieldType.ENTITY_NAME, false, null, null)

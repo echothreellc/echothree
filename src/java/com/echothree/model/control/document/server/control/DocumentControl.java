@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -103,6 +103,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -163,7 +164,7 @@ public class DocumentControl
         documentType.setLastDetail(documentTypeDetail);
         documentType.store();
         
-        sendEventUsingNames(documentType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(documentType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return documentType;
     }
@@ -417,7 +418,7 @@ public class DocumentControl
             documentType.setActiveDetail(documentTypeDetail);
             documentType.setLastDetail(documentTypeDetail);
             
-            sendEventUsingNames(documentTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(documentTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -457,7 +458,7 @@ public class DocumentControl
             }
         }
 
-        sendEventUsingNames(documentType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(documentType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteDocumentType(DocumentType itemDescriptionType, BasePK deletedBy) {
@@ -484,7 +485,7 @@ public class DocumentControl
         DocumentTypeDescription documentTypeDescription = DocumentTypeDescriptionFactory.getInstance().create(documentType, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(documentType.getPrimaryKey(), EventTypes.MODIFY.name(), documentTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(documentType.getPrimaryKey(), EventTypes.MODIFY, documentTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return documentTypeDescription;
     }
@@ -607,14 +608,14 @@ public class DocumentControl
             documentTypeDescription = DocumentTypeDescriptionFactory.getInstance().create(documentType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(documentType.getPrimaryKey(), EventTypes.MODIFY.name(), documentTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(documentType.getPrimaryKey(), EventTypes.MODIFY, documentTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteDocumentTypeDescription(DocumentTypeDescription documentTypeDescription, BasePK deletedBy) {
         documentTypeDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(documentTypeDescription.getDocumentTypePK(), EventTypes.MODIFY.name(), documentTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(documentTypeDescription.getDocumentTypePK(), EventTypes.MODIFY, documentTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -654,7 +655,7 @@ public class DocumentControl
         documentTypeUsageType.setLastDetail(documentTypeUsageTypeDetail);
         documentTypeUsageType.store();
 
-        sendEventUsingNames(documentTypeUsageType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(documentTypeUsageType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return documentTypeUsageType;
     }
@@ -850,7 +851,7 @@ public class DocumentControl
             documentTypeUsageType.setActiveDetail(documentTypeUsageTypeDetail);
             documentTypeUsageType.setLastDetail(documentTypeUsageTypeDetail);
 
-            sendEventUsingNames(documentTypeUsageTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(documentTypeUsageTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -889,7 +890,7 @@ public class DocumentControl
             }
         }
 
-        sendEventUsingNames(documentTypeUsageType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(documentTypeUsageType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteDocumentTypeUsageType(DocumentTypeUsageType itemDescriptionType, BasePK deletedBy) {
@@ -912,7 +913,7 @@ public class DocumentControl
         DocumentTypeUsageTypeDescription documentTypeUsageTypeDescription = DocumentTypeUsageTypeDescriptionFactory.getInstance().create(documentTypeUsageType, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(documentTypeUsageType.getPrimaryKey(), EventTypes.MODIFY.name(), documentTypeUsageTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(documentTypeUsageType.getPrimaryKey(), EventTypes.MODIFY, documentTypeUsageTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return documentTypeUsageTypeDescription;
     }
@@ -1035,14 +1036,14 @@ public class DocumentControl
             documentTypeUsageTypeDescription = DocumentTypeUsageTypeDescriptionFactory.getInstance().create(documentTypeUsageType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(documentTypeUsageType.getPrimaryKey(), EventTypes.MODIFY.name(), documentTypeUsageTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(documentTypeUsageType.getPrimaryKey(), EventTypes.MODIFY, documentTypeUsageTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteDocumentTypeUsageTypeDescription(DocumentTypeUsageTypeDescription documentTypeUsageTypeDescription, BasePK deletedBy) {
         documentTypeUsageTypeDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(documentTypeUsageTypeDescription.getDocumentTypeUsageTypePK(), EventTypes.MODIFY.name(), documentTypeUsageTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(documentTypeUsageTypeDescription.getDocumentTypeUsageTypePK(), EventTypes.MODIFY, documentTypeUsageTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -1075,7 +1076,7 @@ public class DocumentControl
         DocumentTypeUsage documentTypeUsage = DocumentTypeUsageFactory.getInstance().create(documentTypeUsageType, documentType, isDefault, sortOrder,
                 maximumInstances, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(documentTypeUsageType.getPrimaryKey(), EventTypes.MODIFY.name(), documentTypeUsage.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(documentTypeUsageType.getPrimaryKey(), EventTypes.MODIFY, documentTypeUsage.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return documentTypeUsage;
     }
@@ -1222,7 +1223,7 @@ public class DocumentControl
         return getDocumentTransferCaches(userVisit).getDocumentTypeUsageTransferCache().getDocumentTypeUsageTransfer(documentTypeUsage);
     }
 
-    public List<DocumentTypeUsageTransfer> getDocumentTypeUsageTransfers(UserVisit userVisit, List<DocumentTypeUsage> documentTypeUsages) {
+    public List<DocumentTypeUsageTransfer> getDocumentTypeUsageTransfers(UserVisit userVisit, Collection<DocumentTypeUsage> documentTypeUsages) {
         List<DocumentTypeUsageTransfer> documentTypeUsageTransfers = new ArrayList<>(documentTypeUsages.size());
         DocumentTypeUsageTransferCache documentTypeUsageTransferCache = getDocumentTransferCaches(userVisit).getDocumentTypeUsageTransferCache();
 
@@ -1275,7 +1276,7 @@ public class DocumentControl
             documentTypeUsage = DocumentTypeUsageFactory.getInstance().create(documentTypeUsageTypePK, documentTypePK, isDefault,
                     sortOrder, maximumInstances, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(documentTypeUsageTypePK, EventTypes.MODIFY.name(), documentTypeUsage.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(documentTypeUsageTypePK, EventTypes.MODIFY, documentTypeUsage.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
@@ -1309,7 +1310,7 @@ public class DocumentControl
             }
         }
 
-        sendEventUsingNames(documentTypeUsageType.getPrimaryKey(), EventTypes.MODIFY.name(), documentTypeUsage.getPrimaryKey(), EventTypes.DELETE.name(),deletedBy);
+        sendEvent(documentTypeUsageType.getPrimaryKey(), EventTypes.MODIFY, documentTypeUsage.getPrimaryKey(), EventTypes.DELETE,deletedBy);
     }
 
     public void deleteDocumentTypeUsage(DocumentTypeUsage itemDescriptionType, BasePK deletedBy) {
@@ -1355,7 +1356,7 @@ public class DocumentControl
         document.setLastDetail(documentDetail);
         document.store();
         
-        sendEventUsingNames(document.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(document.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return document;
     }
@@ -1472,7 +1473,7 @@ public class DocumentControl
             document.setActiveDetail(documentDetail);
             document.setLastDetail(documentDetail);
 
-            sendEventUsingNames(documentPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(documentPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -1491,7 +1492,7 @@ public class DocumentControl
             deleteDocumentClobByDocument(document, deletedBy);
         }
         
-        sendEventUsingNames(document.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(document.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteDocuments(List<Document> documents, BasePK deletedBy) {
@@ -1530,7 +1531,7 @@ public class DocumentControl
 
         DocumentBlob documentBlob = DocumentBlobFactory.getInstance().create(document, blob, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(document.getPrimaryKey(), EventTypes.MODIFY.name(), documentBlob.getPrimaryKey(), EventTypes.MODIFY.name(), createdBy);
+        sendEvent(document.getPrimaryKey(), EventTypes.MODIFY, documentBlob.getPrimaryKey(), EventTypes.MODIFY, createdBy);
         
         return documentBlob;
     }
@@ -1596,14 +1597,14 @@ public class DocumentControl
             documentBlob = DocumentBlobFactory.getInstance().create(documentPK, blob, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(documentBlob.getDocumentPK(), EventTypes.MODIFY.name(), documentBlob.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(documentBlob.getDocumentPK(), EventTypes.MODIFY, documentBlob.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteDocumentBlob(DocumentBlob documentBlob, BasePK deletedBy) {
         documentBlob.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(documentBlob.getDocumentPK(), EventTypes.MODIFY.name(), documentBlob.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(documentBlob.getDocumentPK(), EventTypes.MODIFY, documentBlob.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteDocumentBlobByDocument(Document document, BasePK deletedBy) {
@@ -1623,7 +1624,7 @@ public class DocumentControl
 
         DocumentClob documentClob = DocumentClobFactory.getInstance().create(document, clob, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(document.getPrimaryKey(), EventTypes.MODIFY.name(), documentClob.getPrimaryKey(), EventTypes.MODIFY.name(), createdBy);
+        sendEvent(document.getPrimaryKey(), EventTypes.MODIFY, documentClob.getPrimaryKey(), EventTypes.MODIFY, createdBy);
         
         return documentClob;
     }
@@ -1688,14 +1689,14 @@ public class DocumentControl
             documentClob = DocumentClobFactory.getInstance().create(documentPK, clob, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(documentClob.getDocumentPK(), EventTypes.MODIFY.name(), documentClob.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(documentClob.getDocumentPK(), EventTypes.MODIFY, documentClob.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteDocumentClob(DocumentClob documentClob, BasePK deletedBy) {
         documentClob.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(documentClob.getDocumentPK(), EventTypes.MODIFY.name(), documentClob.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(documentClob.getDocumentPK(), EventTypes.MODIFY, documentClob.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteDocumentClobByDocument(Document document, BasePK deletedBy) {
@@ -1714,7 +1715,7 @@ public class DocumentControl
         DocumentDescription documentDescription = DocumentDescriptionFactory.getInstance().create(document, language,
                 description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(document.getPrimaryKey(), EventTypes.MODIFY.name(), documentDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(document.getPrimaryKey(), EventTypes.MODIFY, documentDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return documentDescription;
     }
@@ -1855,14 +1856,14 @@ public class DocumentControl
             documentDescription = DocumentDescriptionFactory.getInstance().create(document, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(document.getPrimaryKey(), EventTypes.MODIFY.name(), documentDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(document.getPrimaryKey(), EventTypes.MODIFY, documentDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteDocumentDescription(DocumentDescription documentDescription, BasePK deletedBy) {
         documentDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(documentDescription.getDocumentPK(), EventTypes.MODIFY.name(), documentDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(documentDescription.getDocumentPK(), EventTypes.MODIFY, documentDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
     
@@ -1895,7 +1896,7 @@ public class DocumentControl
         PartyTypeDocumentTypeUsageType partyTypeDocumentTypeUsageType = PartyTypeDocumentTypeUsageTypeFactory.getInstance().create(partyType,
                 documentTypeUsageType, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(documentTypeUsageType.getPrimaryKey(), EventTypes.MODIFY.name(), partyTypeDocumentTypeUsageType.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(documentTypeUsageType.getPrimaryKey(), EventTypes.MODIFY, partyTypeDocumentTypeUsageType.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return partyTypeDocumentTypeUsageType;
     }
@@ -2042,7 +2043,7 @@ public class DocumentControl
         return getDocumentTransferCaches(userVisit).getPartyTypeDocumentTypeUsageTypeTransferCache().getPartyTypeDocumentTypeUsageTypeTransfer(partyTypeDocumentTypeUsageType);
     }
 
-    public List<PartyTypeDocumentTypeUsageTypeTransfer> getPartyTypeDocumentTypeUsageTypeTransfers(UserVisit userVisit, List<PartyTypeDocumentTypeUsageType> partyTypeDocumentTypeUsageTypes) {
+    public List<PartyTypeDocumentTypeUsageTypeTransfer> getPartyTypeDocumentTypeUsageTypeTransfers(UserVisit userVisit, Collection<PartyTypeDocumentTypeUsageType> partyTypeDocumentTypeUsageTypes) {
         List<PartyTypeDocumentTypeUsageTypeTransfer> partyTypeDocumentTypeUsageTypeTransfers = new ArrayList<>(partyTypeDocumentTypeUsageTypes.size());
         PartyTypeDocumentTypeUsageTypeTransferCache partyTypeDocumentTypeUsageTypeTransferCache = getDocumentTransferCaches(userVisit).getPartyTypeDocumentTypeUsageTypeTransferCache();
 
@@ -2094,7 +2095,7 @@ public class DocumentControl
             partyTypeDocumentTypeUsageType = PartyTypeDocumentTypeUsageTypeFactory.getInstance().create(partyTypePK, documentTypeUsageTypePK, isDefault,
                     sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(documentTypeUsageTypePK, EventTypes.MODIFY.name(), partyTypeDocumentTypeUsageType.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(documentTypeUsageTypePK, EventTypes.MODIFY, partyTypeDocumentTypeUsageType.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
@@ -2128,7 +2129,7 @@ public class DocumentControl
             }
         }
 
-        sendEventUsingNames(partyTypeDocumentTypeUsageType.getDocumentTypeUsageTypePK(), EventTypes.MODIFY.name(), partyTypeDocumentTypeUsageType.getPrimaryKey(), EventTypes.DELETE.name(),deletedBy);
+        sendEvent(partyTypeDocumentTypeUsageType.getDocumentTypeUsageTypePK(), EventTypes.MODIFY, partyTypeDocumentTypeUsageType.getPrimaryKey(), EventTypes.DELETE,deletedBy);
     }
 
     public void deletePartyTypeDocumentTypeUsageType(PartyTypeDocumentTypeUsageType itemDescriptionType, BasePK deletedBy) {
@@ -2171,7 +2172,7 @@ public class DocumentControl
 
         PartyDocument partyDocument = PartyDocumentFactory.getInstance().create(party, document, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), partyDocument.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyDocument.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return partyDocument;
     }
@@ -2278,7 +2279,7 @@ public class DocumentControl
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM partydocuments " +
-                "WHERE pardcmnt_par_partyid = ? AND dcmnttyputypdt_documenttypeusagetypename = ? " +
+                "WHERE pardcmnt_par_partyid = ? AND pardcmnt_thrutime = ? " +
                 "FOR UPDATE");
         getPartyDocumentsByPartyQueries = Collections.unmodifiableMap(queryMap);
     }
@@ -2366,7 +2367,7 @@ public class DocumentControl
         return getDocumentTransferCaches(userVisit).getPartyDocumentTransferCache().getPartyDocumentTransfer(partyDocument);
     }
 
-    public List<PartyDocumentTransfer> getPartyDocumentTransfers(UserVisit userVisit, List<PartyDocument> partyDocuments) {
+    public List<PartyDocumentTransfer> getPartyDocumentTransfers(UserVisit userVisit, Collection<PartyDocument> partyDocuments) {
         List<PartyDocumentTransfer> partyDocumentTransfers = new ArrayList<>(partyDocuments.size());
         PartyDocumentTransferCache partyDocumentTransferCache = getDocumentTransferCaches(userVisit).getPartyDocumentTransferCache();
 
@@ -2451,7 +2452,7 @@ public class DocumentControl
             partyDocument = PartyDocumentFactory.getInstance().create(partyPK, documentPK, isDefault, sortOrder, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(partyPK, EventTypes.MODIFY.name(), partyDocument.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(partyPK, EventTypes.MODIFY, partyDocument.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
@@ -2489,7 +2490,7 @@ public class DocumentControl
             }
         }
 
-        sendEventUsingNames(partyDocument.getPartyPK(), EventTypes.MODIFY.name(), partyDocument.getPrimaryKey(), EventTypes.DELETE.name(),deletedBy);
+        sendEvent(partyDocument.getPartyPK(), EventTypes.MODIFY, partyDocument.getPrimaryKey(), EventTypes.DELETE,deletedBy);
     }
 
     public void deletePartyDocument(PartyDocument itemDescriptionType, BasePK deletedBy) {

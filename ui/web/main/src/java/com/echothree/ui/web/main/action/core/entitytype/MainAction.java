@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -32,6 +32,7 @@ import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
+import static java.lang.Math.toIntExact;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -67,6 +68,9 @@ public class MainAction
 
         Set<String> options = new HashSet<>();
         options.add(CoreOptions.EntityTypeIncludeIndexTypesCount);
+        options.add(CoreOptions.EntityInstanceIncludeEntityAppearance);
+        options.add(CoreOptions.AppearanceIncludeTextDecorations);
+        options.add(CoreOptions.AppearanceIncludeTextTransformations);
         commandForm.setOptions(options);
 
         String offsetParameter = request.getParameter(new ParamEncoder("entityType").encodeParameterName(TableTagParameters.PARAMETER_PAGE));
@@ -83,7 +87,7 @@ public class MainAction
             GetEntityTypesResult result = (GetEntityTypesResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.COMPONENT_VENDOR, result.getComponentVendor());
-            request.setAttribute(AttributeConstants.ENTITY_TYPE_COUNT, Integer.valueOf(result.getEntityTypeCount().toString()));
+            request.setAttribute(AttributeConstants.ENTITY_TYPE_COUNT, toIntExact(result.getEntityTypeCount()));
             request.setAttribute(AttributeConstants.ENTITY_TYPES, result.getEntityTypes());
             forwardKey = ForwardConstants.DISPLAY;
         } else {

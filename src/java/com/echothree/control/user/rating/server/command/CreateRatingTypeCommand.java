@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,19 +17,18 @@
 package com.echothree.control.user.rating.server.command;
 
 import com.echothree.control.user.rating.common.form.CreateRatingTypeForm;
+import com.echothree.control.user.rating.common.result.RatingResultFactory;
+import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.model.control.rating.server.control.RatingControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
-import com.echothree.model.data.core.server.entity.ComponentVendor;
-import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.rating.server.entity.RatingType;
 import com.echothree.model.data.sequence.server.entity.Sequence;
-import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -48,7 +47,7 @@ public class CreateRatingTypeCommand
                 new FieldDefinition("RatingTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("RatingSequenceName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
-                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 ));
     }
     
@@ -59,26 +58,28 @@ public class CreateRatingTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
-        String componentVendorName = form.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
-        
-        if(componentVendor != null) {
-            String entityTypeName = form.getEntityTypeName();
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
-            
-            if(entityType != null) {
+        var result = RatingResultFactory.getCreateRatingTypeResult();
+        var componentVendorName = form.getComponentVendorName();
+        var entityTypeName = form.getEntityTypeName();
+        var entityType = EntityTypeLogic.getInstance().getEntityTypeByName(this, componentVendorName, entityTypeName);
+        RatingType ratingType = null;
+
+        if(!hasExecutionErrors()) {
+            var entityTypeDetail = entityType.getLastDetail();
+
+            if(entityTypeDetail.getIsExtensible()) {
                 var ratingControl = Session.getModelController(RatingControl.class);
-                String ratingTypeName = form.getRatingTypeName();
-                RatingType ratingType = ratingControl.getRatingTypeByName(entityType, ratingTypeName);
+                var ratingTypeName = form.getRatingTypeName();
+                
+                ratingType = ratingControl.getRatingTypeByName(entityType, ratingTypeName);
                 
                 if(ratingType == null) {
-                    String ratingSequenceName = form.getRatingSequenceName();
+                    var ratingSequenceName = form.getRatingSequenceName();
                     Sequence ratingSequence = null;
                     
                     if(ratingSequenceName != null) {
                         var sequenceControl = Session.getModelController(SequenceControl.class);
-                        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.RATING.name());
+                        var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.RATING.name());
                         
                         if(sequenceType != null) {
                             ratingSequence = sequenceControl.getSequenceByName(sequenceType, ratingSequenceName);
@@ -104,13 +105,24 @@ public class CreateRatingTypeCommand
                     addExecutionError(ExecutionErrors.DuplicateRatingTypeName.name(), ratingTypeName);
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownEntityTypeName.name(), entityTypeName);
+                addExecutionError(ExecutionErrors.EntityTypeIsNotExtensible.name(),
+                        entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
+                        entityTypeDetail.getEntityTypeName());
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
         }
-        
-        return null;
+
+        if(ratingType != null) {
+            var basePK = ratingType.getPrimaryKey();
+            var ratingTypeDetail = ratingType.getLastDetail();
+            var entityTypeDetail = ratingTypeDetail.getEntityType().getLastDetail();
+
+            result.setComponentVendorName(entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName());
+            result.setEntityTypeName(entityTypeDetail.getEntityTypeName());
+            result.setRatingTypeName(ratingTypeDetail.getRatingTypeName());
+            result.setEntityRef(basePK.getEntityRef());
+        }
+
+        return result;
     }
     
 }

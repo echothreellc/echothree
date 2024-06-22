@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,11 +29,11 @@ import com.echothree.model.control.tag.server.transfer.TagScopeDescriptionTransf
 import com.echothree.model.control.tag.server.transfer.TagScopeEntityTypeTransferCache;
 import com.echothree.model.control.tag.server.transfer.TagScopeTransferCache;
 import com.echothree.model.control.tag.server.transfer.TagTransferCache;
-import com.echothree.model.control.tag.server.transfer.TagTransferCaches;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.tag.common.pk.TagPK;
+import com.echothree.model.data.tag.common.pk.TagScopeEntityTypePK;
 import com.echothree.model.data.tag.common.pk.TagScopePK;
 import com.echothree.model.data.tag.server.entity.EntityTag;
 import com.echothree.model.data.tag.server.entity.Tag;
@@ -56,36 +56,22 @@ import com.echothree.model.data.tag.server.value.TagScopeDetailValue;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
-import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
 public class TagControl
-        extends BaseModelControl {
+        extends BaseTagControl {
     
     /** Creates a new instance of TagControl */
     public TagControl() {
         super();
-    }
-    
-    // --------------------------------------------------------------------------------
-    //   Tag Transfer Caches
-    // --------------------------------------------------------------------------------
-    
-    private TagTransferCaches tagTransferCaches;
-    
-    public TagTransferCaches getTagTransferCaches(UserVisit userVisit) {
-        if(tagTransferCaches == null) {
-            tagTransferCaches = new TagTransferCaches(userVisit, this);
-        }
-        
-        return tagTransferCaches;
     }
     
     // --------------------------------------------------------------------------------
@@ -116,11 +102,44 @@ public class TagControl
         tagScope.setLastDetail(tagScopeDetail);
         tagScope.store();
         
-        sendEventUsingNames(tagScope.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(tagScope.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return tagScope;
     }
-    
+
+    public long countTagScopes() {
+        return session.queryForLong("""
+                    SELECT COUNT(*)
+                    FROM tagscopes, tagscopedetails
+                    WHERE ts_activedetailid = tsdt_tagscopedetailid
+                    """);
+    }
+
+    public long countTagScopesByEntityType(EntityType entityType) {
+        return session.queryForLong("""
+                    SELECT COUNT(*)
+                    FROM tagscopes, tagscopedetails, tagscopeentitytypes
+                    WHERE ts_activedetailid = tsdt_tagscopedetailid
+                    AND ts_tagscopeid = tent_ts_tagscopeid AND tent_ent_entitytypeid = ? AND tent_thrutime = ?
+                    """, entityType, Session.MAX_TIME);
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.TagScope */
+    public TagScope getTagScopeByEntityInstance(final EntityInstance entityInstance,
+            final EntityPermission entityPermission) {
+        var pk = new TagScopePK(entityInstance.getEntityUniqueId());
+
+        return TagScopeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public TagScope getTagScopeByEntityInstance(final EntityInstance entityInstance) {
+        return getTagScopeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public TagScope getTagScopeByEntityInstanceForUpdate(final EntityInstance entityInstance) {
+        return getTagScopeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     private List<TagScope> getTagScopes(EntityPermission entityPermission) {
         String query = null;
         
@@ -128,7 +147,8 @@ public class TagControl
             query = "SELECT _ALL_ " +
                     "FROM tagscopes, tagscopedetails " +
                     "WHERE ts_activedetailid = tsdt_tagscopedetailid " +
-                    "ORDER BY tsdt_sortorder, tsdt_tagscopename";
+                    "ORDER BY tsdt_sortorder, tsdt_tagscopename " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM tagscopes, tagscopedetails " +
@@ -160,7 +180,8 @@ public class TagControl
                         "FROM tagscopes, tagscopedetails, tagscopeentitytypes " +
                         "WHERE ts_activedetailid = tsdt_tagscopedetailid " +
                         "AND ts_tagscopeid = tent_ts_tagscopeid AND tent_ent_entitytypeid = ? AND tent_thrutime = ? " +
-                        "ORDER BY tsdt_sortorder, tsdt_tagscopename";
+                        "ORDER BY tsdt_sortorder, tsdt_tagscopename " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM tagscopes, tagscopedetails, tagscopeentitytypes " +
@@ -190,7 +211,7 @@ public class TagControl
         return getTagScopesByEntityType(entityType, EntityPermission.READ_WRITE);
     }
     
-    private TagScope getDefaultTagScope(EntityPermission entityPermission) {
+    public TagScope getDefaultTagScope(EntityPermission entityPermission) {
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
@@ -221,7 +242,7 @@ public class TagControl
         return getDefaultTagScopeForUpdate().getLastDetailForUpdate().getTagScopeDetailValue().clone();
     }
     
-    private TagScope getTagScopeByName(String tagScopeName, EntityPermission entityPermission) {
+    public TagScope getTagScopeByName(String tagScopeName, EntityPermission entityPermission) {
         TagScope tagScope;
         
         try {
@@ -303,7 +324,7 @@ public class TagControl
         return getTagTransferCaches(userVisit).getTagScopeTransferCache().getTagScopeTransfer(tagScope);
     }
     
-    public List<TagScopeTransfer> getTagScopeTransfers(UserVisit userVisit, List<TagScope> tagScopes) {
+    public List<TagScopeTransfer> getTagScopeTransfers(UserVisit userVisit, Collection<TagScope> tagScopes) {
         List<TagScopeTransfer> tagScopeTransfers = new ArrayList<>(tagScopes.size());
         TagScopeTransferCache tagScopeTransferCache = getTagTransferCaches(userVisit).getTagScopeTransferCache();
         
@@ -358,7 +379,7 @@ public class TagControl
             tagScope.setActiveDetail(tagScopeDetail);
             tagScope.setLastDetail(tagScopeDetail);
             
-            sendEventUsingNames(tagScopePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(tagScopePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -393,7 +414,7 @@ public class TagControl
             }
         }
         
-        sendEventUsingNames(tagScope.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(tagScope.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -406,7 +427,7 @@ public class TagControl
                 language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(tagScope.getPrimaryKey(), EventTypes.MODIFY.name(), tagScopeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(tagScope.getPrimaryKey(), EventTypes.MODIFY, tagScopeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return tagScopeDescription;
     }
@@ -469,7 +490,8 @@ public class TagControl
                         "FROM tagscopedescriptions, languages " +
                         "WHERE tsd_ts_tagscopeid = ? AND tsd_thrutime = ? " +
                         "AND tsd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM tagscopedescriptions " +
@@ -546,14 +568,14 @@ public class TagControl
             tagScopeDescription = TagScopeDescriptionFactory.getInstance().create(tagScope, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(tagScope.getPrimaryKey(), EventTypes.MODIFY.name(), tagScopeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(tagScope.getPrimaryKey(), EventTypes.MODIFY, tagScopeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteTagScopeDescription(TagScopeDescription tagScopeDescription, BasePK deletedBy) {
         tagScopeDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(tagScopeDescription.getTagScopePK(), EventTypes.MODIFY.name(), tagScopeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(tagScopeDescription.getTagScopePK(), EventTypes.MODIFY, tagScopeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteTagScopeDescriptionsByTagScope(TagScope tagScope, BasePK deletedBy) {
@@ -572,11 +594,43 @@ public class TagControl
         TagScopeEntityType tagScopeEntityType = TagScopeEntityTypeFactory.getInstance().create(tagScope, entityType,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(tagScope.getPrimaryKey(), EventTypes.MODIFY.name(), tagScopeEntityType.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(tagScope.getPrimaryKey(), EventTypes.MODIFY, tagScopeEntityType.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return tagScopeEntityType;
     }
-    
+
+    public long countTagScopeEntityTypesByTagScope(TagScope tagScope) {
+        return session.queryForLong("""
+                    SELECT COUNT(*)
+                    FROM tagscopeentitytypes
+                    WHERE tent_ts_tagscopeid = ? AND tent_thrutime = ?
+                    """, tagScope, Session.MAX_TIME);
+    }
+
+    public long countTagScopeEntityTypesByEntityType(EntityType entityType) {
+        return session.queryForLong("""
+                    SELECT COUNT(*)
+                    FROM tagscopeentitytypes
+                    WHERE tent_ent_entitytypeid = ? AND tent_thrutime = ?
+                    """, entityType, Session.MAX_TIME);
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.TagScopeEntityType */
+    public TagScopeEntityType getTagScopeEntityTypeByEntityInstance(final EntityInstance entityInstance,
+            final EntityPermission entityPermission) {
+        var pk = new TagScopeEntityTypePK(entityInstance.getEntityUniqueId());
+
+        return TagScopeEntityTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public TagScopeEntityType getTagScopeEntityTypeByEntityInstance(final EntityInstance entityInstance) {
+        return getTagScopeEntityTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public TagScopeEntityType getTagScopeEntityTypeByEntityInstanceForUpdate(final EntityInstance entityInstance) {
+        return getTagScopeEntityTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     private TagScopeEntityType getTagScopeEntityType(TagScope tagScope, EntityType entityType, EntityPermission entityPermission) {
         TagScopeEntityType tagScopeEntityType;
         
@@ -627,7 +681,8 @@ public class TagControl
                         "FROM tagscopeentitytypes, entitytypes, entitytypedetails " +
                         "WHERE tent_ts_tagscopeid = ? AND tent_thrutime = ? " +
                         "AND tent_ent_entitytypeid = ent_entitytypeid AND ent_lastdetailid = entdt_entitytypedetailid " +
-                        "ORDER BY entdt_sortorder, entdt_entitytypename";
+                        "ORDER BY entdt_sortorder, entdt_entitytypename " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM tagscopeentitytypes " +
@@ -667,7 +722,8 @@ public class TagControl
                         "FROM tagscopeentitytypes, tagscopes, tagscopedetails " +
                         "WHERE tent_ent_entitytypeid = ? AND tent_thrutime = ? " +
                         "AND tent_ts_tagscopeid = ts_tagscopeid AND ts_lastdetailid = tsdt_tagscopedetailid " +
-                        "ORDER BY tsdt_sortorder, tsdt_tagscopename";
+                        "ORDER BY tsdt_sortorder, tsdt_tagscopename " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM tagscopeentitytypes " +
@@ -700,7 +756,7 @@ public class TagControl
         return getTagTransferCaches(userVisit).getTagScopeEntityTypeTransferCache().getTagScopeEntityTypeTransfer(tagScopeEntityType);
     }
     
-    public List<TagScopeEntityTypeTransfer> getTagScopeEntityTypeTransfers(UserVisit userVisit, List<TagScopeEntityType> tagScopeEntityTypes) {
+    public List<TagScopeEntityTypeTransfer> getTagScopeEntityTypeTransfers(UserVisit userVisit, Collection<TagScopeEntityType> tagScopeEntityTypes) {
         List<TagScopeEntityTypeTransfer> tagScopeEntityTypeTransfers = new ArrayList<>(tagScopeEntityTypes.size());
         TagScopeEntityTypeTransferCache tagScopeEntityTypeTransferCache = getTagTransferCaches(userVisit).getTagScopeEntityTypeTransferCache();
         
@@ -722,7 +778,7 @@ public class TagControl
     public void deleteTagScopeEntityType(TagScopeEntityType tagScopeEntityType, BasePK deletedBy) {
         tagScopeEntityType.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(tagScopeEntityType.getTagScopePK(), EventTypes.MODIFY.name(), tagScopeEntityType.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(tagScopeEntityType.getTagScopePK(), EventTypes.MODIFY, tagScopeEntityType.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteTagScopeEntityTypes(List<TagScopeEntityType> tagScopeEntityTypes, BasePK deletedBy) {
@@ -755,11 +811,45 @@ public class TagControl
         tag.setLastDetail(tagDetail);
         tag.store();
         
-        sendEventUsingNames(tag.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(tag.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return tag;
     }
-    
+
+    public long countTagsByTagScope(final TagScope tagScope) {
+        return session.queryForLong("""
+                    SELECT COUNT(*)
+                    FROM tags, tagdetails
+                    WHERE t_activedetailid = tdt_tagdetailid
+                    AND tdt_ts_tagscopeid = ?
+                    """, tagScope);
+    }
+
+    public long countTagsByTagScopeAndEntityInstance(final TagScope tagScope, final EntityInstance taggedEntityInstance) {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM tags, tagdetails, entitytags
+                WHERE t_activedetailid = tdt_tagdetailid AND tdt_ts_tagscopeid = ?
+                AND t_tagid = et_t_tagid AND et_taggedentityinstanceid = ? AND et_thrutime = ?
+                """, tagScope, taggedEntityInstance, Session.MAX_TIME_LONG);
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Tag */
+    public Tag getTagByEntityInstance(final EntityInstance entityInstance,
+            final EntityPermission entityPermission) {
+        var pk = new TagPK(entityInstance.getEntityUniqueId());
+
+        return TagFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public Tag getTagByEntityInstance(final EntityInstance entityInstance) {
+        return getTagByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Tag getTagByEntityInstanceForUpdate(final EntityInstance entityInstance) {
+        return getTagByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     private List<Tag> getTags(TagScope tagScope, EntityPermission entityPermission) {
         List<Tag> tags;
         
@@ -770,7 +860,8 @@ public class TagControl
                 query = "SELECT _ALL_ " +
                         "FROM tags, tagdetails " +
                         "WHERE t_activedetailid = tdt_tagdetailid AND tdt_ts_tagscopeid = ? " +
-                        "ORDER BY tdt_tagname";
+                        "ORDER BY tdt_tagname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM tags, tagdetails " +
@@ -810,7 +901,8 @@ public class TagControl
                         "FROM tags, tagdetails, entitytags " +
                         "WHERE t_activedetailid = tdt_tagdetailid AND tdt_ts_tagscopeid = ? " +
                         "AND t_tagid = et_t_tagid AND et_taggedentityinstanceid = ? AND et_thrutime = ? " +
-                        "ORDER BY tdt_tagname";
+                        "ORDER BY tdt_tagname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM tags, tagdetails, entitytags " +
@@ -841,7 +933,7 @@ public class TagControl
         return getTagsByTagScopeAndEntityInstance(tagScope, entityInstance, EntityPermission.READ_WRITE);
     }
     
-    private Tag getTagByName(TagScope tagScope, String tagName, EntityPermission entityPermission) {
+    public Tag getTagByName(TagScope tagScope, String tagName, EntityPermission entityPermission) {
         Tag tag;
         
         try {
@@ -920,7 +1012,7 @@ public class TagControl
         return getTagTransferCaches(userVisit).getTagTransferCache().getTagTransfer(tag);
     }
     
-    public List<TagTransfer> getTagTransfers(UserVisit userVisit, List<Tag> tags) {
+    public List<TagTransfer> getTagTransfers(UserVisit userVisit, Collection<Tag> tags) {
         List<TagTransfer> tagTransfers = new ArrayList<>(tags.size());
         TagTransferCache tagTransferCache = getTagTransferCaches(userVisit).getTagTransferCache();
         
@@ -959,7 +1051,7 @@ public class TagControl
             tag.setActiveDetail(tagDetail);
             tag.setLastDetail(tagDetail);
             
-            sendEventUsingNames(tagPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(tagPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -971,7 +1063,7 @@ public class TagControl
         tag.setActiveDetail(null);
         tag.store();
         
-        sendEventUsingNames(tag.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(tag.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteTags(List<Tag> tags, BasePK deletedBy) {
@@ -991,17 +1083,26 @@ public class TagControl
     public EntityTag createEntityTag(EntityInstance taggedEntityInstance, Tag tag, BasePK createdBy) {
         EntityTag entityTag = EntityTagFactory.getInstance().create(taggedEntityInstance, tag, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(taggedEntityInstance, EventTypes.MODIFY.name(), entityTag.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(taggedEntityInstance, EventTypes.MODIFY, entityTag.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return entityTag;
     }
-    
-    public long countEntityTagsByTag(Tag tag) {
+
+    public long countEntityTagsByTag(final Tag tag) {
         return session.queryForLong(
                 "SELECT COUNT(*) " +
                 "FROM entitytags " +
                 "WHERE et_t_tagid = ? AND et_thrutime = ?",
                 tag, Session.MAX_TIME_LONG);
+    }
+
+    public long countEntityTagsByTagScopeAndEntityInstance(final TagScope tagScope, final EntityInstance taggedEntityInstance) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM tags, tagdetails, entitytags " +
+                "WHERE t_activedetailid = tdt_tagdetailid AND tdt_ts_tagscopeid = ? " +
+                "AND t_tagid = et_t_tagid AND et_taggedentityinstanceid = ? AND et_thrutime = ?",
+                tagScope, taggedEntityInstance, Session.MAX_TIME_LONG);
     }
 
     private EntityTag getEntityTag(EntityInstance taggedEntityInstance, Tag tag, EntityPermission entityPermission) {
@@ -1062,7 +1163,8 @@ public class TagControl
                         "FROM entitytags, tags, tagdetails " +
                         "WHERE et_taggedentityinstanceid = ? AND et_thrutime = ? " +
                         "AND et_t_tagid = t_tagid AND t_lastdetailid = tdt_tagdetailid " +
-                        "ORDER BY tdt_tagname";
+                        "ORDER BY tdt_tagname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM entitytags " +
@@ -1104,7 +1206,8 @@ public class TagControl
                         "AND et_taggedentityinstanceid = eni_entityinstanceid " +
                         "AND eni_ent_entitytypeid = ent_entitytypeid AND ent_lastdetailid = entdt_entitytypedetailid " +
                         "AND entdt_cvnd_componentvendorid = cvnd_componentvendorid AND cvnd_lastdetailid = cvndd_componentvendordetailid " +
-                        "ORDER BY cvndd_componentvendorname, entdt_sortorder, entdt_entitytypename, eni_entityuniqueid";
+                        "ORDER BY cvndd_componentvendorname, entdt_sortorder, entdt_entitytypename, eni_entityuniqueid " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM entitytags " +
@@ -1137,7 +1240,7 @@ public class TagControl
         return getTagTransferCaches(userVisit).getEntityTagTransferCache().getEntityTagTransfer(entityTag);
     }
     
-    public List<EntityTagTransfer> getEntityTagTransfers(UserVisit userVisit, List<EntityTag> entityTags) {
+    public List<EntityTagTransfer> getEntityTagTransfers(UserVisit userVisit, Collection<EntityTag> entityTags) {
         List<EntityTagTransfer> entityTagTransfers = new ArrayList<>(entityTags.size());
         EntityTagTransferCache entityTagTransferCache = getTagTransferCaches(userVisit).getEntityTagTransferCache();
         
@@ -1162,7 +1265,7 @@ public class TagControl
         entityTag.setThruTime(session.START_TIME_LONG);
         entityTag.store();
         
-        sendEventUsingNames(taggedEntityInstance, EventTypes.MODIFY.name(), entityTag.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(taggedEntityInstance, EventTypes.MODIFY, entityTag.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteEntityTags(List<EntityTag> entityTags, BasePK deletedBy) {

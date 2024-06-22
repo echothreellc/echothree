@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,23 +21,14 @@ import com.echothree.control.user.search.server.command.GetSearchCheckSpellingAc
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class SearchSecurityUtils
-        extends BaseGraphQl {
+public interface SearchSecurityUtils {
 
-    private static class SearchSecurityUtilsHolder {
-        static SearchSecurityUtils instance = new SearchSecurityUtils();
-    }
-    
-    public static SearchSecurityUtils getInstance() {
-        return SearchSecurityUtilsHolder.instance;
+    static boolean getHasSearchCheckSpellingActionTypesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetSearchCheckSpellingActionTypesCommand.class);
     }
 
-    public boolean getHasSearchCheckSpellingActionTypesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetSearchCheckSpellingActionTypesCommand.class);
-    }
-
-    public boolean getHasSearchCheckSpellingActionTypeAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetSearchCheckSpellingActionTypeCommand.class);
+    static boolean getHasSearchCheckSpellingActionTypeAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetSearchCheckSpellingActionTypeCommand.class);
     }
 
 }

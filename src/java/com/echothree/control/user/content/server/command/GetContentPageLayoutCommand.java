@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -59,14 +59,14 @@ public class GetContentPageLayoutCommand
         ContentPageLayout contentPageLayout = ContentPageLayoutLogic.getInstance().getContentPageLayoutByUniversalSpec(this, form, true);
 
         if(contentPageLayout != null) {
-            sendEventUsingNames(contentPageLayout.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(contentPageLayout.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return contentPageLayout;
     }
     
     @Override
-    protected BaseResult getTransfer(ContentPageLayout contentPageLayout) {
+    protected BaseResult getResult(ContentPageLayout contentPageLayout) {
         var contentControl = Session.getModelController(ContentControl.class);
         GetContentPageLayoutResult result = ContentResultFactory.getGetContentPageLayoutResult();
 

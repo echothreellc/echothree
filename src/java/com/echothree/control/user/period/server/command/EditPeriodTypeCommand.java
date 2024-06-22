@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -78,7 +78,7 @@ public class EditPeriodTypeCommand
                 new FieldDefinition("WorkflowEntranceName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
-                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 ));
     }
     
@@ -110,7 +110,6 @@ public class EditPeriodTypeCommand
                             Workflow workflow = workflowEntrance == null? null: workflowEntrance.getLastDetail().getWorkflow();
 
                             result.setPeriodType(periodControl.getPeriodTypeTransfer(getUserVisit(), periodType));
-                            sendEventUsingNames(periodType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
 
                             result.setEdit(edit);
                             edit.setPeriodTypeName(periodTypeDetail.getPeriodTypeName());

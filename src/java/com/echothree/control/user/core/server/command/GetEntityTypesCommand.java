@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -27,35 +27,32 @@ import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.core.server.factory.EntityTypeFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class GetEntityTypesCommand
-        extends BaseMultipleEntitiesCommand<EntityType, GetEntityTypesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<EntityType, GetEntityTypesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.EntityType.name(), SecurityRoles.List.name())
-                        )))
-                )));
+                ))
+        ));
         
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, false, null, null)
-                ));
+        );
     }
     
     /** Creates a new instance of GetEntityTypesCommand */
@@ -66,28 +63,37 @@ public class GetEntityTypesCommand
     ComponentVendor componentVendor;
 
     @Override
-    protected Collection<EntityType> getEntities() {
-        var coreControl = getCoreControl();
+    protected void handleForm() {
         var componentVendorName = form.getComponentVendorName();
+
+        if(componentVendorName != null) {
+            componentVendor = ComponentVendorLogic.getInstance().getComponentVendorByName(this, componentVendorName);
+        }
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null :
+                componentVendor == null ?
+                getCoreControl().countEntityTypes() :
+                getCoreControl().countEntityTypesByComponentVendor(componentVendor);
+    }
+
+    @Override
+    protected Collection<EntityType> getEntities() {
         Collection<EntityType> entities = null;
 
-        if(componentVendorName == null) {
-            entities = coreControl.getEntityTypes();
-        } else {
-            componentVendor = ComponentVendorLogic.getInstance().getComponentVendorByName(this, componentVendorName);
-
-            if(!hasExecutionErrors()) {
-                entities = coreControl.getEntityTypesByComponentVendor(componentVendor);
-            } else {
-                addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
-            }
+        if(!hasExecutionErrors()) {
+            entities = componentVendor == null ?
+                    getCoreControl().getEntityTypes():
+                    getCoreControl().getEntityTypesByComponentVendor(componentVendor);
         }
 
         return entities;
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<EntityType> entities) {
+    protected BaseResult getResult(Collection<EntityType> entities) {
         var result = CoreResultFactory.getGetEntityTypesResult();
 
         if(entities != null) {

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,10 +18,10 @@ package com.echothree.model.control.filter.server.graphql;
 
 import com.echothree.model.control.accounting.server.graphql.AccountingSecurityUtils;
 import com.echothree.model.control.accounting.server.graphql.CurrencyObject;
+import com.echothree.model.control.graphql.server.graphql.PercentObject;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureTypeObject;
 import com.echothree.model.control.uom.server.graphql.UomSecurityUtils;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentPercent;
-import com.echothree.util.server.string.PercentUtils;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
@@ -40,31 +40,25 @@ public class FilterAdjustmentPercentObject {
     @GraphQLField
     @GraphQLDescription("filter adjustment")
     public FilterAdjustmentObject getFilterAdjustment(final DataFetchingEnvironment env) {
-        return FilterSecurityUtils.getInstance().getHasFilterAdjustmentAccess(env) ? new FilterAdjustmentObject(filterAdjustmentPercent.getFilterAdjustment()) : null;
+        return FilterSecurityUtils.getHasFilterAdjustmentAccess(env) ? new FilterAdjustmentObject(filterAdjustmentPercent.getFilterAdjustment()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("currency")
     public CurrencyObject getCurrency(final DataFetchingEnvironment env) {
-        return AccountingSecurityUtils.getInstance().getHasCurrencyAccess(env) ? new CurrencyObject(filterAdjustmentPercent.getCurrency()) : null;
+        return AccountingSecurityUtils.getHasCurrencyAccess(env) ? new CurrencyObject(filterAdjustmentPercent.getCurrency()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("unit of measure type")
     public UnitOfMeasureTypeObject getUnitOfMeasureType(final DataFetchingEnvironment env) {
-        return UomSecurityUtils.getInstance().getHasUnitOfMeasureTypeAccess(env) ? new UnitOfMeasureTypeObject(filterAdjustmentPercent.getUnitOfMeasureType()) : null;
-    }
-
-    @GraphQLField
-    @GraphQLDescription("unformatted percent")
-    public Integer getUnformattedPercent() {
-        return filterAdjustmentPercent.getPercent();
+        return UomSecurityUtils.getHasUnitOfMeasureTypeAccess(env) ? new UnitOfMeasureTypeObject(filterAdjustmentPercent.getUnitOfMeasureType()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("percent")
-    public String getPercent() {
-        return PercentUtils.getInstance().formatFractionalPercent(filterAdjustmentPercent.getPercent());
+    public PercentObject getPercent() {
+        return new PercentObject(filterAdjustmentPercent.getPercent());
     }
 
 }

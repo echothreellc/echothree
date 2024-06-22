@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,11 +17,11 @@
 package com.echothree.control.user.vendor.common.form;
 
 import com.echothree.control.user.vendor.common.edit.ItemPurchasingCategoryEdit;
-import com.echothree.control.user.vendor.common.spec.ItemPurchasingCategorySpec;
+import com.echothree.control.user.vendor.common.spec.ItemPurchasingCategoryUniversalSpec;
 import com.echothree.util.common.form.BaseEditForm;
 
 public interface EditItemPurchasingCategoryForm
-        extends BaseEditForm<ItemPurchasingCategorySpec, ItemPurchasingCategoryEdit> {
+        extends BaseEditForm<ItemPurchasingCategoryUniversalSpec, ItemPurchasingCategoryEdit> {
     
     // Nothing additional beyond BaseEditForm
     

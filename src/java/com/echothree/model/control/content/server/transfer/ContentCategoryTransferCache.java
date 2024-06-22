@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -69,7 +69,7 @@ public class ContentCategoryTransferCache
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
-            Set<String> properties = transferProperties.getProperties(ContentCategoryTransfer.class);
+            var properties = transferProperties.getProperties(ContentCategoryTransfer.class);
             
             if(properties != null) {
                 filterContentCatalog = !properties.contains(ContentProperties.CONTENT_CATALOG);

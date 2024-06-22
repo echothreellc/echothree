@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -67,7 +67,7 @@ public class GetTextTransformationCommand
         if(parameterCount == 1) {
             if(textTransformationName == null) {
                 var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
-                        ComponentVendors.ECHOTHREE.name(), EntityTypes.TextTransformation.name());
+                        ComponentVendors.ECHO_THREE.name(), EntityTypes.TextTransformation.name());
 
                 if(!hasExecutionErrors()) {
                     textTransformation = coreControl.getTextTransformationByEntityInstance(entityInstance);
@@ -77,7 +77,7 @@ public class GetTextTransformationCommand
             }
 
             if(textTransformation != null) {
-                sendEventUsingNames(textTransformation.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                sendEvent(textTransformation.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
@@ -87,7 +87,7 @@ public class GetTextTransformationCommand
     }
     
     @Override
-    protected BaseResult getTransfer(TextTransformation textTransformation) {
+    protected BaseResult getResult(TextTransformation textTransformation) {
         var coreControl = getCoreControl();
         GetTextTransformationResult result = CoreResultFactory.getGetTextTransformationResult();
 

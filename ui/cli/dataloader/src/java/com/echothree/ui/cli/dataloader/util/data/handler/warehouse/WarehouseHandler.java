@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,12 +16,15 @@
 
 package com.echothree.ui.cli.dataloader.util.data.handler.warehouse;
 
-import com.echothree.control.user.inventory.common.InventoryUtil;
 import com.echothree.control.user.inventory.common.InventoryService;
+import com.echothree.control.user.inventory.common.InventoryUtil;
 import com.echothree.control.user.inventory.common.form.CreateInventoryLocationGroupForm;
 import com.echothree.control.user.inventory.common.form.InventoryFormFactory;
-import com.echothree.control.user.warehouse.common.WarehouseUtil;
+import com.echothree.control.user.party.common.PartyService;
+import com.echothree.control.user.party.common.PartyUtil;
+import com.echothree.control.user.party.common.form.PartyFormFactory;
 import com.echothree.control.user.warehouse.common.WarehouseService;
+import com.echothree.control.user.warehouse.common.WarehouseUtil;
 import com.echothree.control.user.warehouse.common.form.CreateLocationForm;
 import com.echothree.control.user.warehouse.common.form.CreateLocationTypeForm;
 import com.echothree.control.user.warehouse.common.form.WarehouseFormFactory;
@@ -40,23 +43,17 @@ import org.xml.sax.SAXException;
 public class WarehouseHandler
         extends BaseHandler {
 
-    InventoryService inventoryService;
-    WarehouseService warehouseService;
+    InventoryService inventoryService = InventoryUtil.getHome();
+    PartyService partyService = PartyUtil.getHome();
+    WarehouseService warehouseService = WarehouseUtil.getHome();
     String partyName;
     String warehouseName;
     String entityRef;
 
     /** Creates a new instance of WarehouseHandler */
     public WarehouseHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String partyName, String warehouseName, String entityRef)
-            throws SAXException {
+            throws NamingException {
         super(initialDataParser, parentHandler);
-
-        try {
-            inventoryService = InventoryUtil.getHome();
-            warehouseService = WarehouseUtil.getHome();
-        } catch(NamingException ne) {
-            throw new SAXException(ne);
-        }
 
         this.partyName = partyName;
         this.warehouseName = warehouseName;
@@ -66,7 +63,14 @@ public class WarehouseHandler
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
-        if(localName.equals("inventoryLocationGroup")) {
+        if(localName.equals("partyAlias")) {
+            var commandForm = PartyFormFactory.getCreatePartyAliasForm();
+
+            commandForm.setPartyName(partyName);
+            commandForm.set(getAttrsMap(attrs));
+
+            partyService.createPartyAlias(initialDataParser.getUserVisit(), commandForm);
+        } else if(localName.equals("inventoryLocationGroup")) {
             CreateInventoryLocationGroupForm commandForm = InventoryFormFactory.getCreateInventoryLocationGroupForm();
 
             commandForm.setWarehouseName(warehouseName);

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,8 +23,8 @@ import java.util.List;
 public interface GetSecurityRoleGroupResultsResult
         extends BaseResult {
     
-    Integer getSecurityRoleGroupResultCount();
-    void setSecurityRoleGroupResultCount(Integer securityRoleGroupResultCount);
+    Long getSecurityRoleGroupResultCount();
+    void setSecurityRoleGroupResultCount(Long securityRoleGroupResultCount);
 
     List<SecurityRoleGroupResultTransfer> getSecurityRoleGroupResults();
     void setSecurityRoleGroupResults(List<SecurityRoleGroupResultTransfer> securityRoleGroupResults);

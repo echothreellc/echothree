@@ -1,11 +1,11 @@
-image: echothree/build:latest
+image: echothree/ant:latest
 
 cache:
   paths:
     - .ivy2/cache
 
 variables:
-  ANT_OPTS: "-Xmx5120m -Divy.default.ivy.user.dir=$CI_PROJECT_DIR/.ivy2"
+  ANT_OPTS: "-Xmx6150m -Divy.default.ivy.user.dir=$CI_PROJECT_DIR/.ivy2"
 
 stages:
   - build
@@ -13,9 +13,6 @@ stages:
 build:
   stage: build
   script:
-    - pushd ..
-    - ln -s $WILDFLY_HOME wildfly-latest
-    - popd
     - ant setup-ivy
     - ant complete
   artifacts:
@@ -51,9 +48,10 @@ build:
       - build/lib/commons-beanutils.jar
       - build/lib/commons-logging.jar
       - build/lib/commons-collections.jar
-      - build/lib/log4j.jar
+      - build/lib/reload4j.jar
       - build/lib/slf4j-api.jar
-      - build/lib/slf4j-log4j12.jar
+      - build/lib/slf4j-reload4j.jar
+      - build/lib/avro.jar
       - build/lib/wildfly-client-all.jar
     expire_in: 1 week
 

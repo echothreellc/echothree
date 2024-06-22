@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,11 +18,12 @@ package com.echothree.model.control.core.server.graphql;
 
 import com.echothree.model.control.core.common.transfer.EntityLockTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.data.core.server.entity.EntityInstance;
+import com.echothree.model.control.graphql.server.graphql.TimeObject;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
+import graphql.schema.DataFetchingEnvironment;
 
 @GraphQLDescription("entity lock object")
 @GraphQLName("EntityLock")
@@ -36,44 +37,48 @@ public class EntityLockObject {
 
     @GraphQLField
     @GraphQLDescription("lock target entity instance")
-    public EntityInstanceObject getLockTargetEntityInstance() {
-        var coreControl = Session.getModelController(CoreControl.class);
-        EntityInstance entityInstance = coreControl.getEntityInstanceByEntityRef(entityLockTransfer.getLockTargetEntityInstance().getEntityRef());
-        
-        return new EntityInstanceObject(entityInstance);
+    public EntityInstanceObject getLockTargetEntityInstance(final DataFetchingEnvironment env) {
+        EntityInstanceObject result = null;
+
+        if(CoreSecurityUtils.getHasEntityInstanceAccess(env)) {
+            var coreControl = Session.getModelController(CoreControl.class);
+            var entityInstance = coreControl.getEntityInstanceByEntityRef(entityLockTransfer.getLockTargetEntityInstance().getEntityRef());
+
+            result = new EntityInstanceObject(entityInstance);
+        }
+
+        return result;
     }
 
     @GraphQLField
     @GraphQLDescription("locked by entity instance")
-    public EntityInstanceObject getLockedByEntityInstance() {
-        var coreControl = Session.getModelController(CoreControl.class);
-        EntityInstance entityInstance = coreControl.getEntityInstanceByEntityRef(entityLockTransfer.getLockedByEntityInstance().getEntityRef());
-        
-        return new EntityInstanceObject(entityInstance);
+    public EntityInstanceObject getLockedByEntityInstance(final DataFetchingEnvironment env) {
+        EntityInstanceObject result = null;
+
+        if(CoreSecurityUtils.getHasEntityInstanceAccess(env)) {
+            var coreControl = Session.getModelController(CoreControl.class);
+            var entityInstance = coreControl.getEntityInstanceByEntityRef(entityLockTransfer.getLockedByEntityInstance().getEntityRef());
+
+            result = new EntityInstanceObject(entityInstance);
+        }
+
+        return result;
     }
     
     @GraphQLField
-    @GraphQLDescription("unformatted locked time")
-    public Long getUnformattedLockedTime() {
-        return entityLockTransfer.getUnformattedLockedTime();
-    }
+    @GraphQLDescription("locked time")
+    public TimeObject getLockedTime() {
+        var lockedTime = entityLockTransfer.getUnformattedLockedTime();
 
-    @GraphQLField
-    @GraphQLDescription("unformatted locked time")
-    public String getLockedTime() {
-        return entityLockTransfer.getLockedTime();
-    }
-
-    @GraphQLField
-    @GraphQLDescription("unformatted expiration time")
-    public Long getUnformattedExpirationTime() {
-        return entityLockTransfer.getUnformattedExpirationTime();
+        return lockedTime == null ? null : new TimeObject(lockedTime);
     }
 
     @GraphQLField
     @GraphQLDescription("expiration time")
-    public String getExpirationTime() {
-        return entityLockTransfer.getExpirationTime();
+    public TimeObject getExpirationTime() {
+        var expirationTime = entityLockTransfer.getUnformattedExpirationTime();
+
+        return expirationTime == null ? null : new TimeObject(expirationTime);
     }
 
 }

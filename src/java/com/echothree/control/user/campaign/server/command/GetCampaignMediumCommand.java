@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -82,7 +82,7 @@ public class GetCampaignMediumCommand
             CampaignMedium campaignMedium = null;
 
             if(campaignMediumName == null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHOTHREE.name(),
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
                         EntityTypes.CampaignMedium.name());
                 
                 if(!hasExecutionErrors()) {
@@ -98,7 +98,7 @@ public class GetCampaignMediumCommand
 
             if(!hasExecutionErrors()) {
                 result.setCampaignMedium(campaignControl.getCampaignMediumTransfer(getUserVisit(), campaignMedium));
-                sendEventUsingNames(campaignMedium.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                sendEvent(campaignMedium.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());

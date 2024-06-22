@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -69,7 +69,7 @@ public class UseTypeSteps implements En {
 
                     assertThat(persona.createUseTypeForm).isNull();
                     assertThat(persona.deleteUseTypeForm).isNull();
-                    assertThat(persona.entityListItemSpec).isNull();
+                    assertThat(persona.entityListItemUniversalSpec).isNull();
 
                     persona.deleteUseTypeForm = OfferUtil.getHome().getDeleteUseTypeForm();
                 });
@@ -92,7 +92,7 @@ public class UseTypeSteps implements En {
 
                     assertThat(persona.createUseTypeForm).isNull();
                     assertThat(persona.deleteUseTypeForm).isNull();
-                    assertThat(persona.entityListItemSpec).isNull();
+                    assertThat(persona.entityListItemUniversalSpec).isNull();
 
                     persona.useTypeSpec = OfferUtil.getHome().getUseTypeUniversalSpec();
                 });

@@ -1,7 +1,7 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" %>
 
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -27,7 +27,7 @@
     <body>
         <div id="Header">
             <h2>
-                <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
+                <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
                 <a href="<c:url value="/action/Customer/Main" />">Customers</a> &gt;&gt;
                 <a href="<c:url value="/action/Customer/Customer/Main" />">Search</a> &gt;&gt;
                 <et:countCustomerResults searchTypeName="ORDER_ENTRY" countVar="customerResultsCount" commandResultVar="countCustomerResultsCommandResult" logErrors="false" />
@@ -59,8 +59,14 @@
             <c:if test='${customer.profile.icon != null}'>
                 Icon: ${customer.profile.icon.description}<br />
             </c:if>
+            <c:if test='${customer.profile.pronunciation != null}'>
+                Pronouns: ${customer.profile.pronunciation}<br />
+            </c:if>
             <c:if test='${customer.profile.gender != null}'>
                 Gender: ${customer.profile.gender.description}<br />
+            </c:if>
+            <c:if test='${customer.profile.pronouns != null}'>
+                Pronouns: ${customer.profile.pronouns}<br />
             </c:if>
             <c:if test='${customer.profile.birthday != null}'>
                 Birthday: ${customer.profile.birthday}<br />

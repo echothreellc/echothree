@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -35,14 +35,13 @@ import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowDescription;
 import com.echothree.model.data.workflow.server.entity.WorkflowDetail;
-import com.echothree.model.data.workflow.server.entity.WorkflowType;
 import com.echothree.model.data.workflow.server.value.WorkflowDescriptionValue;
 import com.echothree.model.data.workflow.server.value.WorkflowDetailValue;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -73,12 +72,11 @@ public class EditWorkflowCommand
         
         EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("WorkflowTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("SelectorKindName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("SelectorTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("SecurityRoleGroupName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
-                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 ));
     }
     
@@ -110,7 +108,6 @@ public class EditWorkflowCommand
 
                         result.setEdit(edit);
                         edit.setWorkflowName(workflowDetail.getWorkflowName());
-                        edit.setWorkflowTypeName(workflowDetail.getWorkflowType().getWorkflowTypeName());
                         edit.setSelectorKindName(selectorKind == null ? null : selectorKind.getLastDetail().getSelectorKindName());
                         edit.setSelectorTypeName(selectorType == null ? null : selectorType.getLastDetail().getSelectorTypeName());
                         edit.setSecurityRoleGroupName(securityRoleGroup == null ? null : securityRoleGroup.getLastDetail().getSecurityRoleGroupName());
@@ -139,72 +136,64 @@ public class EditWorkflowCommand
                 Workflow duplicateWorkflow = workflowControl.getWorkflowByName(workflowName);
                 
                 if(duplicateWorkflow == null || workflow.equals(duplicateWorkflow)) {
-                    String workflowTypeName = edit.getWorkflowTypeName();
-                    WorkflowType workflowType = workflowControl.getWorkflowTypeByName(workflowTypeName);
+                    var selectorControl = Session.getModelController(SelectorControl.class);
+                    String selectorKindName = edit.getSelectorKindName();
+                    String selectorTypeName = edit.getSelectorTypeName();
+                    var parameterCount = (selectorKindName == null ? 0 : 1) + (selectorTypeName == null ? 0 : 1);
 
-                    if(workflowType != null) {
-                        var selectorControl = Session.getModelController(SelectorControl.class);
-                        String selectorKindName = edit.getSelectorKindName();
-                        String selectorTypeName = edit.getSelectorTypeName();
-                        var parameterCount = (selectorKindName == null ? 0 : 1) + (selectorTypeName == null ? 0 : 1);
+                    if(parameterCount == 0 || parameterCount == 2) {
+                        SelectorKind selectorKind = selectorKindName == null? null: selectorControl.getSelectorKindByName(selectorKindName);
 
-                        if(parameterCount == 0 || parameterCount == 2) {
-                            SelectorKind selectorKind = selectorKindName == null? null: selectorControl.getSelectorKindByName(selectorKindName);
+                        if(selectorKindName == null || selectorKind != null) {
+                            SelectorType selectorType = selectorTypeName == null? null: selectorControl.getSelectorTypeByName(selectorKind, selectorTypeName);
 
-                            if(selectorKindName == null || selectorKind != null) {
-                                SelectorType selectorType = selectorTypeName == null? null: selectorControl.getSelectorTypeByName(selectorKind, selectorTypeName);
+                            if(selectorTypeName == null || selectorType != null) {
+                                var securityControl = Session.getModelController(SecurityControl.class);
+                                String securityRoleGroupName = edit.getSecurityRoleGroupName();
+                                SecurityRoleGroup securityRoleGroup = securityRoleGroupName == null? null: securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
 
-                                if(selectorTypeName == null || selectorType != null) {
-                                    var securityControl = Session.getModelController(SecurityControl.class);
-                                    String securityRoleGroupName = edit.getSecurityRoleGroupName();
-                                    SecurityRoleGroup securityRoleGroup = securityRoleGroupName == null? null: securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
+                                if(securityRoleGroupName == null || securityRoleGroup != null) {
+                                    if(lockEntityForUpdate(workflow)) {
+                                        try {
+                                            var partyPK = getPartyPK();
+                                            WorkflowDetailValue workflowDetailValue = workflowControl.getWorkflowDetailValueForUpdate(workflow);
+                                            WorkflowDescription workflowDescription = workflowControl.getWorkflowDescriptionForUpdate(workflow, getPreferredLanguage());
+                                            String description = edit.getDescription();
 
-                                    if(securityRoleGroupName == null || securityRoleGroup != null) {
-                                        if(lockEntityForUpdate(workflow)) {
-                                            try {
-                                                var partyPK = getPartyPK();
-                                                WorkflowDetailValue workflowDetailValue = workflowControl.getWorkflowDetailValueForUpdate(workflow);
-                                                WorkflowDescription workflowDescription = workflowControl.getWorkflowDescriptionForUpdate(workflow, getPreferredLanguage());
-                                                String description = edit.getDescription();
-                                                
-                                                workflowDetailValue.setWorkflowName(workflowName);
-                                                workflowDetailValue.setWorkflowTypePK(workflowType.getPrimaryKey());
-                                                workflowDetailValue.setSelectorTypePK(selectorType == null? null: selectorType.getPrimaryKey());
-                                                workflowDetailValue.setSecurityRoleGroupPK(securityRoleGroup == null? null: securityRoleGroup.getPrimaryKey());
-                                                workflowDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
-                                                
-                                                workflowControl.updateWorkflowFromValue(workflowDetailValue, partyPK);
-                                                
-                                                if(workflowDescription == null && description != null) {
-                                                    workflowControl.createWorkflowDescription(workflow, getPreferredLanguage(), description, partyPK);
-                                                } else if(workflowDescription != null && description == null) {
-                                                    workflowControl.deleteWorkflowDescription(workflowDescription, partyPK);
-                                                } else if(workflowDescription != null && description != null) {
-                                                    WorkflowDescriptionValue workflowDescriptionValue = workflowControl.getWorkflowDescriptionValue(workflowDescription);
-                                                    
-                                                    workflowDescriptionValue.setDescription(description);
-                                                    workflowControl.updateWorkflowDescriptionFromValue(workflowDescriptionValue, partyPK);
-                                                }
-                                            } finally {
-                                                unlockEntity(workflow);
+                                            workflowDetailValue.setWorkflowName(workflowName);
+                                            workflowDetailValue.setSelectorTypePK(selectorType == null? null: selectorType.getPrimaryKey());
+                                            workflowDetailValue.setSecurityRoleGroupPK(securityRoleGroup == null? null: securityRoleGroup.getPrimaryKey());
+                                            workflowDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
+
+                                            workflowControl.updateWorkflowFromValue(workflowDetailValue, partyPK);
+
+                                            if(workflowDescription == null && description != null) {
+                                                workflowControl.createWorkflowDescription(workflow, getPreferredLanguage(), description, partyPK);
+                                            } else if(workflowDescription != null && description == null) {
+                                                workflowControl.deleteWorkflowDescription(workflowDescription, partyPK);
+                                            } else if(workflowDescription != null && description != null) {
+                                                WorkflowDescriptionValue workflowDescriptionValue = workflowControl.getWorkflowDescriptionValue(workflowDescription);
+
+                                                workflowDescriptionValue.setDescription(description);
+                                                workflowControl.updateWorkflowDescriptionFromValue(workflowDescriptionValue, partyPK);
                                             }
-                                        } else {
-                                            addExecutionError(ExecutionErrors.EntityLockStale.name());
+                                        } finally {
+                                            unlockEntity(workflow);
                                         }
                                     } else {
-                                        addExecutionError(ExecutionErrors.UnknownSecurityRoleGroupName.name(), securityRoleGroupName);
+                                        addExecutionError(ExecutionErrors.EntityLockStale.name());
                                     }
                                 } else {
-                                    addExecutionError(ExecutionErrors.UnknownSelectorTypeName.name(), selectorKindName, selectorTypeName);
+                                    addExecutionError(ExecutionErrors.UnknownSecurityRoleGroupName.name(), securityRoleGroupName);
                                 }
                             } else {
-                                addExecutionError(ExecutionErrors.UnknownSelectorKindName.name(), selectorKindName);
+                                addExecutionError(ExecutionErrors.UnknownSelectorTypeName.name(), selectorKindName, selectorTypeName);
                             }
                         } else {
-                            addExecutionError(ExecutionErrors.InvalidParameterCount.name());
+                            addExecutionError(ExecutionErrors.UnknownSelectorKindName.name(), selectorKindName);
                         }
                     } else {
-                        addExecutionError(ExecutionErrors.UnknownWorkflowTypeName.name(), workflowTypeName);
+                        addExecutionError(ExecutionErrors.InvalidParameterCount.name());
                     }
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateWorkflowName.name(), workflowName);

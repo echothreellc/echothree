@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,16 +17,16 @@
 package com.echothree.control.user.message.server.command;
 
 import com.echothree.control.user.message.common.form.CreateMessageTypeForm;
+import com.echothree.control.user.message.common.result.MessageResultFactory;
+import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.model.control.message.server.control.MessageControl;
-import com.echothree.model.data.core.server.entity.ComponentVendor;
-import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
 import com.echothree.model.data.message.server.entity.MessageType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -45,7 +45,7 @@ public class CreateMessageTypeCommand
             new FieldDefinition("MessageTypeName", FieldType.ENTITY_NAME, true, null, null),
             new FieldDefinition("MimeTypeUsageTypeName", FieldType.ENTITY_NAME, false, null, null),
             new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
-            new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+            new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         ));
     }
     
@@ -56,20 +56,23 @@ public class CreateMessageTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
-        String componentVendorName = form.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
-        
-        if(componentVendor != null) {
-            String entityTypeName = form.getEntityTypeName();
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
-            
-            if(entityType != null) {
+        var result = MessageResultFactory.getCreateMessageTypeResult();
+        var componentVendorName = form.getComponentVendorName();
+        var entityTypeName = form.getEntityTypeName();
+        var entityType = EntityTypeLogic.getInstance().getEntityTypeByName(this, componentVendorName, entityTypeName);
+        MessageType messageType = null;
+
+        if(!hasExecutionErrors()) {
+            var entityTypeDetail = entityType.getLastDetail();
+
+            if(entityTypeDetail.getIsExtensible()) {
                 var messageControl = Session.getModelController(MessageControl.class);
                 String messageTypeName = form.getMessageTypeName();
-                MessageType messageType = messageControl.getMessageTypeByName(entityType, messageTypeName);
+
+                messageType = messageControl.getMessageTypeByName(entityType, messageTypeName);
                 
                 if(messageType == null) {
+                    var coreControl = getCoreControl();
                     String mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
                     MimeTypeUsageType mimeTypeUsageType = mimeTypeUsageTypeName == null? null: coreControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
                     
@@ -92,13 +95,24 @@ public class CreateMessageTypeCommand
                     addExecutionError(ExecutionErrors.DuplicateMessageTypeName.name(), messageTypeName);
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownEntityTypeName.name(), entityTypeName);
+                addExecutionError(ExecutionErrors.EntityTypeIsNotExtensible.name(),
+                        entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
+                        entityTypeDetail.getEntityTypeName());
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
         }
-        
-        return null;
+
+        if(messageType != null) {
+            var basePK = messageType.getPrimaryKey();
+            var messageTypeDetail = messageType.getLastDetail();
+            var entityTypeDetail = messageTypeDetail.getEntityType().getLastDetail();
+
+            result.setComponentVendorName(entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName());
+            result.setEntityTypeName(entityTypeDetail.getEntityTypeName());
+            result.setMessageTypeName(messageTypeDetail.getMessageTypeName());
+            result.setEntityRef(basePK.getEntityRef());
+        }
+
+        return result;
     }
     
 }

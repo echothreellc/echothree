@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -100,7 +100,7 @@ public class OfferNameElementLogic
         if(parameterCount == 1) {
             if(offerNameElementName == null) {
                 var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                        ComponentVendors.ECHOTHREE.name(), EntityTypes.OfferNameElement.name());
+                        ComponentVendors.ECHO_THREE.name(), EntityTypes.OfferNameElement.name());
 
                 if(!eea.hasExecutionErrors()) {
                     offerNameElement = offerNameElementControl.getOfferNameElementByEntityInstance(entityInstance, entityPermission);

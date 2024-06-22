@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -72,14 +72,14 @@ public class GetUseCommand
         var use = UseLogic.getInstance().getUseByUniversalSpec(this, form, true);
 
         if(!hasExecutionErrors()) {
-            sendEventUsingNames(use.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(use.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
         
         return use;
     }
     
     @Override
-    protected BaseResult getTransfer(Use use) {
+    protected BaseResult getResult(Use use) {
         var result = OfferResultFactory.getGetUseResult();
         
         if(use != null) {

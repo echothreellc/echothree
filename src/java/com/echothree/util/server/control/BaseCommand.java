@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ package com.echothree.util.server.control;
 import com.echothree.control.user.party.common.spec.PartySpec;
 import com.echothree.model.control.core.common.CommandMessageTypes;
 import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
@@ -86,7 +87,7 @@ public abstract class BaseCommand
     private String componentVendorName = null;
     private String commandName = null;
     private UserControl userControl = null;
-    private boolean checkPasswordVerifiedTime = true;
+    private boolean checkIdentityVerifiedTime = true;
     private boolean updateLastCommandTime = true;
     private boolean logCommand = true;
 
@@ -112,7 +113,7 @@ public abstract class BaseCommand
         String className = c.getName();
         int nameOffset = className.lastIndexOf('.');
         
-        componentVendorName = ComponentVendors.ECHOTHREE.name();
+        componentVendorName = ComponentVendors.ECHO_THREE.name();
         commandName = new String(className.getBytes(Charsets.UTF_8), nameOffset + 1, className.length() - nameOffset - 8, Charsets.UTF_8);
     }
     
@@ -257,12 +258,12 @@ public abstract class BaseCommand
         return getUserControl().getPreferredDateTimeFormatFromParty(party);
     }
     
-    public boolean getCheckPasswordVerifiedTime() {
-        return checkPasswordVerifiedTime;
+    public boolean getCheckIdentityVerifiedTime() {
+        return checkIdentityVerifiedTime;
     }
 
-    public void setCheckPasswordVerifiedTime(boolean checkPasswordVerifiedTime) {
-        this.checkPasswordVerifiedTime = checkPasswordVerifiedTime;
+    public void setCheckIdentityVerifiedTime(boolean checkIdentityVerifiedTime) {
+        this.checkIdentityVerifiedTime = checkIdentityVerifiedTime;
     }
 
     public boolean getUpdateLastCommandTime() {
@@ -285,10 +286,10 @@ public abstract class BaseCommand
         if(getUserVisit() != null) {
             userSession = getUserControl().getUserSessionByUserVisit(userVisit);
 
-            if(userSession != null && checkPasswordVerifiedTime) {
-                Long passwordVerifiedTime = userSession.getPasswordVerifiedTime();
+            if(userSession != null && checkIdentityVerifiedTime) {
+                Long identityVerifiedTime = userSession.getIdentityVerifiedTime();
 
-                if(passwordVerifiedTime != null) {
+                if(identityVerifiedTime != null) {
                     long timeSinceLastCommand = session.START_TIME - userVisit.getLastCommandTime();
 
                     // If it has been > 15 minutes since their last command, invalidate the UserSession.
@@ -464,6 +465,11 @@ public abstract class BaseCommand
 
     protected void setupSession() {
         preservedState = ThreadUtils.preserveState();
+        initSession();
+    }
+
+    // Called by setupSession() and canQueryByGraphQl()
+    protected void initSession() {
         session = ThreadSession.currentSession();
     }
 
@@ -538,7 +544,7 @@ public abstract class BaseCommand
 
                         if(componentVendor != null) {
                             getCommandName();
-                            getParty(); // TODO: should only use if UserSession.PasswordVerifiedTime != null
+                            getParty(); // TODO: should only use if UserSession.IdentityVerifiedTime != null
 
                             if(ControlDebugFlags.CheckCommandNameLength) {
                                 if(commandName.length() > 80) {
@@ -605,9 +611,19 @@ public abstract class BaseCommand
     // --------------------------------------------------------------------------------
 
     protected boolean canSpecifyParty() {
-        var partyTypeName = getPartyType().getPartyTypeName();
+        var partyType = getPartyType();
+        var result = false; // Default to most restrictive result.
 
-        return !(partyTypeName.equals(PartyTypes.CUSTOMER.name()) || partyTypeName.equals(PartyTypes.VENDOR.name()));
+        if(partyType != null) {
+            var partyTypeName = partyType.getPartyTypeName();
+
+            // Of PartyTypes that may login, only EMPLOYEEs or UTILITYs may specify another Party, CUSTOMERs and
+            // VENDORs may not.
+            result = partyTypeName.equals(PartyTypes.EMPLOYEE.name())
+                    || partyTypeName.equals(PartyTypes.UTILITY.name());
+        }
+
+        return result;
     }
 
     protected SecurityResult selfOnly(PartySpec spec) {
@@ -638,28 +654,28 @@ public abstract class BaseCommand
         return getCoreControl().getEntityInstanceByBasePK(pk);
     }
     
-    protected Event sendEventUsingNames(BasePK entityInstancePK, String eventTypeName, BasePK relatedPK, String relatedEventTypeName,
-            BasePK createdByPK) {
-        EntityInstance entityInstance = getEntityInstanceByBasePK(entityInstancePK);
-        EntityInstance relatedEntityInstance = relatedPK == null? null: getEntityInstanceByBasePK(relatedPK);
+    protected Event sendEvent(final BasePK basePK, final EventTypes eventType, final BasePK relatedBasePK,
+            final EventTypes relatedEventType, final BasePK createdByBasePK) {
+        var entityInstance = getEntityInstanceByBasePK(basePK);
+        var relatedEntityInstance = relatedBasePK == null ? null : getEntityInstanceByBasePK(relatedBasePK);
         
-        return sendEventUsingNames(entityInstance, eventTypeName, relatedEntityInstance, relatedEventTypeName, createdByPK);
+        return sendEvent(entityInstance, eventType, relatedEntityInstance, relatedEventType, createdByBasePK);
     }
     
-    protected Event sendEventUsingNames(EntityInstance entityInstance, String eventTypeName, BasePK relatedPK, String relatedEventTypeName,
-            BasePK createdByPK) {
-        EntityInstance relatedEntityInstance = relatedPK == null? null: getEntityInstanceByBasePK(relatedPK);
-        
-        return sendEventUsingNames(entityInstance, eventTypeName, relatedEntityInstance, relatedEventTypeName, createdByPK);
+    protected Event sendEvent(final EntityInstance entityInstance, final EventTypes eventType, final BasePK relatedBasePK,
+            final EventTypes relatedEventType, final BasePK createdByBasePK) {
+        var relatedEntityInstance = relatedBasePK == null ? null : getEntityInstanceByBasePK(relatedBasePK);
+
+        return sendEvent(entityInstance, eventType, relatedEntityInstance, relatedEventType, createdByBasePK);
     }
     
-    protected Event sendEventUsingNames(EntityInstance entityInstance, String eventTypeName, EntityInstance relatedEntityInstance,
-            String relatedEventTypeName, BasePK createdByPK) {
+    protected Event sendEvent(final EntityInstance entityInstance, final EventTypes eventType, final EntityInstance relatedEntityInstance,
+            final EventTypes relatedEventType, final BasePK createdByBasePK) {
         Event event = null;
         
-        if(createdByPK != null) {
-            event = getCoreControl().sendEventUsingNames(entityInstance, eventTypeName, relatedEntityInstance, relatedEventTypeName,
-                createdByPK);
+        if(createdByBasePK != null) {
+            event = getCoreControl().sendEvent(entityInstance, eventType, relatedEntityInstance, relatedEventType,
+                createdByBasePK);
         }
         
         return event;

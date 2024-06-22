@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,7 +18,15 @@ package com.echothree.model.control.core.server.graphql;
 
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.core.common.EntityAttributeConstants;
+import com.echothree.model.data.core.common.EventConstants;
 import com.echothree.model.data.core.server.entity.EntityAttributeGroup;
 import com.echothree.model.data.core.server.entity.EntityAttributeGroupDetail;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -27,11 +35,13 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-@GraphQLDescription("font weight object")
+@GraphQLDescription("entity attribute group object")
 @GraphQLName("EntityAttributeGroup")
 public class EntityAttributeGroupObject
         extends BaseEntityInstanceObject {
@@ -84,24 +94,56 @@ public class EntityAttributeGroupObject
         var coreControl = Session.getModelController(CoreControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return coreControl.getBestEntityAttributeGroupDescription(entityAttributeGroup, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return coreControl.getBestEntityAttributeGroupDescription(entityAttributeGroup, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
+
 
     @GraphQLField
     @GraphQLDescription("entity attributes")
-    public List<EntityAttributeObject> getEntityAttributes() {
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<EntityAttributeObject> getEntityAttributes(final DataFetchingEnvironment env) {
         if(entityInstance != null) {
-            var coreControl = Session.getModelController(CoreControl.class);
-            var entities = coreControl.getEntityAttributesByEntityAttributeGroupAndEntityType(entityAttributeGroup,
-                    entityInstance.getEntityType());
-            var aspectEntityAttributes = new ArrayList<EntityAttributeObject>(entities.size());
+//            if(CoreSecurityUtils.getHasEntityAttributesAccess(env)) {
+                var coreControl = Session.getModelController(CoreControl.class);
+                var entityType = entityInstance.getEntityType();
+                var totalCount = coreControl.countEntityAttributesByEntityAttributeGroupAndEntityType(entityAttributeGroup,
+                        entityType);
 
-            entities.forEach((entity) -> aspectEntityAttributes.add(new EntityAttributeObject(entity, entityInstance)));
+                try(var objectLimiter = new ObjectLimiter(env, EntityAttributeConstants.COMPONENT_VENDOR_NAME, EntityAttributeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                    var entities = coreControl.getEntityAttributesByEntityAttributeGroupAndEntityType(entityAttributeGroup,
+                            entityType);
+                    var entityAttributes = new ArrayList<EntityAttributeObject>(entities.size());
 
-            return aspectEntityAttributes;
+                    entities.forEach((entity) -> entityAttributes.add(new EntityAttributeObject(entity, entityInstance)));
+
+                    return new CountedObjects<>(objectLimiter, entityAttributes);
+                }
+//            } else {
+//                return Connections.emptyConnection();
+//            }
         } else {
             return null;
         }
     }
-    
+
+    @GraphQLField
+    @GraphQLDescription("entity attribute entity attribute groups")
+    public Collection<EntityAttributeEntityAttributeGroupObject> getEntityAttributeEntityAttributeGroups(final DataFetchingEnvironment env) {
+        Collection<EntityAttributeEntityAttributeGroupObject> entityAttributeEntityAttributeGroupObjects = null;
+
+        if(CoreSecurityUtils.getHasEntityAttributeEntityAttributeGroupsAccess(env)) {
+            var coreControl = Session.getModelController(CoreControl.class);
+            var entityAttributeEntityAttributeGroups = coreControl.getEntityAttributeEntityAttributeGroupsByEntityAttributeGroup(entityAttributeGroup);
+
+            entityAttributeEntityAttributeGroupObjects = new ArrayList<>(entityAttributeEntityAttributeGroups.size());
+
+            for(var entityAttributeEntityAttributeGroup : entityAttributeEntityAttributeGroups) {
+                entityAttributeEntityAttributeGroupObjects.add(new EntityAttributeEntityAttributeGroupObject(entityAttributeEntityAttributeGroup));
+            }
+        }
+
+        return entityAttributeEntityAttributeGroupObjects;
+    }
+
 }

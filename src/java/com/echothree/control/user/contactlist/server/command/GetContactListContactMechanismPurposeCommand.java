@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -85,7 +85,7 @@ public class GetContactListContactMechanismPurposeCommand
                 if(contactListContactMechanismPurpose != null) {
                     result.setContactListContactMechanismPurpose(contactListControl.getContactListContactMechanismPurposeTransfer(getUserVisit(), contactListContactMechanismPurpose));
 
-                    sendEventUsingNames(contactListContactMechanismPurpose.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                    sendEvent(contactListContactMechanismPurpose.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateContactListContactMechanismPurpose.name(), contactListName, contactMechanismPurposeName);
                 }

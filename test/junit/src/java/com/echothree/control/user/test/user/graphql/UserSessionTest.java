@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -35,22 +35,26 @@ public class UserSessionTest
                         clientMutationId: "1"
                     })
                     {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
 
-        assertThat(getBoolean(employeeLoginBody, "data.employeeLogin.hasErrors")).isFalse();
+        assertThat(getBoolean(employeeLoginBody, "data.employeeLogin.commandResult.hasErrors")).isFalse();
 
         var userSessionBody = executeUsingPost("""
                 query {
                     userSession {
-                        passwordVerifiedTime
+                        identityVerifiedTime {
+                          unformattedTime
+                        }
                     }
                 }
                 """);
 
-        assertThat(getString(userSessionBody, "data.userSession.passwordVerifiedTime")).isNotNull();
+        assertThat(getLong(userSessionBody, "data.userSession.identityVerifiedTime.unformattedTime")).isNotZero();
     }
 
 }

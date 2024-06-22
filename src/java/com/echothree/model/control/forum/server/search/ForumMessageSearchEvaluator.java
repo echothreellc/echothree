@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,8 +21,12 @@ import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.forum.common.ForumConstants;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.IndexFieldVariations;
+import com.echothree.model.control.index.common.IndexFields;
+import com.echothree.model.control.index.common.IndexTypes;
 import com.echothree.model.control.index.server.analysis.ForumMessageAnalyzer;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchSortOrders;
+import com.echothree.model.control.search.common.SearchSortDirections;
 import com.echothree.model.control.search.server.search.BaseSearchEvaluator;
 import com.echothree.model.control.search.server.search.EntityInstancePKHolder;
 import com.echothree.model.data.core.server.factory.EntityInstanceFactory;
@@ -55,8 +59,8 @@ public class ForumMessageSearchEvaluator
     /** Creates a new instance of ForumMessageSearchEvaluator */
     public ForumMessageSearchEvaluator(UserVisit userVisit, Language language, SearchType searchType, SearchDefaultOperator searchDefaultOperator, SearchSortOrder searchSortOrder,
             SearchSortDirection searchSortDirection, SearchUseType searchUseType, Forum forum, ForumMessageType forumMessageType) {
-        super(userVisit, searchDefaultOperator, searchType, searchSortOrder, searchSortDirection, searchUseType, ComponentVendors.ECHOTHREE.name(),
-                EntityTypes.ForumMessage.name(), IndexConstants.IndexType_FORUM_MESSAGE, language, null);
+        super(userVisit, searchDefaultOperator, searchType, searchSortOrder, searchSortDirection, searchUseType, ComponentVendors.ECHO_THREE.name(),
+                EntityTypes.ForumMessage.name(), IndexTypes.FORUM_MESSAGE.name(), language, null);
         
         this.forum = forum;
         this.forumMessageType = forumMessageType;
@@ -84,10 +88,10 @@ public class ForumMessageSearchEvaluator
         
         if(includeFutureForumThreads) {
             entityInstancePKHolder = getEntityInstancePKHolderFromQuery(ps,
-                    Session.MAX_TIME, forum, ComponentVendors.ECHOTHREE.name(), EntityTypes.ForumMessage.name());
+                    Session.MAX_TIME, forum, ComponentVendors.ECHO_THREE.name(), EntityTypes.ForumMessage.name());
         } else {
             entityInstancePKHolder = getEntityInstancePKHolderFromQuery(ps,
-                    Session.MAX_TIME, forum, ComponentVendors.ECHOTHREE.name(), EntityTypes.ForumMessage.name(), session.START_TIME);
+                    Session.MAX_TIME, forum, ComponentVendors.ECHO_THREE.name(), EntityTypes.ForumMessage.name(), session.START_TIME);
         }
 
         return entityInstancePKHolder;
@@ -109,10 +113,10 @@ public class ForumMessageSearchEvaluator
 
         if(includeFutureForumThreads) {
             entityInstancePKHolder = getEntityInstancePKHolderFromQuery(ps,
-                    forumMessageType, ComponentVendors.ECHOTHREE.name(), EntityTypes.ForumMessage.name());
+                    forumMessageType, ComponentVendors.ECHO_THREE.name(), EntityTypes.ForumMessage.name());
         } else {
             entityInstancePKHolder = getEntityInstancePKHolderFromQuery(ps,
-                    forumMessageType, ComponentVendors.ECHOTHREE.name(), EntityTypes.ForumMessage.name(),  session.START_TIME);
+                    forumMessageType, ComponentVendors.ECHO_THREE.name(), EntityTypes.ForumMessage.name(),  session.START_TIME);
         }
 
         return entityInstancePKHolder;
@@ -137,21 +141,21 @@ public class ForumMessageSearchEvaluator
     @Override
     public SortField[] getSortFields(String searchSortOrderName) {
         SortField[] sortFields = null;
-        boolean reverse = searchSortDirection.getLastDetail().getSearchSortDirectionName().equals(SearchConstants.SearchSortDirection_DESCENDING);
+        boolean reverse = searchSortDirection.getLastDetail().getSearchSortDirectionName().equals(SearchSortDirections.DESCENDING.name());
         
-        if(searchSortOrderName.equals(SearchConstants.SearchSortOrder_SCORE)) {
+        if(searchSortOrderName.equals(SearchSortOrders.SCORE.name())) {
             sortFields = new SortField[]{
                 new SortField(null, SortField.Type.SCORE, reverse),
-                new SortField(ForumConstants.ForumMessagePartType_TITLE + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)
+                new SortField(ForumConstants.ForumMessagePartType_TITLE + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(), SortField.Type.STRING, reverse)
             };
-        } else if(searchSortOrderName.equals(SearchConstants.SearchSortOrder_TITLE)) {
-            sortFields = new SortField[]{new SortField(ForumConstants.ForumMessagePartType_TITLE + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)};
-        } else if(searchSortOrderName.equals(SearchConstants.SearchSortOrder_POSTED_TIME)) {
-            sortFields = new SortField[]{new SortField(IndexConstants.IndexField_PostedTime, SortField.Type.LONG, reverse)};
-        } else if(searchSortOrderName.equals(SearchConstants.SearchSortOrder_CREATED_TIME)) {
-            sortFields = new SortField[]{new SortField(IndexConstants.IndexField_CreatedTime, SortField.Type.LONG, reverse)};
-        } else if(searchSortOrderName.equals(SearchConstants.SearchSortOrder_MODIFIED_TIME)) {
-            sortFields = new SortField[]{new SortField(IndexConstants.IndexField_ModifiedTime, SortField.Type.LONG, reverse)};
+        } else if(searchSortOrderName.equals(SearchSortOrders.TITLE.name())) {
+            sortFields = new SortField[]{new SortField(ForumConstants.ForumMessagePartType_TITLE + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(), SortField.Type.STRING, reverse)};
+        } else if(searchSortOrderName.equals(SearchSortOrders.POSTED_TIME.name())) {
+            sortFields = new SortField[]{new SortField(IndexFields.postedTime.name(), SortField.Type.LONG, reverse)};
+        } else if(searchSortOrderName.equals(SearchSortOrders.CREATED_TIME.name())) {
+            sortFields = new SortField[]{new SortField(IndexFields.createdTime.name(), SortField.Type.LONG, reverse)};
+        } else if(searchSortOrderName.equals(SearchSortOrders.MODIFIED_TIME.name())) {
+            sortFields = new SortField[]{new SortField(IndexFields.modifiedTime.name(), SortField.Type.LONG, reverse)};
         }
         
         return sortFields;
@@ -167,7 +171,7 @@ public class ForumMessageSearchEvaluator
     static {
         Set<String> set = new HashSet<>(1);
 
-        set.add(IndexConstants.IndexField_PostedTime);
+        set.add(IndexFields.postedTime.name());
         
         dateTimeFields = Collections.unmodifiableSet(set);
     }

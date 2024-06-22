@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -41,23 +41,12 @@ public class DslContextFactory {
     
     private final DataSource ds;
     private final DataSource ntds;
-    
+
+    @SuppressWarnings("BanJNDI")
     protected DslContextFactory() {
-        Context jndiContext;
-        
         try {
-            jndiContext = new InitialContext();
-        } catch (NamingException ne) {
-            throw new PersistenceDatabaseException(ne);
-        }
-        
-        try {
+            var jndiContext = new InitialContext();
             ds = (DataSource)jndiContext.lookup(DS);
-        } catch (NamingException ne) {
-            throw new PersistenceDatabaseException(ne);
-        }
-        
-        try {
             ntds = (DataSource)jndiContext.lookup(NTDS);
         } catch (NamingException ne) {
             throw new PersistenceDatabaseException(ne);
@@ -76,6 +65,7 @@ public class DslContextFactory {
         
         if(PersistenceDebugFlags.LogConnections)
             log.info("getDslContext() returning " + dslContent);
+
         return dslContent;
     }
     
@@ -84,6 +74,7 @@ public class DslContextFactory {
         
         if(PersistenceDebugFlags.LogConnections)
             log.info("getNTDslContext() returning " + dslContent);
+
         return dslContent;
     }
     

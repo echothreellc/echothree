@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,12 +16,18 @@
 
 package com.echothree.control.user.returnpolicy.server.command;
 
+import com.echothree.control.user.cancellationpolicy.common.result.CancellationPolicyResultFactory;
 import com.echothree.control.user.returnpolicy.common.form.CreateReturnKindForm;
+import com.echothree.control.user.returnpolicy.common.result.ReturnPolicyResultFactory;
+import com.echothree.model.control.cancellationpolicy.server.logic.CancellationKindLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
+import com.echothree.model.control.returnpolicy.server.logic.ReturnKindLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
+import com.echothree.model.control.sequence.server.logic.SequenceTypeLogic;
+import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnKind;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -57,7 +63,7 @@ public class CreateReturnKindCommand
                 new FieldDefinition("ReturnSequenceTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
-                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 ));
     }
     
@@ -68,34 +74,27 @@ public class CreateReturnKindCommand
     
     @Override
     protected BaseResult execute() {
-        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-        String returnKindName = form.getReturnKindName();
-        ReturnKind returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
-        
-        if(returnKind == null) {
-            var sequenceControl = Session.getModelController(SequenceControl.class);
-            String returnSequenceTypeName = form.getReturnSequenceTypeName();
-            SequenceType returnSequenceType = sequenceControl.getSequenceTypeByName(returnSequenceTypeName);
-            
-            if(returnSequenceType != null) {
-                var partyPK = getPartyPK();
-                var isDefault = Boolean.valueOf(form.getIsDefault());
-                var sortOrder = Integer.valueOf(form.getSortOrder());
-                var description = form.getDescription();
-                
-                returnKind = returnPolicyControl.createReturnKind(returnKindName, returnSequenceType, isDefault, sortOrder, partyPK);
-                
-                if(description != null) {
-                    returnPolicyControl.createReturnKindDescription(returnKind, getPreferredLanguage(), description, partyPK);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownReturnSequenceTypeName.name(), returnSequenceTypeName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.DuplicateReturnKindName.name(), returnKindName);
+        var result = ReturnPolicyResultFactory.getCreateReturnKindResult();
+        ReturnKind returnKind = null;
+        var returnKindName = form.getReturnKindName();
+        var returnSequenceTypeName = form.getReturnSequenceTypeName();
+        var returnSequenceType = SequenceTypeLogic.getInstance().getSequenceTypeByName(this, returnSequenceTypeName);
+
+        if(!hasExecutionErrors()) {
+            var isDefault = Boolean.valueOf(form.getIsDefault());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
+            var description = form.getDescription();
+
+            returnKind = ReturnKindLogic.getInstance().createReturnKind(this, returnKindName,
+                    returnSequenceType, isDefault, sortOrder, getPreferredLanguage(), description, getPartyPK());
         }
-        
-        return null;
+
+        if(returnKind != null) {
+            result.setReturnKindName(returnKind.getLastDetail().getReturnKindName());
+            result.setEntityRef(returnKind.getPrimaryKey().getEntityRef());
+        }
+
+        return result;
     }
     
 }

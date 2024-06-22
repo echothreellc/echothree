@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,10 +26,12 @@ import com.echothree.model.control.offer.common.exception.DuplicateOfferNameExce
 import com.echothree.model.control.offer.common.exception.UnknownDefaultOfferException;
 import com.echothree.model.control.offer.common.exception.UnknownOfferNameException;
 import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferItemControl;
 import com.echothree.model.control.offer.server.control.OfferUseControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.offer.server.entity.Offer;
+import com.echothree.model.data.offer.server.factory.OfferFactory;
 import com.echothree.model.data.offer.server.value.OfferDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
@@ -120,7 +122,7 @@ public class OfferLogic
             case 1:
                 if(offerName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.Offer.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.Offer.name());
 
                     if(!eea.hasExecutionErrors()) {
                         offer = offerControl.getOfferByEntityInstance(entityInstance, entityPermission);
@@ -149,6 +151,24 @@ public class OfferLogic
 
     public void updateOfferFromValue(OfferDetailValue offerDetailValue, BasePK updatedBy) {
         var offerControl = Session.getModelController(OfferControl.class);
+
+        if(offerDetailValue.getOfferItemSelectorPKHasBeenModified() && offerDetailValue.getOfferItemSelectorPK() != null) {
+            var offer = OfferFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, offerDetailValue.getOfferPK());
+
+            OfferItemLogic.getInstance().deleteOfferItemsByOffer(offer, updatedBy);
+        } else if(offerDetailValue.getOfferItemPriceFilterPKHasBeenModified() && offerDetailValue.getOfferItemPriceFilterPK() != null) {
+            var offerItemControl = Session.getModelController(OfferItemControl.class);
+            var offer = OfferFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, offerDetailValue.getOfferPK());
+
+            var offerItems = offerItemControl.getOfferItemsByOffer(offer);
+            for(var offerItem : offerItems) {
+                var offerItemPrices = offerItemControl.getOfferItemPricesByOfferItemForUpdate(offerItem);
+
+                for(var offerItemPrice : offerItemPrices) {
+                    offerItemControl.deleteOfferItemPrice(offerItemPrice, updatedBy);
+                }
+            }
+        }
 
         offerControl.updateOfferFromValue(offerDetailValue, updatedBy);
     }

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,6 +19,8 @@ package com.echothree.model.control.forum.server.indexer;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.IndexFieldVariations;
+import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.server.analysis.ForumMessageAnalyzer;
 import com.echothree.model.control.index.server.indexer.BaseIndexer;
 import com.echothree.model.control.index.server.indexer.FieldTypes;
@@ -54,7 +56,7 @@ public class ForumMessageIndexer
 
     @Override
     protected Analyzer getAnalyzer() {
-        return new ForumMessageAnalyzer(eea, language, entityType, entityAttributes, tagScopes);
+        return new ForumMessageAnalyzer(eea, language, entityType, entityAliasTypes, entityAttributes, tagScopes);
     }
     
     @Override
@@ -68,18 +70,12 @@ public class ForumMessageIndexer
         ForumThread forumThread = forumMessageDetail.getForumThread();
         List<ForumForumThread> forumForumThreads = forumControl.getForumForumThreadsByForumThread(forumThread);
         List<ForumMessageTypePartType> forumMessageTypePartTypes = forumControl.getForumMessageTypePartTypesByForumMessageTypeAndIncludeInIndex(forumMessageDetail.getForumMessageType());
-        Document document = new Document();
 
-        document.add(new Field(IndexConstants.IndexField_EntityRef, forumMessage.getPrimaryKey().getEntityRef(), FieldTypes.STORED_NOT_TOKENIZED));
-        document.add(new Field(IndexConstants.IndexField_EntityInstanceId, entityInstance.getPrimaryKey().getEntityId().toString(), FieldTypes.STORED_NOT_TOKENIZED));
-        
-        document.add(new Field(IndexConstants.IndexField_ForumMessageName, forumMessageDetail.getForumMessageName(), FieldTypes.NOT_STORED_TOKENIZED));
-        document.add(new Field(IndexConstants.IndexField_ForumThreadName, forumThread.getLastDetail().getForumThreadName(), FieldTypes.NOT_STORED_TOKENIZED));
-        document.add(new LongPoint(IndexConstants.IndexField_PostedTime, forumMessageDetail.getPostedTime()));
+        var document = newDocumentWithEntityInstanceFields(entityInstance, forumMessage.getPrimaryKey());
 
-        indexEntityTimes(document, entityInstance);
-        indexEntityAttributes(document, entityInstance);
-        indexEntityTags(document, entityInstance);
+        document.add(new Field(IndexFields.forumMessageName.name(), forumMessageDetail.getForumMessageName(), FieldTypes.NOT_STORED_TOKENIZED));
+        document.add(new Field(IndexFields.forumThreadName.name(), forumThread.getLastDetail().getForumThreadName(), FieldTypes.NOT_STORED_TOKENIZED));
+        document.add(new LongPoint(IndexFields.postedTime.name(), forumMessageDetail.getPostedTime()));
 
         forumMessageTypePartTypes.stream().map((forumMessageTypePartType) -> forumMessageTypePartType.getForumMessagePartType()).forEach((forumMessagePartType) -> {
             ForumMessagePart forumMessagePart = forumControl.getBestForumMessagePart(forumMessage, forumMessagePartType, language);
@@ -91,7 +87,7 @@ public class ForumMessageIndexer
                     String string = forumControl.getForumStringMessagePart(forumMessagePart).getString();
                     
                     document.add(new Field(forumMessagePartTypeName, string, FieldTypes.NOT_STORED_TOKENIZED));
-                    document.add(new SortedDocValuesField(forumMessagePartTypeName + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable,
+                    document.add(new SortedDocValuesField(forumMessagePartTypeName + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
                             new BytesRef(string)));
                 } else {
                     String mimeTypeUsageTypeName = mimeTypeUsageType.getMimeTypeUsageTypeName();
@@ -114,10 +110,10 @@ public class ForumMessageIndexer
                     forumNames.append(' ');
                 }
                 
-                forumNames.append(forumForumThread.getForum().getActiveDetail().getForumName());
+                forumNames.append(forumForumThread.getForum().getLastDetail().getForumName());
             });
             
-            document.add(new Field(IndexConstants.IndexField_ForumNames, forumNames.toString(), FieldTypes.NOT_STORED_NOT_TOKENIZED));
+            document.add(new Field(IndexFields.forumNames.name(), forumNames.toString(), FieldTypes.NOT_STORED_NOT_TOKENIZED));
         }
         
         return document;

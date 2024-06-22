@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ package com.echothree.control.user.search.server.command;
 import com.echothree.control.user.search.common.form.GetVendorResultsForm;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -67,7 +67,7 @@ public class GetVendorResultsCommand
         var searchTypeName = form.getSearchTypeName();
         var userVisit = getUserVisit();
         var userVisitSearch = SearchLogic.getInstance().getUserVisitSearchByName(this, userVisit,
-                SearchConstants.SearchKind_VENDOR, searchTypeName);
+                SearchKinds.VENDOR.name(), searchTypeName);
 
         if(!hasExecutionErrors()) {
             var vendorControl = Session.getModelController(VendorControl.class);

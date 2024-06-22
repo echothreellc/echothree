@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -50,7 +50,7 @@ public class EditAction
     @Override
     protected ItemAliasTypeSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ItemAliasTypeSpec spec = ItemUtil.getHome().getItemAliasTypeSpec();
+        var spec = ItemUtil.getHome().getItemAliasTypeUniversalSpec();
         
         spec.setItemAliasTypeName(findParameter(request, ParameterConstants.ORIGINAL_ITEM_ALIAS_TYPE_NAME, actionForm.getOriginalItemAliasTypeName()));
         

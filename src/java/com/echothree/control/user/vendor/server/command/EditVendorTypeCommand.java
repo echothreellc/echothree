@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import com.echothree.control.user.vendor.common.edit.VendorEditFactory;
 import com.echothree.control.user.vendor.common.edit.VendorTypeEdit;
 import com.echothree.control.user.vendor.common.form.EditVendorTypeForm;
 import com.echothree.control.user.vendor.common.result.VendorResultFactory;
-import com.echothree.control.user.vendor.common.spec.VendorTypeSpec;
+import com.echothree.control.user.vendor.common.spec.VendorTypeUniversalSpec;
 import com.echothree.model.control.accounting.common.AccountingConstants;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.cancellationpolicy.common.CancellationKinds;
@@ -33,6 +33,7 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.shipment.server.logic.FreeOnBoardLogic;
 import com.echothree.model.control.term.server.logic.TermLogic;
 import com.echothree.model.control.vendor.server.control.VendorControl;
+import com.echothree.model.control.vendor.server.logic.VendorTypeLogic;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -52,7 +53,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class EditVendorTypeCommand
-        extends BaseEditCommand<VendorTypeSpec, VendorTypeEdit> {
+        extends BaseEditCommand<VendorTypeUniversalSpec, VendorTypeEdit> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
@@ -67,7 +68,11 @@ public class EditVendorTypeCommand
                 )));
         
         SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("VendorTypeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("VendorTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
                 ));
         
         EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
@@ -86,7 +91,7 @@ public class EditVendorTypeCommand
                 new FieldDefinition("DefaultReferenceValidationPattern", FieldType.REGULAR_EXPRESSION, false, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
-                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 ));
     }
     
@@ -101,10 +106,9 @@ public class EditVendorTypeCommand
         var result = VendorResultFactory.getEditVendorTypeResult();
         
         if(editMode.equals(EditMode.LOCK)) {
-            var vendorTypeName = spec.getVendorTypeName();
-            var vendorType = vendorControl.getVendorTypeByName(vendorTypeName);
+            var vendorType = VendorTypeLogic.getInstance().getVendorTypeByUniversalSpec(this, spec, false);
             
-            if(vendorType != null) {
+            if(!hasExecutionErrors()) {
                 result.setVendorType(vendorControl.getVendorTypeTransfer(getUserVisit(), vendorType));
                 
                 if(lockEntity(vendorType)) {
@@ -141,15 +145,12 @@ public class EditVendorTypeCommand
                 }
                 
                 result.setEntityLock(getEntityLockTransfer(vendorType));
-            } else {
-                addExecutionError(ExecutionErrors.UnknownVendorTypeName.name(), vendorTypeName);
             }
         } else if(editMode.equals(EditMode.UPDATE)) {
-            var vendorTypeName = spec.getVendorTypeName();
-            var vendorType = vendorControl.getVendorTypeByNameForUpdate(vendorTypeName);
+            var vendorType = VendorTypeLogic.getInstance().getVendorTypeByUniversalSpecForUpdate(this, spec, false);
             
-            if(vendorType != null) {
-                vendorTypeName = edit.getVendorTypeName();
+            if(!hasExecutionErrors()) {
+                var vendorTypeName = edit.getVendorTypeName();
                 var duplicateVendorType = vendorControl.getVendorTypeByName(vendorTypeName);
                 
                 if(duplicateVendorType == null || vendorType.equals(duplicateVendorType)) {
@@ -212,7 +213,7 @@ public class EditVendorTypeCommand
                                                 vendorTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
                                                 vendorTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-                                                vendorControl.updateVendorTypeFromValue(vendorTypeDetailValue, partyPK);
+                                                VendorTypeLogic.getInstance().updateVendorTypeFromValue(this, vendorTypeDetailValue, partyPK);
 
                                                 if(vendorTypeDescription == null && description != null) {
                                                     vendorControl.createVendorTypeDescription(vendorType, getPreferredLanguage(), description, partyPK);
@@ -250,8 +251,6 @@ public class EditVendorTypeCommand
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateVendorTypeName.name(), vendorTypeName);
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownVendorTypeName.name(), vendorTypeName);
             }
             
             if(hasExecutionErrors()) {

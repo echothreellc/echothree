@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -69,14 +69,14 @@ public class GetSecurityRoleGroupCommand
         var securityRoleGroup = SecurityRoleGroupLogic.getInstance().getSecurityRoleGroupByUniversalSpec(this, form, true);
 
         if(securityRoleGroup != null) {
-            sendEventUsingNames(securityRoleGroup.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(securityRoleGroup.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return securityRoleGroup;
     }
 
     @Override
-    protected BaseResult getTransfer(SecurityRoleGroup securityRoleGroup) {
+    protected BaseResult getResult(SecurityRoleGroup securityRoleGroup) {
         var result = SecurityResultFactory.getGetSecurityRoleGroupResult();
 
         if(securityRoleGroup != null) {

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -749,6 +749,10 @@
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index3">
+                            <indexColumn name="PartyDivisionName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
                             <indexColumn name="CompanyPartyId" />
                             <indexColumn name="IsDefault" />
                             <indexColumn name="ThruTime" />
@@ -780,6 +784,10 @@
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index3">
+                            <indexColumn name="PartyDepartmentName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
                             <indexColumn name="DivisionPartyId" />
                             <indexColumn name="IsDefault" />
                             <indexColumn name="ThruTime" />
@@ -1263,7 +1271,9 @@
                         <column name="PartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
                         <column name="Nickname" type="String" maxLength="40" nullAllowed="true" />
                         <column name="IconId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Icons" destinationColumn="IconId" />
+                        <column name="Pronunciation" type="String" maxLength="200" nullAllowed="true" />
                         <column name="GenderId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Genders" destinationColumn="GenderId" />
+                        <column name="Pronouns" type="String" maxLength="50" nullAllowed="true" />
                         <column name="Birthday" type="Date" nullAllowed="true" />
                         <column name="BirthdayFormatId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="BirthdayFormats" destinationColumn="BirthdayFormatId" />
                         <column name="Occupation" type="String" maxLength="200" nullAllowed="true" />

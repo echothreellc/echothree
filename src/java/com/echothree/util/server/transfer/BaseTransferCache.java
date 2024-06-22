@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package com.echothree.util.server.transfer;
 
 import com.echothree.model.control.comment.common.transfer.CommentListWrapper;
 import com.echothree.model.control.comment.server.control.CommentControl;
+import com.echothree.model.control.core.common.transfer.EntityAliasTypeTransfer;
 import com.echothree.model.control.core.common.transfer.EntityAttributeGroupTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.rating.common.transfer.RatingListWrapper;
@@ -49,14 +50,12 @@ import com.echothree.util.common.transfer.MapWrapper;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.persistence.ThreadSession;
+import com.echothree.util.server.string.DateUtils;
 import com.echothree.util.server.string.PercentUtils;
 import com.echothree.util.server.string.UnitOfMeasureUtils;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -75,17 +74,15 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     private Currency currency;
     private TimeZone timeZone;
     private DateTimeFormat dateTimeFormat;
-    
-    private java.util.TimeZone javaTimeZone;
-    private SimpleDateFormat sdfShortDateFormat;
-    private SimpleDateFormat sdfTimeFormatSeconds;
 
     boolean includeEntityInstance;
     boolean includeEntityAppearance;
+    boolean includeEntityVisit;
     boolean includeNames;
     boolean includeKey;
     boolean includeGuid;
     boolean includeUlid;
+    boolean includeEntityAliasTypes;
     boolean includeEntityAttributeGroups;
     boolean includeTagScopes;
     
@@ -98,6 +95,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
         
         var options = session.getOptions();
         if(options != null) {
+            includeEntityAliasTypes = options.contains(BaseOptions.BaseIncludeEntityAliasTypes);
             includeEntityAttributeGroups = options.contains(BaseOptions.BaseIncludeEntityAttributeGroups);
             includeTagScopes = options.contains(BaseOptions.BaseIncludeTagScopes);
         }
@@ -183,14 +181,6 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
         return timeZone;
     }
     
-    protected java.util.TimeZone getJavaTimeZone() {
-        if(javaTimeZone == null) {
-            javaTimeZone = java.util.TimeZone.getTimeZone(getTimeZone().getLastDetail().getJavaTimeZoneName());
-        }
-        
-        return javaTimeZone;
-    }
-    
     protected DateTimeFormat getDateTimeFormat() {
         if(dateTimeFormat == null) {
             dateTimeFormat = getUserControl().getPreferredDateTimeFormatFromUserVisit(userVisit);
@@ -198,31 +188,9 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
         
         return dateTimeFormat;
     }
-    
-    protected String formatDateUsingShortDateFormat(Date time) {
-        if(sdfShortDateFormat == null) {
-            sdfShortDateFormat = new SimpleDateFormat(getDateTimeFormat().getLastDetail().getJavaShortDateFormat());
-            sdfShortDateFormat.setTimeZone(getJavaTimeZone());
-        }
-        
-        return sdfShortDateFormat.format(time);
-    }
-    
-    protected String formatTimeUsingTimeFormatSeconds(Date time) {
-        if(sdfTimeFormatSeconds == null) {
-            sdfTimeFormatSeconds = new SimpleDateFormat(getDateTimeFormat().getLastDetail().getJavaTimeFormatSeconds());
-            sdfTimeFormatSeconds.setTimeZone(getJavaTimeZone());
-        }
-        
-        return sdfTimeFormatSeconds.format(time);
-    }
-    
-    protected String formatTypicalDateTime(Date time) {
-        return new StringBuilder(formatDateUsingShortDateFormat(time)).append(' ').append(formatTimeUsingTimeFormatSeconds(time)).toString();
-    }
-    
+
     protected String formatTypicalDateTime(Long time) {
-        return time == null? null: formatTypicalDateTime(new Date(time));
+        return DateUtils.getInstance().formatTypicalDateTime(userVisit, time);
     }
     
     protected String formatFractionalPercent(Integer percent) {
@@ -235,6 +203,33 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     
     protected String formatUnitOfMeasure(UnitOfMeasureKind unitOfMeasureKind, Long measure) {
         return UnitOfMeasureUtils.getInstance().formatUnitOfMeasure(userVisit, unitOfMeasureKind, measure);
+    }
+
+    /**
+     * Returns the includeEntityAliasTypes.
+     * @return the includeEntityAliasTypes
+     */
+    protected boolean getIncludeEntityAliasTypes() {
+        return includeEntityAliasTypes;
+    }
+
+    /**
+     * Sets the includeEntityAliasTypes.
+     * @param includeEntityAliasTypes the includeEntityAliasTypes to set
+     */
+    protected void setIncludeEntityAliasTypes(boolean includeEntityAliasTypes) {
+        this.includeEntityAliasTypes = includeEntityAliasTypes;
+    }
+
+    protected void setupEntityAliasTypes(CoreControl coreControl, EntityInstance entityInstance, V transfer) {
+        var entityAliasTypeTransfers = coreControl.getEntityAliasTypeTransfersByEntityType(userVisit, entityInstance.getEntityType(), entityInstance);
+        var mapWrapper = new MapWrapper<EntityAliasTypeTransfer>(entityAliasTypeTransfers.size());
+
+        entityAliasTypeTransfers.forEach((entityAliasTypeTransfer) -> {
+            mapWrapper.put(entityAliasTypeTransfer.getEntityAliasTypeName(), entityAliasTypeTransfer);
+        });
+
+        transfer.setEntityAliasTypes(mapWrapper);
     }
 
     /**
@@ -333,6 +328,22 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     }
 
     /**
+     * Returns the includeEntityVisit.
+     * @return the includeEntityVisit
+     */
+    protected boolean getIncludeEntityVisit() {
+        return includeEntityVisit;
+    }
+
+    /**
+     * Sets the includeEntityVisit.
+     * @param includeEntityVisit the includeEntityVisit to set
+     */
+    protected void setIncludeEntityVisit(boolean includeEntityVisit) {
+        this.includeEntityVisit = includeEntityVisit;
+    }
+
+    /**
      * Returns the includeNames.
      * @return the includeNames
      */
@@ -398,10 +409,14 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
         // Check to make sure entityInstance is not null. This may happen in a case where a non-versioned entity was
         // converted to a versioned one.
         if(entityInstance != null) {
-            transfer.setEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, entityInstance, includeEntityAppearance, includeNames, includeKey,
-                    includeGuid, includeUlid));
+            transfer.setEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, entityInstance, includeEntityAppearance,
+                    includeEntityVisit, includeNames, includeKey, includeGuid, includeUlid));
 
-            if(includeEntityAttributeGroups || includeTagScopes) {
+            if(includeEntityAliasTypes || includeEntityAttributeGroups || includeTagScopes) {
+                if(includeEntityAliasTypes) {
+                    setupEntityAliasTypes(coreControl, entityInstance, transfer);
+                }
+
                 if(includeEntityAttributeGroups) {
                     setupEntityAttributeGroups(coreControl, entityInstance, transfer);
                 }

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,54 +18,67 @@ package com.echothree.control.user.customer.server.command;
 
 import com.echothree.control.user.customer.common.form.GetCustomerTypesForm;
 import com.echothree.control.user.customer.common.result.CustomerResultFactory;
-import com.echothree.control.user.customer.common.result.GetCustomerTypesResult;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.customer.server.entity.CustomerType;
+import com.echothree.model.data.customer.server.factory.CustomerTypeFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.Collection;
 import java.util.List;
 
 public class GetCustomerTypesCommand
-        extends BaseSimpleCommand<GetCustomerTypesForm> {
-    
+        extends BaseMultipleEntitiesCommand<CustomerType, GetCustomerTypesForm> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.CustomerType.name(), SecurityRoles.List.name())
-                        )))
-                )));
-        
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                ));
+                ))
+        ));
+
+        FORM_FIELD_DEFINITIONS = List.of();
     }
-    
+
     /** Creates a new instance of GetCustomerTypesCommand */
     public GetCustomerTypesCommand(UserVisitPK userVisitPK, GetCustomerTypesForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        GetCustomerTypesResult result = CustomerResultFactory.getGetCustomerTypesResult();
+    protected Collection<CustomerType> getEntities() {
         var customerControl = Session.getModelController(CustomerControl.class);
-        
-        result.setCustomerTypes(customerControl.getCustomerTypeTransfers(getUserVisit()));
-        
+
+        return customerControl.getCustomerTypes();
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<CustomerType> entities) {
+        var result = CustomerResultFactory.getGetCustomerTypesResult();
+
+        if(entities != null) {
+            var customerControl = Session.getModelController(CustomerControl.class);
+
+            if(session.hasLimit(CustomerTypeFactory.class)) {
+                result.setCustomerTypeCount(customerControl.countCustomerTypes());
+            }
+
+            result.setCustomerTypes(customerControl.getCustomerTypeTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
-    
+
 }

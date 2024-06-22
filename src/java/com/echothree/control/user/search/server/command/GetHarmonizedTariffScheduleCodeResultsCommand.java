@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import com.echothree.control.user.search.common.form.GetHarmonizedTariffSchedule
 import com.echothree.control.user.search.common.result.GetHarmonizedTariffScheduleCodeResultsResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.item.server.control.HarmonizedTariffScheduleCodeControl;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.data.search.server.entity.SearchKind;
@@ -58,7 +58,7 @@ public class GetHarmonizedTariffScheduleCodeResultsCommand
     protected BaseResult execute() {
         GetHarmonizedTariffScheduleCodeResultsResult result = SearchResultFactory.getGetHarmonizedTariffScheduleCodeResultsResult();
         var searchControl = Session.getModelController(SearchControl.class);
-        SearchKind searchKind = searchControl.getSearchKindByName(SearchConstants.SearchKind_HARMONIZED_TARIFF_SCHEDULE_CODE);
+        SearchKind searchKind = searchControl.getSearchKindByName(SearchKinds.HARMONIZED_TARIFF_SCHEDULE_CODE.name());
         
         if(searchKind != null) {
             String searchTypeName = form.getSearchTypeName();
@@ -80,10 +80,10 @@ public class GetHarmonizedTariffScheduleCodeResultsCommand
                     addExecutionError(ExecutionErrors.UnknownUserVisitSearch.name());
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownSearchTypeName.name(), SearchConstants.SearchKind_HARMONIZED_TARIFF_SCHEDULE_CODE, searchTypeName);
+                addExecutionError(ExecutionErrors.UnknownSearchTypeName.name(), SearchKinds.HARMONIZED_TARIFF_SCHEDULE_CODE.name(), searchTypeName);
             }
         } else {
-            addExecutionError(ExecutionErrors.UnknownSearchKindName.name(), SearchConstants.SearchKind_HARMONIZED_TARIFF_SCHEDULE_CODE);
+            addExecutionError(ExecutionErrors.UnknownSearchKindName.name(), SearchKinds.HARMONIZED_TARIFF_SCHEDULE_CODE.name());
         }
         
         return result;

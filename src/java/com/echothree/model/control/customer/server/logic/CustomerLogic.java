@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -39,7 +39,6 @@ import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.customer.server.entity.Customer;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntityStatus;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -92,7 +91,7 @@ public class CustomerLogic
                 }
             } else if(universalEntitySpec != null) {
                 var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalEntitySpec,
-                        ComponentVendors.ECHOTHREE.name(), EntityTypes.Party.name());
+                        ComponentVendors.ECHO_THREE.name(), EntityTypes.Party.name());
 
                 if(!eea.hasExecutionErrors()) {
                     var party = partyControl.getPartyByEntityInstance(entityInstance);

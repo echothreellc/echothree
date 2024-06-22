@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -594,7 +594,17 @@ public class SearchBean
     public CommandResult getCustomerResults(UserVisitPK userVisitPK, GetCustomerResultsForm form) {
         return new GetCustomerResultsCommand(userVisitPK, form).run();
     }
-    
+
+    @Override
+    public CommandResult getCustomerResultsFacet(UserVisitPK userVisitPK, GetCustomerResultsFacetForm form) {
+        return new GetCustomerResultsFacetCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getCustomerResultsFacets(UserVisitPK userVisitPK, GetCustomerResultsFacetsForm form) {
+        return new GetCustomerResultsFacetsCommand(userVisitPK, form).run();
+    }
+
     @Override
     public CommandResult countCustomerResults(UserVisitPK userVisitPK, CountCustomerResultsForm form) {
         return new CountCustomerResultsCommand(userVisitPK, form).run();
@@ -709,6 +719,16 @@ public class SearchBean
     @Override
     public CommandResult getEmployeeResults(UserVisitPK userVisitPK, GetEmployeeResultsForm form) {
         return new GetEmployeeResultsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getEmployeeResultsFacet(UserVisitPK userVisitPK, GetEmployeeResultsFacetForm form) {
+        return new GetEmployeeResultsFacetCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getEmployeeResultsFacets(UserVisitPK userVisitPK, GetEmployeeResultsFacetsForm form) {
+        return new GetEmployeeResultsFacetsCommand(userVisitPK, form).run();
     }
 
     @Override
@@ -1122,7 +1142,41 @@ public class SearchBean
     public CommandResult clearUseTypeResults(UserVisitPK userVisitPK, ClearUseTypeResultsForm form) {
         return new ClearUseTypeResultsCommand(userVisitPK, form).run();
     }
-    
+
+    // -------------------------------------------------------------------------
+    //   Warehouse Search
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult searchWarehouses(UserVisitPK userVisitPK, SearchWarehousesForm form) {
+        return new SearchWarehousesCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getWarehouseResults(UserVisitPK userVisitPK, GetWarehouseResultsForm form) {
+        return new GetWarehouseResultsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getWarehouseResultsFacet(UserVisitPK userVisitPK, GetWarehouseResultsFacetForm form) {
+        return new GetWarehouseResultsFacetCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getWarehouseResultsFacets(UserVisitPK userVisitPK, GetWarehouseResultsFacetsForm form) {
+        return new GetWarehouseResultsFacetsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult countWarehouseResults(UserVisitPK userVisitPK, CountWarehouseResultsForm form) {
+        return new CountWarehouseResultsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult clearWarehouseResults(UserVisitPK userVisitPK, ClearWarehouseResultsForm form) {
+        return new ClearWarehouseResultsCommand(userVisitPK, form).run();
+    }
+
     // -------------------------------------------------------------------------
     //   Identify
     // -------------------------------------------------------------------------

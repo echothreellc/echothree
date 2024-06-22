@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,21 +16,22 @@
 
 package com.echothree.ui.cli.dataloader.util.data.handler.core;
 
-import com.echothree.control.user.comment.common.CommentUtil;
 import com.echothree.control.user.comment.common.CommentService;
+import com.echothree.control.user.comment.common.CommentUtil;
 import com.echothree.control.user.comment.common.form.CommentFormFactory;
 import com.echothree.control.user.comment.common.form.CreateCommentTypeForm;
-import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.control.user.core.common.CoreService;
+import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.control.user.core.common.form.CoreFormFactory;
 import com.echothree.control.user.core.common.form.CreateEntityAttributeForm;
-import com.echothree.control.user.core.common.form.CreateEntityTypeDescriptionForm;
-import com.echothree.control.user.message.common.MessageUtil;
+import com.echothree.control.user.core.common.result.EditEntityTypeDescriptionResult;
+import com.echothree.control.user.core.common.spec.CoreSpecFactory;
 import com.echothree.control.user.message.common.MessageService;
+import com.echothree.control.user.message.common.MessageUtil;
 import com.echothree.control.user.message.common.form.CreateMessageTypeForm;
 import com.echothree.control.user.message.common.form.MessageFormFactory;
-import com.echothree.control.user.rating.common.RatingUtil;
 import com.echothree.control.user.rating.common.RatingService;
+import com.echothree.control.user.rating.common.RatingUtil;
 import com.echothree.control.user.rating.common.form.CreateRatingTypeForm;
 import com.echothree.control.user.rating.common.form.RatingFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
@@ -38,6 +39,8 @@ import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.comment.CommentTypeHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.message.MessageTypeHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.rating.RatingTypeHandler;
+import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.message.ExecutionErrors;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -72,58 +75,116 @@ public class EntityTypeHandler
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
-        if(localName.equals("entityTypeDescription")) {
-            CreateEntityTypeDescriptionForm commandForm = CoreFormFactory.getCreateEntityTypeDescriptionForm();
+        switch(localName) {
+            case "entityTypeDescription" -> {
+                var spec = CoreSpecFactory.getEntityTypeDescriptionSpec();
+                var editForm = CoreFormFactory.getEditEntityTypeDescriptionForm();
 
-            commandForm.setComponentVendorName(componentVendorName);
-            commandForm.setEntityTypeName(entityTypeName);
-            commandForm.set(getAttrsMap(attrs));
+                spec.setComponentVendorName(componentVendorName);
+                spec.setEntityTypeName(entityTypeName);
+                spec.set(getAttrsMap(attrs));
 
-            coreService.createEntityTypeDescription(initialDataParser.getUserVisit(), commandForm);
-        } else if(localName.equals("entityAttribute")) {
-            CreateEntityAttributeForm commandForm = CoreFormFactory.getCreateEntityAttributeForm();
+                var commandAction = (String)spec.get("CommandAction");
+                getLogger().debug("Found: " + commandAction);
+                if(commandAction == null || commandAction.equals("create")) {
+                    var attrsMap = getAttrsMap(attrs);
 
-            commandForm.setComponentVendorName(componentVendorName);
-            commandForm.setEntityTypeName(entityTypeName);
-            commandForm.set(getAttrsMap(attrs));
+                    editForm.setSpec(spec);
+                    editForm.setEditMode(EditMode.LOCK);
 
-            coreService.createEntityAttribute(initialDataParser.getUserVisit(), commandForm);
+                    var commandResult = coreService.editEntityTypeDescription(initialDataParser.getUserVisit(), editForm);
 
-            initialDataParser.pushHandler(new EntityAttributeHandler(initialDataParser, this, componentVendorName, entityTypeName,
-                    commandForm.getEntityAttributeName()));
-        } else if(localName.equals("commentType")) {
-            CreateCommentTypeForm commandForm = CommentFormFactory.getCreateCommentTypeForm();
+                    if(commandResult.hasErrors()) {
+                        if(commandResult.containsExecutionError(ExecutionErrors.UnknownEntityTypeDescription.name())) {
+                            var createForm = CoreFormFactory.getCreateEntityTypeDescriptionForm();
 
-            commandForm.setComponentVendorName(componentVendorName);
-            commandForm.setEntityTypeName(entityTypeName);
-            commandForm.set(getAttrsMap(attrs));
+                            createForm.set(spec.get());
 
-            commentService.createCommentType(initialDataParser.getUserVisit(), commandForm);
+                            getLogger().debug("Creating: " + spec.getEntityTypeName());
+                            commandResult = coreService.createEntityTypeDescription(initialDataParser.getUserVisit(), createForm);
 
-            initialDataParser.pushHandler(new CommentTypeHandler(initialDataParser, this, componentVendorName, entityTypeName,
-                    commandForm.getCommentTypeName()));
-        } else if(localName.equals("ratingType")) {
-            CreateRatingTypeForm commandForm = RatingFormFactory.getCreateRatingTypeForm();
+                            if(commandResult.hasErrors()) {
+                                getLogger().error(commandResult.toString());
+                            }
+                        } else {
+                            getLogger().error(commandResult.toString());
+                        }
+                    } else {
+                        var executionResult = commandResult.getExecutionResult();
+                        var result = (EditEntityTypeDescriptionResult)executionResult.getResult();
 
-            commandForm.setComponentVendorName(componentVendorName);
-            commandForm.setEntityTypeName(entityTypeName);
-            commandForm.set(getAttrsMap(attrs));
+                        getLogger().debug("Checking for modifications: " + spec.getEntityTypeName());
+                        if(result != null) {
+                            updateEditFormValues(editForm, attrsMap, result);
 
-            ratingService.createRatingType(initialDataParser.getUserVisit(), commandForm);
+                            commandResult = coreService.editEntityTypeDescription(initialDataParser.getUserVisit(), editForm);
+                            if(commandResult.hasErrors()) {
+                                getLogger().error(commandResult.toString());
+                            }
+                        }
+                    }
+                }
+            }
+            case "entityAliasType" -> {
+                var commandForm = CoreFormFactory.getCreateEntityAliasTypeForm();
 
-            initialDataParser.pushHandler(new RatingTypeHandler(initialDataParser, this, componentVendorName, entityTypeName,
-                    commandForm.getRatingTypeName()));
-        } else if(localName.equals("messageType")) {
-            CreateMessageTypeForm commandForm = MessageFormFactory.getCreateMessageTypeForm();
+                commandForm.setComponentVendorName(componentVendorName);
+                commandForm.setEntityTypeName(entityTypeName);
+                commandForm.set(getAttrsMap(attrs));
 
-            commandForm.setComponentVendorName(componentVendorName);
-            commandForm.setEntityTypeName(entityTypeName);
-            commandForm.set(getAttrsMap(attrs));
+                coreService.createEntityAliasType(initialDataParser.getUserVisit(), commandForm);
 
-            messageService.createMessageType(initialDataParser.getUserVisit(), commandForm);
+                initialDataParser.pushHandler(new EntityAliasTypeHandler(initialDataParser, this, componentVendorName, entityTypeName,
+                        commandForm.getEntityAliasTypeName()));
+            }
+            case "entityAttribute" -> {
+                CreateEntityAttributeForm commandForm = CoreFormFactory.getCreateEntityAttributeForm();
 
-            initialDataParser.pushHandler(new MessageTypeHandler(initialDataParser, this, componentVendorName, entityTypeName,
-                    commandForm.getMessageTypeName()));
+                commandForm.setComponentVendorName(componentVendorName);
+                commandForm.setEntityTypeName(entityTypeName);
+                commandForm.set(getAttrsMap(attrs));
+
+                coreService.createEntityAttribute(initialDataParser.getUserVisit(), commandForm);
+
+                initialDataParser.pushHandler(new EntityAttributeHandler(initialDataParser, this, componentVendorName, entityTypeName,
+                        commandForm.getEntityAttributeName()));
+            }
+            case "commentType" -> {
+                CreateCommentTypeForm commandForm = CommentFormFactory.getCreateCommentTypeForm();
+
+                commandForm.setComponentVendorName(componentVendorName);
+                commandForm.setEntityTypeName(entityTypeName);
+                commandForm.set(getAttrsMap(attrs));
+
+                commentService.createCommentType(initialDataParser.getUserVisit(), commandForm);
+
+                initialDataParser.pushHandler(new CommentTypeHandler(initialDataParser, this, componentVendorName, entityTypeName,
+                        commandForm.getCommentTypeName()));
+            }
+            case "ratingType" -> {
+                CreateRatingTypeForm commandForm = RatingFormFactory.getCreateRatingTypeForm();
+
+                commandForm.setComponentVendorName(componentVendorName);
+                commandForm.setEntityTypeName(entityTypeName);
+                commandForm.set(getAttrsMap(attrs));
+
+                ratingService.createRatingType(initialDataParser.getUserVisit(), commandForm);
+
+                initialDataParser.pushHandler(new RatingTypeHandler(initialDataParser, this, componentVendorName, entityTypeName,
+                        commandForm.getRatingTypeName()));
+            }
+            case "messageType" -> {
+                CreateMessageTypeForm commandForm = MessageFormFactory.getCreateMessageTypeForm();
+
+                commandForm.setComponentVendorName(componentVendorName);
+                commandForm.setEntityTypeName(entityTypeName);
+                commandForm.set(getAttrsMap(attrs));
+
+                messageService.createMessageType(initialDataParser.getUserVisit(), commandForm);
+
+                initialDataParser.pushHandler(new MessageTypeHandler(initialDataParser, this, componentVendorName, entityTypeName,
+                        commandForm.getMessageTypeName()));
+            }
         }
     }
     

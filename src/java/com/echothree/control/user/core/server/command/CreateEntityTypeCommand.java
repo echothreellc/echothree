@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,18 +17,18 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateEntityTypeForm;
+import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
-import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -57,8 +57,9 @@ public class CreateEntityTypeCommand
                 new FieldDefinition("KeepAllHistory", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("LockTimeout", FieldType.UNSIGNED_LONG, false, null, null),
                 new FieldDefinition("LockTimeoutUnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("IsExtensible", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
-                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 ));
     }
     
@@ -69,28 +70,33 @@ public class CreateEntityTypeCommand
     
     @Override
     protected BaseResult execute() {
+        var result = CoreResultFactory.getCreateEntityTypeResult();
         var coreControl = getCoreControl();
-        String componentVendorName = form.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        var componentVendorName = form.getComponentVendorName();
+        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+        EntityType entityType = null;
 
         if(componentVendor != null) {
-            String entityTypeName = form.getEntityTypeName();
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var entityTypeName = form.getEntityTypeName();
+
+            entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
 
             if(entityType == null) {
-                UnitOfMeasureTypeLogic unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
-                Long lockTimeout = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_TIME,
+                var unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
+                var lockTimeout = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_TIME,
                         form.getLockTimeout(), form.getLockTimeoutUnitOfMeasureTypeName(),
                         null, ExecutionErrors.MissingRequiredLockTimeout.name(), null, ExecutionErrors.MissingRequiredLockTimeoutUnitOfMeasureTypeName.name(),
                         null, ExecutionErrors.UnknownLockTimeoutUnitOfMeasureTypeName.name());
 
                 if(!hasExecutionErrors()) {
                     var partyPK = getPartyPK();
-                    Boolean keepAllHistory = Boolean.valueOf(form.getKeepAllHistory());
+                    var keepAllHistory = Boolean.valueOf(form.getKeepAllHistory());
+                    var isExtensible = Boolean.valueOf(form.getIsExtensible());
                     var sortOrder = Integer.valueOf(form.getSortOrder());
                     var description = form.getDescription();
 
-                    entityType = coreControl.createEntityType(componentVendor, entityTypeName, keepAllHistory, lockTimeout, sortOrder, partyPK);
+                    entityType = coreControl.createEntityType(componentVendor, entityTypeName, keepAllHistory, lockTimeout,
+                            isExtensible, sortOrder, partyPK);
 
                     if(description != null) {
                         coreControl.createEntityTypeDescription(entityType, getPreferredLanguage(), description, partyPK);
@@ -103,7 +109,16 @@ public class CreateEntityTypeCommand
             addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
         }
 
-        return null;
+        if(entityType != null) {
+            var basePK = entityType.getPrimaryKey();
+            var entityTypeDetail = entityType.getLastDetail();
+
+            result.setComponentVendorName(entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName());
+            result.setEntityTypeName(entityTypeDetail.getEntityTypeName());
+            result.setEntityRef(basePK.getEntityRef());
+        }
+
+        return result;
     }
     
 }

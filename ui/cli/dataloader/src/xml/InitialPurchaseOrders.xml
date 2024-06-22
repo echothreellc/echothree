@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -21,7 +21,7 @@
         </orderType>
 =    </orderTypes>
     <workflows>
-        <workflow workflowName="PURCHASE_ORDER_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="PurchaseOrderStatus" sortOrder="0">
+        <workflow workflowName="PURCHASE_ORDER_STATUS" securityRoleGroupName="PurchaseOrderStatus" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Purchase Order Status" />
             <workflowStep workflowStepName="ENTRY" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
                 <workflowStepDescription languageIsoName="en" description="Entry" />
@@ -60,7 +60,7 @@
                 <workflowDestinationDescription languageIsoName="en" description="Entry to Canceled" />
                 <workflowDestinationStep destinationWorkflowStepName="CANCELED" />
             </workflowDestination>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Order" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="Order" />
         </workflow>
     </workflows>
 </initialData>

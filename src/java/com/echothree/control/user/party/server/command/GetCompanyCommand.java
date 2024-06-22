@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -74,14 +74,14 @@ public class GetCompanyCommand
         var partyCompany = CompanyLogic.getInstance().getPartyCompanyByName(this, companyName, partyName, form, true);
 
         if(partyCompany != null) {
-            sendEventUsingNames(partyCompany.getPartyPK(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(partyCompany.getPartyPK(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return partyCompany;
     }
 
     @Override
-    protected BaseResult getTransfer(PartyCompany partyCompany) {
+    protected BaseResult getResult(PartyCompany partyCompany) {
         var result = PartyResultFactory.getGetCompanyResult();
 
         if(partyCompany != null) {

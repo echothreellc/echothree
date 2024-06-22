@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,10 +17,11 @@
 package com.echothree.control.user.warehouse.common.edit;
 
 import com.echothree.control.user.warehouse.common.spec.WarehouseSpec;
+import com.echothree.control.user.warehouse.common.spec.WarehouseTypeSpec;
 import com.echothree.util.common.form.BaseEdit;
 
 public interface WarehouseEdit
-        extends BaseEdit, WarehouseSpec {
+        extends BaseEdit, WarehouseSpec, WarehouseTypeSpec {
     
     String getName();
     void setName(String name);

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -77,14 +77,14 @@ public class GetOfferCommand
         Offer offer = OfferLogic.getInstance().getOfferByUniversalSpec(this, form, true);
 
         if(offer != null) {
-            sendEventUsingNames(offer.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(offer.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return offer;
     }
     
     @Override
-    protected BaseResult getTransfer(Offer offer) {
+    protected BaseResult getResult(Offer offer) {
         var result = OfferResultFactory.getGetOfferResult();
         
         if(offer != null) {

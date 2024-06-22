@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package com.echothree.model.control.filter.server.graphql;
 
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.filter.server.entity.FilterStep;
 import com.echothree.model.data.filter.server.entity.FilterStepDetail;
@@ -54,7 +55,7 @@ public class FilterStepObject
     @GraphQLField
     @GraphQLDescription("filterStep type")
     public FilterObject getFilter(final DataFetchingEnvironment env) {
-        return FilterSecurityUtils.getInstance().getHasFilterAccess(env) ? new FilterObject(getFilterStepDetail().getFilter()) : null;
+        return FilterSecurityUtils.getHasFilterAccess(env) ? new FilterObject(getFilterStepDetail().getFilter()) : null;
     }
 
     @GraphQLField
@@ -69,7 +70,7 @@ public class FilterStepObject
 //    public SelectorObject getFilterItemSelector(final DataFetchingEnvironment env) {
 //        SelectorObject result;
 //
-//        if(SelectorSecurityUtils.getInstance().getHasSelectorAccess(env)) {
+//        if(SelectorSecurityUtils.getHasSelectorAccess(env)) {
 //            var selector = getFilterStepDetail().getFilterItemSelector();
 //
 //            result = selector == null ? null : new SelectorObject(selector);
@@ -87,7 +88,7 @@ public class FilterStepObject
         var filterControl = Session.getModelController(FilterControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return filterControl.getBestFilterStepDescription(filterStep, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return filterControl.getBestFilterStepDescription(filterStep, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
     
 }

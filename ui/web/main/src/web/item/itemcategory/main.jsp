@@ -1,7 +1,7 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" %>
 
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -50,15 +50,15 @@
                             <c:url var="reviewUrl" value="/action/Item/ItemCategory/Review">
                                 <c:param name="ItemCategoryName" value="${itemCategory.itemCategoryName}" />
                             </c:url>
-                            <a href="${reviewUrl}"><c:out value="${itemCategory.itemCategoryName}" /></a>
+                            <a href="${reviewUrl}"><et:appearance appearance="${itemCategory.entityInstance.entityAppearance.appearance}"><c:out value="${itemCategory.itemCategoryName}" /></et:appearance></a>
                         </c:when>
                         <c:otherwise>
-                            <c:out value="${itemCategory.itemCategoryName}" />
+                            <et:appearance appearance="${itemCategory.entityInstance.entityAppearance.appearance}"><c:out value="${itemCategory.itemCategoryName}" /></et:appearance>
                         </c:otherwise>
                     </c:choose>
                 </display:column>
                 <display:column titleKey="columnTitle.description" media="html" sortable="true" sortProperty="description">
-                    <c:out value="${itemCategory.description}" />
+                    <et:appearance appearance="${itemCategory.entityInstance.entityAppearance.appearance}"><c:out value="${itemCategory.description}" /></et:appearance>
                 </display:column>
                 <display:column property="sortOrder" titleKey="columnTitle.sortOrder" media="html" sortable="true" sortProperty="sortOrder"/>
                 <display:column titleKey="columnTitle.default" media="html" sortable="true" sortProperty="isDefault">

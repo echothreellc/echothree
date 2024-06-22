@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,43 +17,48 @@
 package com.echothree.control.user.warehouse.server.command;
 
 import com.echothree.control.user.warehouse.common.form.CreateWarehouseForm;
-import com.echothree.control.user.warehouse.common.result.CreateWarehouseResult;
 import com.echothree.control.user.warehouse.common.result.WarehouseResultFactory;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.printer.common.PrinterConstants;
 import com.echothree.model.control.printer.server.control.PrinterControl;
-import com.echothree.model.control.warehouse.server.control.WarehouseControl;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.control.warehouse.server.logic.WarehouseLogic;
+import com.echothree.model.control.warehouse.server.logic.WarehouseTypeLogic;
 import com.echothree.model.data.accounting.server.entity.Currency;
-import com.echothree.model.data.party.server.entity.DateTimeFormat;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.party.server.entity.PartyType;
-import com.echothree.model.data.party.server.entity.TimeZone;
-import com.echothree.model.data.printer.server.entity.PrinterGroup;
-import com.echothree.model.data.printer.server.entity.PrinterGroupUseType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.warehouse.server.entity.Warehouse;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class CreateWarehouseCommand
         extends BaseSimpleCommand<CreateWarehouseForm> {
-    
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.Warehouse.name(), SecurityRoles.Create.name())
+                ))
+        ));
+
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("WarehouseName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("WarehouseTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Name", FieldType.STRING, false, 1L, 60L),
                 new FieldDefinition("PreferredLanguageIsoName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("PreferredCurrencyIsoName", FieldType.ENTITY_NAME, false, null, null),
@@ -65,117 +70,113 @@ public class CreateWarehouseCommand
                 new FieldDefinition("PicklistPrinterGroupName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("PackingListPrinterGroupName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ShippingManifestPrinterGroupName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+        );
     }
     
     /** Creates a new instance of CreateWarehouseCommand */
     public CreateWarehouseCommand(UserVisitPK userVisitPK, CreateWarehouseForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
-        var warehouseControl = Session.getModelController(WarehouseControl.class);
-        CreateWarehouseResult result = WarehouseResultFactory.getCreateWarehouseResult();
-        String warehouseName = form.getWarehouseName();
-        Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
-        
-        if(warehouse == null) {
-            var partyControl = Session.getModelController(PartyControl.class);
-            String preferredLanguageIsoName = form.getPreferredLanguageIsoName();
-            Language preferredLanguage = preferredLanguageIsoName == null? null: partyControl.getLanguageByIsoName(preferredLanguageIsoName);
-            
-            if(preferredLanguageIsoName == null || (preferredLanguage != null)) {
-                String preferredJavaTimeZoneName = form.getPreferredJavaTimeZoneName();
-                TimeZone preferredTimeZone = preferredJavaTimeZoneName == null? null: partyControl.getTimeZoneByJavaName(preferredJavaTimeZoneName);
-                
-                if(preferredJavaTimeZoneName == null || (preferredTimeZone != null)) {
-                    String preferredDateTimeFormatName = form.getPreferredDateTimeFormatName();
-                    DateTimeFormat preferredDateTimeFormat = preferredDateTimeFormatName == null? null: partyControl.getDateTimeFormatByName(preferredDateTimeFormatName);
-                    
-                    if(preferredDateTimeFormatName == null || (preferredDateTimeFormat != null)) {
-                        String preferredCurrencyIsoName = form.getPreferredCurrencyIsoName();
-                        Currency preferredCurrency;
-                        
-                        if(preferredCurrencyIsoName == null) {
-                            preferredCurrency = null;
-                        } else {
-                            var accountingControl = Session.getModelController(AccountingControl.class);
-                            
-                            preferredCurrency = accountingControl.getCurrencyByIsoName(preferredCurrencyIsoName);
-                        }
-                        
-                        if(preferredCurrencyIsoName == null || (preferredCurrency != null)) {
-                            var printerControl = Session.getModelController(PrinterControl.class);
-                            String inventoryMovePrinterGroupName = form.getInventoryMovePrinterGroupName();
-                            PrinterGroup inventoryMovePrinterGroup = printerControl.getPrinterGroupByName(inventoryMovePrinterGroupName);
-                            
-                            if(inventoryMovePrinterGroup != null) {
-                                String picklistPrinterGroupName = form.getPicklistPrinterGroupName();
-                                PrinterGroup picklistPrinterGroup = printerControl.getPrinterGroupByName(picklistPrinterGroupName);
-                                
-                                if(picklistPrinterGroup != null) {
-                                    String packingListPrinterGroupName = form.getPackingListPrinterGroupName();
-                                    PrinterGroup packingListPrinterGroup = printerControl.getPrinterGroupByName(packingListPrinterGroupName);
-                                    
-                                    if(packingListPrinterGroup != null) {
-                                        String shippingManifestPrinterGroupName = form.getShippingManifestPrinterGroupName();
-                                        PrinterGroup shippingManifestPrinterGroup = printerControl.getPrinterGroupByName(shippingManifestPrinterGroupName);
-                                        
-                                        if(shippingManifestPrinterGroup != null) {
-                                            PartyType partyType = partyControl.getPartyTypeByName(PartyTypes.WAREHOUSE.name());
-                                            BasePK createdBy = getPartyPK();
-                                            String name = form.getName();
+        var result = WarehouseResultFactory.getCreateWarehouseResult();
+        Warehouse warehouse = null;
+        var partyControl = Session.getModelController(PartyControl.class);
+        var preferredLanguageIsoName = form.getPreferredLanguageIsoName();
+        var preferredLanguage = preferredLanguageIsoName == null? null: partyControl.getLanguageByIsoName(preferredLanguageIsoName);
+
+        if(preferredLanguageIsoName == null || (preferredLanguage != null)) {
+            var preferredJavaTimeZoneName = form.getPreferredJavaTimeZoneName();
+            var preferredTimeZone = preferredJavaTimeZoneName == null? null: partyControl.getTimeZoneByJavaName(preferredJavaTimeZoneName);
+
+            if(preferredJavaTimeZoneName == null || (preferredTimeZone != null)) {
+                var preferredDateTimeFormatName = form.getPreferredDateTimeFormatName();
+                var preferredDateTimeFormat = preferredDateTimeFormatName == null? null: partyControl.getDateTimeFormatByName(preferredDateTimeFormatName);
+
+                if(preferredDateTimeFormatName == null || (preferredDateTimeFormat != null)) {
+                    var preferredCurrencyIsoName = form.getPreferredCurrencyIsoName();
+                    Currency preferredCurrency;
+
+                    if(preferredCurrencyIsoName == null) {
+                        preferredCurrency = null;
+                    } else {
+                        var accountingControl = Session.getModelController(AccountingControl.class);
+
+                        preferredCurrency = accountingControl.getCurrencyByIsoName(preferredCurrencyIsoName);
+                    }
+
+                    if(preferredCurrencyIsoName == null || (preferredCurrency != null)) {
+                        var printerControl = Session.getModelController(PrinterControl.class);
+                        var inventoryMovePrinterGroupName = form.getInventoryMovePrinterGroupName();
+                        var inventoryMovePrinterGroup = printerControl.getPrinterGroupByName(inventoryMovePrinterGroupName);
+
+                        if(inventoryMovePrinterGroup != null) {
+                            var picklistPrinterGroupName = form.getPicklistPrinterGroupName();
+                            var picklistPrinterGroup = printerControl.getPrinterGroupByName(picklistPrinterGroupName);
+
+                            if(picklistPrinterGroup != null) {
+                                var packingListPrinterGroupName = form.getPackingListPrinterGroupName();
+                                var packingListPrinterGroup = printerControl.getPrinterGroupByName(packingListPrinterGroupName);
+
+                                if(packingListPrinterGroup != null) {
+                                    var shippingManifestPrinterGroupName = form.getShippingManifestPrinterGroupName();
+                                    var shippingManifestPrinterGroup = printerControl.getPrinterGroupByName(shippingManifestPrinterGroupName);
+
+                                    if(shippingManifestPrinterGroup != null) {
+                                        var warehouseType = WarehouseTypeLogic.getInstance().getWarehouseTypeByName(this, form.getWarehouseTypeName());
+
+                                        if(!hasExecutionErrors()) {
+                                            var warehouseName = form.getWarehouseName();
+                                            var name = form.getName();
                                             var isDefault = Boolean.valueOf(form.getIsDefault());
                                             var sortOrder = Integer.valueOf(form.getSortOrder());
-                                            
-                                            Party party = partyControl.createParty(null, partyType, preferredLanguage, preferredCurrency, preferredTimeZone, preferredDateTimeFormat, createdBy);
-                                            
-                                            if(name != null) {
-                                                partyControl.createPartyGroup(party, name, createdBy);
+                                            var createdBy = getPartyPK();
+
+                                            warehouse = WarehouseLogic.getInstance().createWarehouse(this, warehouseName,
+                                                    warehouseType, preferredLanguage, preferredCurrency, preferredTimeZone,
+                                                    preferredDateTimeFormat, name, isDefault, sortOrder, createdBy);
+
+                                            if(!hasExecutionErrors()) {
+                                                var party = warehouse.getParty();
+                                                var printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(PrinterConstants.PrinterGroupUseType_WAREHOUSE_INVENTORY_MOVE);
+                                                printerControl.createPartyPrinterGroupUse(party, printerGroupUseType, inventoryMovePrinterGroup, createdBy);
+
+                                                printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(PrinterConstants.PrinterGroupUseType_WAREHOUSE_PACKING_LIST);
+                                                printerControl.createPartyPrinterGroupUse(party, printerGroupUseType, packingListPrinterGroup, createdBy);
+
+                                                printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(PrinterConstants.PrinterGroupUseType_WAREHOUSE_PICKLIST);
+                                                printerControl.createPartyPrinterGroupUse(party, printerGroupUseType, picklistPrinterGroup, createdBy);
+
+                                                printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(PrinterConstants.PrinterGroupUseType_WAREHOUSE_SHIPPING_MANIFEST);
+                                                printerControl.createPartyPrinterGroupUse(party, printerGroupUseType, shippingManifestPrinterGroup, createdBy);
                                             }
-                                            
-                                            warehouse = warehouseControl.createWarehouse(party, warehouseName, isDefault, sortOrder, createdBy);
-                                            
-                                            PrinterGroupUseType printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(PrinterConstants.PrinterGroupUseType_WAREHOUSE_INVENTORY_MOVE);
-                                            printerControl.createPartyPrinterGroupUse(party, printerGroupUseType, inventoryMovePrinterGroup, createdBy);
-                                            
-                                            printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(PrinterConstants.PrinterGroupUseType_WAREHOUSE_PACKING_LIST);
-                                            printerControl.createPartyPrinterGroupUse(party, printerGroupUseType, packingListPrinterGroup, createdBy);
-                                            
-                                            printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(PrinterConstants.PrinterGroupUseType_WAREHOUSE_PICKLIST);
-                                            printerControl.createPartyPrinterGroupUse(party, printerGroupUseType, picklistPrinterGroup, createdBy);
-                                            
-                                            printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(PrinterConstants.PrinterGroupUseType_WAREHOUSE_SHIPPING_MANIFEST);
-                                            printerControl.createPartyPrinterGroupUse(party, printerGroupUseType, shippingManifestPrinterGroup, createdBy);
-                                        } else {
-                                            addExecutionError(ExecutionErrors.UnknownShippingManifestPrinterGroupName.name(), shippingManifestPrinterGroupName);
                                         }
                                     } else {
-                                        addExecutionError(ExecutionErrors.UnknownPackingListPrinterGroupName.name(), packingListPrinterGroupName);
+                                        addExecutionError(ExecutionErrors.UnknownShippingManifestPrinterGroupName.name(), shippingManifestPrinterGroupName);
                                     }
                                 } else {
-                                    addExecutionError(ExecutionErrors.UnknownPicklistPrinterGroupName.name(), picklistPrinterGroupName);
+                                    addExecutionError(ExecutionErrors.UnknownPackingListPrinterGroupName.name(), packingListPrinterGroupName);
                                 }
                             } else {
-                                addExecutionError(ExecutionErrors.UnknownInventoryMovePrinterGroupName.name(), inventoryMovePrinterGroupName);
+                                addExecutionError(ExecutionErrors.UnknownPicklistPrinterGroupName.name(), picklistPrinterGroupName);
                             }
                         } else {
-                            addExecutionError(ExecutionErrors.UnknownCurrencyIsoName.name(), preferredCurrencyIsoName);
+                            addExecutionError(ExecutionErrors.UnknownInventoryMovePrinterGroupName.name(), inventoryMovePrinterGroupName);
                         }
                     } else {
-                        addExecutionError(ExecutionErrors.UnknownDateTimeFormatName.name(), preferredDateTimeFormatName);
+                        addExecutionError(ExecutionErrors.UnknownCurrencyIsoName.name(), preferredCurrencyIsoName);
                     }
                 } else {
-                    addExecutionError(ExecutionErrors.UnknownJavaTimeZoneName.name(), preferredJavaTimeZoneName);
+                    addExecutionError(ExecutionErrors.UnknownDateTimeFormatName.name(), preferredDateTimeFormatName);
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), preferredLanguageIsoName);
+                addExecutionError(ExecutionErrors.UnknownJavaTimeZoneName.name(), preferredJavaTimeZoneName);
             }
         } else {
-            addExecutionError(ExecutionErrors.DuplicateWarehouseName.name(), warehouseName);
+            addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), preferredLanguageIsoName);
         }
-        
+
         if(warehouse != null) {
             Party party = warehouse.getParty();
             

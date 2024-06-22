@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -73,7 +73,7 @@ public class GetTimeZoneCommand
             case 1:
                 if(timeZoneName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.TimeZone.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.TimeZone.name());
                     
                     if(!hasExecutionErrors()) {
                         timeZone = partyControl.getTimeZoneByEntityInstance(entityInstance);
@@ -88,14 +88,14 @@ public class GetTimeZoneCommand
         }
 
         if(timeZone != null) {
-            sendEventUsingNames(timeZone.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(timeZone.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
         
         return timeZone;
     }
     
     @Override
-    protected BaseResult getTransfer(TimeZone timeZone) {
+    protected BaseResult getResult(TimeZone timeZone) {
         var partyControl = Session.getModelController(PartyControl.class);
         GetTimeZoneResult result = PartyResultFactory.getGetTimeZoneResult();
 

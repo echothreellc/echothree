@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,7 +17,8 @@
 package com.echothree.model.control.employee.server.search;
 
 import com.echothree.model.control.employee.server.control.EmployeeControl;
-import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.IndexFields;
+import com.echothree.model.control.index.common.Indexes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.search.PartySearchEvaluator;
 import com.echothree.model.control.search.server.search.EntityInstancePKHolder;
@@ -40,9 +41,10 @@ public class EmployeeSearchEvaluator
     private WorkflowStep employeeAvailabilityWorkflowStep;
     
     /** Creates a new instance of EmployeeSearchEvaluator */
-    public EmployeeSearchEvaluator(UserVisit userVisit, SearchType searchType, SearchDefaultOperator searchDefaultOperator, SearchSortOrder searchSortOrder,
-            SearchSortDirection searchSortDirection) {
-        super(userVisit, searchType, searchDefaultOperator, searchSortOrder, searchSortDirection, PartyTypes.EMPLOYEE.name(), IndexConstants.Index_EMPLOYEE);
+    public EmployeeSearchEvaluator(UserVisit userVisit, SearchType searchType, SearchDefaultOperator searchDefaultOperator,
+            SearchSortOrder searchSortOrder, SearchSortDirection searchSortDirection) {
+        super(userVisit, searchType, searchDefaultOperator, searchSortOrder, searchSortDirection, PartyTypes.EMPLOYEE.name(),
+                IndexFields.partyEmployeeName.name(), Indexes.EMPLOYEE.name());
     }
     
     public EntityInstancePKHolder getEntityInstancePKHolderByEmployeeStatusWorkflowStep(WorkflowStep employeeStatusWorkflowStep) {

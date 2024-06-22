@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.warehouse.common;
 
-import com.echothree.control.user.warehouse.common.WarehouseRemote;
 import com.echothree.control.user.warehouse.server.WarehouseLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -26,7 +25,8 @@ public class WarehouseUtil {
     
     private static WarehouseLocal cachedLocal = null;
     private static WarehouseRemote cachedRemote = null;
-    
+
+    @SuppressWarnings("BanJNDI")
     public static WarehouseLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
@@ -37,7 +37,8 @@ public class WarehouseUtil {
         
         return cachedLocal;
     }
-    
+
+    @SuppressWarnings("BanJNDI")
     public static WarehouseRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -60,9 +60,11 @@ public class DescriptionAction
         try {
             GetItemDescriptionsForm commandForm = ItemUtil.getHome().getGetItemDescriptionsForm();
             String itemName = request.getParameter(ParameterConstants.ITEM_NAME);
-            
+            String itemDescriptionTypeUseTypeName = request.getParameter(ParameterConstants.ITEM_DESCRIPTION_TYPE_USE_TYPE_NAME);
+
             commandForm.setItemName(itemName);
-            
+            commandForm.setItemDescriptionTypeUseTypeName(itemDescriptionTypeUseTypeName);
+
             Set<String> options = new HashSet<>();
             options.add(ItemOptions.ItemDescriptionIncludeString);
             options.add(ItemOptions.ItemDescriptionIncludeImageDescription);

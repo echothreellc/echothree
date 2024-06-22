@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -57,7 +57,7 @@ public class GetContentCollectionCommand
         ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
         if(contentCollection != null) {
-            sendEventUsingNames(contentCollection.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(contentCollection.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownContentCollectionName.name(), contentCollectionName);
         }
@@ -66,7 +66,7 @@ public class GetContentCollectionCommand
     }
     
     @Override
-    protected BaseResult getTransfer(ContentCollection contentCollection) {
+    protected BaseResult getResult(ContentCollection contentCollection) {
         GetContentCollectionResult result = ContentResultFactory.getGetContentCollectionResult();
         
         if(contentCollection != null) {

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -46,6 +46,7 @@ import com.echothree.util.server.persistence.PersistenceUtils;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.persistence.Sha1Utils;
 import com.echothree.util.server.persistence.ThreadSession;
+import static java.lang.Math.toIntExact;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -82,7 +83,7 @@ public abstract class BaseSearchEvaluator
         if(userSession != null) {
             party = userSession.getParty();
             partyPK = party == null ? null : party.getPrimaryKey(); // For convenience.
-            partyVerified = userSession.getPasswordVerifiedTime() != null;
+            partyVerified = userSession.getIdentityVerifiedTime() != null;
         }
     }
     
@@ -162,8 +163,8 @@ public abstract class BaseSearchEvaluator
         return resultSet;
     }
     
-    protected Integer getSize(UserVisitSearch userVisitSearch) {
-        Integer size = null;
+    protected Long getSize(UserVisitSearch userVisitSearch) {
+        Long size = null;
         
         if(userVisitSearch != null) {
             Search search = userVisitSearch.getSearch();
@@ -183,19 +184,19 @@ public abstract class BaseSearchEvaluator
         return size;
     }
     
-    protected Integer createUserVisitSearchResults(EntityInstancePKHolder entityInstancePKHolder) {
-        Integer size;
+    protected Long createUserVisitSearchResults(EntityInstancePKHolder entityInstancePKHolder) {
+        Long size;
         Search search = searchControl.createSearch(party, partyVerified, searchType, session.START_TIME_LONG, searchUseType, null, partyPK);
 
         if(entityInstancePKHolder == null) {
-            size = 0;
+            size = 0L;
         } else {
             SearchPK searchPK = search.getPrimaryKey();
             Map<EntityInstancePK, Integer> entityInstancePKs = entityInstancePKHolder.entityInstancePKs;
 
-            size = entityInstancePKs.size();
+            size = (long)entityInstancePKs.size();
 
-            Collection<SearchResultValue> searchResults = new ArrayList<>(size);
+            Collection<SearchResultValue> searchResults = new ArrayList<>(toIntExact(size));
             for(Map.Entry<EntityInstancePK, Integer> entry : entityInstancePKs.entrySet()) {
                 Integer sortOrder = entry.getValue();
 
@@ -227,8 +228,8 @@ public abstract class BaseSearchEvaluator
         return size;
     }
     
-    protected Integer executeCachableSearch(final ExecutionErrorAccumulator eea) {
-        Integer size;
+    protected Long executeCachableSearch(final ExecutionErrorAccumulator eea) {
+        Long size;
         final String parsedQuery = StringUtils.getInstance().trimToNull(query.toString());
         UserVisitSearch userVisitSearch = null;
         
@@ -384,8 +385,8 @@ public abstract class BaseSearchEvaluator
         return cachedExecutedSearch;
     }
     
-    public Integer execute(final ExecutionErrorAccumulator eea) {
-        Integer size = null;
+    public Long execute(final ExecutionErrorAccumulator eea) {
+        Long size = null;
 
         // Remove any previous search by this SearchType and UserVisit.
         removeUserVisitSearch();
@@ -468,7 +469,7 @@ public abstract class BaseSearchEvaluator
         this.modifiedSince = modifiedSince;
     }
     
-    protected SortField[] getSortFields(String searchSortOrderName) {
+    protected SortField[] getSortFields(final String searchSortOrderName) {
         return null;
     }
     
@@ -476,7 +477,7 @@ public abstract class BaseSearchEvaluator
         String searchSortOrderName = getSearchSortOrderName();
         SortField[] sortFields = getSortFields(searchSortOrderName);
         
-        return sortFields == null || sortFields.length == 0 ? null : new Sort(getSortFields(searchSortOrderName));
+        return sortFields == null || sortFields.length == 0 ? null : new Sort(sortFields);
     }
     
     private void addCachedSearchIndexFields(final CachedSearch cachedSearch) {

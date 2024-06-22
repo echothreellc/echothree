@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ package com.echothree.ui.web.main.action.wishlist.wishlisttype;
 import com.echothree.control.user.wishlist.common.WishlistUtil;
 import com.echothree.control.user.wishlist.common.form.GetWishlistTypeForm;
 import com.echothree.control.user.wishlist.common.result.GetWishlistTypeResult;
-import com.echothree.model.control.wishlist.common.transfer.WishlistTypePriorityTransfer;
+import com.echothree.model.control.wishlist.common.transfer.WishlistPriorityTransfer;
 import com.echothree.model.control.wishlist.common.transfer.WishlistTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -67,10 +67,10 @@ public class ReviewAction
             ExecutionResult executionResult = commandResult.getExecutionResult();
             GetWishlistTypeResult result = (GetWishlistTypeResult)executionResult.getResult();
             WishlistTypeTransfer wishlistTypeTransfer = result.getWishlistType();
-            List<WishlistTypePriorityTransfer> wishlistTypePriorities = result.getWishlistTypePriorities();
+            List<WishlistPriorityTransfer> wishlistPriorities = result.getWishlistPriorities();
             
             request.setAttribute(AttributeConstants.WISHLIST_TYPE, wishlistTypeTransfer);
-            request.setAttribute(AttributeConstants.WISHLIST_TYPE_PRIORITIES, wishlistTypePriorities.isEmpty()? null: wishlistTypePriorities);
+            request.setAttribute(AttributeConstants.WISHLIST_TYPE_PRIORITIES, wishlistPriorities.isEmpty()? null: wishlistPriorities);
             forwardKey = ForwardConstants.DISPLAY;
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;

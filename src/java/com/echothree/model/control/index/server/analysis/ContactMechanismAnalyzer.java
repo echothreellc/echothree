@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,7 +16,8 @@
 
 package com.echothree.model.control.index.server.analysis;
 
-import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.IndexFields;
+import com.echothree.model.data.core.server.entity.EntityAliasType;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.party.server.entity.Language;
@@ -29,9 +30,9 @@ import org.apache.lucene.analysis.Analyzer;
 public class ContactMechanismAnalyzer
         extends BasicAnalyzer {
     
-    public ContactMechanismAnalyzer(final ExecutionErrorAccumulator eea, final Language language, final EntityType entityType, final List<EntityAttribute> entityAttributes,
+    public ContactMechanismAnalyzer(final ExecutionErrorAccumulator eea, final Language language, final EntityType entityType, final List<EntityAliasType> entityAliasTypes, final List<EntityAttribute> entityAttributes,
             final List<TagScope> tagScopes) {
-        super(eea, language, entityType, entityAttributes, tagScopes);
+        super(eea, language, entityType, entityAliasTypes, entityAttributes, tagScopes);
     }
 
     public ContactMechanismAnalyzer(final ExecutionErrorAccumulator eea, final Language language, final EntityType entityType) {
@@ -42,22 +43,22 @@ public class ContactMechanismAnalyzer
     protected Map<String, Analyzer> getEntityTypeAnalyzers(final Map<String, Analyzer> fieldAnalyzers) {
         super.getEntityTypeAnalyzers(fieldAnalyzers);
         
-        fieldAnalyzers.put(IndexConstants.IndexField_ContactMechanismName, new WhitespaceLowerCaseAnalyzer());
-        fieldAnalyzers.put(IndexConstants.IndexField_ContactMechanismTypeName, new WhitespaceLowerCaseAnalyzer());
-        fieldAnalyzers.put(IndexConstants.IndexField_AllowSolicitation, new WhitespaceLowerCaseAnalyzer());
-        fieldAnalyzers.put(IndexConstants.IndexField_ContactMechanismPurposeNames, new WhitespaceLowerCaseAnalyzer());
-        fieldAnalyzers.put(IndexConstants.IndexField_EmailAddress, new WhitespaceLowerCaseAnalyzer());
-        fieldAnalyzers.put(IndexConstants.IndexField_Inet4Address, new WhitespaceLowerCaseAnalyzer());
-        fieldAnalyzers.put(IndexConstants.IndexField_Url, new WhitespaceLowerCaseAnalyzer());
-        fieldAnalyzers.put(IndexConstants.IndexField_CountryGeoCodeName, new WhitespaceLowerCaseAnalyzer());
-        fieldAnalyzers.put(IndexConstants.IndexField_AreaCode, new WhitespaceLowerCaseAnalyzer());
-        fieldAnalyzers.put(IndexConstants.IndexField_TelephoneNumber, new WhitespaceLowerCaseAnalyzer());
-        fieldAnalyzers.put(IndexConstants.IndexField_TelephoneExtension, new WhitespaceLowerCaseAnalyzer());
-        fieldAnalyzers.put(IndexConstants.IndexField_CityGeoCodeName, new WhitespaceLowerCaseAnalyzer());
-        fieldAnalyzers.put(IndexConstants.IndexField_CountyGeoCodeName, new WhitespaceLowerCaseAnalyzer());
-        fieldAnalyzers.put(IndexConstants.IndexField_StateGeoCodeName, new WhitespaceLowerCaseAnalyzer());
-        fieldAnalyzers.put(IndexConstants.IndexField_PostalCodeGeoCodeName, new WhitespaceLowerCaseAnalyzer());
-        fieldAnalyzers.put(IndexConstants.IndexField_IsCommercial, new WhitespaceLowerCaseAnalyzer());
+        fieldAnalyzers.put(IndexFields.contactMechanismName.name(), new WhitespaceLowerCaseAnalyzer());
+        fieldAnalyzers.put(IndexFields.contactMechanismTypeName.name(), new WhitespaceLowerCaseAnalyzer());
+        fieldAnalyzers.put(IndexFields.allowSolicitation.name(), new WhitespaceLowerCaseAnalyzer());
+        fieldAnalyzers.put(IndexFields.contactMechanismPurposeNames.name(), new WhitespaceLowerCaseAnalyzer());
+        fieldAnalyzers.put(IndexFields.emailAddress.name(), new WhitespaceLowerCaseAnalyzer());
+        fieldAnalyzers.put(IndexFields.inet4Address.name(), new WhitespaceLowerCaseAnalyzer());
+        fieldAnalyzers.put(IndexFields.url.name(), new WhitespaceLowerCaseAnalyzer());
+        fieldAnalyzers.put(IndexFields.countryGeoCodeName.name(), new WhitespaceLowerCaseAnalyzer());
+        fieldAnalyzers.put(IndexFields.areaCode.name(), new WhitespaceLowerCaseAnalyzer());
+        fieldAnalyzers.put(IndexFields.telephoneNumber.name(), new WhitespaceLowerCaseAnalyzer());
+        fieldAnalyzers.put(IndexFields.telephoneExtension.name(), new WhitespaceLowerCaseAnalyzer());
+        fieldAnalyzers.put(IndexFields.cityGeoCodeName.name(), new WhitespaceLowerCaseAnalyzer());
+        fieldAnalyzers.put(IndexFields.countyGeoCodeName.name(), new WhitespaceLowerCaseAnalyzer());
+        fieldAnalyzers.put(IndexFields.stateGeoCodeName.name(), new WhitespaceLowerCaseAnalyzer());
+        fieldAnalyzers.put(IndexFields.postalCodeGeoCodeName.name(), new WhitespaceLowerCaseAnalyzer());
+        fieldAnalyzers.put(IndexFields.isCommercial.name(), new WhitespaceLowerCaseAnalyzer());
         
         return fieldAnalyzers;
     }

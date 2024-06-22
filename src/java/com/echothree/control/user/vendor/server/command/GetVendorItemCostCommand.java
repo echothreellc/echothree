@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@
 package com.echothree.control.user.vendor.server.command;
 
 import com.echothree.control.user.vendor.common.form.GetVendorItemCostForm;
-import com.echothree.control.user.vendor.common.result.GetVendorItemCostResult;
 import com.echothree.control.user.vendor.common.result.VendorResultFactory;
 import com.echothree.model.control.inventory.common.InventoryConstants;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
@@ -27,21 +26,14 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.vendor.server.control.VendorControl;
-import com.echothree.model.data.inventory.server.entity.InventoryCondition;
-import com.echothree.model.data.inventory.server.entity.InventoryConditionUse;
-import com.echothree.model.data.inventory.server.entity.InventoryConditionUseType;
-import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.vendor.server.entity.Vendor;
-import com.echothree.model.data.vendor.server.entity.VendorItem;
 import com.echothree.model.data.vendor.server.entity.VendorItemCost;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -51,7 +43,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class GetVendorItemCostCommand
-        extends BaseSimpleCommand<GetVendorItemCostForm> {
+        extends BaseSingleEntityCommand<VendorItemCost, GetVendorItemCostForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -79,11 +71,11 @@ public class GetVendorItemCostCommand
     }
 
     @Override
-    protected BaseResult execute() {
-        GetVendorItemCostResult result = VendorResultFactory.getGetVendorItemCostResult();
-        String vendorName = form.getVendorName();
-        String partyName = form.getPartyName();
+    protected VendorItemCost getEntity() {
+        var vendorName = form.getVendorName();
+        var partyName = form.getPartyName();
         var parameterCount = (vendorName == null ? 0 : 1) + (partyName == null ? 0 : 1);
+        VendorItemCost entity = null;
 
         if(parameterCount == 1) {
             var vendorControl = Session.getModelController(VendorControl.class);
@@ -97,7 +89,7 @@ public class GetVendorItemCostCommand
                 }
             } else if(partyName != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                Party party = partyControl.getPartyByName(partyName);
+                var party = partyControl.getPartyByName(partyName);
 
                 if(party != null) {
                     if(party.getLastDetail().getPartyType().getPartyTypeName().equals(PartyTypes.VENDOR.name())) {
@@ -111,49 +103,62 @@ public class GetVendorItemCostCommand
             }
 
             if(vendor != null) {
-                Party vendorParty = vendor.getParty();
-                String vendorItemName = form.getVendorItemName();
-                VendorItem vendorItem = vendorControl.getVendorItemByVendorPartyAndVendorItemName(vendorParty, vendorItemName);
+                var vendorParty = vendor.getParty();
+                var vendorItemName = form.getVendorItemName();
+                var vendorItem = vendorControl.getVendorItemByVendorPartyAndVendorItemName(vendorParty, vendorItemName);
 
                 if(vendorItem != null) {
                     var inventoryControl = Session.getModelController(InventoryControl.class);
-                    String inventoryConditionName = form.getInventoryConditionName();
-                    InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
+                    var inventoryConditionName = form.getInventoryConditionName();
+                    var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
 
                     if(inventoryCondition != null) {
-                        InventoryConditionUseType inventoryConditionUseType = inventoryControl.getInventoryConditionUseTypeByName(InventoryConstants.InventoryConditionUseType_PURCHASE_ORDER);
-                        InventoryConditionUse inventoryConditionUse = inventoryControl.getInventoryConditionUse(inventoryConditionUseType,
+                        var inventoryConditionUseType = inventoryControl.getInventoryConditionUseTypeByName(InventoryConstants.InventoryConditionUseType_PURCHASE_ORDER);
+                        var inventoryConditionUse = inventoryControl.getInventoryConditionUse(inventoryConditionUseType,
                                 inventoryCondition);
 
                         if(inventoryConditionUse != null) {
                             var uomControl = Session.getModelController(UomControl.class);
-                            UnitOfMeasureKind unitOfMeasureKind = vendorItem.getLastDetail().getItem().getLastDetail().getUnitOfMeasureKind();
-                            String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
-                            UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
+                            var unitOfMeasureKind = vendorItem.getLastDetail().getItem().getLastDetail().getUnitOfMeasureKind();
+                            var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
+                            var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
 
                             if(unitOfMeasureType != null) {
-                                VendorItemCost vendorItemCost = vendorControl.getVendorItemCost(vendorItem, inventoryCondition, unitOfMeasureType);
+                                entity = vendorControl.getVendorItemCost(vendorItem, inventoryCondition, unitOfMeasureType);
 
-                                if(vendorItemCost != null) {
-                                    result.setVendorItemCost(vendorControl.getVendorItemCostTransfer(getUserVisit(), vendorItemCost));
-                                } else {
-                                    addExecutionError(ExecutionErrors.UnknownVendorItemCost.name());
+                                if(entity == null) {
+                                    addExecutionError(ExecutionErrors.UnknownVendorItemCost.name(),
+                                            vendor.getVendorName(), vendorItem.getLastDetail().getVendorItemName(),
+                                            inventoryCondition.getLastDetail().getInventoryConditionName(),
+                                            unitOfMeasureType.getLastDetail().getUnitOfMeasureTypeName());
                                 }
                             } else {
                                 addExecutionError(ExecutionErrors.UnknownUnitOfMeasureTypeName.name(), unitOfMeasureTypeName);
                             }
                         } else {
-                            addExecutionError(ExecutionErrors.InvalidInventoryCondition.name(), inventoryConditionName);
+                            addExecutionError(ExecutionErrors.InvalidInventoryCondition.name(), inventoryCondition.getLastDetail().getInventoryConditionName());
                         }
                     } else {
                         addExecutionError(ExecutionErrors.UnknownInventoryConditionName.name(), inventoryConditionName);
                     }
                 } else {
-                    addExecutionError(ExecutionErrors.UnknownVendorItemName.name(), vendorName, vendorItemName);
+                    addExecutionError(ExecutionErrors.UnknownVendorItemName.name(), vendor.getVendorName(), vendorItemName);
                 }
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
+        }
+
+        return entity;
+    }
+
+    @Override
+    protected BaseResult getResult(VendorItemCost entity) {
+        var vendorControl = Session.getModelController(VendorControl.class);
+        var result = VendorResultFactory.getGetVendorItemCostResult();
+
+        if(entity != null) {
+            result.setVendorItemCost(vendorControl.getVendorItemCostTransfer(getUserVisit(), entity));
         }
 
         return result;

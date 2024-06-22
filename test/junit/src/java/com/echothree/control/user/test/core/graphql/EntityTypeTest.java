@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,12 +31,16 @@ public class EntityTypeTest
         var entityTypesBody = executeUsingPost("""
                 query {
                     entityTypes(componentVendorName: "%s") {
-                        entityTypeName
+                        edges {
+                            node {
+                                entityTypeName
+                            }
+                        }
                     }
                 }
-                """.formatted(ComponentVendors.ECHOTHREE));
+                """.formatted(ComponentVendors.ECHO_THREE));
 
-        assertThat(getList(entityTypesBody, "data.entityTypes")).size().isEqualTo(0);
+        assertThat(getList(entityTypesBody, "data.entityTypes.edges")).size().isEqualTo(0);
     }
 
     @Test
@@ -48,7 +52,7 @@ public class EntityTypeTest
                         entityTypeName
                     }
                 }
-                """.formatted(ComponentVendors.ECHOTHREE, EntityTypes.GlAccount));
+                """.formatted(ComponentVendors.ECHO_THREE, EntityTypes.GlAccount));
 
         assertThat(getMap(entityTypeBody, "data.entityType")).isNull();
     }
@@ -59,22 +63,28 @@ public class EntityTypeTest
         var loginBody = executeUsingPost("""
                 mutation {
                     employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
 
-        assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
+        assertThat(getBoolean(loginBody, "data.employeeLogin.commandResult.hasErrors")).isFalse();
 
         var entityTypesBody = executeUsingPost("""
                 query {
                     entityTypes(componentVendorName: "%s") {
-                        entityTypeName
+                        edges {
+                            node {
+                                entityTypeName
+                            }
+                        }
                     }
                 }
-                """.formatted(ComponentVendors.ECHOTHREE));
+                """.formatted(ComponentVendors.ECHO_THREE));
 
-        assertThat(getList(entityTypesBody, "data.entityTypes")).size().isGreaterThan(0);
+        assertThat(getList(entityTypesBody, "data.entityTypes.edges")).size().isGreaterThan(0);
     }
 
     @Test
@@ -83,12 +93,14 @@ public class EntityTypeTest
         var loginBody = executeUsingPost("""
                 mutation {
                     employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
 
-        assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
+        assertThat(getBoolean(loginBody, "data.employeeLogin.commandResult.hasErrors")).isFalse();
 
         var entityTypeBody = executeUsingPost("""
                 query {
@@ -96,7 +108,7 @@ public class EntityTypeTest
                         entityTypeName
                     }
                 }
-                """.formatted(ComponentVendors.ECHOTHREE, EntityTypes.GlAccount));
+                """.formatted(ComponentVendors.ECHO_THREE, EntityTypes.GlAccount));
 
         assertThat(getString(entityTypeBody, "data.entityType.entityTypeName")).isEqualTo(EntityTypes.GlAccount.toString());
     }
@@ -107,12 +119,14 @@ public class EntityTypeTest
         var loginBody = executeUsingPost("""
                 mutation {
                     employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
 
-        assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
+        assertThat(getBoolean(loginBody, "data.employeeLogin.commandResult.hasErrors")).isFalse();
 
         var entityTypeBody = executeUsingPost("""
                 query {
@@ -120,7 +134,7 @@ public class EntityTypeTest
                         entityTypeName
                     }
                 }
-                """.formatted(ComponentVendors.ECHOTHREE));
+                """.formatted(ComponentVendors.ECHO_THREE));
 
         assertThat(getMap(entityTypeBody, "data.entityType")).isNull();
     }
@@ -131,12 +145,14 @@ public class EntityTypeTest
         var loginBody = executeUsingPost("""
                 mutation {
                     employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
 
-        assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
+        assertThat(getBoolean(loginBody, "data.employeeLogin.commandResult.hasErrors")).isFalse();
 
         var entityTypeBody = executeUsingPost("""
                 query {
@@ -155,12 +171,14 @@ public class EntityTypeTest
         var loginBody = executeUsingPost("""
                 mutation {
                     employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
 
-        assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
+        assertThat(getBoolean(loginBody, "data.employeeLogin.commandResult.hasErrors")).isFalse();
 
         var entityTypeBodyUsingNames = executeUsingPost("""
                 query {
@@ -168,7 +186,7 @@ public class EntityTypeTest
                         id
                     }
                 }
-                """.formatted(ComponentVendors.ECHOTHREE, EntityTypes.GlAccount));
+                """.formatted(ComponentVendors.ECHO_THREE, EntityTypes.GlAccount));
 
         var id = getString(entityTypeBodyUsingNames, "data.entityType.id");
 
@@ -184,7 +202,7 @@ public class EntityTypeTest
                 }
                 """.formatted(id));
 
-        assertThat(getString(entityTypeBodyUsingId, "data.entityType.componentVendor.componentVendorName")).isEqualTo(ComponentVendors.ECHOTHREE.toString());
+        assertThat(getString(entityTypeBodyUsingId, "data.entityType.componentVendor.componentVendorName")).isEqualTo(ComponentVendors.ECHO_THREE.toString());
         assertThat(getString(entityTypeBodyUsingId, "data.entityType.entityTypeName")).isEqualTo(EntityTypes.GlAccount.toString());
     }
 
@@ -194,12 +212,14 @@ public class EntityTypeTest
         var loginBody = executeUsingPost("""
                 mutation {
                     employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
 
-        assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
+        assertThat(getBoolean(loginBody, "data.employeeLogin.commandResult.hasErrors")).isFalse();
 
         var entityTypeBody = executeUsingPost("""
                 query {

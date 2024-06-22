@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 // Copyright 1999-2004 The Apache Software Foundation.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,13 +17,15 @@
 
 package com.echothree.view.client.web.taglib.util;
 
+import java.util.Locale;
+
 public enum HtmlFilterAction {
     
     ACCEPT,
     REMOVE;
     
     public static HtmlFilterAction translateHtmlFilterAction(String s) {
-        return valueOf(s.toUpperCase());
+        return valueOf(s.toUpperCase(Locale.getDefault()));
     }
     
 }

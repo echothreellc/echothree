@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -144,12 +144,19 @@ public class UomControl
         unitOfMeasureKind.setLastDetail(unitOfMeasureKindDetail);
         unitOfMeasureKind.store();
         
-        sendEventUsingNames(unitOfMeasureKind.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(unitOfMeasureKind.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return unitOfMeasureKind;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.UnitOfMeasureKind */
+    public long countUnitOfMeasureKinds() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM unitofmeasurekinds, unitofmeasurekinddetails " +
+                "WHERE uomk_activedetailid = uomkdt_unitofmeasurekinddetailid");
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.UnitOfMeasureKind */
     public UnitOfMeasureKind getUnitOfMeasureKindByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new UnitOfMeasureKindPK(entityInstance.getEntityUniqueId());
 
@@ -442,7 +449,7 @@ public class UomControl
             unitOfMeasureKind.setActiveDetail(unitOfMeasureKindDetail);
             unitOfMeasureKind.setLastDetail(unitOfMeasureKindDetail);
             
-            sendEventUsingNames(unitOfMeasureKindPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(unitOfMeasureKindPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -477,7 +484,7 @@ public class UomControl
             }
         }
         
-        sendEventUsingNames(unitOfMeasureKind.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(unitOfMeasureKind.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -488,7 +495,7 @@ public class UomControl
         UnitOfMeasureKindDescription unitOfMeasureKindDescription = UnitOfMeasureKindDescriptionFactory.getInstance().create(unitOfMeasureKind, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(unitOfMeasureKind.getPrimaryKey(), EventTypes.MODIFY.name(), unitOfMeasureKindDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(unitOfMeasureKind.getPrimaryKey(), EventTypes.MODIFY, unitOfMeasureKindDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return unitOfMeasureKindDescription;
     }
@@ -628,14 +635,14 @@ public class UomControl
             unitOfMeasureKindDescription = UnitOfMeasureKindDescriptionFactory.getInstance().create(unitOfMeasureKind,
                     language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(unitOfMeasureKind.getPrimaryKey(), EventTypes.MODIFY.name(), unitOfMeasureKindDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(unitOfMeasureKind.getPrimaryKey(), EventTypes.MODIFY, unitOfMeasureKindDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteUnitOfMeasureKindDescription(UnitOfMeasureKindDescription unitOfMeasureKindDescription, BasePK deletedBy) {
         unitOfMeasureKindDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(unitOfMeasureKindDescription.getUnitOfMeasureKindPK(), EventTypes.MODIFY.name(), unitOfMeasureKindDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(unitOfMeasureKindDescription.getUnitOfMeasureKindPK(), EventTypes.MODIFY, unitOfMeasureKindDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteUnitOfMeasureKindDescriptionsByUnitOfMeasureKind(UnitOfMeasureKind unitOfMeasureKind, BasePK deletedBy) {
@@ -676,7 +683,7 @@ public class UomControl
         unitOfMeasureType.setLastDetail(unitOfMeasureTypeDetail);
         unitOfMeasureType.store();
         
-        sendEventUsingNames(unitOfMeasureType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(unitOfMeasureType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return unitOfMeasureType;
     }
@@ -689,7 +696,7 @@ public class UomControl
                 unitOfMeasureKind);
     }
     
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.UnitOfMeasureType */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.UnitOfMeasureType */
     public UnitOfMeasureType getUnitOfMeasureTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new UnitOfMeasureTypePK(entityInstance.getEntityUniqueId());
 
@@ -935,7 +942,7 @@ public class UomControl
             unitOfMeasureType.setActiveDetail(unitOfMeasureTypeDetail);
             unitOfMeasureType.setLastDetail(unitOfMeasureTypeDetail);
             
-            sendEventUsingNames(unitOfMeasureTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(unitOfMeasureTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -977,7 +984,7 @@ public class UomControl
             }
         }
         
-        sendEventUsingNames(unitOfMeasureType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(unitOfMeasureType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteUnitOfMeasureTypesByUnitOfMeasureKind(UnitOfMeasureKind unitOfMeasureKind, BasePK deletedBy) {
@@ -998,7 +1005,7 @@ public class UomControl
                 unitOfMeasureType, language, singularDescription, pluralDescription, symbol, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(unitOfMeasureType.getLastDetail().getUnitOfMeasureTypePK(), EventTypes.MODIFY.name(), unitOfMeasureTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(unitOfMeasureType.getLastDetail().getUnitOfMeasureTypePK(), EventTypes.MODIFY, unitOfMeasureTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return unitOfMeasureTypeDescription;
     }
@@ -1180,14 +1187,14 @@ public class UomControl
             unitOfMeasureTypeDescription = UnitOfMeasureTypeDescriptionFactory.getInstance().create(unitOfMeasureType, language,
                     singularDescription, pluralDescription, symbol, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(unitOfMeasureType.getPrimaryKey(), EventTypes.MODIFY.name(), unitOfMeasureTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(unitOfMeasureType.getPrimaryKey(), EventTypes.MODIFY, unitOfMeasureTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteUnitOfMeasureTypeDescription(UnitOfMeasureTypeDescription unitOfMeasureTypeDescription, BasePK deletedBy) {
         unitOfMeasureTypeDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(unitOfMeasureTypeDescription.getUnitOfMeasureTypePK(), EventTypes.MODIFY.name(), unitOfMeasureTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(unitOfMeasureTypeDescription.getUnitOfMeasureTypePK(), EventTypes.MODIFY, unitOfMeasureTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteUnitOfMeasureTypeDescriptionsByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType, BasePK deletedBy) {
@@ -1207,7 +1214,7 @@ public class UomControl
         UnitOfMeasureTypeVolume unitOfMeasureTypeVolume = UnitOfMeasureTypeVolumeFactory.getInstance().create(session,
                 unitOfMeasureType, height, width, depth, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(unitOfMeasureType.getPrimaryKey(), EventTypes.MODIFY.name(), unitOfMeasureTypeVolume.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(unitOfMeasureType.getPrimaryKey(), EventTypes.MODIFY, unitOfMeasureTypeVolume.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return unitOfMeasureTypeVolume;
     }
@@ -1280,14 +1287,14 @@ public class UomControl
             unitOfMeasureTypeVolume = UnitOfMeasureTypeVolumeFactory.getInstance().create(unitOfMeasureTypePK, height,
                     width, depth, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(unitOfMeasureTypePK, EventTypes.MODIFY.name(), unitOfMeasureTypeVolume.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(unitOfMeasureTypePK, EventTypes.MODIFY, unitOfMeasureTypeVolume.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteUnitOfMeasureTypeVolume(UnitOfMeasureTypeVolume unitOfMeasureTypeVolume, BasePK deletedBy) {
         unitOfMeasureTypeVolume.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(unitOfMeasureTypeVolume.getUnitOfMeasureTypePK(), EventTypes.MODIFY.name(), unitOfMeasureTypeVolume.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(unitOfMeasureTypeVolume.getUnitOfMeasureTypePK(), EventTypes.MODIFY, unitOfMeasureTypeVolume.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteUnitOfMeasureTypeVolumeByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType, BasePK deletedBy) {
@@ -1305,7 +1312,7 @@ public class UomControl
         UnitOfMeasureTypeWeight unitOfMeasureTypeWeight = UnitOfMeasureTypeWeightFactory.getInstance().create(unitOfMeasureType, weight,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(unitOfMeasureType.getPrimaryKey(), EventTypes.MODIFY.name(), unitOfMeasureTypeWeight.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(unitOfMeasureType.getPrimaryKey(), EventTypes.MODIFY, unitOfMeasureTypeWeight.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return unitOfMeasureTypeWeight;
     }
@@ -1376,14 +1383,14 @@ public class UomControl
             unitOfMeasureTypeWeight = UnitOfMeasureTypeWeightFactory.getInstance().create(unitOfMeasureTypePK, weight,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(unitOfMeasureTypePK, EventTypes.MODIFY.name(), unitOfMeasureTypeWeight.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(unitOfMeasureTypePK, EventTypes.MODIFY, unitOfMeasureTypeWeight.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteUnitOfMeasureTypeWeight(UnitOfMeasureTypeWeight unitOfMeasureTypeWeight, BasePK deletedBy) {
         unitOfMeasureTypeWeight.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(unitOfMeasureTypeWeight.getUnitOfMeasureTypePK(), EventTypes.MODIFY.name(), unitOfMeasureTypeWeight.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(unitOfMeasureTypeWeight.getUnitOfMeasureTypePK(), EventTypes.MODIFY, unitOfMeasureTypeWeight.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteUnitOfMeasureTypeWeightByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType, BasePK deletedBy) {
@@ -1402,7 +1409,7 @@ public class UomControl
         UnitOfMeasureEquivalent unitOfMeasureEquivalent = UnitOfMeasureEquivalentFactory.getInstance().create(session,
                 fromUnitOfMeasureType, toUnitOfMeasureType, toQuantity, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(fromUnitOfMeasureType.getPrimaryKey(), EventTypes.MODIFY.name(), unitOfMeasureEquivalent.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(fromUnitOfMeasureType.getPrimaryKey(), EventTypes.MODIFY, unitOfMeasureEquivalent.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return unitOfMeasureEquivalent;
     }
@@ -1640,7 +1647,7 @@ public class UomControl
             unitOfMeasureEquivalent = UnitOfMeasureEquivalentFactory.getInstance().create(fromUnitOfMeasureTypePK,
                     toUnitOfMeasureTypePK, toQuantity, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(fromUnitOfMeasureTypePK, EventTypes.MODIFY.name(), unitOfMeasureEquivalent.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(fromUnitOfMeasureTypePK, EventTypes.MODIFY, unitOfMeasureEquivalent.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -1648,7 +1655,7 @@ public class UomControl
         unitOfMeasureEquivalent.setThruTime(session.START_TIME_LONG);
         unitOfMeasureEquivalent.store();
         
-        sendEventUsingNames(unitOfMeasureEquivalent.getFromUnitOfMeasureTypePK(), EventTypes.MODIFY.name(), unitOfMeasureEquivalent.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(unitOfMeasureEquivalent.getFromUnitOfMeasureTypePK(), EventTypes.MODIFY, unitOfMeasureEquivalent.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteUnitOfMeasureEquivalentsByFromUnitOfMeasureType(UnitOfMeasureType fromUnitOfMeasureType, BasePK deletedBy) {
@@ -1681,7 +1688,7 @@ public class UomControl
         return UnitOfMeasureKindUseTypeFactory.getInstance().create(unitOfMeasureKindUseTypeName, allowMultiple, allowFractionDigits, isDefault, sortOrder);
     }
     
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.UnitOfMeasureKindUseType */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.UnitOfMeasureKindUseType */
     public UnitOfMeasureKindUseType getUnitOfMeasureKindUseTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new UnitOfMeasureKindUseTypePK(entityInstance.getEntityUniqueId());
 
@@ -1842,7 +1849,7 @@ public class UomControl
         UnitOfMeasureKindUse unitOfMeasureKindUse = UnitOfMeasureKindUseFactory.getInstance().create(session,
                 unitOfMeasureKindUseType, unitOfMeasureKind, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(unitOfMeasureKind.getPrimaryKey(), EventTypes.MODIFY.name(), unitOfMeasureKindUse.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(unitOfMeasureKind.getPrimaryKey(), EventTypes.MODIFY, unitOfMeasureKindUse.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return unitOfMeasureKindUse;
     }
@@ -1863,7 +1870,7 @@ public class UomControl
                 unitOfMeasureKind, Session.MAX_TIME);
     }
     
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.UnitOfMeasureKindUse */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.UnitOfMeasureKindUse */
     public UnitOfMeasureKindUse getUnitOfMeasureKindUseByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new UnitOfMeasureKindUsePK(entityInstance.getEntityUniqueId());
 
@@ -2159,7 +2166,7 @@ public class UomControl
             unitOfMeasureKindUse = UnitOfMeasureKindUseFactory.getInstance().create(unitOfMeasureKindUseTypePK,
                     unitOfMeasureKindPK, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(unitOfMeasureKindPK, EventTypes.MODIFY.name(), unitOfMeasureKindUse.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(unitOfMeasureKindPK, EventTypes.MODIFY, unitOfMeasureKindUse.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -2191,7 +2198,7 @@ public class UomControl
             }
         }
         
-        sendEventUsingNames(unitOfMeasureKindUse.getUnitOfMeasureKindPK(), EventTypes.MODIFY.name(), unitOfMeasureKindUse.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(unitOfMeasureKindUse.getUnitOfMeasureKindPK(), EventTypes.MODIFY, unitOfMeasureKindUse.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteUnitOfMeasureKindUseByUnitOfMeasureKind(UnitOfMeasureKind unitOfMeasureKind, BasePK deletedBy) {

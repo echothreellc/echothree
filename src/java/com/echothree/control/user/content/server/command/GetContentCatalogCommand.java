@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -97,7 +97,7 @@ public class GetContentCatalogCommand
                             contentCatalog.getPrimaryKey(), partyPK);
 
                     if(!hasExecutionErrors()) {
-                        sendEventUsingNames(contentCatalog.getPrimaryKey(), EventTypes.READ.name(), null, null, partyPK);
+                        sendEvent(contentCatalog.getPrimaryKey(), EventTypes.READ, null, null, partyPK);
                     }
                 } else {
                     addExecutionError(ExecutionErrors.UnknownContentCatalogName.name(),
@@ -112,7 +112,7 @@ public class GetContentCatalogCommand
     }
     
     @Override
-    protected BaseResult getTransfer(ContentCatalog contentCatalog) {
+    protected BaseResult getResult(ContentCatalog contentCatalog) {
         GetContentCatalogResult result = ContentResultFactory.getGetContentCatalogResult();
 
         if(contentCatalog != null) {

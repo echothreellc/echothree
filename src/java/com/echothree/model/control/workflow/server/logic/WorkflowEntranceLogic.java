@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,16 +16,23 @@
 
 package com.echothree.model.control.workflow.server.logic;
 
+import com.echothree.control.user.workflow.common.spec.WorkflowEntranceUniversalSpec;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
 import com.echothree.model.control.selector.server.logic.SelectorLogic;
+import com.echothree.model.control.workflow.common.exception.MissingRequiredWorkflowNameException;
+import com.echothree.model.control.workflow.common.exception.UnknownDefaultWorkflowEntranceException;
 import com.echothree.model.control.workflow.common.exception.UnknownEntranceWorkflowNameException;
 import com.echothree.model.control.workflow.common.exception.UnknownEntranceWorkflowStepNameException;
+import com.echothree.model.control.workflow.common.exception.UnknownWorkflowEntranceNameException;
 import com.echothree.model.control.workflow.common.exception.UnknownWorkflowEntrancePartyTypeException;
 import com.echothree.model.control.workflow.common.exception.UnknownWorkflowEntranceSecurityRoleException;
 import com.echothree.model.control.workflow.common.exception.UnknownWorkflowEntranceSelectorException;
 import com.echothree.model.control.workflow.common.exception.UnknownWorkflowEntranceStepException;
-import com.echothree.model.control.workflow.common.exception.UnknownWorkflowNameException;
 import com.echothree.model.control.workflow.common.exception.WorkflowMissingSecurityRoleGroupException;
 import com.echothree.model.control.workflow.common.exception.WorkflowMissingSelectorTypeException;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
@@ -37,11 +44,13 @@ import com.echothree.model.data.workflow.server.entity.WorkflowEntranceSecurityR
 import com.echothree.model.data.workflow.server.entity.WorkflowEntranceSelector;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntranceStep;
 import com.echothree.model.data.workflow.server.entity.WorkflowStep;
+import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.validation.ParameterUtils;
 
 public class WorkflowEntranceLogic
         extends BaseLogic {
@@ -57,30 +66,137 @@ public class WorkflowEntranceLogic
     public static WorkflowEntranceLogic getInstance() {
         return WorkflowEntranceLogicHolder.instance;
     }
-    
-    public WorkflowEntrance getWorkflowEntranceByName(final ExecutionErrorAccumulator eea, final Workflow workflow,
-            final String workflowEntranceName) {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
-        WorkflowEntrance workflowEntrance = workflowControl.getWorkflowEntranceByName(workflow, workflowEntranceName);
 
-        if(workflowEntrance == null) {
-            handleExecutionError(UnknownWorkflowNameException.class, eea, ExecutionErrors.UnknownWorkflowEntranceName.name(),
-                    workflow.getLastDetail().getWorkflowName(), workflowEntranceName);
+    public WorkflowEntrance getWorkflowEntranceByName(final Class<? extends BaseException> unknownWorkflowException, final ExecutionErrors unknownWorkflowExecutionError,
+            final Class<? extends BaseException>  unknownWorkflowEntranceException, final ExecutionErrors unknownWorkflowEntranceExecutionError,
+            final ExecutionErrorAccumulator eea, final String workflowName, final String workflowEntranceName) {
+        var workflow = WorkflowLogic.getInstance().getWorkflowByName(unknownWorkflowException, unknownWorkflowExecutionError,
+                eea, workflowName, EntityPermission.READ_ONLY);
+        WorkflowEntrance workflowEntrance = null;
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            workflowEntrance = getWorkflowEntranceByName(unknownWorkflowEntranceException, unknownWorkflowEntranceExecutionError, eea,
+                    workflow, workflowEntranceName);
         }
 
         return workflowEntrance;
     }
 
-    public WorkflowEntrance getWorkflowEntranceByName(final ExecutionErrorAccumulator eea, final String workflowName,
-            final String workflowEntranceName) {
+    public WorkflowEntrance getWorkflowEntranceByName(final Class<? extends BaseException> unknownException, final ExecutionErrors unknownExecutionError,
+            final ExecutionErrorAccumulator eea, final Workflow workflow, final String workflowEntranceName, EntityPermission entityPermission) {
+        var workflowControl = Session.getModelController(WorkflowControl.class);
+        var workflowEntrance = workflowControl.getWorkflowEntranceByName(workflow, workflowEntranceName, entityPermission);
+
+        if(workflowEntrance == null) {
+            handleExecutionError(unknownException, eea, unknownExecutionError.name(), workflow.getLastDetail().getWorkflowName(),
+                    workflowEntranceName);
+        }
+
+        return workflowEntrance;
+    }
+
+    public WorkflowEntrance getWorkflowEntranceByName(final Class<? extends BaseException> unknownException, final ExecutionErrors unknownExecutionError,
+            final ExecutionErrorAccumulator eea, final Workflow workflow, final String workflowEntranceName) {
+        return getWorkflowEntranceByName(unknownException, unknownExecutionError, eea, workflow, workflowEntranceName, EntityPermission.READ_ONLY);
+    }
+
+    public WorkflowEntrance getWorkflowEntranceByNameForUpdate(final Class<? extends BaseException> unknownException, final ExecutionErrors unknownExecutionError,
+            final ExecutionErrorAccumulator eea, final Workflow workflow, final String workflowEntranceName) {
+        return getWorkflowEntranceByName(unknownException, unknownExecutionError, eea, workflow, workflowEntranceName, EntityPermission.READ_WRITE);
+    }
+
+    public WorkflowEntrance getWorkflowEntranceByName(final ExecutionErrorAccumulator eea, final Workflow workflow, final String workflowEntranceName,
+            final EntityPermission entityPermission) {
+        return getWorkflowEntranceByName(UnknownWorkflowEntranceNameException.class, ExecutionErrors.UnknownWorkflowEntranceName,
+                eea, workflow, workflowEntranceName, entityPermission);
+    }
+
+    public WorkflowEntrance getWorkflowEntranceByName(final ExecutionErrorAccumulator eea, final Workflow workflow, final String workflowEntranceName) {
+        return getWorkflowEntranceByName(UnknownWorkflowEntranceNameException.class, ExecutionErrors.UnknownWorkflowEntranceName,
+                eea, workflow, workflowEntranceName);
+    }
+
+    public WorkflowEntrance getWorkflowEntranceByNameForUpdate(final ExecutionErrorAccumulator eea, final Workflow workflow, final String workflowEntranceName) {
+        return getWorkflowEntranceByNameForUpdate(UnknownWorkflowEntranceNameException.class, ExecutionErrors.UnknownWorkflowEntranceName,
+                eea, workflow, workflowEntranceName);
+    }
+
+    public WorkflowEntrance getWorkflowEntranceByName(final ExecutionErrorAccumulator eea, final String workflowName, final String workflowEntranceName,
+            final EntityPermission entityPermission) {
         var workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, workflowName);
         WorkflowEntrance workflowEntrance = null;
-        
-        if(eea == null || !eea.hasExecutionErrors()) {
-            workflowEntrance = getWorkflowEntranceByName(eea, workflow, workflowEntranceName);
+
+        if(!eea.hasExecutionErrors()) {
+            workflowEntrance = getWorkflowEntranceByName(UnknownWorkflowEntranceNameException.class, ExecutionErrors.UnknownWorkflowEntranceName,
+                    eea, workflow, workflowEntranceName, entityPermission);
         }
-        
+
         return workflowEntrance;
+    }
+
+    public WorkflowEntrance getWorkflowEntranceByName(final ExecutionErrorAccumulator eea, final String workflowName, final String workflowEntranceName) {
+        return getWorkflowEntranceByName(eea, workflowName, workflowEntranceName, EntityPermission.READ_ONLY);
+    }
+
+    public WorkflowEntrance getWorkflowEntranceByNameForUpdate(final ExecutionErrorAccumulator eea, final String workflowName, final String workflowEntranceName) {
+        return getWorkflowEntranceByName(eea, workflowName, workflowEntranceName, EntityPermission.READ_WRITE);
+    }
+
+    public WorkflowEntrance getWorkflowEntranceByUniversalSpec(final ExecutionErrorAccumulator eea, final WorkflowEntranceUniversalSpec universalSpec,
+            final boolean allowDefault, final EntityPermission entityPermission) {
+        var workflowControl = Session.getModelController(WorkflowControl.class);
+        var workflowName = universalSpec.getWorkflowName();
+        var workflowEntranceName = universalSpec.getWorkflowEntranceName();
+        var nameParameterCount= ParameterUtils.getInstance().countNonNullParameters(workflowName, workflowEntranceName);
+        var possibleEntitySpecs= EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        WorkflowEntrance workflowEntrance = null;
+
+        if(nameParameterCount < 3 && possibleEntitySpecs == 0) {
+            Workflow workflow = null;
+
+            if(workflowName != null) {
+                workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, workflowName);
+            } else {
+                handleExecutionError(MissingRequiredWorkflowNameException.class, eea, ExecutionErrors.MissingRequiredWorkflowName.name());
+            }
+
+            if(!eea.hasExecutionErrors()) {
+                if(workflowEntranceName == null) {
+                    if(allowDefault) {
+                        workflowEntrance = workflowControl.getDefaultWorkflowEntrance(workflow, entityPermission);
+
+                        if(workflowEntrance == null) {
+                            handleExecutionError(UnknownDefaultWorkflowEntranceException.class, eea, ExecutionErrors.UnknownDefaultWorkflowEntrance.name());
+                        }
+                    } else {
+                        handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+                    }
+                } else {
+                    workflowEntrance = getWorkflowEntranceByName(eea, workflow, workflowEntranceName, entityPermission);
+                }
+            }
+        } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
+            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    ComponentVendors.ECHO_THREE.name(), EntityTypes.WorkflowEntrance.name());
+
+            if(!eea.hasExecutionErrors()) {
+                workflowEntrance = workflowControl.getWorkflowEntranceByEntityInstance(entityInstance, entityPermission);
+            }
+        } else {
+            handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+        }
+
+        return workflowEntrance;
+    }
+
+    public WorkflowEntrance getWorkflowEntranceByUniversalSpec(final ExecutionErrorAccumulator eea, final WorkflowEntranceUniversalSpec universalSpec,
+            boolean allowDefault) {
+        return getWorkflowEntranceByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_ONLY);
+    }
+
+    public WorkflowEntrance getWorkflowEntranceByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea, final WorkflowEntranceUniversalSpec universalSpec,
+            boolean allowDefault) {
+        return getWorkflowEntranceByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
     }
 
     public WorkflowEntrancePartyType getWorkflowEntrancePartyType(final ExecutionErrorAccumulator eea, final WorkflowEntrance workflowEntrance,

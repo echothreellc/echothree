@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -71,14 +71,14 @@ public class GetFilterAdjustmentCommand
         var filterAdjustment = FilterAdjustmentLogic.getInstance().getFilterAdjustmentByUniversalSpec(this, form, true);
 
         if(filterAdjustment != null) {
-            sendEventUsingNames(filterAdjustment.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(filterAdjustment.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return filterAdjustment;
     }
 
     @Override
-    protected BaseResult getTransfer(FilterAdjustment filterAdjustment) {
+    protected BaseResult getResult(FilterAdjustment filterAdjustment) {
         var result = FilterResultFactory.getGetFilterAdjustmentResult();
 
         if(filterAdjustment != null) {

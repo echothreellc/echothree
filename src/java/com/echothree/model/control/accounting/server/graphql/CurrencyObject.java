@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 
 package com.echothree.model.control.accounting.server.graphql;
 
-import com.echothree.control.user.accounting.server.command.GetSymbolPositionCommand;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.util.server.persistence.Session;
@@ -41,20 +41,6 @@ public class CurrencyObject
         this.currency = currency;
     }
     
-    private Boolean hasSymbolPositionAccess;
-    
-    private boolean getHasSymbolPositionAccess(final DataFetchingEnvironment env) {
-        if(hasSymbolPositionAccess == null) {
-            var baseSingleEntityCommand = new GetSymbolPositionCommand(getUserVisitPK(env), null);
-            
-            baseSingleEntityCommand.security();
-            
-            hasSymbolPositionAccess = !baseSingleEntityCommand.hasSecurityMessages();
-        }
-        
-        return hasSymbolPositionAccess;
-    }
-    
     @GraphQLField
     @GraphQLDescription("currency iso name")
     @GraphQLNonNull
@@ -71,7 +57,7 @@ public class CurrencyObject
     @GraphQLField
     @GraphQLDescription("symbol position")
     public SymbolPositionObject getSymbolPosition(final DataFetchingEnvironment env) {
-        return getHasSymbolPositionAccess(env) ? new SymbolPositionObject(currency.getSymbolPosition()) : null;
+        return AccountingSecurityUtils.getHasSymbolPositionAccess(env) ? new SymbolPositionObject(currency.getSymbolPosition()) : null;
     }
     
     @GraphQLField
@@ -176,7 +162,7 @@ public class CurrencyObject
         var accountingControl = Session.getModelController(AccountingControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return accountingControl.getBestCurrencyDescription(currency, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return accountingControl.getBestCurrencyDescription(currency, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
 }

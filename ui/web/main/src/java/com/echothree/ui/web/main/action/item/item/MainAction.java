@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,7 +22,8 @@ import com.echothree.control.user.search.common.form.SearchItemsForm;
 import com.echothree.control.user.search.common.result.GetItemResultsResult;
 import com.echothree.control.user.search.common.result.SearchItemsResult;
 import com.echothree.model.control.item.common.transfer.ItemResultTransfer;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchTypes;
+import com.echothree.model.control.search.common.SearchUseTypes;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -64,7 +65,7 @@ public class MainAction
         GetItemResultsForm commandForm = SearchUtil.getHome().getGetItemResultsForm();
         String itemName = null;
         
-        commandForm.setSearchTypeName(SearchConstants.SearchType_ITEM_MAINTENANCE);
+        commandForm.setSearchTypeName(SearchTypes.ITEM_MAINTENANCE.name());
         
         CommandResult commandResult = SearchUtil.getHome().getItemResults(getUserVisitPK(request), commandForm);
         ExecutionResult executionResult = commandResult.getExecutionResult();
@@ -87,7 +88,7 @@ public class MainAction
         if(wasPost(request)) {
             SearchItemsForm commandForm = SearchUtil.getHome().getSearchItemsForm();
 
-            commandForm.setSearchTypeName(SearchConstants.SearchType_ITEM_MAINTENANCE);
+            commandForm.setSearchTypeName(SearchTypes.ITEM_MAINTENANCE.name());
             commandForm.setItemNameOrAlias(actionForm.getItemNameOrAlias());
             commandForm.setDescription(actionForm.getDescription());
             commandForm.setItemTypeName(actionForm.getItemTypeChoice());
@@ -99,7 +100,7 @@ public class MainAction
             commandForm.setSearchSortOrderName(actionForm.getSearchSortOrderChoice());
             commandForm.setSearchSortDirectionName(actionForm.getSearchSortDirectionChoice());
             commandForm.setRememberPreferences(actionForm.getRememberPreferences().toString());
-            commandForm.setSearchUseTypeName(SearchConstants.SearchUseType_INITIAL);
+            commandForm.setSearchUseTypeName(SearchUseTypes.INITIAL.name());
 
             CommandResult commandResult = SearchUtil.getHome().searchItems(getUserVisitPK(request), commandForm);
 
@@ -109,7 +110,7 @@ public class MainAction
             } else {
                 ExecutionResult executionResult = commandResult.getExecutionResult();
                 SearchItemsResult result = (SearchItemsResult)executionResult.getResult();
-                int count = result.getCount();
+                var count = result.getCount();
 
                 if(count == 0 || count > 1) {
                     forwardKey = ForwardConstants.DISPLAY;

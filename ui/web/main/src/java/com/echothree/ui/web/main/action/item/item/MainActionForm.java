@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -33,11 +33,12 @@ import com.echothree.control.user.workflow.common.form.GetWorkflowStepChoicesFor
 import com.echothree.control.user.workflow.common.result.GetWorkflowStepChoicesResult;
 import com.echothree.model.control.item.common.choice.ItemTypeChoicesBean;
 import com.echothree.model.control.item.common.choice.ItemUseTypeChoicesBean;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.item.common.workflow.ItemStatusConstants;
+import com.echothree.model.control.search.common.SearchKinds;
+import com.echothree.model.control.search.common.SearchTypes;
 import com.echothree.model.control.search.common.choice.SearchDefaultOperatorChoicesBean;
 import com.echothree.model.control.search.common.choice.SearchSortDirectionChoicesBean;
 import com.echothree.model.control.search.common.choice.SearchSortOrderChoicesBean;
-import com.echothree.model.control.item.common.workflow.ItemStatusConstants;
 import com.echothree.model.control.workflow.common.choice.WorkflowStepChoicesBean;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.ExecutionResult;
@@ -147,8 +148,8 @@ public class MainActionForm
             try {
                 GetSearchDefaultOperatorChoicesForm form = SearchUtil.getHome().getGetSearchDefaultOperatorChoicesForm();
                 
-                form.setSearchKindName(SearchConstants.SearchKind_ITEM);
-                form.setSearchTypeName(SearchConstants.SearchType_ITEM_MAINTENANCE);
+                form.setSearchKindName(SearchKinds.ITEM.name());
+                form.setSearchTypeName(SearchTypes.ITEM_MAINTENANCE.name());
                 form.setDefaultSearchDefaultOperatorChoice(searchDefaultOperatorChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
                 
@@ -172,8 +173,8 @@ public class MainActionForm
             try {
                 GetSearchSortOrderChoicesForm form = SearchUtil.getHome().getGetSearchSortOrderChoicesForm();
                 
-                form.setSearchKindName(SearchConstants.SearchKind_ITEM);
-                form.setSearchTypeName(SearchConstants.SearchType_ITEM_MAINTENANCE);
+                form.setSearchKindName(SearchKinds.ITEM.name());
+                form.setSearchTypeName(SearchTypes.ITEM_MAINTENANCE.name());
                 form.setDefaultSearchSortOrderChoice(searchSortOrderChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
                 
@@ -197,8 +198,8 @@ public class MainActionForm
             try {
                 GetSearchSortDirectionChoicesForm form = SearchUtil.getHome().getGetSearchSortDirectionChoicesForm();
                 
-                form.setSearchKindName(SearchConstants.SearchKind_ITEM);
-                form.setSearchTypeName(SearchConstants.SearchType_ITEM_MAINTENANCE);
+                form.setSearchKindName(SearchKinds.ITEM.name());
+                form.setSearchTypeName(SearchTypes.ITEM_MAINTENANCE.name());
                 form.setDefaultSearchSortDirectionChoice(searchSortDirectionChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
                 

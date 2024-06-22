@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -73,7 +73,7 @@ public class GetJobCommand
         if(job != null) {
             result.setJob(jobControl.getJobTransfer(getUserVisit(), job));
             
-            sendEventUsingNames(job.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(job.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownJobName.name(), jobName);
         }

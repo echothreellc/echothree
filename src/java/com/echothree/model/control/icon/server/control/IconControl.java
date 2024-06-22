@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -55,6 +55,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -96,7 +97,7 @@ public class IconControl
         icon.setLastDetail(iconDetail);
         icon.store();
         
-        sendEventUsingNames(icon.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(icon.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return icon;
     }
@@ -221,7 +222,7 @@ public class IconControl
         iconDetail.store();
         icon.setActiveDetail(null);
         
-        sendEventUsingNames(iconDetail.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(iconDetail.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -252,7 +253,7 @@ public class IconControl
         iconUsageType.setLastDetail(iconUsageTypeDetail);
         iconUsageType.store();
         
-        sendEventUsingNames(iconUsageType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(iconUsageType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return iconUsageType;
     }
@@ -447,7 +448,7 @@ public class IconControl
         iconUsageType.setLastDetail(iconUsageTypeDetail);
         iconUsageType.store();
         
-        sendEventUsingNames(iconUsageTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+        sendEvent(iconUsageTypePK, EventTypes.MODIFY, null, null, updatedBy);
     }
     
     public void updateIconUsageTypeFromValue(IconUsageTypeDetailValue iconUsageTypeDetailValue, BasePK updatedBy) {
@@ -479,7 +480,7 @@ public class IconControl
             }
         }
         
-        sendEventUsingNames(iconUsageType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(iconUsageType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -491,7 +492,7 @@ public class IconControl
         IconUsageTypeDescription iconUsageTypeDescription = IconUsageTypeDescriptionFactory.getInstance().create(iconUsageType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(iconUsageType.getPrimaryKey(), EventTypes.MODIFY.name(), iconUsageTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(iconUsageType.getPrimaryKey(), EventTypes.MODIFY, iconUsageTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return iconUsageTypeDescription;
     }
@@ -629,14 +630,14 @@ public class IconControl
             iconUsageTypeDescription = IconUsageTypeDescriptionFactory.getInstance().create(iconUsageType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(iconUsageType.getPrimaryKey(), EventTypes.MODIFY.name(), iconUsageTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(iconUsageType.getPrimaryKey(), EventTypes.MODIFY, iconUsageTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteIconUsageTypeDescription(IconUsageTypeDescription iconUsageTypeDescription, BasePK deletedBy) {
         iconUsageTypeDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(iconUsageTypeDescription.getIconUsageTypePK(), EventTypes.MODIFY.name(), iconUsageTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(iconUsageTypeDescription.getIconUsageTypePK(), EventTypes.MODIFY, iconUsageTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -669,7 +670,7 @@ public class IconControl
         IconUsage iconUsage = IconUsageFactory.getInstance().create(iconUsageType, icon,
                 isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(iconUsageType.getPrimaryKey(), EventTypes.MODIFY.name(), iconUsage.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(iconUsageType.getPrimaryKey(), EventTypes.MODIFY, iconUsage.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return iconUsage;
     }
@@ -844,7 +845,7 @@ public class IconControl
         return getIconUsagesByIcon(icon, EntityPermission.READ_WRITE);
     }
     
-    public List<IconUsageTransfer> getIconUsageTransfers(UserVisit userVisit, List<IconUsage> iconUsages) {
+    public List<IconUsageTransfer> getIconUsageTransfers(UserVisit userVisit, Collection<IconUsage> iconUsages) {
         List<IconUsageTransfer> iconUsageTransfers = new ArrayList<>(iconUsages.size());
         IconUsageTransferCache iconUsageTransferCache = getIconTransferCaches(userVisit).getIconUsageTransferCache();
         
@@ -900,7 +901,7 @@ public class IconControl
             iconUsage = IconUsageFactory.getInstance().create(iconUsageTypePK, iconPK,
                     isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(iconUsageTypePK, EventTypes.MODIFY.name(), iconUsage.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(iconUsageTypePK, EventTypes.MODIFY, iconUsage.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -930,7 +931,7 @@ public class IconControl
             }
         }
         
-        sendEventUsingNames(iconUsageType.getPrimaryKey(), EventTypes.MODIFY.name(), iconUsage.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(iconUsageType.getPrimaryKey(), EventTypes.MODIFY, iconUsage.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteIconUsages(List<IconUsage> iconUsages, BasePK deletedBy) {

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -110,7 +110,7 @@ public class LotLogic
             case 1:
                 if(lotName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.Lot.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.Lot.name());
 
                     if(!eea.hasExecutionErrors()) {
                         lot = lotControl.getLotByEntityInstance(entityInstance, entityPermission);

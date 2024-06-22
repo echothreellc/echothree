@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,10 +23,13 @@ import com.echothree.model.control.core.common.CoreProperties;
 import com.echothree.model.control.core.common.transfer.ComponentVendorTransfer;
 import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.customer.server.search.CustomerSearchEvaluator;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.search.ItemSearchEvaluator;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.search.common.SearchKinds;
+import com.echothree.model.control.search.common.SearchTypes;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -34,6 +37,8 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
 import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.control.vendor.server.search.VendorSearchEvaluator;
+import com.echothree.model.control.warehouse.server.control.WarehouseControl;
+import com.echothree.model.control.warehouse.server.search.WarehouseSearchEvaluator;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.search.server.entity.SearchKind;
 import com.echothree.model.data.search.server.entity.SearchType;
@@ -86,7 +91,7 @@ public class IdentifyCommand
     }
     
     private EntityInstanceTransfer fillInEntityInstance(EntityInstanceAndNames entityInstanceAndNames) {
-        var entityInstance = getCoreControl().getEntityInstanceTransfer(getUserVisit(), entityInstanceAndNames.getEntityInstance(), false, false, false, false, false);
+        var entityInstance = getCoreControl().getEntityInstanceTransfer(getUserVisit(), entityInstanceAndNames.getEntityInstance(), false, false, false, false, false, false);
 
         entityInstance.setEntityNames(entityInstanceAndNames.getEntityNames());
         
@@ -115,7 +120,73 @@ public class IdentifyCommand
             }
         }
     }
-    
+
+    private void checkCompanies(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
+        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
+                SecurityRoleGroups.Company.name(), SecurityRoles.Search.name())) {
+            var partyControl = Session.getModelController(PartyControl.class);
+            var partyCompany = partyControl.getPartyCompanyByName(target);
+
+            if(partyCompany != null) {
+                var entityInstance = getCoreControl().getEntityInstanceByBasePK(partyCompany.getParty().getPrimaryKey());
+                var entityInstanceAndNames = EntityNamesUtils.getInstance().getEntityNames(entityInstance);
+
+                entityInstances.add(fillInEntityInstance(entityInstanceAndNames));
+            }
+        }
+    }
+
+    private void checkDivisions(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
+        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
+                SecurityRoleGroups.Division.name(), SecurityRoles.Search.name())) {
+            var partyControl = Session.getModelController(PartyControl.class);
+            var partyDivisions = partyControl.getDivisionsByName(target);
+
+            partyDivisions.stream().map((partyDivision) -> getCoreControl().getEntityInstanceByBasePK(partyDivision.getParty().getPrimaryKey())).map((entityInstance) -> EntityNamesUtils.getInstance().getEntityNames(entityInstance)).forEach((entityInstanceAndNames) -> {
+                entityInstances.add(fillInEntityInstance(entityInstanceAndNames));
+            });
+        }
+    }
+
+    private void checkDepartments(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
+        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
+                SecurityRoleGroups.Department.name(), SecurityRoles.Search.name())) {
+            var partyControl = Session.getModelController(PartyControl.class);
+            var partyDepartments = partyControl.getDepartmentsByName(target);
+
+            partyDepartments.stream().map((partyDepartment) -> getCoreControl().getEntityInstanceByBasePK(partyDepartment.getParty().getPrimaryKey())).map((entityInstance) -> EntityNamesUtils.getInstance().getEntityNames(entityInstance)).forEach((entityInstanceAndNames) -> {
+                entityInstances.add(fillInEntityInstance(entityInstanceAndNames));
+            });
+        }
+    }
+
+    private void checkWarehouses(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
+        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
+                SecurityRoleGroups.Warehouse.name(), SecurityRoles.Search.name())) {
+            var warehouseControl = Session.getModelController(WarehouseControl.class);
+            var warehouse = warehouseControl.getWarehouseByName(target);
+
+            if(warehouse != null) {
+                var entityInstance = getCoreControl().getEntityInstanceByBasePK(warehouse.getParty().getPrimaryKey());
+                var entityInstanceAndNames = EntityNamesUtils.getInstance().getEntityNames(entityInstance);
+
+                entityInstances.add(fillInEntityInstance(entityInstanceAndNames));
+            }
+        }
+    }
+
+    private void checkLocations(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
+        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
+                SecurityRoleGroups.Location.name(), SecurityRoles.Search.name())) {
+            var warehouseControl = Session.getModelController(WarehouseControl.class);
+            var locations = warehouseControl.getLocationsByName(target);
+
+            locations.stream().map((location) -> getCoreControl().getEntityInstanceByBasePK(location.getPrimaryKey())).map((entityInstance) -> EntityNamesUtils.getInstance().getEntityNames(entityInstance)).forEach((entityInstanceAndNames) -> {
+                entityInstances.add(fillInEntityInstance(entityInstanceAndNames));
+            });
+        }
+    }
+
     private void checkVendors(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
         if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
                 SecurityRoleGroups.Vendor.name(), SecurityRoles.Search.name())) {
@@ -130,7 +201,7 @@ public class IdentifyCommand
             }
         }
     }
-    
+
     private void checkVendorItems(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
         if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
                 SecurityRoleGroups.VendorItem.name(), SecurityRoles.Search.name())) {
@@ -138,6 +209,32 @@ public class IdentifyCommand
             var vendorItems = vendorControl.getVendorItemsByVendorItemName(target);
 
             vendorItems.stream().map((vendorItem) -> getCoreControl().getEntityInstanceByBasePK(vendorItem.getPrimaryKey())).map((entityInstance) -> EntityNamesUtils.getInstance().getEntityNames(entityInstance)).forEach((entityInstanceAndNames) -> {
+                entityInstances.add(fillInEntityInstance(entityInstanceAndNames));
+            });
+        }
+    }
+
+    private void checkComponentVendors(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
+        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
+                SecurityRoleGroups.ComponentVendor.name(), SecurityRoles.Search.name())) {
+            var componentVendor = getCoreControl().getComponentVendorByName(target);
+
+            if(componentVendor != null) {
+                var entityInstance = getCoreControl().getEntityInstanceByBasePK(componentVendor.getPrimaryKey());
+                var entityInstanceAndNames = EntityNamesUtils.getInstance().getEntityNames(entityInstance);
+
+                entityInstances.add(fillInEntityInstance(entityInstanceAndNames));
+            }
+        }
+    }
+
+    private void checkEntityTypes(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
+        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
+                SecurityRoleGroups.EntityType.name(), SecurityRoles.Search.name())) {
+            var coreControl = Session.getModelController(CoreControl.class);
+            var entityTypes = coreControl.getEntityTypesByName(target);
+
+            entityTypes.stream().map((entityType) -> getCoreControl().getEntityInstanceByBasePK(entityType.getPrimaryKey())).map((entityInstance) -> EntityNamesUtils.getInstance().getEntityNames(entityInstance)).forEach((entityInstanceAndNames) -> {
                 entityInstances.add(fillInEntityInstance(entityInstanceAndNames));
             });
         }
@@ -175,8 +272,8 @@ public class IdentifyCommand
                 SecurityRoleGroups.Customer.name(), SecurityRoles.Search.name())) {
             var userVisit = getUserVisit();
             var searchLogic = SearchLogic.getInstance();
-            var searchKind = searchLogic.getSearchKindByName(null, SearchConstants.SearchKind_CUSTOMER);
-            var searchType = searchLogic.getSearchTypeByName(null, searchKind, SearchConstants.SearchType_IDENTIFY);
+            var searchKind = searchLogic.getSearchKindByName(null, SearchKinds.CUSTOMER.name());
+            var searchType = searchLogic.getSearchTypeByName(null, searchKind, SearchTypes.IDENTIFY.name());
 
             // First attempt using a first and/or last name isolated from target.
             executeCustomerSearch(userVisit, entityInstances, searchLogic, searchKind, searchType,
@@ -219,8 +316,8 @@ public class IdentifyCommand
                 SecurityRoleGroups.Vendor.name(), SecurityRoles.Search.name())) {
             var userVisit = getUserVisit();
             var searchLogic = SearchLogic.getInstance();
-            var searchKind = searchLogic.getSearchKindByName(null, SearchConstants.SearchKind_VENDOR);
-            var searchType = searchLogic.getSearchTypeByName(null, searchKind, SearchConstants.SearchType_IDENTIFY);
+            var searchKind = searchLogic.getSearchKindByName(null, SearchKinds.VENDOR.name());
+            var searchType = searchLogic.getSearchTypeByName(null, searchKind, SearchTypes.IDENTIFY.name());
 
             // First attempt using a first and/or last name isolated from target.
             executeVendorSearch(userVisit, entityInstances, searchLogic, searchKind, searchType,
@@ -228,6 +325,39 @@ public class IdentifyCommand
             // Then attempt searching for target using it as a query string.
             executeVendorSearch(userVisit, entityInstances, searchLogic, searchKind, searchType,
                     null, null, null, target);
+        }
+    }
+
+    private void executeWarehouseSearch(final UserVisit userVisit, final Set<EntityInstanceTransfer> entityInstances,
+            final SearchLogic searchLogic, final SearchKind searchKind, final SearchType searchType, final String q) {
+        var warehouseSearchEvaluator = new WarehouseSearchEvaluator(userVisit, searchType,
+                searchLogic.getDefaultSearchDefaultOperator(null),
+                searchLogic.getDefaultSearchSortOrder(null, searchKind),
+                searchLogic.getDefaultSearchSortDirection(null));
+
+        warehouseSearchEvaluator.setQ(null, q);
+
+        // Avoid using the real ExecutionErrorAccumulator in order to avoid either throwing an Exception or
+        // accumulating errors for this UC.
+        var dummyExecutionErrorAccumulator = new DummyExecutionErrorAccumulator();
+        warehouseSearchEvaluator.execute(dummyExecutionErrorAccumulator);
+
+        if(!dummyExecutionErrorAccumulator.hasExecutionErrors()) {
+            addSearchResults(userVisit, searchType, entityInstances);
+        }
+    }
+
+    private void searchWarehouses(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
+        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
+                SecurityRoleGroups.Warehouse.name(), SecurityRoles.Search.name())) {
+            var userVisit = getUserVisit();
+            var searchLogic = SearchLogic.getInstance();
+            var searchKind = searchLogic.getSearchKindByName(null, SearchKinds.WAREHOUSE.name());
+            var searchType = searchLogic.getSearchTypeByName(null, searchKind, SearchTypes.IDENTIFY.name());
+
+            // Attempt searching for target using it as a query string.
+            executeWarehouseSearch(userVisit, entityInstances, searchLogic, searchKind, searchType,
+                    target);
         }
     }
 
@@ -257,8 +387,8 @@ public class IdentifyCommand
                 SecurityRoleGroups.Item.name(), SecurityRoles.Search.name())) {
             var userVisit = getUserVisit();
             var searchLogic = SearchLogic.getInstance();
-            var searchKind = searchLogic.getSearchKindByName(null, SearchConstants.SearchKind_ITEM);
-            var searchType = searchLogic.getSearchTypeByName(null, searchKind, SearchConstants.SearchType_IDENTIFY);
+            var searchKind = searchLogic.getSearchKindByName(null, SearchKinds.ITEM.name());
+            var searchType = searchLogic.getSearchTypeByName(null, searchKind, SearchTypes.IDENTIFY.name());
 
             executeItemSearch(userVisit, entityInstances, searchLogic, searchKind, searchType, target);
         }
@@ -288,12 +418,20 @@ public class IdentifyCommand
         // Compile a list of all possible EntityInstances that the target may refer to.
         checkSequenceTypes(party, entityInstances, target);
         checkItems(party, entityInstances, target);
+        checkCompanies(party, entityInstances, target);
+        checkDivisions(party, entityInstances, target);
+        checkDepartments(party, entityInstances, target);
+        checkWarehouses(party, entityInstances, target);
+        checkLocations(party, entityInstances, target);
         checkVendors(party, entityInstances, target);
         checkVendorItems(party, entityInstances, target);
+        checkComponentVendors(party, entityInstances, target);
+        checkEntityTypes(party, entityInstances, target);
 
         var nameResult = new NameCleaner().getCleansedName(target);
         searchCustomers(party, entityInstances, target, nameResult);
         searchVendors(party, entityInstances, target, nameResult);
+        searchWarehouses(party, entityInstances, target);
         searchItems(party, entityInstances, target);
 
         result.setEntityInstances(entityInstances);

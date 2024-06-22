@@ -1,7 +1,7 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" %>
 
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -20,20 +20,24 @@
 
 <html:html xhtml="true">
     <head>
-        <title>Review (<c:out value="${division.divisionName}" />)</title>
+        <title>
+            <fmt:message key="pageTitle.division">
+                <fmt:param value="${division.divisionName}" />
+            </fmt:message>
+        </title>
         <html:base/>
         <%@ include file="../../include/environment.jsp" %>
     </head>
     <body>
         <div id="Header">
             <h2>
-                <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
-                <a href="<c:url value="/action/Accounting/Main" />">Accounting</a> &gt;&gt;
-                <a href="<c:url value="/action/Accounting/Company/Main" />">Companies</a> &gt;&gt;
+                <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
+                <a href="<c:url value="/action/Accounting/Main" />"><fmt:message key="navigation.accounting" /></a> &gt;&gt;
+                <a href="<c:url value="/action/Accounting/Company/Main" />"><fmt:message key="navigation.companies" /></a> &gt;&gt;
                 <c:url var="divisionsUrl" value="/action/Accounting/Division/Main">
                     <c:param name="CompanyName" value="${division.company.companyName}" />
                 </c:url>
-                <a href="${divisionsUrl}">Divisions</a> &gt;&gt;
+                <a href="${divisionsUrl}"><fmt:message key="navigation.divisions" /></a> &gt;&gt;
                 Review (<c:out value="${division.divisionName}" />)
             </h2>
         </div>
@@ -41,8 +45,11 @@
             <et:checkSecurityRoles securityRoles="Event.List" />
             <p><font size="+2"><b><c:out value="${division.partyGroup.name}" /></b></font></p>
             <br />
-            Company Name: ${division.company.companyName}<br />
-            Division Name: ${division.divisionName}<br />
+            <c:url var="companyUrl" value="/action/Accounting/Company/Review">
+                <c:param name="CompanyName" value="${division.company.companyName}" />
+            </c:url>
+            <fmt:message key="label.companyName" />: <a href="${companyUrl}">${division.company.companyName}</a><br />
+            <fmt:message key="label.divisionName" />: ${division.divisionName}<br />
             <br />
             <br />
             <br />

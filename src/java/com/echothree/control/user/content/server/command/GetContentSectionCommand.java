@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -98,7 +98,7 @@ public class GetContentSectionCommand
                     AssociateReferralLogic.getInstance().handleAssociateReferral(session, this, form, userVisit, contentSection.getPrimaryKey(), partyPK);
 
                     if(!hasExecutionErrors()) {
-                        sendEventUsingNames(contentSection.getPrimaryKey(), EventTypes.READ.name(), null, null, partyPK);
+                        sendEvent(contentSection.getPrimaryKey(), EventTypes.READ, null, null, partyPK);
                     }
                 } else {
                     addExecutionError(ExecutionErrors.UnknownContentSectionName.name(), contentCollection.getLastDetail().getContentCollectionName(), contentSectionName);
@@ -112,7 +112,7 @@ public class GetContentSectionCommand
     }
     
     @Override
-    protected BaseResult getTransfer(ContentSection contentSection) {
+    protected BaseResult getResult(ContentSection contentSection) {
         GetContentSectionResult result = ContentResultFactory.getGetContentSectionResult();
         
         if(contentSection != null) {

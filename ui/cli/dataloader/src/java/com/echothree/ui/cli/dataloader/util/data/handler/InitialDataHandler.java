@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -198,11 +198,11 @@ import com.echothree.ui.cli.dataloader.util.data.handler.vendor.ItemPurchasingCa
 import com.echothree.ui.cli.dataloader.util.data.handler.vendor.VendorTypesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.vendor.VendorsHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.warehouse.LocationUseTypesHandler;
+import com.echothree.ui.cli.dataloader.util.data.handler.warehouse.WarehouseTypesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.warehouse.WarehousesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.wishlist.WishlistTypesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.workeffort.WorkEffortTypesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.workflow.WorkflowStepTypesHandler;
-import com.echothree.ui.cli.dataloader.util.data.handler.workflow.WorkflowTypesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.workflow.WorkflowsHandler;
 import java.io.IOException;
 import javax.naming.NamingException;
@@ -301,8 +301,6 @@ public class InitialDataHandler
             initialDataParser.pushHandler(new SelectorNodeTypesHandler(initialDataParser, this));
         } else if(localName.equals("selectorTextSearchTypes")) {
             initialDataParser.pushHandler(new SelectorTextSearchTypesHandler(initialDataParser, this));
-        } else if(localName.equals("workflowTypes")) {
-            initialDataParser.pushHandler(new WorkflowTypesHandler(initialDataParser, this));
         } else if(localName.equals("workflowStepTypes")) {
             initialDataParser.pushHandler(new WorkflowStepTypesHandler(initialDataParser, this));
         } else if(localName.equals("workflows")) {
@@ -423,6 +421,8 @@ public class InitialDataHandler
             initialDataParser.pushHandler(new PicklistTypesHandler(initialDataParser, this));
         } else if(localName.equals("locationUseTypes")) {
             initialDataParser.pushHandler(new LocationUseTypesHandler(initialDataParser, this));
+        } else if(localName.equals("warehouseTypes")) {
+            initialDataParser.pushHandler(new WarehouseTypesHandler(initialDataParser, this));
         } else if(localName.equals("warehouses")) {
             initialDataParser.pushHandler(new WarehousesHandler(initialDataParser, this));
         } else if(localName.equals("inventoryConditions")) {

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,17 +22,9 @@ import com.echothree.util.server.control.GraphQlSecurityCommand;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-public final class GraphQlSecurityUtils {
+public interface GraphQlSecurityUtils {
 
-    private static class GraphQlSecurityUtilsHolder {
-        static GraphQlSecurityUtils instance = new GraphQlSecurityUtils();
-    }
-    
-    public static GraphQlSecurityUtils getInstance() {
-        return GraphQlSecurityUtilsHolder.instance;
-    }
-    
-    private Constructor<?> findConstructor(final Class<? extends GraphQlSecurityCommand> command) {
+    private static Constructor<?> findConstructor(final Class<? extends GraphQlSecurityCommand> command) {
         Constructor<?> foundCtor = null;
         var allConstructors = command.getDeclaredConstructors();
 
@@ -56,12 +48,12 @@ public final class GraphQlSecurityUtils {
         return foundCtor;
     }
 
-    public boolean hasAccess(final GraphQlExecutionContext context, final Class<? extends GraphQlSecurityCommand> command) {
+    static boolean hasAccess(final GraphQlExecutionContext context, final Class<? extends GraphQlSecurityCommand> command, final BaseForm form) {
         boolean hasAccess;
 
         try {
             var ctor = findConstructor(command); // Search for the Constructor that's required here
-            var commandInstance = ctor.newInstance(context.getUserVisitPK(), null);
+            var commandInstance = ctor.newInstance(context.getUserVisitPK(), form);
             var graphQlSecurityCommand = (GraphQlSecurityCommand) commandInstance;
 
             // Execute the instantiated command's security check function for the current user.

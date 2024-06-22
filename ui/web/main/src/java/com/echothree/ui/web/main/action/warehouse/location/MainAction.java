@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ package com.echothree.ui.web.main.action.warehouse.location;
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
 import com.echothree.control.user.warehouse.common.form.GetLocationsForm;
 import com.echothree.control.user.warehouse.common.result.GetLocationsResult;
+import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.warehouse.common.WarehouseOptions;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -58,11 +59,15 @@ public class MainAction
         String warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
         
         commandForm.setWarehouseName(warehouseName);
-        
+
         Set<String> options = new HashSet<>();
         options.add(WarehouseOptions.LocationIncludeVolume);
+        options.add(CoreOptions.EntityInstanceIncludeEntityAppearance);
+        options.add(CoreOptions.EntityInstanceIncludeEntityVisit);
+        options.add(CoreOptions.AppearanceIncludeTextDecorations);
+        options.add(CoreOptions.AppearanceIncludeTextTransformations);
         commandForm.setOptions(options);
-        
+
         CommandResult commandResult = WarehouseUtil.getHome().getLocations(getUserVisitPK(request), commandForm);
         ExecutionResult executionResult = commandResult.getExecutionResult();
         GetLocationsResult result = (GetLocationsResult)executionResult.getResult();

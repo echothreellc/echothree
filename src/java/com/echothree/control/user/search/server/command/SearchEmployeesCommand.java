@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import com.echothree.control.user.search.common.result.SearchEmployeesResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.employee.server.search.EmployeeSearchEvaluator;
 import com.echothree.model.control.search.server.logic.SearchLogic;
@@ -99,7 +99,7 @@ public class SearchEmployeesCommand
 
         if(parameterCount < 2) {
             var searchControl = Session.getModelController(SearchControl.class);
-            SearchKind searchKind = searchControl.getSearchKindByName(SearchConstants.SearchKind_EMPLOYEE);
+            SearchKind searchKind = searchControl.getSearchKindByName(SearchKinds.EMPLOYEE.name());
 
             if(searchKind != null) {
                 String searchTypeName = form.getSearchTypeName();
@@ -167,10 +167,10 @@ public class SearchEmployeesCommand
                         }
                     }
                 } else {
-                    addExecutionError(ExecutionErrors.UnknownSearchTypeName.name(), SearchConstants.SearchKind_EMPLOYEE, searchTypeName);
+                    addExecutionError(ExecutionErrors.UnknownSearchTypeName.name(), SearchKinds.EMPLOYEE.name(), searchTypeName);
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownSearchKindName.name(), SearchConstants.SearchKind_EMPLOYEE);
+                addExecutionError(ExecutionErrors.UnknownSearchKindName.name(), SearchKinds.EMPLOYEE.name());
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());

@@ -1,7 +1,7 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" %>
 
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -20,16 +20,24 @@
 
 <html:html xhtml="true">
     <head>
-        <title>Warehouse Contact Mechanism (<c:out value="${contactMechanism.contactMechanismName}" />)</title>
+        <title>
+            <fmt:message key="pageTitle.warehouseContactMechanism">
+                <fmt:param value="${contactMechanism.contactMechanismName}" />
+            </fmt:message>
+        </title>
         <html:base/>
         <%@ include file="../../include/environment.jsp" %>
     </head>
     <body>
         <div id="Header">
             <h2>
-                <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
-                <a href="<c:url value="/action/Warehouse/Main" />">Warehouses</a> &gt;&gt;
-                <a href="<c:url value="/action/Warehouse/Warehouse/Main" />">Warehouses</a> &gt;&gt;
+                <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
+                <a href="<c:url value="/action/Warehouse/Main" />"><fmt:message key="navigation.warehouses" /></a> &gt;&gt;
+                <a href="<c:url value="/action/Warehouse/Warehouse/Main" />"><fmt:message key="navigation.warehouses" /></a> &gt;&gt;
+                <et:countWarehouseResults searchTypeName="EMPLOYEE" countVar="warehouseResultsCount" commandResultVar="countWarehouseResultsCommandResult" logErrors="false" />
+                <c:if test="${warehouseResultsCount > 0}">
+                    <a href="<c:url value="/action/Warehouse/Warehouse/Result" />"><fmt:message key="navigation.results" /></a> &gt;&gt;
+                </c:if>
                 <c:url var="reviewUrl" value="/action/Warehouse/Warehouse/Review">
                     <c:param name="WarehouseName" value="${warehouse.warehouseName}" />
                 </c:url>
@@ -37,21 +45,23 @@
                 <c:url var="warehouseContactMechanismsUrl" value="/action/Warehouse/WarehouseContactMechanism/Main">
                     <c:param name="WarehouseName" value="${warehouse.warehouseName}" />
                 </c:url>
-                <a href="${warehouseContactMechanismsUrl}">Contact Mechanisms</a> &gt;&gt;
+                <a href="${warehouseContactMechanismsUrl}"><fmt:message key="navigation.warehouseContactMechanisms" /></a> &gt;&gt;
                 <c:url var="reviewUrl" value="/action/Warehouse/WarehouseContactMechanism/Review">
                     <c:param name="PartyName" value="${warehouse.partyName}" />
                     <c:param name="ContactMechanismName" value="${contactMechanism.contactMechanismName}" />
                 </c:url>
-                <a href="${reviewUrl}"> Warehouse Contact Mechanism (<c:out value="${contactMechanism.contactMechanismName}" />)</a> &gt;&gt;
+                <a href="${reviewUrl}"><fmt:message key="navigation.warehouseContactMechanism">
+                    <fmt:param value="${contactMechanism.contactMechanismName}" />
+                </fmt:message></a> &gt;&gt;
                 Delete <c:out value="${partyEntityType.entityType.description}" />
             </h2>
         </div>
         <div id="Content">
             <p>You are about to delete the <c:out value="${fn:toLowerCase(comment.commentType.description)}" />
-            <c:out value="${fn:toLowerCase(partyEntityType.entityType.description)}" />,
+            <c:out value="${fn:toLowerCase(partyEntityType.entityType.description)}" />
             <c:choose>
                 <c:when test="${comment.description == null}">
-                    <c:out value="${comment.commentName}" />.
+                    &quot;<c:out value="${comment.commentName}" />.&quot;
                 </c:when>
                 <c:otherwise>
                     &quot;<c:out value="${comment.description}" />.&quot;

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -70,7 +70,7 @@ public class GetForumCommand
             Forum forum = null;
 
             if(forumName == null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHOTHREE.name(),
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
                         EntityTypes.Forum.name());
                 
                 if(!hasExecutionErrors()) {
@@ -88,7 +88,7 @@ public class GetForumCommand
             if(!hasExecutionErrors()) {
                 if(form.getKey() != null || ForumLogic.getInstance().isForumRoleTypePermitted(this, forum, getParty(), ForumConstants.ForumRoleType_READER)) {
                     result.setForum(forumControl.getForumTransfer(getUserVisit(), forum));
-                    sendEventUsingNames(forum.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                    sendEvent(forum.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
                 }
             } else {
                 addExecutionError(ExecutionErrors.MissingRequiredForumRoleType.name(), ForumConstants.ForumRoleType_READER);

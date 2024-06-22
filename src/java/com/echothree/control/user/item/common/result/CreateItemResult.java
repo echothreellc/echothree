@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,13 +16,13 @@
 
 package com.echothree.control.user.item.common.result;
 
+import com.echothree.control.user.core.common.spec.EntityRefSpec;
 import com.echothree.control.user.item.common.spec.ItemSpec;
 import com.echothree.util.common.command.BaseResult;
 
 public interface CreateItemResult
-        extends ItemSpec, BaseResult {
+        extends ItemSpec, EntityRefSpec, BaseResult {
     
-    String getEntityRef();
-    void setEntityRef(String entityRef);
+    // Nothing additional beyond ItemSpec, EntityRefSpec, BaseResult
     
 }

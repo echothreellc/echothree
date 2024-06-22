@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -33,6 +33,7 @@ import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
+import static java.lang.Math.toIntExact;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -75,9 +76,11 @@ public class MainAction
         Set<String> options = new HashSet<>();
         options.add(CoreOptions.EntityInstanceIncludeNames);
         options.add(CoreOptions.EntityInstanceIncludeEntityAppearance);
+        options.add(CoreOptions.EntityInstanceIncludeEntityVisit);
         options.add(CoreOptions.EntityInstanceIncludeKeyIfAvailable);
         options.add(CoreOptions.EntityInstanceIncludeGuidIfAvailable);
         options.add(CoreOptions.EntityInstanceIncludeUlidIfAvailable);
+        options.add(CoreOptions.EntityVisitIncludeVisitedTime);
         commandForm.setOptions(options);
         
         String offsetParameter = request.getParameter(new ParamEncoder("event").encodeParameterName(TableTagParameters.PARAMETER_PAGE));
@@ -103,7 +106,7 @@ public class MainAction
             if(createdByEntityInstance != null) {
                 request.setAttribute(AttributeConstants.CREATED_BY_ENTITY_INSTANCE, createdByEntityInstance);
             }
-            request.setAttribute(AttributeConstants.EVENT_COUNT, Integer.valueOf(result.getEventCount().toString()));
+            request.setAttribute(AttributeConstants.EVENT_COUNT, toIntExact(result.getEventCount()));
             request.setAttribute(AttributeConstants.EVENTS, result.getEvents());
             forwardKey = ForwardConstants.DISPLAY;
         }

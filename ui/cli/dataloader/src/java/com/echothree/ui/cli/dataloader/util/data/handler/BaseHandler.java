@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,7 +17,12 @@
 package com.echothree.ui.cli.dataloader.util.data.handler;
 
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
+import com.echothree.util.common.command.BaseEditResult;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.form.BaseEdit;
+import com.echothree.util.common.form.BaseEditForm;
+import com.echothree.util.common.form.BaseSpec;
 import com.echothree.util.common.string.StringUtils;
 import java.util.HashMap;
 import java.util.Map;
@@ -73,7 +78,38 @@ public abstract class BaseHandler {
         
         return logger;
     }
-    
+
+    protected <S extends BaseSpec, E extends BaseEdit> void updateEditFormValues(final BaseEditForm<S, E> baseEditForm,
+            final Map<String, Object> attrsMap, final BaseEditResult<E> result) {
+        var edit = result.getEdit();
+        var currentValues = edit.get();
+        var changed = false;
+
+        for(var key : currentValues.keySet()) {
+            var currentValue = currentValues.get(key);
+
+            if(attrsMap.containsKey(key)) {
+                var xmlValue = attrsMap.get(key);
+
+                if(!currentValue.equals(xmlValue)) {
+                    getLogger().debug("Updating key: \"" + key + "\" from value \"" + currentValue + "\"" + "\" to value \"" + xmlValue + "\"");
+                    edit.set(key, xmlValue);
+                    changed = true;
+                }
+            }
+        }
+
+        if(changed) {
+            getLogger().debug("Updating.");
+            baseEditForm.setEdit(edit);
+            baseEditForm.setEditMode(EditMode.UPDATE);
+        } else {
+            getLogger().debug("Abandoning.");
+            baseEditForm.setEdit(null);
+            baseEditForm.setEditMode(EditMode.ABANDON);
+        }
+    }
+
     protected void checkCommandResult(CommandResult commandResult) {
         if(doVerbose || (commandResult.hasErrors() && doErrors)) {
             var executionResult = commandResult.getExecutionResult();

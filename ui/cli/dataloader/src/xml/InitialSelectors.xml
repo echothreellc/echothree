@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -203,7 +203,7 @@
                 <selector selectorName="EXAMPLE_FILTER_ITEM" isDefault="false" sortOrder="1">
                     <selectorDescription languageIsoName="en" description="Example Filter Item Selector" />
                     <selectorNode selectorNodeName="TEST_2" isRootSelectorNode="true" selectorNodeTypeName="ENTITY_LIST_ITEM"
-                    componentVendorName="ECHOTHREE" entityTypeName="Item" entityAttributeName="EXAMPLE_LISTITEM"
+                    componentVendorName="ECHO_THREE" entityTypeName="Item" entityAttributeName="EXAMPLE_LISTITEM"
                     entityListItemName="CHOICE_1" negate="false" />
                 </selector>
             </selectorType>
@@ -221,7 +221,7 @@
                     <selectorNode selectorNodeName="TEST_1" isRootSelectorNode="false" selectorNodeTypeName="WORKFLOW_STEP"
                     workflowName="ITEM_STATUS" workflowStepName="ACTIVE" negate="false" />
                     <selectorNode selectorNodeName="TEST_2" isRootSelectorNode="false" selectorNodeTypeName="ENTITY_LIST_ITEM"
-                    componentVendorName="ECHOTHREE" entityTypeName="Item" entityAttributeName="EXAMPLE_LISTITEM"
+                    componentVendorName="ECHO_THREE" entityTypeName="Item" entityAttributeName="EXAMPLE_LISTITEM"
                     entityListItemName="CHOICE_1" negate="false" />
                     <selectorNode selectorNodeName="TEST_3" isRootSelectorNode="true" selectorNodeTypeName="BOOLEAN"
                     selectorBooleanTypeName="AND" leftSelectorNodeName="TEST_1" rightSelectorNodeName="TEST_2" negate="false" />

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -43,6 +43,7 @@ public enum SecurityRoles {
     History,
     List,
     Load,
+    PartyRelationship,
     PartyType,
     PartyTypeContactList,
     PartyTypeContactListGroup,
@@ -50,11 +51,13 @@ public enum SecurityRoles {
     PaymentProcessorAction,
     PaymentProcessorTransactionCode,
     PaymentProcessorTypeAction,
+    Remove,
     Review,
     Search,
     SecurityRole,
     Selector,
     SelectorKind,
+    Send,
     Translation,
     UserLogin,
     WorkflowStep,

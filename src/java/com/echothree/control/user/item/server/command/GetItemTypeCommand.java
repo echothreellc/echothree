@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,52 +17,83 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.GetItemTypeForm;
-import com.echothree.control.user.item.common.result.GetItemTypeResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.item.server.logic.ItemTypeLogic;
 import com.echothree.model.data.item.server.entity.ItemType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class GetItemTypeCommand
-        extends BaseSimpleCommand<GetItemTypeForm> {
-    
+        extends BaseSingleEntityCommand<ItemType, GetItemTypeForm> {
+
+    // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-            new FieldDefinition("ItemTypeName", FieldType.ENTITY_NAME, false, null, null)
-        ));
+        FORM_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("ItemTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
+        );
     }
-    
+
     /** Creates a new instance of GetItemTypeCommand */
     public GetItemTypeCommand(UserVisitPK userVisitPK, GetItemTypeForm form) {
         super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
+    protected ItemType getEntity() {
         var itemControl = Session.getModelController(ItemControl.class);
-        GetItemTypeResult result = ItemResultFactory.getGetItemTypeResult();
-        String itemTypeName = form.getItemTypeName();
-        ItemType itemType = itemControl.getItemTypeByName(itemTypeName);
-        
+        ItemType itemType = null;
+        var itemTypeName = form.getItemTypeName();
+        var parameterCount = (itemTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+
+        if(parameterCount == 1) {
+            if(itemTypeName == null) {
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
+                        ComponentVendors.ECHO_THREE.name(), EntityTypes.ItemType.name());
+
+                if(!hasExecutionErrors()) {
+                    itemType = itemControl.getItemTypeByEntityInstance(entityInstance);
+                }
+            } else {
+                itemType = ItemTypeLogic.getInstance().getItemTypeByName(this, itemTypeName);
+            }
+
+            if(itemType != null) {
+                sendEvent(itemType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+            }
+        } else {
+            addExecutionError(ExecutionErrors.InvalidParameterCount.name());
+        }
+
+        return itemType;
+    }
+
+    @Override
+    protected BaseResult getResult(ItemType itemType) {
+        var itemControl = Session.getModelController(ItemControl.class);
+        var result = ItemResultFactory.getGetItemTypeResult();
+
         if(itemType != null) {
             result.setItemType(itemControl.getItemTypeTransfer(getUserVisit(), itemType));
-        } else {
-            addExecutionError(ExecutionErrors.UnknownItemTypeName.name(), itemTypeName);
         }
-        
-        
+
         return result;
     }
-    
+
 }

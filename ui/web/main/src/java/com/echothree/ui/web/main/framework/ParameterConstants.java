@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -190,8 +190,8 @@ public interface ParameterConstants {
     String WISHLIST_NAME = "WishlistName";
     String RECOVERY_QUESTION_NAME = "RecoveryQuestionName";
     String ORIGINAL_RECOVERY_QUESTION_NAME = "OriginalRecoveryQuestionName";
-    String WISHLIST_TYPE_PRIORITY_NAME = "WishlistTypePriorityName";
-    String ORIGINAL_WISHLIST_TYPE_PRIORITY_NAME = "OriginalWishlistTypePriorityName";
+    String WISHLIST_TYPE_PRIORITY_NAME = "WishlistPriorityName";
+    String ORIGINAL_WISHLIST_TYPE_PRIORITY_NAME = "OriginalWishlistPriorityName";
     String ORIGINAL_SEQUENCE_NAME = "OriginalSequenceName";
     String ORIGINAL_SEQUENCE_TYPE_NAME = "OriginalSequenceTypeName";
     String ORIGINAL_OFFER_NAME_ELEMENT_NAME = "OriginalOfferNameElementName";
@@ -449,5 +449,7 @@ public interface ParameterConstants {
     String ULID = "Ulid";
     String GRAPHQL_QUERY = "query";
     String GRAPHQL_OPERATION_NAME = "operationName";
+    String WAREHOUSE_TYPE_NAME = "WarehouseTypeName";
+    String ORIGINAL_WAREHOUSE_TYPE_NAME = "OriginalWarehouseTypeName";
     
 }

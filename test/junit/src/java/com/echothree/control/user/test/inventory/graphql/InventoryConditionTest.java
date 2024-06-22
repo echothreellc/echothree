@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -39,14 +39,16 @@ public class InventoryConditionTest
                 mutation {
                     createInventoryCondition(input: { inventoryConditionName: "%s", isDefault: "false", sortOrder: "%s", description: "%s", clientMutationId: "1" }) {
                         id
-                        hasErrors
-                        hasSecurityMessages
+                        commandResult {
+                            hasErrors
+                            hasSecurityMessages
+                        }
                     }
                 }
                 """.formatted(ORIGINAL_INVENTORY_CONDITION_NAME, ORIGINAL_SORT_ORDER, ORIGINAL_DESCRIPTION));
 
-        assertThat(getBoolean(createBody, "data.createInventoryCondition.hasErrors")).isTrue();
-        assertThat(getBoolean(createBody, "data.createInventoryCondition.hasSecurityMessages")).isTrue();
+        assertThat(getBoolean(createBody, "data.createInventoryCondition.commandResult.hasErrors")).isTrue();
+        assertThat(getBoolean(createBody, "data.createInventoryCondition.commandResult.hasSecurityMessages")).isTrue();
     }
 
     @Test
@@ -55,14 +57,16 @@ public class InventoryConditionTest
         var deleteBody = executeUsingPost("""
                 mutation {
                     deleteInventoryCondition(input: { inventoryConditionName: "%s", clientMutationId: "1" }) {
-                        hasErrors
-                        hasSecurityMessages
+                        commandResult {
+                            hasErrors
+                            hasSecurityMessages
+                        }
                     }
                 }
                 """.formatted(ORIGINAL_INVENTORY_CONDITION_NAME));
 
-        assertThat(getBoolean(deleteBody, "data.deleteInventoryCondition.hasErrors")).isTrue();
-        assertThat(getBoolean(deleteBody, "data.deleteInventoryCondition.hasSecurityMessages")).isTrue();
+        assertThat(getBoolean(deleteBody, "data.deleteInventoryCondition.commandResult.hasErrors")).isTrue();
+        assertThat(getBoolean(deleteBody, "data.deleteInventoryCondition.commandResult.hasSecurityMessages")).isTrue();
     }
 
     @Test
@@ -71,35 +75,41 @@ public class InventoryConditionTest
         var loginBody = executeUsingPost("""
                 mutation {
                     employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
 
-        assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
+        assertThat(getBoolean(loginBody, "data.employeeLogin.commandResult.hasErrors")).isFalse();
 
         var createBody = executeUsingPost("""
                 mutation {
                     createInventoryCondition(input: { inventoryConditionName: "%s", isDefault: "false", sortOrder: "%s", description: "%s", clientMutationId: "1" }) {
                         id
-                        hasErrors
-                        hasSecurityMessages
+                        commandResult {
+                            hasErrors
+                            hasSecurityMessages
+                        }
                     }
                 }
                 """.formatted(ORIGINAL_INVENTORY_CONDITION_NAME, ORIGINAL_SORT_ORDER, ORIGINAL_DESCRIPTION));
 
-        assertThat(getBoolean(createBody, "data.createInventoryCondition.hasErrors")).isFalse();
+        assertThat(getBoolean(createBody, "data.createInventoryCondition.commandResult.hasErrors")).isFalse();
         
         var deleteBody = executeUsingPost("""
                 mutation {
                     deleteInventoryCondition(input: { inventoryConditionName: "%s", clientMutationId: "1" }) {
-                        hasErrors
-                        hasSecurityMessages
+                        commandResult {
+                            hasErrors
+                            hasSecurityMessages
+                        }
                     }
                 }
                 """.formatted(ORIGINAL_INVENTORY_CONDITION_NAME));
 
-        assertThat(getBoolean(deleteBody, "data.deleteInventoryCondition.hasErrors")).isFalse();
+        assertThat(getBoolean(deleteBody, "data.deleteInventoryCondition.commandResult.hasErrors")).isFalse();
     }
     
     @Test
@@ -108,24 +118,28 @@ public class InventoryConditionTest
         var loginBody = executeUsingPost("""
                 mutation {
                     employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
 
-        assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
+        assertThat(getBoolean(loginBody, "data.employeeLogin.commandResult.hasErrors")).isFalse();
 
         var createBody = executeUsingPost("""
                 mutation {
                     createInventoryCondition(input: { inventoryConditionName: "%s", isDefault: "false", sortOrder: "%s", description: "%s", clientMutationId: "1" }) {
                         id
-                        hasErrors
-                        hasSecurityMessages
+                        commandResult {
+                            hasErrors
+                            hasSecurityMessages
+                        }
                     }
                 }
                 """.formatted(ORIGINAL_INVENTORY_CONDITION_NAME, ORIGINAL_SORT_ORDER, ORIGINAL_DESCRIPTION));
 
-        assertThat(getBoolean(createBody, "data.createInventoryCondition.hasErrors")).isFalse();
+        assertThat(getBoolean(createBody, "data.createInventoryCondition.commandResult.hasErrors")).isFalse();
 
         var id = getString(createBody, "data.createInventoryCondition.id");
         
@@ -149,13 +163,15 @@ public class InventoryConditionTest
         var deleteBody = executeUsingPost("""
                 mutation {
                     deleteInventoryCondition(input: { inventoryConditionName: "%s", clientMutationId: "1" }) {
-                        hasErrors
-                        hasSecurityMessages
+                        commandResult {
+                            hasErrors
+                            hasSecurityMessages
+                        }
                     }
                 }
                 """.formatted(ORIGINAL_INVENTORY_CONDITION_NAME));
 
-        assertThat(getBoolean(deleteBody, "data.deleteInventoryCondition.hasErrors")).isFalse();
+        assertThat(getBoolean(deleteBody, "data.deleteInventoryCondition.commandResult.hasErrors")).isFalse();
     }
     
     @Test
@@ -164,43 +180,53 @@ public class InventoryConditionTest
         var loginBody = executeUsingPost("""
                 mutation {
                     employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
 
-        assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
+        assertThat(getBoolean(loginBody, "data.employeeLogin.commandResult.hasErrors")).isFalse();
         
         var createBody = executeUsingPost("""
                 mutation {
                     createInventoryCondition(input: { inventoryConditionName: "%s", isDefault: "false", sortOrder: "%s", description: "%s", clientMutationId: "1" }) {
                         id
-                        hasErrors
-                        hasSecurityMessages
+                        commandResult {
+                            hasErrors
+                            hasSecurityMessages
+                        }
                     }
                 }
                 """.formatted(ORIGINAL_INVENTORY_CONDITION_NAME, ORIGINAL_SORT_ORDER, ORIGINAL_DESCRIPTION));
 
-        assertThat(getBoolean(createBody, "data.createInventoryCondition.hasErrors")).isFalse();
+        assertThat(getBoolean(createBody, "data.createInventoryCondition.commandResult.hasErrors")).isFalse();
         
         var id = getString(createBody, "data.createInventoryCondition.id");
         var queryBody = executeUsingPost("""
                 query {
                     inventoryConditions {
-                        id
-                        sortOrder
-                        description
+                        edges {
+                            node {
+                                id
+                                sortOrder
+                                description
+                            }
+                        }
                     }
                 }
                 """);
         
-        var inventoryConditions = getList(queryBody, "data.inventoryConditions");
+        var inventoryConditionEdges = getList(queryBody, "data.inventoryConditions.edges");
         
         var foundInventoryCondition = false;
-        for(Map<String, Object> inventoryCondition : inventoryConditions) {
-            if(id.equals(getString(inventoryCondition, "id"))) {
-                assertThat(getInteger(inventoryCondition, "sortOrder")).isEqualTo(ORIGINAL_SORT_ORDER);
-                assertThat(getString(inventoryCondition, "description")).isEqualTo(ORIGINAL_DESCRIPTION);
+        for(Map<String, Object> inventoryConditionEdge : inventoryConditionEdges) {
+            var inventoryConditionNode = getMap(inventoryConditionEdge, "node");
+
+            if(id.equals(getString(inventoryConditionNode, "id"))) {
+                assertThat(getInteger(inventoryConditionNode, "sortOrder")).isEqualTo(ORIGINAL_SORT_ORDER);
+                assertThat(getString(inventoryConditionNode, "description")).isEqualTo(ORIGINAL_DESCRIPTION);
                 foundInventoryCondition = true;
             }
         }
@@ -209,12 +235,14 @@ public class InventoryConditionTest
         var deleteBody = executeUsingPost("""
                 mutation {
                     deleteInventoryCondition(input: { inventoryConditionName: "%s", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """.formatted(ORIGINAL_INVENTORY_CONDITION_NAME));
 
-        assertThat(getBoolean(deleteBody, "data.deleteInventoryCondition.hasErrors")).isFalse();
+        assertThat(getBoolean(deleteBody, "data.deleteInventoryCondition.commandResult.hasErrors")).isFalse();
     }
     
     @Test
@@ -223,40 +251,49 @@ public class InventoryConditionTest
         var loginBody = executeUsingPost("""
                 mutation {
                     employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
 
-        assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
+        assertThat(getBoolean(loginBody, "data.employeeLogin.commandResult.hasErrors")).isFalse();
         
         var createBody = executeUsingPost("""
                 mutation {
                     createInventoryCondition(input: { inventoryConditionName: "%s", isDefault: "false", sortOrder: "%s", description: "%s", clientMutationId: "1" }) {
                         id
-                        hasErrors
-                        hasSecurityMessages
+                        commandResult {
+                            hasErrors
+                            hasSecurityMessages
+                        }
                     }
                 }
                 """.formatted(ORIGINAL_INVENTORY_CONDITION_NAME, ORIGINAL_SORT_ORDER, ORIGINAL_DESCRIPTION));
 
-        assertThat(getBoolean(createBody, "data.createInventoryCondition.hasErrors")).isFalse();
+        assertThat(getBoolean(createBody, "data.createInventoryCondition.commandResult.hasErrors")).isFalse();
         
         var id = getString(createBody, "data.createInventoryCondition.id");
         var editBody = executeUsingPost("""
                 mutation {
                     editInventoryCondition(input: { id: "%s", inventoryConditionName: "%s", sortOrder: "%s", description: "%s", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """.formatted(id, NEW_INVENTORY_CONDITION_NAME, NEW_SORT_ORDER, NEW_DESCRIPTION));
 
-        assertThat(getBoolean(editBody, "data.editInventoryCondition.hasErrors")).isFalse();
+        assertThat(getBoolean(editBody, "data.editInventoryCondition.commandResult.hasErrors")).isFalse();
         
         var queryBody = executeUsingPost("""
                 query {
                     inventoryCondition(id: "%s") {
-                        id inventoryConditionName, sortOrder description
+                        id
+                        inventoryConditionName
+                        sortOrder
+                        description
                     }
                 }
                 """.formatted(id));
@@ -269,12 +306,14 @@ public class InventoryConditionTest
         var deleteBody = executeUsingPost("""
                 mutation {
                     deleteInventoryCondition(input: { inventoryConditionName: "%s", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """.formatted(NEW_INVENTORY_CONDITION_NAME));
 
-        assertThat(getBoolean(deleteBody, "data.deleteInventoryCondition.hasErrors")).isFalse();
+        assertThat(getBoolean(deleteBody, "data.deleteInventoryCondition.commandResult.hasErrors")).isFalse();
     }
 
     @Test
@@ -283,24 +322,28 @@ public class InventoryConditionTest
         var loginBody = executeUsingPost("""
                 mutation {
                     employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
 
-        assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
+        assertThat(getBoolean(loginBody, "data.employeeLogin.commandResult.hasErrors")).isFalse();
 
         var createBody = executeUsingPost("""
                 mutation {
                     createInventoryCondition(input: { inventoryConditionName: "%s", isDefault: "false", sortOrder: "%s", description: "%s", clientMutationId: "1" }) {
                         id
-                        hasErrors
-                        hasSecurityMessages
+                        commandResult {
+                            hasErrors
+                            hasSecurityMessages
+                        }
                     }
                 }
                 """.formatted(ORIGINAL_INVENTORY_CONDITION_NAME, ORIGINAL_SORT_ORDER, ORIGINAL_DESCRIPTION));
 
-        assertThat(getBoolean(createBody, "data.createInventoryCondition.hasErrors")).isFalse();
+        assertThat(getBoolean(createBody, "data.createInventoryCondition.commandResult.hasErrors")).isFalse();
 
         var id = getString(createBody, "data.createInventoryCondition.id");
         var editBody = executeUsingPost("""
@@ -313,12 +356,14 @@ public class InventoryConditionTest
                         clientMutationId: "1"
                     })
                     {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """.formatted(ORIGINAL_INVENTORY_CONDITION_NAME, NEW_INVENTORY_CONDITION_NAME, NEW_SORT_ORDER, NEW_DESCRIPTION));
 
-        assertThat(getBoolean(editBody, "data.editInventoryCondition.hasErrors")).isFalse();
+        assertThat(getBoolean(editBody, "data.editInventoryCondition.commandResult.hasErrors")).isFalse();
 
         var queryBody = executeUsingPost("""
                 query {
@@ -339,12 +384,14 @@ public class InventoryConditionTest
         var deleteBody = executeUsingPost("""
                 mutation {
                     deleteInventoryCondition(input: { inventoryConditionName: "%s", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """.formatted(NEW_INVENTORY_CONDITION_NAME));
 
-        assertThat(getBoolean(deleteBody, "data.deleteInventoryCondition.hasErrors")).isFalse();
+        assertThat(getBoolean(deleteBody, "data.deleteInventoryCondition.commandResult.hasErrors")).isFalse();
     }
 
 }

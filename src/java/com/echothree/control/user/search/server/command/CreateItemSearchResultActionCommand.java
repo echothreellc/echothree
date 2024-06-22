@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,12 +18,12 @@ package com.echothree.control.user.search.server.command;
 
 import com.echothree.control.user.search.common.form.CreateItemSearchResultActionForm;
 import com.echothree.model.control.item.server.logic.ItemLogic;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -48,11 +48,11 @@ public class CreateItemSearchResultActionCommand
     
     @Override
     protected BaseResult execute() {
-        Item item = ItemLogic.getInstance().getItemByName(this, form.getItemName());
+        var item = ItemLogic.getInstance().getItemByName(this, form.getItemName());
         BaseResult baseResult = null;
         
         if(!hasExecutionErrors()) {
-            baseResult = super.execute(SearchConstants.SearchKind_ITEM, item);
+            baseResult = super.execute(SearchKinds.ITEM.name(), item);
         }
         
         return baseResult;

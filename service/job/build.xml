@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -38,6 +38,12 @@
     <target name="compile" depends="prepare">
         <path id="processorpath.ref">
             <pathelement location="${build.dir.lib}/error_prone_core-with-dependencies.jar"/>
+            <pathelement location="${build.dir.lib}/error_prone_annotation.jar"/>
+            <pathelement location="${build.dir.lib}/error_prone_annotations.jar"/>
+            <pathelement location="${build.dir.lib}/error_prone_type_annotations.jar"/>
+            <pathelement location="${build.dir.lib}/error_prone_check_api.jar"/>
+            <pathelement location="${build.dir.lib}/java-diff-utils.jar"/>
+            <pathelement location="${build.dir.lib}/dataflow-errorprone.jar"/>
             <pathelement location="${build.dir.lib}/failureaccess.jar"/>
             <pathelement location="${build.dir.lib}/jFormatString.jar"/>
             <pathelement location="${build.dir.lib}/threeten-extra.jar"/>
@@ -49,7 +55,7 @@
             destdir="${service.job.classbindir}"
             includeAntRuntime="true"
             classpathref="build.classpath" >
-            <compilerarg line="-XDcompilePolicy=simple"/>
+            <compilerarg value="-XDcompilePolicy=simple"/>
             <compilerarg value="-processorpath"/>
             <compilerarg pathref="processorpath.ref"/>
             <!-- Begin Error Prone -->

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,8 +17,16 @@
 package com.echothree.model.control.workflow.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
+import com.echothree.model.data.workflow.common.WorkflowDestinationConstants;
+import com.echothree.model.data.workflow.common.WorkflowEntranceStepConstants;
 import com.echothree.model.data.workflow.server.entity.WorkflowStep;
 import com.echothree.model.data.workflow.server.entity.WorkflowStepDetail;
 import com.echothree.util.server.persistence.Session;
@@ -26,7 +34,10 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("workflow step object")
 @GraphQLName("WorkflowStep")
@@ -54,7 +65,7 @@ public class WorkflowStepObject
     @GraphQLField
     @GraphQLDescription("workflow")
     public WorkflowObject getWorkflow(final DataFetchingEnvironment env) {
-        return WorkflowSecurityUtils.getInstance().getHasWorkflowAccess(env) ? new WorkflowObject(getWorkflowStepDetail().getWorkflow()) : null;
+        return WorkflowSecurityUtils.getHasWorkflowAccess(env) ? new WorkflowObject(getWorkflowStepDetail().getWorkflow()) : null;
     }
 
     @GraphQLField
@@ -67,7 +78,7 @@ public class WorkflowStepObject
     @GraphQLField
     @GraphQLDescription("workflow step type")
     public WorkflowStepTypeObject getWorkflowStepType(final DataFetchingEnvironment env) {
-        return WorkflowSecurityUtils.getInstance().getHasWorkflowStepTypeAccess(env) ? new WorkflowStepTypeObject(getWorkflowStepDetail().getWorkflowStepType()) : null;
+        return WorkflowSecurityUtils.getHasWorkflowStepTypeAccess(env) ? new WorkflowStepTypeObject(getWorkflowStepDetail().getWorkflowStepType()) : null;
     }
 
     @GraphQLField
@@ -91,7 +102,46 @@ public class WorkflowStepObject
         var workflowControl = Session.getModelController(WorkflowControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return workflowControl.getBestWorkflowStepDescription(workflowStep, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return workflowControl.getBestWorkflowStepDescription(workflowStep, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
+    @GraphQLField
+    @GraphQLDescription("workflow destinations")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<WorkflowDestinationObject> getWorkflowDestinations(final DataFetchingEnvironment env) {
+        if(WorkflowSecurityUtils.getHasWorkflowDestinationsAccess(env)) {
+            var workflowControl = Session.getModelController(WorkflowControl.class);
+            var totalCount = workflowControl.countWorkflowDestinationsByWorkflowStep(workflowStep);
+
+            try(var objectLimiter = new ObjectLimiter(env, WorkflowDestinationConstants.COMPONENT_VENDOR_NAME, WorkflowDestinationConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = workflowControl.getWorkflowDestinationsByWorkflowStep(workflowStep);
+                var wishlistPriorities = entities.stream().map(WorkflowDestinationObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, wishlistPriorities);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("workflow entrance steps")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<WorkflowEntranceStepObject> getWorkflowEntranceSteps(final DataFetchingEnvironment env) {
+        if(WorkflowSecurityUtils.getHasWorkflowEntranceStepsAccess(env)) {
+            var workflowControl = Session.getModelController(WorkflowControl.class);
+            var totalCount = workflowControl.countWorkflowEntranceStepsByWorkflowStep(workflowStep);
+
+            try(var objectLimiter = new ObjectLimiter(env, WorkflowEntranceStepConstants.COMPONENT_VENDOR_NAME, WorkflowEntranceStepConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = workflowControl.getWorkflowEntranceStepsByWorkflowStep(workflowStep);
+                var wishlistPriorities = entities.stream().map(WorkflowEntranceStepObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, wishlistPriorities);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
 }

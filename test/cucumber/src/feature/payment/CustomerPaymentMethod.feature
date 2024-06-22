@@ -4,13 +4,20 @@ Feature: Party payment methods
   Background:
     Given the employee Test begins using the application
     And the user is not currently logged in
-    When the user logs in as an employee with the username "Test E" and password "password" and company "TEST_COMPANY"
+    When the user begins to log in as an employee
+    And the employee sets the username to "Test E"
+    And the employee sets the password to "password"
+    And the employee sets the company to "TEST_COMPANY"
+    And the employee logs in
     Then no error should occur
     And the user loads the existing base encryption keys
     Then no error should occur
     And the customer Test begins using the application
     And the user is not currently logged in
-    When the user logs in as a customer with the username "TestC@echothree.com" and password "password"
+    When the user begins to log in as an customer
+    And the customer sets the username to "TestC@echothree.com"
+    And the customer sets the password to "password"
+    And the customer logs in
     Then no error should occur
 
   Scenario: Existing customer adds and then deletes a credit card

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -71,14 +71,14 @@ public class GetSelectorKindCommand
         var selectorKind = SelectorKindLogic.getInstance().getSelectorKindByUniversalSpec(this, form, true);
 
         if(selectorKind != null) {
-            sendEventUsingNames(selectorKind.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(selectorKind.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return selectorKind;
     }
 
     @Override
-    protected BaseResult getTransfer(SelectorKind selectorKind) {
+    protected BaseResult getResult(SelectorKind selectorKind) {
         var selectorControl = Session.getModelController(SelectorControl.class);
         var result = SelectorResultFactory.getGetSelectorKindResult();
 

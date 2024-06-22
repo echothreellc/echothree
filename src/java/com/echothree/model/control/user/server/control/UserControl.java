@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -120,7 +120,6 @@ import com.echothree.model.data.user.server.value.UserKeyDetailValue;
 import com.echothree.model.data.user.server.value.UserLoginPasswordStringValue;
 import com.echothree.model.data.user.server.value.UserLoginValue;
 import com.echothree.model.data.user.server.value.UserVisitGroupDetailValue;
-import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntityStatus;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
@@ -427,7 +426,7 @@ public class UserControl
                         "AND eni_entityinstanceid = etim_eni_entityinstanceid " +
                         "ORDER BY etim_createdtime DESC");
 
-                ps.setString(1, ComponentVendors.ECHOTHREE.name());
+                ps.setString(1, ComponentVendors.ECHO_THREE.name());
                 ps.setString(2, EntityTypes.UserVisitGroup.name());
                 ps.setLong(3, workflowStep.getPrimaryKey().getEntityId());
                 ps.setLong(4, Session.MAX_TIME);
@@ -482,7 +481,7 @@ public class UserControl
         userVisitGroup.setLastDetail(userVisitGroupDetail);
         userVisitGroup.store();
         
-        sendEventUsingNames(userVisitGroup.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(userVisitGroup.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return userVisitGroup;
     }
@@ -564,7 +563,7 @@ public class UserControl
         return getUserTransferCaches(userVisit).getUserVisitGroupTransferCache().getUserVisitGroupTransfer(userVisitGroup);
     }
     
-    public List<UserVisitGroupTransfer> getUserVisitGroupTransfers(UserVisit userVisit, List<UserVisitGroup> userVisitGroups) {
+    public List<UserVisitGroupTransfer> getUserVisitGroupTransfers(UserVisit userVisit, Collection<UserVisitGroup> userVisitGroups) {
         List<UserVisitGroupTransfer> userVisitGroupTransfers = new ArrayList<>(userVisitGroups.size());
         UserVisitGroupTransferCache userVisitGroupTransferCache = getUserTransferCaches(userVisit).getUserVisitGroupTransferCache();
         
@@ -923,7 +922,7 @@ public class UserControl
     
     /** Associate a Party with a UserVisit, copy all Preferred* properties to the UserVisit.
      */
-    public UserSession associatePartyToUserVisit(UserVisit userVisit, Party party, PartyRelationship partyRelationship, Long passwordVerifiedTime) {
+    public UserSession associatePartyToUserVisit(UserVisit userVisit, Party party, PartyRelationship partyRelationship, Long identityVerifiedTime) {
         UserSession userSession = getUserSessionByUserVisitForUpdate(userVisit);
         PartyDetail partyDetail = party.getLastDetail();
         
@@ -932,7 +931,7 @@ public class UserControl
             userSession.store();
         }
         
-        userSession = createUserSession(userVisit, party, partyRelationship, passwordVerifiedTime);
+        userSession = createUserSession(userVisit, party, partyRelationship, identityVerifiedTime);
         
         Language preferredLanguage = partyDetail.getPreferredLanguage();
         if(preferredLanguage != null) {
@@ -1091,7 +1090,7 @@ public class UserControl
     /** Use associatePartyToUserVisit to associate a Party with a UserVisit, rather than using this
      * function directly.
      */
-    public UserSession createUserSession(UserVisit userVisit, Party party, PartyRelationship partyRelationship, Long passwordVerifiedTime) {
+    public UserSession createUserSession(UserVisit userVisit, Party party, PartyRelationship partyRelationship, Long identityVerifiedTime) {
         PartyType partyType = party.getLastDetail().getPartyType();
         PartyTypeAuditPolicy partyTypeAuditPolicy = getPartyControl().getPartyTypeAuditPolicy(partyType);
         Long retainUserVisitsTime = partyTypeAuditPolicy == null? null: partyTypeAuditPolicy.getLastDetail().getRetainUserVisitsTime();
@@ -1105,7 +1104,7 @@ public class UserControl
             }
         }
         
-        return UserSessionFactory.getInstance().create(userVisit, party, partyRelationship, passwordVerifiedTime, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        return UserSessionFactory.getInstance().create(userVisit, party, partyRelationship, identityVerifiedTime, session.START_TIME_LONG, Session.MAX_TIME_LONG);
     }
     
     private static final Map<EntityPermission, String> getUserSessionsByPartyQueries;
@@ -1254,7 +1253,7 @@ public class UserControl
         recoveryQuestion.setLastDetail(recoveryQuestionDetail);
         recoveryQuestion.store();
         
-        sendEventUsingNames(recoveryQuestion.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(recoveryQuestion.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return recoveryQuestion;
     }
@@ -1363,7 +1362,7 @@ public class UserControl
         return getRecoveryQuestionDetailValueForUpdate(getRecoveryQuestionByNameForUpdate(recoveryQuestionName));
     }
     
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.RecoveryQuestion */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.RecoveryQuestion */
     public RecoveryQuestion getRecoveryQuestionByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new RecoveryQuestionPK(entityInstance.getEntityUniqueId());
 
@@ -1463,7 +1462,7 @@ public class UserControl
             recoveryQuestion.setActiveDetail(recoveryQuestionDetail);
             recoveryQuestion.setLastDetail(recoveryQuestionDetail);
             
-            sendEventUsingNames(recoveryQuestionPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(recoveryQuestionPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -1497,7 +1496,7 @@ public class UserControl
             }
         }
         
-        sendEventUsingNames(recoveryQuestion.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(recoveryQuestion.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void removeUserSession(UserSession userSession) {
@@ -1513,7 +1512,7 @@ public class UserControl
         RecoveryQuestionDescription recoveryQuestionDescription = RecoveryQuestionDescriptionFactory.getInstance().create(session,
                 recoveryQuestion, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(recoveryQuestion.getPrimaryKey(), EventTypes.MODIFY.name(), recoveryQuestionDescription.getPrimaryKey(),
+        sendEvent(recoveryQuestion.getPrimaryKey(), EventTypes.MODIFY, recoveryQuestionDescription.getPrimaryKey(),
                 null, createdBy);
         
         return recoveryQuestionDescription;
@@ -1655,7 +1654,7 @@ public class UserControl
             recoveryQuestionDescription = RecoveryQuestionDescriptionFactory.getInstance().create(recoveryQuestion, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(recoveryQuestion.getPrimaryKey(), EventTypes.MODIFY.name(), recoveryQuestionDescription.getPrimaryKey(),
+            sendEvent(recoveryQuestion.getPrimaryKey(), EventTypes.MODIFY, recoveryQuestionDescription.getPrimaryKey(),
                     null, updatedBy);
         }
     }
@@ -1663,7 +1662,7 @@ public class UserControl
     public void deleteRecoveryQuestionDescription(RecoveryQuestionDescription recoveryQuestionDescription, BasePK deletedBy) {
         recoveryQuestionDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(recoveryQuestionDescription.getRecoveryQuestionPK(), EventTypes.MODIFY.name(),
+        sendEvent(recoveryQuestionDescription.getRecoveryQuestionPK(), EventTypes.MODIFY,
                 recoveryQuestionDescription.getPrimaryKey(), null, deletedBy);
     }
     
@@ -1690,7 +1689,7 @@ public class UserControl
         recoveryAnswer.setLastDetail(recoveryAnswerDetail);
         recoveryAnswer.store();
         
-        sendEventUsingNames(recoveryAnswer.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(recoveryAnswer.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return recoveryAnswer;
     }
@@ -1808,7 +1807,7 @@ public class UserControl
             recoveryAnswer.setActiveDetail(recoveryAnswerDetail);
             recoveryAnswer.setLastDetail(recoveryAnswerDetail);
 
-            sendEventUsingNames(recoveryAnswerPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(recoveryAnswerPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -1818,7 +1817,7 @@ public class UserControl
         recoveryAnswer.setActiveDetail(null);
         recoveryAnswer.store();
         
-        sendEventUsingNames(recoveryAnswer.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(recoveryAnswer.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteRecoveryAnswerByParty(Party party, BasePK deletedBy) {
@@ -2016,7 +2015,7 @@ public class UserControl
         UserLoginPassword userLoginPassword = UserLoginPasswordFactory.getInstance().create(party, userLoginPasswordType,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), userLoginPassword.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, userLoginPassword.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return userLoginPassword;
     }
@@ -2095,7 +2094,7 @@ public class UserControl
         return getUserTransferCaches(userVisit).getUserLoginPasswordTransferCache().getUserLoginPasswordTransfer(userLoginPassword);
     }
 
-    public List<UserLoginPasswordTransfer> getUserLoginPasswordTransfers(UserVisit userVisit, List<UserLoginPassword> userLoginPasswords) {
+    public List<UserLoginPasswordTransfer> getUserLoginPasswordTransfers(UserVisit userVisit, Collection<UserLoginPassword> userLoginPasswords) {
         List<UserLoginPasswordTransfer> userLoginPasswordTransfers = new ArrayList<>(userLoginPasswords.size());
         UserLoginPasswordTransferCache userLoginPasswordTransferCache = getUserTransferCaches(userVisit).getUserLoginPasswordTransferCache();
 
@@ -2121,7 +2120,7 @@ public class UserControl
             deleteUserLoginPasswordString(getUserLoginPasswordStringForUpdate(userLoginPassword), deletedBy);
         }
         
-        sendEventUsingNames(userLoginPassword.getPartyPK(), EventTypes.MODIFY.name(), userLoginPassword.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(userLoginPassword.getPartyPK(), EventTypes.MODIFY, userLoginPassword.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteUserLoginPasswords(List<UserLoginPassword> userLoginPasswords, BasePK deletedBy) {
@@ -2159,7 +2158,7 @@ public class UserControl
         UserLoginPasswordString userLoginPasswordString = UserLoginPasswordStringFactory.getInstance().create(session,
                 userLoginPassword, salt, password, changedTime, wasReset, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(userLoginPassword.getPartyPK(), EventTypes.MODIFY.name(), userLoginPasswordString.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(userLoginPassword.getPartyPK(), EventTypes.MODIFY, userLoginPasswordString.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return userLoginPasswordString;
     }
@@ -2263,7 +2262,7 @@ public class UserControl
             userLoginPasswordString = UserLoginPasswordStringFactory.getInstance().create(userLoginPasswordPK, salt, password, changedTime, wasReset,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(userLoginPasswordString.getUserLoginPassword().getPartyPK(), EventTypes.MODIFY.name(), userLoginPasswordString.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(userLoginPasswordString.getUserLoginPassword().getPartyPK(), EventTypes.MODIFY, userLoginPasswordString.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -2271,7 +2270,7 @@ public class UserControl
         userLoginPasswordString.setThruTime(session.START_TIME_LONG);
         userLoginPasswordString.store();
         
-        sendEventUsingNames(userLoginPasswordString.getUserLoginPassword().getPartyPK(), EventTypes.MODIFY.name(), userLoginPasswordString.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(userLoginPasswordString.getUserLoginPassword().getPartyPK(), EventTypes.MODIFY, userLoginPasswordString.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -2282,7 +2281,7 @@ public class UserControl
         UserLogin userLogin = UserLoginFactory.getInstance().create(party, username, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), userLogin.getPrimaryKey(), null, createdBy);
+        sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, userLogin.getPrimaryKey(), null, createdBy);
         
         createUserLoginStatus(party);
         
@@ -2397,7 +2396,7 @@ public class UserControl
             userLogin = UserLoginFactory.getInstance().create(partyPK, username, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(partyPK, EventTypes.MODIFY.name(), userLogin.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(partyPK, EventTypes.MODIFY, userLogin.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -2410,7 +2409,7 @@ public class UserControl
         
         userLogin.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(userLogin.getPartyPK(), EventTypes.MODIFY.name(), userLogin.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(userLogin.getPartyPK(), EventTypes.MODIFY, userLogin.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteUserLoginByParty(Party party, BasePK deletedBy) {

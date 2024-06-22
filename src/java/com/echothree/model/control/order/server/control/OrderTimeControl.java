@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ import com.echothree.model.control.order.server.transfer.OrderLineTimeTransferCa
 import com.echothree.model.control.order.server.transfer.OrderTimeTransferCache;
 import com.echothree.model.control.order.server.transfer.OrderTimeTypeDescriptionTransferCache;
 import com.echothree.model.control.order.server.transfer.OrderTimeTypeTransferCache;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.order.common.pk.OrderLinePK;
 import com.echothree.model.data.order.common.pk.OrderPK;
 import com.echothree.model.data.order.common.pk.OrderTimeTypePK;
@@ -53,6 +54,7 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -96,9 +98,38 @@ public class OrderTimeControl
         orderTimeType.setLastDetail(orderTimeTypeDetail);
         orderTimeType.store();
 
-        sendEventUsingNames(orderTimeType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(orderTimeType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return orderTimeType;
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.OrderTimeType */
+    public OrderTimeType getOrderTimeTypeByEntityInstance(final EntityInstance entityInstance,
+            final EntityPermission entityPermission) {
+        var pk = new OrderTimeTypePK(entityInstance.getEntityUniqueId());
+
+        return OrderTimeTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public OrderTimeType getOrderTimeTypeByEntityInstance(final EntityInstance entityInstance) {
+        return getOrderTimeTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public OrderTimeType getOrderTimeTypeByEntityInstanceForUpdate(final EntityInstance entityInstance) {
+        return getOrderTimeTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public OrderTimeType getOrderTimeTypeByPK(OrderTimeTypePK pk) {
+        return OrderTimeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+    }
+
+    public long countOrderPriorities(OrderType orderType) {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM ordertimetypes, ordertimetypedetails
+                WHERE ordtimtyp_activedetailid = ordtimtypdt_ordertimetypedetailid
+                AND ordtimtypdt_ordtyp_ordertypeid = ?
+                """, orderType);
     }
 
     private static final Map<EntityPermission, String> getOrderTimeTypeByNameQueries;
@@ -120,7 +151,7 @@ public class OrderTimeControl
         getOrderTimeTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private OrderTimeType getOrderTimeTypeByName(OrderType orderType, String orderTimeTypeName, EntityPermission entityPermission) {
+    public OrderTimeType getOrderTimeTypeByName(OrderType orderType, String orderTimeTypeName, EntityPermission entityPermission) {
         return OrderTimeTypeFactory.getInstance().getEntityFromQuery(entityPermission, getOrderTimeTypeByNameQueries,
                 orderType, orderTimeTypeName);
     }
@@ -160,7 +191,7 @@ public class OrderTimeControl
         getDefaultOrderTimeTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private OrderTimeType getDefaultOrderTimeType(OrderType orderType, EntityPermission entityPermission) {
+    public OrderTimeType getDefaultOrderTimeType(OrderType orderType, EntityPermission entityPermission) {
         return OrderTimeTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultOrderTimeTypeQueries,
                 orderType);
     }
@@ -214,8 +245,7 @@ public class OrderTimeControl
         return getOrderTransferCaches(userVisit).getOrderTimeTypeTransferCache().getOrderTimeTypeTransfer(orderTimeType);
     }
 
-    public List<OrderTimeTypeTransfer> getOrderTimeTypeTransfers(UserVisit userVisit, OrderType orderType) {
-        List<OrderTimeType> orderTimeTypes = getOrderTimeTypes(orderType);
+    public List<OrderTimeTypeTransfer> getOrderTimeTypeTransfers(UserVisit userVisit, Collection<OrderTimeType> orderTimeTypes) {
         List<OrderTimeTypeTransfer> orderTimeTypeTransfers = new ArrayList<>(orderTimeTypes.size());
         OrderTimeTypeTransferCache orderTimeTypeTransferCache = getOrderTransferCaches(userVisit).getOrderTimeTypeTransferCache();
 
@@ -224,6 +254,10 @@ public class OrderTimeControl
         );
 
         return orderTimeTypeTransfers;
+    }
+
+    public List<OrderTimeTypeTransfer> getOrderTimeTypeTransfers(UserVisit userVisit, OrderType orderType) {
+        return getOrderTimeTypeTransfers(userVisit, getOrderTimeTypes(orderType));
     }
 
     public OrderTimeTypeChoicesBean getOrderTimeTypeChoices(String defaultOrderTimeTypeChoice, Language language, boolean allowNullChoice,
@@ -300,7 +334,7 @@ public class OrderTimeControl
             orderTimeType.setActiveDetail(orderTimeTypeDetail);
             orderTimeType.setLastDetail(orderTimeTypeDetail);
 
-            sendEventUsingNames(orderTimeTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(orderTimeTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -335,7 +369,7 @@ public class OrderTimeControl
             }
         }
 
-        sendEventUsingNames(orderTimeType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(orderTimeType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     // --------------------------------------------------------------------------------
@@ -346,7 +380,7 @@ public class OrderTimeControl
         OrderTimeTypeDescription orderTimeTypeDescription = OrderTimeTypeDescriptionFactory.getInstance().create(orderTimeType, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(orderTimeType.getPrimaryKey(), EventTypes.MODIFY.name(), orderTimeTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(orderTimeType.getPrimaryKey(), EventTypes.MODIFY, orderTimeTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return orderTimeTypeDescription;
     }
@@ -468,14 +502,14 @@ public class OrderTimeControl
             orderTimeTypeDescription = OrderTimeTypeDescriptionFactory.getInstance().create(orderTimeType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(orderTimeType.getPrimaryKey(), EventTypes.MODIFY.name(), orderTimeTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(orderTimeType.getPrimaryKey(), EventTypes.MODIFY, orderTimeTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteOrderTimeTypeDescription(OrderTimeTypeDescription orderTimeTypeDescription, BasePK deletedBy) {
         orderTimeTypeDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(orderTimeTypeDescription.getOrderTimeTypePK(), EventTypes.MODIFY.name(), orderTimeTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(orderTimeTypeDescription.getOrderTimeTypePK(), EventTypes.MODIFY, orderTimeTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -494,7 +528,7 @@ public class OrderTimeControl
     public OrderTime createOrderTime(Order order, OrderTimeType orderTimeType, Long time, BasePK createdBy) {
         OrderTime orderTime = OrderTimeFactory.getInstance().create(order, orderTimeType, time, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(order.getPrimaryKey(), EventTypes.MODIFY.name(), orderTime.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(order.getPrimaryKey(), EventTypes.MODIFY, orderTime.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return orderTime;
     }
@@ -626,7 +660,7 @@ public class OrderTimeControl
         return getOrderTransferCaches(userVisit).getOrderTimeTransferCache().getOrderTimeTransfer(orderTime);
     }
 
-    public List<OrderTimeTransfer> getOrderTimeTransfers(UserVisit userVisit, List<OrderTime> orderTimes) {
+    public List<OrderTimeTransfer> getOrderTimeTransfers(UserVisit userVisit, Collection<OrderTime> orderTimes) {
         List<OrderTimeTransfer> orderTimeTransfers = new ArrayList<>(orderTimes.size());
         OrderTimeTransferCache orderTimeTransferCache = getOrderTransferCaches(userVisit).getOrderTimeTransferCache();
 
@@ -659,14 +693,14 @@ public class OrderTimeControl
 
             orderTime = OrderTimeFactory.getInstance().create(orderPK, orderTimeTypePK, time, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(orderPK, EventTypes.MODIFY.name(), orderTime.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(orderPK, EventTypes.MODIFY, orderTime.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteOrderTime(OrderTime orderTime, BasePK deletedBy) {
         orderTime.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(orderTime.getOrderTimeTypePK(), EventTypes.MODIFY.name(), orderTime.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(orderTime.getOrderTimeTypePK(), EventTypes.MODIFY, orderTime.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -691,7 +725,7 @@ public class OrderTimeControl
     public OrderLineTime createOrderLineTime(OrderLine orderLine, OrderTimeType orderTimeType, Long time, BasePK createdBy) {
         OrderLineTime orderLineTime = OrderLineTimeFactory.getInstance().create(orderLine, orderTimeType, time, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(orderLine.getPrimaryKey(), EventTypes.MODIFY.name(), orderLineTime.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(orderLine.getPrimaryKey(), EventTypes.MODIFY, orderLineTime.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return orderLineTime;
     }
@@ -826,7 +860,7 @@ public class OrderTimeControl
         return getOrderTransferCaches(userVisit).getOrderLineTimeTransferCache().getOrderLineTimeTransfer(orderLineTime);
     }
 
-    public List<OrderLineTimeTransfer> getOrderLineTimeTransfers(UserVisit userVisit, List<OrderLineTime> orderLineTimes) {
+    public List<OrderLineTimeTransfer> getOrderLineTimeTransfers(UserVisit userVisit, Collection<OrderLineTime> orderLineTimes) {
         List<OrderLineTimeTransfer> orderLineTimeTransfers = new ArrayList<>(orderLineTimes.size());
         OrderLineTimeTransferCache orderLineTimeTransferCache = getOrderTransferCaches(userVisit).getOrderLineTimeTransferCache();
 
@@ -859,14 +893,14 @@ public class OrderTimeControl
 
             orderLineTime = OrderLineTimeFactory.getInstance().create(orderLinePK, orderTimeTypePK, time, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(orderLinePK, EventTypes.MODIFY.name(), orderLineTime.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(orderLinePK, EventTypes.MODIFY, orderLineTime.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteOrderLineTime(OrderLineTime orderLineTime, BasePK deletedBy) {
         orderLineTime.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(orderLineTime.getOrderTimeTypePK(), EventTypes.MODIFY.name(), orderLineTime.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(orderLineTime.getOrderTimeTypePK(), EventTypes.MODIFY, orderLineTime.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 

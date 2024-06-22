@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -56,14 +56,14 @@ public class GetUnitOfMeasureTypeCommand
                 form.getUnitOfMeasureKindName(), form.getUnitOfMeasureTypeName());
         
         if(!hasExecutionErrors()) {
-            sendEventUsingNames(unitOfMeasureType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(unitOfMeasureType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
         
         return unitOfMeasureType;
     }
     
     @Override
-    protected BaseResult getTransfer(UnitOfMeasureType unitOfMeasureType) {
+    protected BaseResult getResult(UnitOfMeasureType unitOfMeasureType) {
         var uomControl = Session.getModelController(UomControl.class);
         GetUnitOfMeasureTypeResult result = UomResultFactory.getGetUnitOfMeasureTypeResult();
         

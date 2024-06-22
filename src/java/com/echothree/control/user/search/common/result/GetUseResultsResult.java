@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,8 +23,8 @@ import java.util.List;
 public interface GetUseResultsResult
         extends BaseResult {
     
-    Integer getUseResultCount();
-    void setUseResultCount(Integer useResultCount);
+    Long getUseResultCount();
+    void setUseResultCount(Long useResultCount);
 
     List<UseResultTransfer> getUseResults();
     void setUseResults(List<UseResultTransfer> useResults);

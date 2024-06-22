@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,11 +21,15 @@ import com.echothree.control.user.vendor.common.edit.VendorEditFactory;
 import com.echothree.control.user.vendor.common.form.EditItemPurchasingCategoryForm;
 import com.echothree.control.user.vendor.common.result.EditItemPurchasingCategoryResult;
 import com.echothree.control.user.vendor.common.result.VendorResultFactory;
-import com.echothree.control.user.vendor.common.spec.ItemPurchasingCategorySpec;
+import com.echothree.control.user.vendor.common.spec.ItemPurchasingCategoryUniversalSpec;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.vendor.server.control.VendorControl;
+import com.echothree.model.control.vendor.server.logic.ItemPurchasingCategoryLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.vendor.server.entity.ItemPurchasingCategory;
 import com.echothree.model.data.vendor.server.entity.ItemPurchasingCategoryDescription;
@@ -35,9 +39,7 @@ import com.echothree.model.data.vendor.server.value.ItemPurchasingCategoryDetail
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -47,7 +49,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class EditItemPurchasingCategoryCommand
-        extends BaseEditCommand<ItemPurchasingCategorySpec, ItemPurchasingCategoryEdit> {
+        extends BaseAbstractEditCommand<ItemPurchasingCategoryUniversalSpec, ItemPurchasingCategoryEdit, EditItemPurchasingCategoryResult, ItemPurchasingCategory, ItemPurchasingCategory> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
@@ -62,7 +64,11 @@ public class EditItemPurchasingCategoryCommand
                 )));
         
         SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("ItemPurchasingCategoryName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("ItemPurchasingCategoryName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
                 ));
         
         EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
@@ -70,117 +76,136 @@ public class EditItemPurchasingCategoryCommand
                 new FieldDefinition("ParentItemPurchasingCategoryName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
-                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 ));
     }
-    
+
     /** Creates a new instance of EditItemPurchasingCategoryCommand */
     public EditItemPurchasingCategoryCommand(UserVisitPK userVisitPK, EditItemPurchasingCategoryForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
+    public EditItemPurchasingCategoryResult getResult() {
+        return VendorResultFactory.getEditItemPurchasingCategoryResult();
+    }
+
+    @Override
+    public ItemPurchasingCategoryEdit getEdit() {
+        return VendorEditFactory.getItemPurchasingCategoryEdit();
+    }
+
+    @Override
+    public ItemPurchasingCategory getEntity(EditItemPurchasingCategoryResult result) {
         var vendorControl = Session.getModelController(VendorControl.class);
-        EditItemPurchasingCategoryResult result = VendorResultFactory.getEditItemPurchasingCategoryResult();
-        
-        if(editMode.equals(EditMode.LOCK)) {
-            String itemPurchasingCategoryName = spec.getItemPurchasingCategoryName();
-            ItemPurchasingCategory itemPurchasingCategory = vendorControl.getItemPurchasingCategoryByName(itemPurchasingCategoryName);
-            
-            if(itemPurchasingCategory != null) {
-                result.setItemPurchasingCategory(vendorControl.getItemPurchasingCategoryTransfer(getUserVisit(), itemPurchasingCategory));
-                
-                if(lockEntity(itemPurchasingCategory)) {
-                    ItemPurchasingCategoryDescription itemPurchasingCategoryDescription = vendorControl.getItemPurchasingCategoryDescription(itemPurchasingCategory, getPreferredLanguage());
-                    ItemPurchasingCategoryEdit edit = VendorEditFactory.getItemPurchasingCategoryEdit();
-                    ItemPurchasingCategoryDetail itemPurchasingCategoryDetail = itemPurchasingCategory.getLastDetail();
-                    ItemPurchasingCategory parentItemPurchasingCategory = itemPurchasingCategoryDetail.getParentItemPurchasingCategory();
-                    
-                    result.setEdit(edit);
-                    edit.setItemPurchasingCategoryName(itemPurchasingCategoryDetail.getItemPurchasingCategoryName());
-                    edit.setParentItemPurchasingCategoryName(parentItemPurchasingCategory == null? null: parentItemPurchasingCategory.getLastDetail().getItemPurchasingCategoryName());
-                    edit.setIsDefault(itemPurchasingCategoryDetail.getIsDefault().toString());
-                    edit.setSortOrder(itemPurchasingCategoryDetail.getSortOrder().toString());
-                    
-                    if(itemPurchasingCategoryDescription != null)
-                        edit.setDescription(itemPurchasingCategoryDescription.getDescription());
-                } else {
-                    addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                }
-                
-                result.setEntityLock(getEntityLockTransfer(itemPurchasingCategory));
-            } else {
-                addExecutionError(ExecutionErrors.UnknownItemPurchasingCategoryName.name(), itemPurchasingCategoryName);
-            }
-        } else if(editMode.equals(EditMode.UPDATE)) {
-            String itemPurchasingCategoryName = spec.getItemPurchasingCategoryName();
-            ItemPurchasingCategory itemPurchasingCategory = vendorControl.getItemPurchasingCategoryByNameForUpdate(itemPurchasingCategoryName);
-            
-            if(itemPurchasingCategory != null) {
-                itemPurchasingCategoryName = edit.getItemPurchasingCategoryName();
-                ItemPurchasingCategory duplicateItemPurchasingCategory = vendorControl.getItemPurchasingCategoryByName(itemPurchasingCategoryName);
-                
-                if(duplicateItemPurchasingCategory == null || itemPurchasingCategory.equals(duplicateItemPurchasingCategory)) {
-                    String parentItemPurchasingCategoryName = edit.getParentItemPurchasingCategoryName();
-                    ItemPurchasingCategory parentItemPurchasingCategory = null;
-                    
-                    if(parentItemPurchasingCategoryName != null) {
-                        parentItemPurchasingCategory = vendorControl.getItemPurchasingCategoryByName(parentItemPurchasingCategoryName);
-                    }
-                    
-                    if(parentItemPurchasingCategoryName == null || parentItemPurchasingCategory != null) {
-                        if(vendorControl.isParentItemPurchasingCategorySafe(itemPurchasingCategory, parentItemPurchasingCategory)) {
-                            if(lockEntityForUpdate(itemPurchasingCategory)) {
-                                try {
-                                    var partyPK = getPartyPK();
-                                    ItemPurchasingCategoryDetailValue itemPurchasingCategoryDetailValue = vendorControl.getItemPurchasingCategoryDetailValueForUpdate(itemPurchasingCategory);
-                                    ItemPurchasingCategoryDescription itemPurchasingCategoryDescription = vendorControl.getItemPurchasingCategoryDescriptionForUpdate(itemPurchasingCategory, getPreferredLanguage());
-                                    String description = edit.getDescription();
-                                    
-                                    itemPurchasingCategoryDetailValue.setItemPurchasingCategoryName(edit.getItemPurchasingCategoryName());
-                                    itemPurchasingCategoryDetailValue.setParentItemPurchasingCategoryPK(parentItemPurchasingCategory == null? null: parentItemPurchasingCategory.getPrimaryKey());
-                                    itemPurchasingCategoryDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
-                                    itemPurchasingCategoryDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
-                                    
-                                    vendorControl.updateItemPurchasingCategoryFromValue(itemPurchasingCategoryDetailValue, partyPK);
-                                    
-                                    if(itemPurchasingCategoryDescription == null && description != null) {
-                                        vendorControl.createItemPurchasingCategoryDescription(itemPurchasingCategory, getPreferredLanguage(), description, partyPK);
-                                    } else if(itemPurchasingCategoryDescription != null && description == null) {
-                                        vendorControl.deleteItemPurchasingCategoryDescription(itemPurchasingCategoryDescription, partyPK);
-                                    } else if(itemPurchasingCategoryDescription != null && description != null) {
-                                        ItemPurchasingCategoryDescriptionValue itemPurchasingCategoryDescriptionValue = vendorControl.getItemPurchasingCategoryDescriptionValue(itemPurchasingCategoryDescription);
-                                        
-                                        itemPurchasingCategoryDescriptionValue.setDescription(description);
-                                        vendorControl.updateItemPurchasingCategoryDescriptionFromValue(itemPurchasingCategoryDescriptionValue, partyPK);
-                                    }
-                                } finally {
-                                    unlockEntity(itemPurchasingCategory);
-                                }
-                            } else {
-                                addExecutionError(ExecutionErrors.EntityLockStale.name());
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.InvalidParentItemPurchasingCategory.name());
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownParentItemPurchasingCategoryName.name(), parentItemPurchasingCategoryName);
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.DuplicateItemPurchasingCategoryName.name(), itemPurchasingCategoryName);
+        ItemPurchasingCategory itemPurchasingCategory = null;
+        String itemPurchasingCategoryName = spec.getItemPurchasingCategoryName();
+        var parameterCount = (itemPurchasingCategoryName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(spec);
+
+        if(parameterCount == 1) {
+            if(itemPurchasingCategoryName == null) {
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, spec, ComponentVendors.ECHO_THREE.name(),
+                        EntityTypes.ItemPurchasingCategory.name());
+
+                if(!hasExecutionErrors()) {
+                    itemPurchasingCategory = vendorControl.getItemPurchasingCategoryByEntityInstance(entityInstance, editModeToEntityPermission(editMode));
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownItemPurchasingCategoryName.name(), itemPurchasingCategoryName);
+                itemPurchasingCategory = ItemPurchasingCategoryLogic.getInstance().getItemPurchasingCategoryByName(this, itemPurchasingCategoryName, editModeToEntityPermission(editMode));
             }
-            
-            if(hasExecutionErrors()) {
+
+            if(itemPurchasingCategory != null) {
                 result.setItemPurchasingCategory(vendorControl.getItemPurchasingCategoryTransfer(getUserVisit(), itemPurchasingCategory));
-                result.setEntityLock(getEntityLockTransfer(itemPurchasingCategory));
             }
+        } else {
+            addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
-        
-        return result;
+
+        return itemPurchasingCategory;
+    }
+
+    @Override
+    public ItemPurchasingCategory getLockEntity(ItemPurchasingCategory itemPurchasingCategory) {
+        return itemPurchasingCategory;
+    }
+
+    @Override
+    public void fillInResult(EditItemPurchasingCategoryResult result, ItemPurchasingCategory itemPurchasingCategory) {
+        var vendorControl = Session.getModelController(VendorControl.class);
+
+        result.setItemPurchasingCategory(vendorControl.getItemPurchasingCategoryTransfer(getUserVisit(), itemPurchasingCategory));
+    }
+
+    ItemPurchasingCategory parentItemPurchasingCategory = null;
+
+    @Override
+    public void doLock(ItemPurchasingCategoryEdit edit, ItemPurchasingCategory itemPurchasingCategory) {
+        var vendorControl = Session.getModelController(VendorControl.class);
+        ItemPurchasingCategoryDescription itemPurchasingCategoryDescription = vendorControl.getItemPurchasingCategoryDescription(itemPurchasingCategory, getPreferredLanguage());
+        ItemPurchasingCategoryDetail itemPurchasingCategoryDetail = itemPurchasingCategory.getLastDetail();
+
+        parentItemPurchasingCategory = itemPurchasingCategoryDetail.getParentItemPurchasingCategory();
+
+        edit.setItemPurchasingCategoryName(itemPurchasingCategoryDetail.getItemPurchasingCategoryName());
+        edit.setParentItemPurchasingCategoryName(parentItemPurchasingCategory == null? null: parentItemPurchasingCategory.getLastDetail().getItemPurchasingCategoryName());
+        edit.setIsDefault(itemPurchasingCategoryDetail.getIsDefault().toString());
+        edit.setSortOrder(itemPurchasingCategoryDetail.getSortOrder().toString());
+
+        if(itemPurchasingCategoryDescription != null) {
+            edit.setDescription(itemPurchasingCategoryDescription.getDescription());
+        }
+    }
+
+    @Override
+    public void canUpdate(ItemPurchasingCategory itemPurchasingCategory) {
+        var vendorControl = Session.getModelController(VendorControl.class);
+        String itemPurchasingCategoryName = edit.getItemPurchasingCategoryName();
+        ItemPurchasingCategory duplicateItemPurchasingCategory = vendorControl.getItemPurchasingCategoryByName(itemPurchasingCategoryName);
+
+        if(duplicateItemPurchasingCategory == null || itemPurchasingCategory.equals(duplicateItemPurchasingCategory)) {
+            String parentItemPurchasingCategoryName = edit.getParentItemPurchasingCategoryName();
+
+            parentItemPurchasingCategory = parentItemPurchasingCategoryName == null? null: vendorControl.getItemPurchasingCategoryByName(parentItemPurchasingCategoryName);
+
+            if(parentItemPurchasingCategoryName == null || parentItemPurchasingCategory != null) {
+                if(parentItemPurchasingCategory != null) {
+                    if(!vendorControl.isParentItemPurchasingCategorySafe(itemPurchasingCategory, parentItemPurchasingCategory)) {
+                        addExecutionError(ExecutionErrors.InvalidParentItemPurchasingCategory.name());
+                    }
+                }
+            } else {
+                addExecutionError(ExecutionErrors.UnknownParentItemPurchasingCategoryName.name(), parentItemPurchasingCategoryName);
+            }
+        } else {
+            addExecutionError(ExecutionErrors.DuplicateItemPurchasingCategoryName.name(), itemPurchasingCategoryName);
+        }
+    }
+
+    @Override
+    public void doUpdate(ItemPurchasingCategory itemPurchasingCategory) {
+        var vendorControl = Session.getModelController(VendorControl.class);
+        var partyPK = getPartyPK();
+        ItemPurchasingCategoryDetailValue itemPurchasingCategoryDetailValue = vendorControl.getItemPurchasingCategoryDetailValueForUpdate(itemPurchasingCategory);
+        ItemPurchasingCategoryDescription itemPurchasingCategoryDescription = vendorControl.getItemPurchasingCategoryDescriptionForUpdate(itemPurchasingCategory, getPreferredLanguage());
+        String description = edit.getDescription();
+
+        itemPurchasingCategoryDetailValue.setItemPurchasingCategoryName(edit.getItemPurchasingCategoryName());
+        itemPurchasingCategoryDetailValue.setParentItemPurchasingCategoryPK(parentItemPurchasingCategory == null? null: parentItemPurchasingCategory.getPrimaryKey());
+        itemPurchasingCategoryDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
+        itemPurchasingCategoryDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
+
+        vendorControl.updateItemPurchasingCategoryFromValue(itemPurchasingCategoryDetailValue, partyPK);
+
+        if(itemPurchasingCategoryDescription == null && description != null) {
+            vendorControl.createItemPurchasingCategoryDescription(itemPurchasingCategory, getPreferredLanguage(), description, partyPK);
+        } else if(itemPurchasingCategoryDescription != null && description == null) {
+            vendorControl.deleteItemPurchasingCategoryDescription(itemPurchasingCategoryDescription, partyPK);
+        } else if(itemPurchasingCategoryDescription != null && description != null) {
+            ItemPurchasingCategoryDescriptionValue itemPurchasingCategoryDescriptionValue = vendorControl.getItemPurchasingCategoryDescriptionValue(itemPurchasingCategoryDescription);
+
+            itemPurchasingCategoryDescriptionValue.setDescription(description);
+            vendorControl.updateItemPurchasingCategoryDescriptionFromValue(itemPurchasingCategoryDescriptionValue, partyPK);
+        }
     }
     
 }

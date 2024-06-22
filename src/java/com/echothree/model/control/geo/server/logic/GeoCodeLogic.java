@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,7 +16,12 @@
 
 package com.echothree.model.control.geo.server.logic;
 
+import com.echothree.control.user.geo.common.spec.GeoCodeUniversalSpec;
 import com.echothree.model.control.contact.server.control.ContactControl;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.geo.common.exception.UnknownGeoCodeAliasTypeNameException;
 import com.echothree.model.control.geo.common.exception.UnknownGeoCodeNameException;
 import com.echothree.model.control.geo.server.control.GeoControl;
@@ -25,14 +30,13 @@ import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.control.tax.server.control.TaxControl;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.geo.server.entity.GeoCodeAlias;
-import com.echothree.model.data.geo.server.entity.GeoCodeAliasType;
 import com.echothree.model.data.geo.server.entity.GeoCodeScope;
 import com.echothree.model.data.geo.server.entity.GeoCodeType;
-import com.echothree.model.data.geo.server.value.GeoCodeAliasValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 
 public class GeoCodeLogic
@@ -42,38 +46,69 @@ public class GeoCodeLogic
         super();
     }
 
-    private static class GeoLogicHolder {
+    private static class GeoCodeLogicHolder {
         static GeoCodeLogic instance = new GeoCodeLogic();
     }
 
     public static GeoCodeLogic getInstance() {
-        return GeoLogicHolder.instance;
+        return GeoCodeLogicHolder.instance;
     }
 
-    public GeoCode getGeoCodeByName(final ExecutionErrorAccumulator eea, final String geoCodeName) {
+    public GeoCode getGeoCodeByName(final ExecutionErrorAccumulator eea, final String geoCodeName,
+            final EntityPermission entityPermission) {
         var geoControl = Session.getModelController(GeoControl.class);
-        var geoCode = geoControl.getGeoCodeByName(geoCodeName);
+        var geoCode = geoControl.getGeoCodeByName(geoCodeName, entityPermission);
 
         if(geoCode == null) {
-            handleExecutionError(UnknownGeoCodeNameException.class, eea, ExecutionErrors.UnknownGeoCodeName.name(),
-                    geoCodeName);
+            handleExecutionError(UnknownGeoCodeNameException.class, eea, ExecutionErrors.UnknownGeoCodeName.name(), geoCodeName);
         }
 
         return geoCode;
     }
-    
-    public GeoCodeAlias getGeoCodeAliasUsingNames(final ExecutionErrorAccumulator eea, final GeoCode geoCode,
-            final String geoCodeAliasTypeName) {
-        var geoControl = Session.getModelController(GeoControl.class);
 
-        return geoControl.getGeoCodeAlias(geoCode, getGeoCodeAliasTypeByName(eea, geoCode.getLastDetail().getGeoCodeType(), geoCodeAliasTypeName));
+    public GeoCode getGeoCodeByName(final ExecutionErrorAccumulator eea, final String geoCodeName) {
+        return getGeoCodeByName(eea, geoCodeName, EntityPermission.READ_ONLY);
     }
 
-    public GeoCodeAliasValue getGeoCodeAliasValueUsingNames(final ExecutionErrorAccumulator ema, final GeoCode geoCode,
-            final String geoCodeAliasTypeName) {
-        var geoControl = Session.getModelController(GeoControl.class);
+    public GeoCode getGeoCodeByNameForUpdate(final ExecutionErrorAccumulator eea, final String geoCodeName) {
+        return getGeoCodeByName(eea, geoCodeName, EntityPermission.READ_WRITE);
+    }
 
-        return geoControl.getGeoCodeAliasValueForUpdate(geoCode, getGeoCodeAliasTypeByName(ema, geoCode.getLastDetail().getGeoCodeType(), geoCodeAliasTypeName));
+    public GeoCode getGeoCodeByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final GeoCodeUniversalSpec universalSpec, final EntityPermission entityPermission) {
+        GeoCode geoCode = null;
+        var geoControl = Session.getModelController(GeoControl.class);
+        var geoCodeName = universalSpec.getGeoCodeName();
+        var parameterCount = (geoCodeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+
+        switch(parameterCount) {
+            case 1 -> {
+                if(geoCodeName == null) {
+                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.GeoCode.name());
+
+                    if(!eea.hasExecutionErrors()) {
+                        geoCode = geoControl.getGeoCodeByEntityInstance(entityInstance, entityPermission);
+                    }
+                } else {
+                    geoCode = getGeoCodeByName(eea, geoCodeName, entityPermission);
+                }
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+        }
+
+        return geoCode;
+    }
+
+    public GeoCode getGeoCodeByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final GeoCodeUniversalSpec universalSpec) {
+        return getGeoCodeByUniversalSpec(eea, universalSpec, EntityPermission.READ_ONLY);
+    }
+
+    public GeoCode getGeoCodeByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea,
+            final GeoCodeUniversalSpec universalSpec) {
+        return getGeoCodeByUniversalSpec(eea, universalSpec, EntityPermission.READ_WRITE);
     }
 
     public GeoCode getGeoCodeByAlias(final ExecutionErrorAccumulator eea, final GeoCodeType geoCodeType, final GeoCodeScope geoCodeScope,
@@ -90,19 +125,6 @@ public class GeoCodeLogic
         }
 
         return geoCodeAlias == null ? null : geoCodeAlias.getGeoCode();
-    }
-
-    public GeoCodeAliasType getGeoCodeAliasTypeByName(final ExecutionErrorAccumulator eea, final GeoCodeType geoCodeType,
-            final String geoCodeAliasTypeName) {
-        var geoControl = Session.getModelController(GeoControl.class);
-        var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, geoCodeAliasTypeName);
-
-        if(geoCodeAliasType == null) {
-            handleExecutionError(UnknownGeoCodeAliasTypeNameException.class, eea, ExecutionErrors.UnknownGeoCodeAliasTypeName.name(),
-                    geoCodeType.getLastDetail().getGeoCodeTypeName(), geoCodeAliasTypeName);
-        }
-
-        return geoCodeAliasType;
     }
 
     public void deleteGeoCode(final ExecutionErrorAccumulator eea, final GeoCode geoCode, final BasePK deletedBy) {

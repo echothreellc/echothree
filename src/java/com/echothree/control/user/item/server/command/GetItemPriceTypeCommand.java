@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,52 +17,83 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.GetItemPriceTypeForm;
-import com.echothree.control.user.item.common.result.GetItemPriceTypeResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.item.server.logic.ItemPriceTypeLogic;
 import com.echothree.model.data.item.server.entity.ItemPriceType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class GetItemPriceTypeCommand
-        extends BaseSimpleCommand<GetItemPriceTypeForm> {
-    
+        extends BaseSingleEntityCommand<ItemPriceType, GetItemPriceTypeForm> {
+
+    // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-            new FieldDefinition("ItemPriceTypeName", FieldType.ENTITY_NAME, false, null, null)
-        ));
+        FORM_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("ItemPriceTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
+        );
     }
-    
+
     /** Creates a new instance of GetItemPriceTypeCommand */
     public GetItemPriceTypeCommand(UserVisitPK userVisitPK, GetItemPriceTypeForm form) {
         super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
+    protected ItemPriceType getEntity() {
         var itemControl = Session.getModelController(ItemControl.class);
-        GetItemPriceTypeResult result = ItemResultFactory.getGetItemPriceTypeResult();
-        String itemPriceTypeName = form.getItemPriceTypeName();
-        ItemPriceType itemPriceType = itemControl.getItemPriceTypeByName(itemPriceTypeName);
-        
+        ItemPriceType itemPriceType = null;
+        var itemPriceTypeName = form.getItemPriceTypeName();
+        var parameterCount = (itemPriceTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+
+        if(parameterCount == 1) {
+            if(itemPriceTypeName == null) {
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
+                        ComponentVendors.ECHO_THREE.name(), EntityTypes.ItemPriceType.name());
+
+                if(!hasExecutionErrors()) {
+                    itemPriceType = itemControl.getItemPriceTypeByEntityInstance(entityInstance);
+                }
+            } else {
+                itemPriceType = ItemPriceTypeLogic.getInstance().getItemPriceTypeByName(this, itemPriceTypeName);
+            }
+
+            if(itemPriceType != null) {
+                sendEvent(itemPriceType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+            }
+        } else {
+            addExecutionError(ExecutionErrors.InvalidParameterCount.name());
+        }
+
+        return itemPriceType;
+    }
+
+    @Override
+    protected BaseResult getResult(ItemPriceType itemPriceType) {
+        var itemControl = Session.getModelController(ItemControl.class);
+        var result = ItemResultFactory.getGetItemPriceTypeResult();
+
         if(itemPriceType != null) {
             result.setItemPriceType(itemControl.getItemPriceTypeTransfer(getUserVisit(), itemPriceType));
-        } else {
-            addExecutionError(ExecutionErrors.UnknownItemPriceTypeName.name(), itemPriceTypeName);
         }
-        
-        
+
         return result;
     }
-    
+
 }

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,10 +17,10 @@
 package com.echothree.cucumber.authentication;
 
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
-import com.echothree.cucumber.util.persona.CustomerPersona;
-import com.echothree.cucumber.util.persona.CustomerPersonas;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
+import com.echothree.cucumber.util.persona.CustomerPersona;
+import com.echothree.cucumber.util.persona.CustomerPersonas;
 import io.cucumber.java8.En;
 import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -37,16 +37,54 @@ public class CustomerLoginSteps implements En {
                     }
                 });
 
-        When("^the user logs in as a customer with the username \"([^\"]*)\" and password \"([^\"]*)\"$",
-                (String username, String password) -> {
+        When("^the user begins to log in as an customer$",
+                () -> {
+                    var persona = CurrentPersona.persona;
+
+                    assertThat(persona.customerLoginForm).isNull();
+
+                    persona.customerLoginForm = AuthenticationUtil.getHome().getCustomerLoginForm();
+                });
+
+        And("^the customer sets the username to \"([^\"]*)\"$",
+                (String username) -> {
+                    var persona = CurrentPersona.persona;
+
+                    assertThat(persona.customerLoginForm).isNotNull();
+
+                    persona.customerLoginForm.setUsername(username);
+                });
+
+        And("^the customer sets the password to \"([^\"]*)\"$",
+                (String password) -> {
+                    var persona = CurrentPersona.persona;
+
+                    assertThat(persona.customerLoginForm).isNotNull();
+
+                    persona.customerLoginForm.setPassword(password);
+                });
+
+        And("^the customer sets the remote IPv4 address to \"([^\"]*)\"$",
+                (String remoteInet4Address) -> {
+                    var persona = CurrentPersona.persona;
+
+                    assertThat(persona.customerLoginForm).isNotNull();
+
+                    persona.customerLoginForm.setRemoteInet4Address(remoteInet4Address);
+                });
+
+        And("^the customer logs in$",
+                () -> {
+                    var persona = CurrentPersona.persona;
+                    var customerLoginForm = persona.customerLoginForm;
+
+                    assertThat(persona.customerLoginForm).isNotNull();
+
                     var authenticationService = AuthenticationUtil.getHome();
-                    var customerLoginForm = authenticationService.getCustomerLoginForm();
 
-                    customerLoginForm.setUsername(username);
-                    customerLoginForm.setPassword(password);
-                    customerLoginForm.setRemoteInet4Address("0.0.0.0");
+                    LastCommandResult.commandResult = authenticationService.customerLogin(persona.userVisitPK, customerLoginForm);
 
-                    LastCommandResult.commandResult = authenticationService.customerLogin(CurrentPersona.persona.userVisitPK, customerLoginForm);
+                    persona.customerLoginForm = null;
                 });
     }
 

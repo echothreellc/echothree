@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -27,8 +27,8 @@ public class WishlistTransferCaches
     
     protected WishlistTypeTransferCache wishlistTypeTransferCache;
     protected WishlistTypeDescriptionTransferCache wishlistTypeDescriptionTransferCache;
-    protected WishlistTypePriorityTransferCache wishlistTypePriorityTransferCache;
-    protected WishlistTypePriorityDescriptionTransferCache wishlistTypePriorityDescriptionTransferCache;
+    protected WishlistPriorityTransferCache wishlistPriorityTransferCache;
+    protected WishlistPriorityDescriptionTransferCache wishlistPriorityDescriptionTransferCache;
     protected WishlistTransferCache wishlistTransferCache;
     protected WishlistLineTransferCache wishlistLineTransferCache;
     
@@ -53,18 +53,18 @@ public class WishlistTransferCaches
         return wishlistTypeDescriptionTransferCache;
     }
     
-    public WishlistTypePriorityTransferCache getWishlistTypePriorityTransferCache() {
-        if(wishlistTypePriorityTransferCache == null)
-            wishlistTypePriorityTransferCache = new WishlistTypePriorityTransferCache(userVisit, wishlistControl);
+    public WishlistPriorityTransferCache getWishlistPriorityTransferCache() {
+        if(wishlistPriorityTransferCache == null)
+            wishlistPriorityTransferCache = new WishlistPriorityTransferCache(userVisit, wishlistControl);
         
-        return wishlistTypePriorityTransferCache;
+        return wishlistPriorityTransferCache;
     }
     
-    public WishlistTypePriorityDescriptionTransferCache getWishlistTypePriorityDescriptionTransferCache() {
-        if(wishlistTypePriorityDescriptionTransferCache == null)
-            wishlistTypePriorityDescriptionTransferCache = new WishlistTypePriorityDescriptionTransferCache(userVisit, wishlistControl);
+    public WishlistPriorityDescriptionTransferCache getWishlistPriorityDescriptionTransferCache() {
+        if(wishlistPriorityDescriptionTransferCache == null)
+            wishlistPriorityDescriptionTransferCache = new WishlistPriorityDescriptionTransferCache(userVisit, wishlistControl);
         
-        return wishlistTypePriorityDescriptionTransferCache;
+        return wishlistPriorityDescriptionTransferCache;
     }
     
     public WishlistTransferCache getWishlistTransferCache() {

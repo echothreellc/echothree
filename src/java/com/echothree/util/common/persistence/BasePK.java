@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -65,7 +65,7 @@ public class BasePK
      */
     public String getEntityRef() {
         if(_entityRef == null) {
-            _entityRef = new StringBuilder().append(getComponentVendorName()).append(".").append(getEntityTypeName()).append(".").append(getEntityId()).toString();
+            _entityRef = getComponentVendorName() + "." + getEntityTypeName() + "." + getEntityId();
         }
         
         return _entityRef;
@@ -78,7 +78,7 @@ public class BasePK
     @Override
     public String toString() {
         if( _stringValue == null ) {
-            _stringValue = new StringBuilder("[.").append(getEntityRef()).append(']').toString();
+            _stringValue = "[." + getEntityRef() + ']';
         }
         
         return _stringValue;

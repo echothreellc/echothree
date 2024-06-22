@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -111,7 +111,7 @@ public class SecureFormTag
         }
         
         // Return the completed value
-        return (url);
+        return url;
     }
     
     /**
@@ -217,7 +217,7 @@ public class SecureFormTag
         pageContext.setAttribute(Constants.BEAN_KEY, bean, PageContext.REQUEST_SCOPE);
         
         // Continue processing this page
-        return (EVAL_BODY_INCLUDE);
+        return EVAL_BODY_INCLUDE;
     }
     
 }

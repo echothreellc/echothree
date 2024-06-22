@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -52,7 +52,7 @@ public class WorkflowTriggerLogic {
     private EntityTypeTrigger locateTrigger(final ExecutionErrorAccumulator eea, final String componentVendorName, final String entityTypeName) {
         EntityTypeTrigger result = null;
         
-        if(componentVendorName.equals(ComponentVendors.ECHOTHREE.name())) {
+        if(componentVendorName.equals(ComponentVendors.ECHO_THREE.name())) {
             if(entityTypeName.equals(EntityTypes.PartyTrainingClass.name())) {
                 result = new PartyTrainingClassTrigger();
             } else if(entityTypeName.equals(EntityTypes.PrinterGroupJob.name())) {

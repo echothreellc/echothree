@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -62,7 +62,7 @@ public class WorkEffortTransferCache
         if(workEffortTransfer == null) {
             WorkEffortDetail workEffortDetail = workEffort.getLastDetail();
             String workEffortName = workEffortDetail.getWorkEffortName();
-            EntityInstanceTransfer owningEntityInstance = coreControl.getEntityInstanceTransfer(userVisit, workEffortDetail.getOwningEntityInstance(), false, false, false, false, false);
+            EntityInstanceTransfer owningEntityInstance = coreControl.getEntityInstanceTransfer(userVisit, workEffortDetail.getOwningEntityInstance(), false, false, false, false, false, false);
             WorkEffortScopeTransfer workEffortScope = workEffortControl.getWorkEffortScopeTransfer(userVisit, workEffortDetail.getWorkEffortScope());
             Long unformattedScheduledTime = workEffortDetail.getScheduledTime();
             String scheduledTime = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedScheduledTime);

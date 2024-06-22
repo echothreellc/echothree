@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,6 +21,9 @@ import com.echothree.control.user.core.common.spec.GuidSpec;
 import com.echothree.control.user.core.common.spec.KeySpec;
 import com.echothree.control.user.core.common.spec.UlidSpec;
 import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.control.core.common.exception.InvalidComponentVendorException;
 import com.echothree.model.control.core.common.exception.InvalidEntityTypeException;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.common.exception.UnknownEntityRefException;
@@ -28,15 +31,19 @@ import com.echothree.model.control.core.common.exception.UnknownGuidException;
 import com.echothree.model.control.core.common.exception.UnknownKeyException;
 import com.echothree.model.control.core.common.exception.UnknownUlidException;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.data.core.server.entity.ComponentVendorDetail;
+import com.echothree.model.control.core.server.database.EntityInstancesByEntityTypeWithNullDeletedTimeQuery;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityTime;
+import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.core.server.entity.EntityTypeDetail;
+import com.echothree.model.data.core.server.factory.EntityInstanceFactory;
 import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import com.echothree.util.server.persistence.EntityIdGenerator;
+import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import com.echothree.util.server.validation.ParameterUtils;
 
 public class EntityInstanceLogic
         extends BaseLogic {
@@ -52,7 +59,29 @@ public class EntityInstanceLogic
     public static EntityInstanceLogic getInstance() {
         return EntityInstanceLogicHolder.instance;
     }
-    
+
+    public EntityInstance createEntityInstance(final ExecutionErrorAccumulator eea, final EntityType entityType,
+            final BasePK createdBy) {
+        var entityTypeDetail = entityType.getLastDetail();
+        var componentVendorName = entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName();
+        EntityInstance entityInstance = null;
+
+        if(!ComponentVendors.ECHO_THREE.name().equals(componentVendorName)) {
+            var coreControl = Session.getModelController(CoreControl.class);
+            var entityTypeName = entityTypeDetail.getEntityTypeName();
+            var entityIdGenerator = new EntityIdGenerator(componentVendorName, entityTypeName, 1); // TODO
+            var entityId = entityIdGenerator.getNextEntityId();
+            var basePK = new BasePK(componentVendorName, entityTypeName, entityId);
+            var event = coreControl.sendEvent(basePK, EventTypes.CREATE, null, null, createdBy);
+
+            entityInstance = event.getEntityInstance();
+        } else {
+            handleExecutionError(InvalidComponentVendorException.class, eea, ExecutionErrors.InvalidComponentVendor.name(), componentVendorName);
+        }
+
+        return entityInstance;
+    }
+
     private EntityInstance checkEntityTimeForDeletion(CoreControl coreControl, EntityInstance entityInstance) {
         // If the EntityInstance is null, then it is already going to indicate it has been deleted, otherwise...
         if(entityInstance != null) {
@@ -214,6 +243,30 @@ public class EntityInstanceLogic
         return new StringBuilder(componentVendorDetail.getComponentVendorName()).append('.')
                 .append(entityTypeDetail.getEntityTypeName()).append('.')
                 .append(entityInstance.getEntityUniqueId()).toString();
+    }
+
+    public void deleteEntityInstance(final ExecutionErrorAccumulator eea, final EntityInstance entityInstance, final BasePK deletedBy) {
+        var componentVendorName = entityInstance.getEntityType().getLastDetail().getComponentVendor().getLastDetail().getComponentVendorName();
+
+        if(!ComponentVendors.ECHO_THREE.name().equals(componentVendorName)) {
+            var coreControl = Session.getModelController(CoreControl.class);
+
+            coreControl.deleteEntityInstance(entityInstance, deletedBy);
+        } else {
+            handleExecutionError(InvalidComponentVendorException.class, eea, ExecutionErrors.InvalidComponentVendor.name(), componentVendorName);
+        }
+    }
+
+    public void removeEntityInstance(final ExecutionErrorAccumulator eea, final EntityInstance entityInstance) {
+        var componentVendorName = entityInstance.getEntityType().getLastDetail().getComponentVendor().getLastDetail().getComponentVendorName();
+
+        if(!ComponentVendors.ECHO_THREE.name().equals(componentVendorName)) {
+            var coreControl = Session.getModelController(CoreControl.class);
+
+            coreControl.removeEntityInstance(entityInstance);
+        } else {
+            handleExecutionError(InvalidComponentVendorException.class, eea, ExecutionErrors.InvalidComponentVendor.name(), componentVendorName);
+        }
     }
 
 }

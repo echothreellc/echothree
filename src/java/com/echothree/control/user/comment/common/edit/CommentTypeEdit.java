@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,10 +16,8 @@
 
 package com.echothree.control.user.comment.common.edit;
 
-import com.echothree.control.user.workflow.common.spec.WorkflowEntranceSpec;
-
 public interface CommentTypeEdit
-        extends WorkflowEntranceSpec, CommentTypeDescriptionEdit {
+        extends CommentTypeDescriptionEdit {
     
     String getCommentTypeName();
     void setCommentTypeName(String commentTypeName);

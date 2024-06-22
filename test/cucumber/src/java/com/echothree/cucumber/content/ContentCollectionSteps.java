@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -63,7 +63,7 @@ public class ContentCollectionSteps implements En {
 
                     assertThat(persona.createContentCollectionForm).isNull();
                     assertThat(persona.deleteContentCollectionForm).isNull();
-                    assertThat(persona.entityListItemSpec).isNull();
+                    assertThat(persona.entityListItemUniversalSpec).isNull();
 
                     persona.deleteContentCollectionForm = ContentUtil.getHome().getDeleteContentCollectionForm();
                 });
@@ -86,7 +86,7 @@ public class ContentCollectionSteps implements En {
 
                     assertThat(persona.createContentCollectionForm).isNull();
                     assertThat(persona.deleteContentCollectionForm).isNull();
-                    assertThat(persona.entityListItemSpec).isNull();
+                    assertThat(persona.entityListItemUniversalSpec).isNull();
 
                     persona.contentCollectionSpec = ContentUtil.getHome().getContentCollectionSpec();
                 });

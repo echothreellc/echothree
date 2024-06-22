@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.order.common.form;
 
-import com.echothree.control.user.order.common.spec.OrderTypeSpec;
+import com.echothree.control.user.order.common.spec.OrderTypeUniversalSpec;
 
 public interface DeleteOrderTypeForm
-        extends OrderTypeSpec {
+        extends OrderTypeUniversalSpec {
     
-    // Nothing additional beyond OrderTypeSpec
+    // Nothing additional beyond OrderTypeUniversalSpec
     
 }

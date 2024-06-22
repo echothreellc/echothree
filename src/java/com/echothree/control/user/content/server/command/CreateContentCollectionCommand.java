@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 package com.echothree.control.user.content.server.command;
 
 import com.echothree.control.user.content.common.form.CreateContentCollectionForm;
+import com.echothree.control.user.content.common.result.ContentResultFactory;
 import com.echothree.model.control.content.common.ContentSections;
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.offer.server.control.OfferControl;
@@ -26,7 +27,6 @@ import com.echothree.model.control.offer.server.control.UseControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.content.server.entity.ContentCollection;
 import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferUse;
 import com.echothree.model.data.offer.server.entity.Source;
@@ -65,7 +65,7 @@ public class CreateContentCollectionCommand
                 new FieldDefinition("DefaultOfferName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("DefaultUseName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("DefaultSourceName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 ));
     }
     
@@ -76,9 +76,10 @@ public class CreateContentCollectionCommand
     
     @Override
     protected BaseResult execute() {
+        var result = ContentResultFactory.getCreateContentCollectionResult();
         var contentControl = Session.getModelController(ContentControl.class);
-        String contentCollectionName = form.getContentCollectionName();
-        ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
+        var contentCollectionName = form.getContentCollectionName();
+        var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
 
         if(contentCollection == null) {
             var offerControl = Session.getModelController(OfferControl.class);
@@ -145,7 +146,12 @@ public class CreateContentCollectionCommand
             addExecutionError(ExecutionErrors.DuplicateContentCollectionName.name(), contentCollectionName);
         }
 
-        return null;
+        if(contentCollection != null) {
+            result.setContentCollectionName(contentCollection.getLastDetail().getContentCollectionName());
+            result.setEntityRef(contentCollection.getPrimaryKey().getEntityRef());
+        }
+
+        return result;
     }
     
 }

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -78,8 +78,8 @@ public class Session {
     public static final long MAX_TIME = Long.MAX_VALUE;
     public static final Long MAX_TIME_LONG = Long.MAX_VALUE;
 
-    public long START_TIME;
-    public Long START_TIME_LONG;
+    public final long START_TIME;
+    public final Long START_TIME_LONG;
     
     /**
      * Creates a new instance of Session
@@ -376,17 +376,17 @@ public class Session {
             setQueryParams(ps, params);
             
             ps.executeQuery();
-            try (ResultSet rs = ps.getResultSet()) {
+            try(ResultSet rs = ps.getResultSet()) {
                 if(rs.next()) {
                     result = rs.getLong(1);
-                }
 
-                if(rs.wasNull()) {
-                    result = null;
-                }
+                    if(rs.wasNull()) {
+                        result = null;
+                    }
 
-                if(rs.next()) {
-                    throw new PersistenceDatabaseException("queryForLong result contains multiple longs");
+                    if(rs.next()) {
+                        throw new PersistenceDatabaseException("queryForLong result contains multiple longs");
+                    }
                 }
             } catch (SQLException se) {
                 throw new PersistenceDatabaseException(se);

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("mime type usage object")
 @GraphQLName("MimeTypeUsage")
 public class MimeTypeUsageObject
-        extends BaseGraphQl {
+        implements BaseGraphQl {
     
     private final MimeTypeUsage mimeTypeUsage; // Always Present
     
@@ -38,46 +38,18 @@ public class MimeTypeUsageObject
         this.mimeTypeUsage = mimeTypeUsage;
     }
 
-    private Boolean hasMimeTypeAccess;
-
-    private boolean getHasMimeTypeAccess(final DataFetchingEnvironment env) {
-        if(hasMimeTypeAccess == null) {
-            var baseSingleEntityCommand = new GetMimeTypeCommand(getUserVisitPK(env), null);
-
-            baseSingleEntityCommand.security();
-
-            hasMimeTypeAccess = !baseSingleEntityCommand.hasSecurityMessages();
-        }
-
-        return hasMimeTypeAccess;
-    }
-
-    private Boolean hasMimeTypeUsageTypeAccess;
-
-    private boolean getHasMimeTypeUsageTypeAccess(final DataFetchingEnvironment env) {
-        if(hasMimeTypeUsageTypeAccess == null) {
-            var baseSingleEntityCommand = new GetMimeTypeUsageTypeCommand(getUserVisitPK(env), null);
-
-            baseSingleEntityCommand.security();
-
-            hasMimeTypeUsageTypeAccess = !baseSingleEntityCommand.hasSecurityMessages();
-        }
-
-        return hasMimeTypeUsageTypeAccess;
-    }
-
     @GraphQLField
     @GraphQLDescription("mime type")
     @GraphQLNonNull
     public MimeTypeObject getMimeType(final DataFetchingEnvironment env) {
-        return getHasMimeTypeAccess(env) ? new MimeTypeObject(mimeTypeUsage.getMimeType()) : null;
+        return CoreSecurityUtils.getHasMimeTypeAccess(env) ? new MimeTypeObject(mimeTypeUsage.getMimeType()) : null;
     }
     
     @GraphQLField
     @GraphQLDescription("mime type usage type")
     @GraphQLNonNull
     public MimeTypeUsageTypeObject getMimeTypeUsageType(final DataFetchingEnvironment env) {
-        return getHasMimeTypeUsageTypeAccess(env) ? new MimeTypeUsageTypeObject(mimeTypeUsage.getMimeTypeUsageType()) : null;
+        return CoreSecurityUtils.getHasMimeTypeUsageTypeAccess(env) ? new MimeTypeUsageTypeObject(mimeTypeUsage.getMimeTypeUsageType()) : null;
     }
     
 }

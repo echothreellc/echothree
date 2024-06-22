@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -28,18 +28,30 @@ public class ComponentVendorTest
     public void componentVendorsQueryNoAuth()
             throws Exception {
         var componentVendorsBody = executeUsingPost("""
-        query { componentVendors { componentVendorName } }
+                query {
+                    componentVendors {
+                        edges {
+                            node {
+                                componentVendorName
+                            }
+                        }
+                    }
+                }
         """);
 
-        assertThat(getList(componentVendorsBody, "data.componentVendors")).size().isEqualTo(0);
+        assertThat(getList(componentVendorsBody, "data.componentVendors.edges")).size().isEqualTo(0);
     }
 
     @Test
     public void componentVendorQueryNoAuth()
             throws Exception {
         var componentVendorBody = executeUsingPost("""
-                query { componentVendor(componentVendorName: "%s") { componentVendorName } }
-                """.formatted(ComponentVendors.ECHOTHREE));
+                query {
+                    componentVendor(componentVendorName: "%s") {
+                        componentVendorName
+                    }
+                }
+                """.formatted(ComponentVendors.ECHO_THREE));
 
         assertThat(getMap(componentVendorBody, "data.componentVendor")).isNull();
     }
@@ -50,22 +62,28 @@ public class ComponentVendorTest
         var loginBody = executeUsingPost("""
                 mutation {
                     employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
         
-        assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
+        assertThat(getBoolean(loginBody, "data.employeeLogin.commandResult.hasErrors")).isFalse();
 
         var componentVendorsBody = executeUsingPost("""
                 query {
                     componentVendors {
-                        componentVendorName
+                        edges {
+                            node {
+                                componentVendorName
+                            }
+                        }
                     }
                 }
                 """);
 
-        assertThat(getList(componentVendorsBody, "data.componentVendors")).size().isGreaterThan(0);
+        assertThat(getList(componentVendorsBody, "data.componentVendors.edges")).size().isGreaterThan(0);
     }
 
     @Test
@@ -74,12 +92,14 @@ public class ComponentVendorTest
         var loginBody = executeUsingPost("""
                 mutation {
                     employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
         
-        assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
+        assertThat(getBoolean(loginBody, "data.employeeLogin.commandResult.hasErrors")).isFalse();
 
         var componentVendorBody = executeUsingPost("""
                 query {
@@ -87,9 +107,9 @@ public class ComponentVendorTest
                         componentVendorName
                     }
                 }
-                """.formatted(ComponentVendors.ECHOTHREE));
+                """.formatted(ComponentVendors.ECHO_THREE));
 
-        assertThat(getString(componentVendorBody, "data.componentVendor.componentVendorName")).isEqualTo(ComponentVendors.ECHOTHREE.toString());
+        assertThat(getString(componentVendorBody, "data.componentVendor.componentVendorName")).isEqualTo(ComponentVendors.ECHO_THREE.toString());
     }
 
     @Test
@@ -98,29 +118,39 @@ public class ComponentVendorTest
         var loginBody = executeUsingPost("""
                 mutation {
                     employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
         
-        assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
+        assertThat(getBoolean(loginBody, "data.employeeLogin.commandResult.hasErrors")).isFalse();
 
         var componentVendorBody = executeUsingPost("""
                 query {
                     componentVendor(componentVendorName: "%s") {
                         componentVendorName
-                        entityTypeCount
+                        description
+                        id
                         entityTypes {
-                            entityTypeName
+                            totalCount
+                            edges {
+                                node {
+                                    entityTypeName
+                                    description
+                                    id
+                                }
+                            }
                         }
                     }
                 }
-                """.formatted(ComponentVendors.ECHOTHREE));
+                """.formatted(ComponentVendors.ECHO_THREE));
 
-        var entityTypeCount = getLong(componentVendorBody, "data.componentVendor.entityTypeCount");
-        assertThat(getString(componentVendorBody, "data.componentVendor.componentVendorName")).isEqualTo(ComponentVendors.ECHOTHREE.toString());
+        assertThat(getString(componentVendorBody, "data.componentVendor.componentVendorName")).isEqualTo(ComponentVendors.ECHO_THREE.toString());
+        var entityTypeCount = getLong(componentVendorBody, "data.componentVendor.entityTypes.totalCount");
         assertThat(entityTypeCount).isGreaterThan(0);
-        assertThat(getList(componentVendorBody, "data.componentVendor.entityTypes")).size().isEqualTo(entityTypeCount);
+        assertThat(getList(componentVendorBody, "data.componentVendor.entityTypes.edges")).size().isEqualTo(entityTypeCount);
     }
 
 }

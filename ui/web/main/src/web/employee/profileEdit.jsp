@@ -1,7 +1,7 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" %>
 
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -28,7 +28,7 @@
     <body onLoad="pageLoaded()">
         <div id="Header">
             <h2>
-                <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
+                <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
                 Profile
             </h2>
         </div>
@@ -66,12 +66,30 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td align=right><fmt:message key="label.pronunciation" />:</td>
+                                <td>
+                                    <html:text property="pronunciation" size="60" maxlength="200" />
+                                    <et:validationErrors id="errorMessage" property="Pronunciation">
+                                        <p><c:out value="${errorMessage}" /></p>
+                                    </et:validationErrors>
+                                </td>
+                            </tr>
+                            <tr>
                                 <td align=right><fmt:message key="label.gender" />:</td>
                                 <td>
                                     <html:select property="genderChoice">
                                         <html:optionsCollection property="genderChoices" />
                                     </html:select>
                                     <et:validationErrors id="errorMessage" property="GenderName">
+                                        <p><c:out value="${errorMessage}" /></p>
+                                    </et:validationErrors>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align=right><fmt:message key="label.pronouns" />:</td>
+                                <td>
+                                    <html:text property="pronouns" size="50" maxlength="50" />
+                                    <et:validationErrors id="errorMessage" property="Pronouns">
                                         <p><c:out value="${errorMessage}" /></p>
                                     </et:validationErrors>
                                 </td>

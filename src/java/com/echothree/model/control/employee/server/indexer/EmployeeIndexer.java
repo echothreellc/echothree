@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 package com.echothree.model.control.employee.server.indexer;
 
 import com.echothree.model.control.employee.server.control.EmployeeControl;
-import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.indexer.PartyIndexer;
 import com.echothree.model.data.index.server.entity.Index;
@@ -32,12 +32,14 @@ public class EmployeeIndexer
     
     /** Creates a new instance of EmployeeIndexer */
     public EmployeeIndexer(final ExecutionErrorAccumulator eea, final Index index) {
-        super(eea, index, PartyTypes.EMPLOYEE.name(), IndexConstants.IndexField_PartyEmployeeName);
+        super(eea, index, PartyTypes.EMPLOYEE.name(), IndexFields.partyEmployeeName.name());
     }
     
     @Override
     protected String getEntityNameFromParty(final Party party) {
-        return employeeControl.getPartyEmployee(party).getPartyEmployeeName();
+        var partyEmployee = employeeControl.getPartyEmployee(party);
+
+        return partyEmployee == null ? null : partyEmployee.getPartyEmployeeName();
     }
 
 }

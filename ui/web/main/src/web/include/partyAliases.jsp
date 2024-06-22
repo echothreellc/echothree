@@ -21,7 +21,7 @@
                     <c:choose>
                         <c:when test='${includePartyAliasTypeReviewUrl}'>
                             <c:url var="partyAliasTypeReviewUrl" value="/action/Configuration/PartyAliasType/Review">
-                                <c:param name="PartyName" value="${partyAlias.party.partyName}" />
+                                <c:param name="PartyTypeName" value="${partyAlias.party.partyType.partyTypeName}" />
                                 <c:param name="PartyAliasTypeName" value="${partyAlias.partyAliasType.partyAliasTypeName}" />
                             </c:url>
                             <a href="${partyAliasTypeReviewUrl}"><c:out value="${partyAlias.partyAliasType.description}" /></a>

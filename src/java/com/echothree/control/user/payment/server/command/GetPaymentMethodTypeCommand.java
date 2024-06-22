@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -59,14 +59,14 @@ public class GetPaymentMethodTypeCommand
         PaymentMethodType paymentMethodType = PaymentMethodTypeLogic.getInstance().getPaymentMethodTypeByUniversalSpec(this, form, true);
 
         if(paymentMethodType != null) {
-            sendEventUsingNames(paymentMethodType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(paymentMethodType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return paymentMethodType;
     }
     
     @Override
-    protected BaseResult getTransfer(PaymentMethodType paymentMethodType) {
+    protected BaseResult getResult(PaymentMethodType paymentMethodType) {
         var paymentMethodTypeControl = Session.getModelController(PaymentMethodTypeControl.class);
         GetPaymentMethodTypeResult result = PaymentResultFactory.getGetPaymentMethodTypeResult();
 

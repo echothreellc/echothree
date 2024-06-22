@@ -1,7 +1,7 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" %>
 
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -58,7 +58,7 @@
             Chain Instance Sequence:
             <c:choose>
                 <c:when test="${chain.chainInstanceSequence == null}">
-                    <i>Not Set, Using Default.</i>.
+                    <i><fmt:message key="phrase.notSetUsingDefault" /></i>.
                 </c:when>
                 <c:otherwise>
                     <c:choose>

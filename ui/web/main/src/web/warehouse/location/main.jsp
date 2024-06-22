@@ -1,7 +1,7 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" %>
 
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -20,17 +20,21 @@
 
 <html:html xhtml="true">
     <head>
-        <title>Locations</title>
+        <title><fmt:message key="pageTitle.locations" /></title>
         <html:base/>
         <%@ include file="../../include/environment.jsp" %>
     </head>
     <body>
         <div id="Header">
             <h2>
-                <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
-                <a href="<c:url value="/action/Warehouse/Main" />">Warehouses</a> &gt;&gt;
-                <a href="<c:url value="/action/Warehouse/Warehouse/Main" />">Warehouses</a> &gt;&gt;
-                Locations
+                <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
+                <a href="<c:url value="/action/Warehouse/Main" />"><fmt:message key="navigation.warehouses" /></a> &gt;&gt;
+                <a href="<c:url value="/action/Warehouse/Warehouse/Main" />"><fmt:message key="navigation.warehouses" /></a> &gt;&gt;
+                <et:countWarehouseResults searchTypeName="EMPLOYEE" countVar="warehouseResultsCount" commandResultVar="countWarehouseResultsCommandResult" logErrors="false" />
+                <c:if test="${warehouseResultsCount > 0}">
+                    <a href="<c:url value="/action/Warehouse/Warehouse/Result" />"><fmt:message key="navigation.results" /></a> &gt;&gt;
+                </c:if>
+                <fmt:message key="navigation.locations" />
             </h2>
         </div>
         <div id="Content">
@@ -45,15 +49,32 @@
                 <display:setProperty name="export.pdf.filename" value="Locations.pdf" />
                 <display:setProperty name="export.rtf.filename" value="Locations.rtf" />
                 <display:setProperty name="export.xml.filename" value="Locations.xml" />
+                <display:column media="html">
+                    <c:choose>
+                        <c:when test="${location.entityInstance.entityVisit == null}">
+                            New
+                        </c:when>
+                        <c:otherwise>
+                            <c:choose>
+                                <c:when test="${location.entityInstance.entityVisit.unformattedVisitedTime >= location.entityInstance.entityTime.unformattedModifiedTime}">
+                                    Unchanged
+                                </c:when>
+                                <c:otherwise>
+                                    Updated
+                                </c:otherwise>
+                            </c:choose>
+                        </c:otherwise>
+                    </c:choose>
+                </display:column>
                 <display:column titleKey="columnTitle.name" media="html" sortable="true" sortProperty="locationName">
                     <c:url var="reviewUrl" value="/action/Warehouse/Location/Review">
                         <c:param name="WarehouseName" value="${location.warehouse.warehouseName}" />
                         <c:param name="LocationName" value="${location.locationName}" />
                     </c:url>
-                    <a href="${reviewUrl}"><c:out value="${location.locationName}" /></a>
+                    <a href="${reviewUrl}"><et:appearance appearance="${location.entityInstance.entityAppearance.appearance}"><c:out value="${location.locationName}" /></et:appearance></a>
                 </display:column>
                 <display:column titleKey="columnTitle.description" media="html" sortable="true" sortProperty="description">
-                    <c:out value="${location.description}" />
+                    <et:appearance appearance="${location.entityInstance.entityAppearance.appearance}"><c:out value="${location.description}" /></et:appearance>
                 </display:column>
                 <display:column titleKey="columnTitle.status" media="html" sortable="true" sortProperty="locationStatus.workflowStep.description">
                     <c:url var="statusUrl" value="/action/Warehouse/Location/Status">

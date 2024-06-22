@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ import com.echothree.model.control.customer.common.transfer.CustomerTypeShipping
 import com.echothree.model.control.customer.common.transfer.CustomerTypeTransfer;
 import com.echothree.model.control.customer.common.workflow.CustomerCreditStatusConstants;
 import com.echothree.model.control.customer.common.workflow.CustomerStatusConstants;
+import com.echothree.model.control.customer.server.graphql.CustomerObject;
 import com.echothree.model.control.customer.server.transfer.CustomerTransferCaches;
 import com.echothree.model.control.customer.server.transfer.CustomerTypeDescriptionTransferCache;
 import com.echothree.model.control.customer.server.transfer.CustomerTypePaymentMethodTransferCache;
@@ -39,7 +40,6 @@ import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.search.common.SearchOptions;
 import com.echothree.model.control.search.server.control.SearchControl;
 import static com.echothree.model.control.search.server.control.SearchControl.ENI_ENTITYUNIQUEID_COLUMN_INDEX;
-import com.echothree.model.control.search.server.graphql.CustomerResultObject;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.data.accounting.common.pk.GlAccountPK;
@@ -162,9 +162,31 @@ public class CustomerControl
         customerType.setLastDetail(customerTypeDetail);
         customerType.store();
 
-        sendEventUsingNames(customerType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(customerType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return customerType;
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.CustomerType */
+    public CustomerType getCustomerTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new CustomerTypePK(entityInstance.getEntityUniqueId());
+
+        return CustomerTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public CustomerType getCustomerTypeByEntityInstance(EntityInstance entityInstance) {
+        return getCustomerTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public CustomerType getCustomerTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getCustomerTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countCustomerTypes() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM customertypes, customertypedetails " +
+                        "WHERE cuty_activedetailid = cutydt_customertypedetailid");
     }
 
     public long countCustomerTypesByDefaultOfferUse(OfferUse defaultOfferUse) {
@@ -204,7 +226,7 @@ public class CustomerControl
         return getCustomerTypes(EntityPermission.READ_WRITE);
     }
     
-    private CustomerType getDefaultCustomerType(EntityPermission entityPermission) {
+    public CustomerType getDefaultCustomerType(EntityPermission entityPermission) {
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
@@ -235,7 +257,7 @@ public class CustomerControl
         return getDefaultCustomerTypeForUpdate().getLastDetailForUpdate().getCustomerTypeDetailValue().clone();
     }
     
-    private CustomerType getCustomerTypeByName(String customerTypeName, EntityPermission entityPermission) {
+    public CustomerType getCustomerTypeByName(String customerTypeName, EntityPermission entityPermission) {
         CustomerType customerType;
         
         try {
@@ -317,24 +339,27 @@ public class CustomerControl
     public CustomerTypeTransfer getCustomerTypeTransfer(UserVisit userVisit, CustomerType customerType) {
         return getCustomerTransferCaches(userVisit).getCustomerTypeTransferCache().getCustomerTypeTransfer(customerType);
     }
-    
-    public List<CustomerTypeTransfer> getCustomerTypeTransfers(UserVisit userVisit) {
-        List<CustomerType> customerTypes = getCustomerTypes();
+
+    public List<CustomerTypeTransfer> getCustomerTypeTransfers(UserVisit userVisit, Collection<CustomerType> customerTypes) {
         List<CustomerTypeTransfer> customerTypeTransfers = null;
-        
+
         if(customerTypes != null) {
             CustomerTypeTransferCache customerTypeTransferCache = getCustomerTransferCaches(userVisit).getCustomerTypeTransferCache();
-            
+
             customerTypeTransfers = new ArrayList<>(customerTypes.size());
-            
+
             for(var customerType : customerTypes) {
                 customerTypeTransfers.add(customerTypeTransferCache.getCustomerTypeTransfer(customerType));
             }
         }
-        
+
         return customerTypeTransfers;
     }
-    
+
+    public List<CustomerTypeTransfer> getCustomerTypeTransfers(UserVisit userVisit) {
+        return getCustomerTypeTransfers(userVisit, getCustomerTypes());
+    }
+
     private void updateCustomerTypeFromValue(CustomerTypeDetailValue customerTypeDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(customerTypeDetailValue.hasBeenModified()) {
             var customerType = CustomerTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, customerTypeDetailValue.getCustomerTypePK());
@@ -392,7 +417,7 @@ public class CustomerControl
             customerType.setActiveDetail(customerTypeDetail);
             customerType.setLastDetail(customerTypeDetail);
 
-            sendEventUsingNames(customerTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(customerTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -434,7 +459,7 @@ public class CustomerControl
             }
         }
         
-        sendEventUsingNames(customerType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(customerType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -447,7 +472,7 @@ public class CustomerControl
                 language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(customerType.getPrimaryKey(), EventTypes.MODIFY.name(), customerTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(customerType.getPrimaryKey(), EventTypes.MODIFY, customerTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return customerTypeDescription;
     }
@@ -591,14 +616,14 @@ public class CustomerControl
             customerTypeDescription = CustomerTypeDescriptionFactory.getInstance().create(customerType, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(customerType.getPrimaryKey(), EventTypes.MODIFY.name(), customerTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(customerType.getPrimaryKey(), EventTypes.MODIFY, customerTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteCustomerTypeDescription(CustomerTypeDescription customerTypeDescription, BasePK deletedBy) {
         customerTypeDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(customerTypeDescription.getCustomerTypePK(), EventTypes.MODIFY.name(), customerTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(customerTypeDescription.getCustomerTypePK(), EventTypes.MODIFY, customerTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteCustomerTypeDescriptionsByCustomerType(CustomerType customerType, BasePK deletedBy) {
@@ -624,7 +649,7 @@ public class CustomerControl
                 allowCombiningShipments, requireReference, allowReferenceDuplicates, referenceValidationPattern,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), customer.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, customer.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return customer;
     }
@@ -817,7 +842,7 @@ public class CustomerControl
                     arGlAccountPK, holdUntilComplete, allowBackorders, allowSubstitutions, allowCombiningShipments, requireReference, allowReferenceDuplicates,
                     referenceValidationPattern, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(partyPK, EventTypes.MODIFY.name(), customer.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(partyPK, EventTypes.MODIFY, customer.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -912,7 +937,7 @@ public class CustomerControl
         CustomerTypePaymentMethod customerTypePaymentMethod = CustomerTypePaymentMethodFactory.getInstance().create(session, customerType, paymentMethod,
                 defaultSelectionPriority, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(customerType.getPrimaryKey(), EventTypes.MODIFY.name(), customerTypePaymentMethod.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(customerType.getPrimaryKey(), EventTypes.MODIFY, customerTypePaymentMethod.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return customerTypePaymentMethod;
     }
@@ -1138,7 +1163,7 @@ public class CustomerControl
             customerTypePaymentMethod = CustomerTypePaymentMethodFactory.getInstance().create(customerTypePK, paymentMethodPK, defaultSelectionPriority,
                     isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(customerTypePK, EventTypes.MODIFY.name(), customerTypePaymentMethod.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(customerTypePK, EventTypes.MODIFY, customerTypePaymentMethod.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -1168,7 +1193,7 @@ public class CustomerControl
             }
         }
         
-        sendEventUsingNames(customerTypePaymentMethod.getCustomerTypePK(), EventTypes.MODIFY.name(), customerTypePaymentMethod.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(customerTypePaymentMethod.getCustomerTypePK(), EventTypes.MODIFY, customerTypePaymentMethod.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteCustomerTypePaymentMethods(List<CustomerTypePaymentMethod> customerTypePaymentMethods, BasePK deletedBy) {
@@ -1206,7 +1231,7 @@ public class CustomerControl
         CustomerTypeShippingMethod customerTypeShippingMethod = CustomerTypeShippingMethodFactory.getInstance().create(session, customerType, shippingMethod,
                 defaultSelectionPriority, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(customerType.getPrimaryKey(), EventTypes.MODIFY.name(), customerTypeShippingMethod.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(customerType.getPrimaryKey(), EventTypes.MODIFY, customerTypeShippingMethod.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return customerTypeShippingMethod;
     }
@@ -1432,7 +1457,7 @@ public class CustomerControl
             customerTypeShippingMethod = CustomerTypeShippingMethodFactory.getInstance().create(customerTypePK, shippingMethodPK, defaultSelectionPriority,
                     isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(customerTypePK, EventTypes.MODIFY.name(), customerTypeShippingMethod.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(customerTypePK, EventTypes.MODIFY, customerTypeShippingMethod.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -1462,7 +1487,7 @@ public class CustomerControl
             }
         }
         
-        sendEventUsingNames(customerTypeShippingMethod.getCustomerTypePK(), EventTypes.MODIFY.name(), customerTypeShippingMethod.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(customerTypeShippingMethod.getCustomerTypePK(), EventTypes.MODIFY, customerTypeShippingMethod.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteCustomerTypeShippingMethods(List<CustomerTypeShippingMethod> customerTypeShippingMethods, BasePK deletedBy) {
@@ -1509,21 +1534,21 @@ public class CustomerControl
         return customerResultTransfers;
     }
 
-    public List<CustomerResultObject> getCustomerResultObjects(UserVisitSearch userVisitSearch) {
+    public List<CustomerObject> getCustomerObjectsFromUserVisitSearch(UserVisitSearch userVisitSearch) {
         var searchControl = Session.getModelController(SearchControl.class);
-        var customerResultObjects = new ArrayList<CustomerResultObject>();
+        var customerObjects = new ArrayList<CustomerObject>();
 
         try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
             while(rs.next()) {
                 var party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
 
-                customerResultObjects.add(new CustomerResultObject(party));
+                customerObjects.add(new CustomerObject(party));
             }
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
 
-        return customerResultObjects;
+        return customerObjects;
     }
 
 }

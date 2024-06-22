@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -88,12 +88,12 @@ public class PaymentMethodTypeControl
         paymentMethodType.setLastDetail(paymentMethodTypeDetail);
         paymentMethodType.store();
 
-        sendEventUsingNames(paymentMethodType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(paymentMethodType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return paymentMethodType;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.PaymentMethodType */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.PaymentMethodType */
     public PaymentMethodType getPaymentMethodTypeByEntityInstance(final EntityInstance entityInstance,
             final EntityPermission entityPermission) {
         var pk = new PaymentMethodTypePK(entityInstance.getEntityUniqueId());
@@ -284,7 +284,7 @@ public class PaymentMethodTypeControl
             paymentMethodType.setActiveDetail(paymentMethodTypeDetail);
             paymentMethodType.setLastDetail(paymentMethodTypeDetail);
 
-            sendEventUsingNames(paymentMethodTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(paymentMethodTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -321,7 +321,7 @@ public class PaymentMethodTypeControl
             }
         }
 
-        sendEventUsingNames(paymentMethodType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(paymentMethodType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     // --------------------------------------------------------------------------------
@@ -333,7 +333,7 @@ public class PaymentMethodTypeControl
         var paymentMethodTypeDescription = PaymentMethodTypeDescriptionFactory.getInstance().create(paymentMethodType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(paymentMethodType.getPrimaryKey(), EventTypes.MODIFY.name(), paymentMethodTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(paymentMethodType.getPrimaryKey(), EventTypes.MODIFY, paymentMethodTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return paymentMethodTypeDescription;
     }
@@ -451,14 +451,14 @@ public class PaymentMethodTypeControl
             paymentMethodTypeDescription = PaymentMethodTypeDescriptionFactory.getInstance().create(paymentMethodType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(paymentMethodType.getPrimaryKey(), EventTypes.MODIFY.name(), paymentMethodTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(paymentMethodType.getPrimaryKey(), EventTypes.MODIFY, paymentMethodTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deletePaymentMethodTypeDescription(final PaymentMethodTypeDescription paymentMethodTypeDescription, final BasePK deletedBy) {
         paymentMethodTypeDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(paymentMethodTypeDescription.getPaymentMethodTypePK(), EventTypes.MODIFY.name(), paymentMethodTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(paymentMethodTypeDescription.getPaymentMethodTypePK(), EventTypes.MODIFY, paymentMethodTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 

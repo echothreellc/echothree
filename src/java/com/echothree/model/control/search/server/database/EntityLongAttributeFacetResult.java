@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ public class EntityLongAttributeFacetResult
         implements BaseDatabaseResult {
     
     private Long longAttribute;
-    private Integer count;
+    private Long count;
 
     /**
      * Returns the longAttribute.
@@ -44,7 +44,7 @@ public class EntityLongAttributeFacetResult
      * Returns the count.
      * @return the count
      */
-    public Integer getCount() {
+    public Long getCount() {
         return count;
     }
 
@@ -52,7 +52,7 @@ public class EntityLongAttributeFacetResult
      * Sets the count.
      * @param count the count to set
      */
-    public void setCount(Integer count) {
+    public void setCount(Long count) {
         this.count = count;
     }
 

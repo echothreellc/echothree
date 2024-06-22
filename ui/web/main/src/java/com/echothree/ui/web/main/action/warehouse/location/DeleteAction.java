@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,66 +17,75 @@
 package com.echothree.ui.web.main.action.warehouse.location;
 
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
-import com.echothree.control.user.warehouse.common.form.DeleteLocationForm;
-import com.echothree.ui.web.main.framework.ForwardConstants;
-import com.echothree.ui.web.main.framework.MainBaseAction;
+import com.echothree.control.user.warehouse.common.result.GetLocationResult;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.ui.web.main.framework.AttributeConstants;
+import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.view.client.web.struts.CustomActionForward;
+import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
-import java.util.HashMap;
 import java.util.Map;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
 
 @SproutAction(
     path = "/Warehouse/Location/Delete",
     mappingClass = SecureActionMapping.class,
+    name = "LocationDelete",
     properties = {
         @SproutProperty(property = "secure", value = "true")
     },
     forwards = {
-        @SproutForward(name = "Display", path = "/action/Warehouse/Location/Main", redirect = true)
+        @SproutForward(name = "Display", path = "/action/Warehouse/Location/Main", redirect = true),
+        @SproutForward(name = "Form", path = "/warehouse/location/delete.jsp")
     }
 )
 public class DeleteAction
-        extends MainBaseAction<ActionForm> {
+        extends MainBaseDeleteAction<DeleteActionForm> {
     
     @Override
-    public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
-    throws Exception {
-        String forwardKey;
-        String warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
-        
-        try {
-            DeleteLocationForm commandForm = WarehouseUtil.getHome().getDeleteLocationForm();
-            String locationName = request.getParameter(ParameterConstants.LOCATION_NAME);
-            
-            commandForm.setWarehouseName(warehouseName);
-            commandForm.setLocationName(locationName);
-            
-            WarehouseUtil.getHome().deleteLocation(getUserVisitPK(request), commandForm);
-            
-            forwardKey = ForwardConstants.DISPLAY;
-        } catch (NamingException ne) {
-            forwardKey = ForwardConstants.ERROR_500;
-        }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
-        if(forwardKey.equals(ForwardConstants.DISPLAY)) {
-            Map<String, String> parameters = new HashMap<>(1);
-            
-            parameters.put(ParameterConstants.WAREHOUSE_NAME, warehouseName);
-            customActionForward.setParameters(parameters);
-        }
-        
-        return customActionForward;
+    public String getEntityTypeName() {
+        return EntityTypes.Location.name();
+    }
+
+    @Override
+    public void setupParameters(final DeleteActionForm actionForm, final HttpServletRequest request) {
+        actionForm.setWarehouseName(findParameter(request, ParameterConstants.WAREHOUSE_NAME, actionForm.getWarehouseName()));
+        actionForm.setLocationName(findParameter(request, ParameterConstants.LOCATION_NAME, actionForm.getLocationName()));
+    }
+
+    @Override
+    public void setupTransfer(final DeleteActionForm actionForm, final HttpServletRequest request)
+            throws NamingException {
+        var commandForm = WarehouseUtil.getHome().getGetLocationForm();
+
+        commandForm.setWarehouseName(actionForm.getWarehouseName());
+        commandForm.setLocationName(actionForm.getLocationName());
+
+        var commandResult = WarehouseUtil.getHome().getLocation(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetLocationResult)executionResult.getResult();
+
+        request.setAttribute(AttributeConstants.LOCATION, result.getLocation());
+    }
+
+    @Override
+    public CommandResult doDelete(final DeleteActionForm actionForm, final HttpServletRequest request)
+            throws NamingException {
+        var commandForm = WarehouseUtil.getHome().getDeleteLocationForm();
+
+        commandForm.setWarehouseName(actionForm.getWarehouseName());
+        commandForm.setLocationName(actionForm.getLocationName());
+
+        return WarehouseUtil.getHome().deleteLocation(getUserVisitPK(request), commandForm);
+    }
+
+    @Override
+    public void setupForwardParameters(final DeleteActionForm actionForm, final Map<String, String> parameters) {
+        parameters.put(ParameterConstants.WAREHOUSE_NAME, actionForm.getWarehouseName());
     }
     
 }

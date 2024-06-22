@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,21 +17,16 @@
 package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.GetOfferItemForm;
-import com.echothree.control.user.offer.common.result.GetOfferItemResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.control.OfferItemControl;
+import com.echothree.model.control.offer.server.logic.OfferItemLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferItem;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
@@ -39,8 +34,6 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class GetOfferItemCommand
@@ -50,17 +43,21 @@ public class GetOfferItemCommand
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.OfferItem.name(), SecurityRoles.Review.name())
-                        )))
-                )));
+                ))
+        ));
         
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("OfferName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+        FORM_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("OfferName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("ItemName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
+        );
     }
     
     /** Creates a new instance of GetOfferItemCommand */
@@ -70,40 +67,19 @@ public class GetOfferItemCommand
     
     @Override
     protected OfferItem getEntity() {
-        var offerControl = Session.getModelController(OfferControl.class);
-        OfferItem offerItem = null;
-        String offerName = form.getOfferName();
-        Offer offer = offerControl.getOfferByName(offerName);
-        
-        if(offer != null) {
-            var itemControl = Session.getModelController(ItemControl.class);
-            String itemName = form.getItemName();
-            Item item = itemControl.getItemByName(itemName);
-            
-            if(item != null) {
-                var offerItemControl = Session.getModelController(OfferItemControl.class);
-                offerItem = offerItemControl.getOfferItem(offer, item);
-                
-                if(offerItem != null) {
-                    sendEventUsingNames(offerItem.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownOfferItem.name(), offer.getLastDetail().getOfferName(),
-                            item.getLastDetail().getItemName());
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownItemName.name(), itemName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownOfferName.name(), offerName);
+        var offerItem = OfferItemLogic.getInstance().getOfferItemByUniversalSpec(this, form);
+
+        if(offerItem != null) {
+            sendEvent(offerItem.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
-        
+
         return offerItem;
     }
     
     @Override
-    protected BaseResult getTransfer(OfferItem offerItem) {
+    protected BaseResult getResult(OfferItem offerItem) {
         var offerItemControl = Session.getModelController(OfferItemControl.class);
-        GetOfferItemResult result = OfferResultFactory.getGetOfferItemResult();
+        var result = OfferResultFactory.getGetOfferItemResult();
 
         if(offerItem != null) {
             result.setOfferItem(offerItemControl.getOfferItemTransfer(getUserVisit(), offerItem));

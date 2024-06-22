@@ -1,7 +1,7 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" %>
 
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -36,7 +36,7 @@
     <body>
         <div id="Header">
             <h2>
-                <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
+                <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
                 <a href="<c:url value="/action/Core/Main" />">Core</a> &gt;&gt;
                 <c:choose>
                     <c:when test="${entityInstance != null}">
@@ -61,16 +61,43 @@
         <div id="Content">
             <c:choose>
                 <c:when test="${entityInstance != null}">
-                    <et:checkSecurityRoles securityRoles="EntityAppearance.Create:Appearance.Review:EntityAppearance.Edit:EntityAppearance.Delete" />
+                    <et:checkSecurityRoles securityRoles="ComponentVendor.Review:EntityType.Review:EntityAppearance.Create:Appearance.Review:EntityAppearance.Edit:EntityAppearance.Delete" />
+                    <et:hasSecurityRole securityRole="ComponentVendor.Review" var="includeComponentVendorReviewUrl" />
+                    <et:hasSecurityRole securityRole="EntityType.Review" var="includeEntityTypeReviewUrl" />
                     <et:hasSecurityRole securityRole="Appearance.Review" var="includeAppearanceReviewUrl" />
                     Entity: <c:out value="${entityInstance.entityRef}" /><br />
-                    Component Vendor: <c:out value="${entityInstance.entityType.componentVendor.description}" /><br />
-                    Entity Type: <c:out value="${entityInstance.entityType.description}" /><br />
+                    Component Vendor:
+                    <c:choose>
+                        <c:when test="${includeComponentVendorReviewUrl}">
+                            <c:url var="componentVendorUrl" value="/action/Core/ComponentVendor/Review">
+                                <c:param name="ComponentVendorName" value="${entityInstance.entityType.componentVendor.componentVendorName}" />
+                            </c:url>
+                            <a href="${componentVendorUrl}"><c:out value="${entityInstance.entityType.componentVendor.description}" /></a>
+                        </c:when>
+                        <c:otherwise>
+                            <c:out value="${entityInstance.entityType.componentVendor.description}" />
+                        </c:otherwise>
+                    </c:choose>
+                    <br />
+                    Entity Type:
+                    <c:choose>
+                        <c:when test="${includeEntityTypeReviewUrl}">
+                            <c:url var="entityTypeUrl" value="/action/Core/EntityType/Review">
+                                <c:param name="ComponentVendorName" value="${entityInstance.entityType.componentVendor.componentVendorName}" />
+                                <c:param name="EntityTypeName" value="${entityInstance.entityType.entityTypeName}" />
+                            </c:url>
+                            <a href="${entityTypeUrl}"><c:out value="${entityInstance.entityType.description}" /></a>
+                        </c:when>
+                        <c:otherwise>
+                            <c:out value="${entityInstance.entityType.description}" />
+                        </c:otherwise>
+                    </c:choose>
+                    <br />
                     Entity Unique Id: <c:out value="${entityInstance.entityUniqueId}" /><br />
                     Appearance:
                     <c:choose>
                         <c:when test="${entityInstance.entityAppearance == null}">
-                            <i>Not Set.</i>
+                            <i><fmt:message key="phrase.notSet" /></i>
                             <et:hasSecurityRole securityRole="EntityAppearance.Create">
                                 <c:url var="addUrl" value="/action/Core/Event/EntityAppearanceAdd">
                                     <c:param name="EntityRef" value="${entityInstance.entityRef}" />
@@ -108,7 +135,7 @@
                     Key:
                     <c:choose>
                         <c:when test="${entityInstance.key == null}">
-                            <i>Not Set.</i>
+                            <i><fmt:message key="phrase.notSet" /></i>
                             <c:url var="generateUrl" value="/action/Core/Event/GenerateKey">
                                 <c:param name="EntityRef" value="${entityInstance.entityRef}" />
                             </c:url>
@@ -127,7 +154,7 @@
                     Guid:
                     <c:choose>
                         <c:when test="${entityInstance.guid == null}">
-                            <i>Not Set.</i>
+                            <i><fmt:message key="phrase.notSet" /></i>
                             <c:url var="generateUrl" value="/action/Core/Event/GenerateGuid">
                                 <c:param name="EntityRef" value="${entityInstance.entityRef}" />
                             </c:url>
@@ -146,7 +173,7 @@
                     Ulid:
                     <c:choose>
                         <c:when test="${entityInstance.ulid == null}">
-                            <i>Not Set.</i>
+                            <i><fmt:message key="phrase.notSet" /></i>
                             <c:url var="generateUrl" value="/action/Core/Event/GenerateUlid">
                                 <c:param name="EntityRef" value="${entityInstance.entityRef}" />
                             </c:url>
@@ -172,6 +199,16 @@
                             Deleted: <c:out value="${entityInstance.entityTime.deletedTime}" /><br />
                         </c:if>
                     </c:if>
+                    Visited Time:
+                    <c:choose>
+                        <c:when test='${entityInstance.entityVisit == null}'>
+                            <i>Never.</i>
+                        </c:when>
+                        <c:otherwise>
+                            <c:out value="${entityInstance.entityVisit.visitedTime}" />
+                        </c:otherwise>
+                    </c:choose>
+                    <br />
                     <br />
                     <display:table name="events" id="event" class="displaytag" partialList="true" pagesize="20" size="eventCount" requestURI="/action/Core/Event/Main">
                         <display:column titleKey="columnTitle.eventTime">

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,23 +16,21 @@
 
 package com.echothree.model.control.user.server.graphql;
 
-import com.echothree.control.user.accounting.server.command.GetCurrencyCommand;
-import com.echothree.control.user.party.server.command.GetDateTimeFormatCommand;
-import com.echothree.control.user.party.server.command.GetLanguageCommand;
-import com.echothree.control.user.party.server.command.GetTimeZoneCommand;
+import com.echothree.model.control.accounting.server.graphql.AccountingSecurityUtils;
 import com.echothree.model.control.accounting.server.graphql.CurrencyObject;
+import com.echothree.model.control.graphql.server.graphql.TimeObject;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.offer.server.graphql.OfferSecurityUtils;
 import com.echothree.model.control.offer.server.graphql.OfferUseObject;
 import com.echothree.model.control.party.server.graphql.DateTimeFormatObject;
 import com.echothree.model.control.party.server.graphql.LanguageObject;
+import com.echothree.model.control.party.server.graphql.PartySecurityUtils;
 import com.echothree.model.control.party.server.graphql.TimeZoneObject;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.TimeZone;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.string.DateUtils;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
@@ -42,83 +40,13 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("user visit object")
 @GraphQLName("UserVisit")
 public class UserVisitObject
-        extends BaseGraphQl {
+        implements BaseGraphQl {
 
     private final UserVisit userVisit; // Always Present
 
     public UserVisitObject(UserVisit userVisit) {
         this.userVisit = userVisit;
     }
-
-    private Boolean hasLanguageAccess;
-
-    private boolean getHasLanguageAccess(final DataFetchingEnvironment env) {
-        if(hasLanguageAccess == null) {
-            var baseSingleEntityCommand = new GetLanguageCommand(getUserVisitPK(env), null);
-
-            baseSingleEntityCommand.security();
-
-            hasLanguageAccess = !baseSingleEntityCommand.hasSecurityMessages();
-        }
-
-        return hasLanguageAccess;
-    }
-
-    private Boolean hasCurrencyAccess;
-
-    private boolean getHasCurrencyAccess(final DataFetchingEnvironment env) {
-        if(hasCurrencyAccess == null) {
-            var baseSingleEntityCommand = new GetCurrencyCommand(getUserVisitPK(env), null);
-
-            baseSingleEntityCommand.security();
-
-            hasCurrencyAccess = !baseSingleEntityCommand.hasSecurityMessages();
-        }
-
-        return hasCurrencyAccess;
-    }
-
-    private Boolean hasTimeZoneAccess;
-
-    private boolean getHasTimeZoneAccess(final DataFetchingEnvironment env) {
-        if(hasTimeZoneAccess == null) {
-            var baseSingleEntityCommand = new GetTimeZoneCommand(getUserVisitPK(env), null);
-
-            baseSingleEntityCommand.security();
-
-            hasTimeZoneAccess = !baseSingleEntityCommand.hasSecurityMessages();
-        }
-
-        return hasTimeZoneAccess;
-    }
-
-    private Boolean hasDateTimeFormatAccess;
-
-    private boolean getHasDateTimeFormatAccess(final DataFetchingEnvironment env) {
-        if(hasDateTimeFormatAccess == null) {
-            var baseSingleEntityCommand = new GetDateTimeFormatCommand(getUserVisitPK(env), null);
-
-            baseSingleEntityCommand.security();
-
-            hasDateTimeFormatAccess = !baseSingleEntityCommand.hasSecurityMessages();
-        }
-
-        return hasDateTimeFormatAccess;
-    }
-
-//    private Boolean hasAssociateReferralAccess;
-//
-//    private boolean getHasAssociateReferralAccess(final DataFetchingEnvironment env) {
-//        if(hasAssociateReferralAccess == null) {
-//            var baseSingleEntityCommand = new GetAssociateReferralCommand(getUserVisitPK(env), null);
-//
-//            baseSingleEntityCommand.security();
-//
-//            hasAssociateReferralAccess = !baseSingleEntityCommand.hasSecurityMessages();
-//        }
-//
-//        return hasAssociateReferralAccess;
-//    }
 
 //    @GraphQLField
 //    @GraphQLDescription("user visit group")
@@ -141,7 +69,7 @@ public class UserVisitObject
     public LanguageObject getPreferredLanguage(final DataFetchingEnvironment env) {
         Language preferredLanguage = userVisit.getPreferredLanguage();
 
-        return preferredLanguage != null && getHasLanguageAccess(env) ? new LanguageObject(preferredLanguage) : null;
+        return preferredLanguage != null && PartySecurityUtils.getHasLanguageAccess(env) ? new LanguageObject(preferredLanguage) : null;
     }
 
     @GraphQLField
@@ -149,7 +77,7 @@ public class UserVisitObject
     public CurrencyObject getPreferredCurrency(final DataFetchingEnvironment env) {
         Currency preferredCurrency = userVisit.getPreferredCurrency();
 
-        return preferredCurrency != null && getHasCurrencyAccess(env) ? new CurrencyObject(preferredCurrency) : null;
+        return preferredCurrency != null && AccountingSecurityUtils.getHasCurrencyAccess(env) ? new CurrencyObject(preferredCurrency) : null;
     }
 
     @GraphQLField
@@ -157,7 +85,7 @@ public class UserVisitObject
     public TimeZoneObject getPreferredTimeZone(final DataFetchingEnvironment env) {
         TimeZone preferredTimeZone = userVisit.getPreferredTimeZone();
 
-        return preferredTimeZone != null && getHasTimeZoneAccess(env) ? new TimeZoneObject(preferredTimeZone) : null;
+        return preferredTimeZone != null && PartySecurityUtils.getHasTimeZoneAccess(env) ? new TimeZoneObject(preferredTimeZone) : null;
     }
 
     @GraphQLField
@@ -165,49 +93,37 @@ public class UserVisitObject
     public DateTimeFormatObject getPreferredDateTimeFormat(final DataFetchingEnvironment env) {
         DateTimeFormat preferredDateTimeFormat = userVisit.getPreferredDateTimeFormat();
 
-        return preferredDateTimeFormat != null && getHasDateTimeFormatAccess(env) ? new DateTimeFormatObject(preferredDateTimeFormat) : null;
+        return preferredDateTimeFormat != null && PartySecurityUtils.getHasDateTimeFormatAccess(env) ? new DateTimeFormatObject(preferredDateTimeFormat) : null;
     }
 
     @GraphQLField
-    @GraphQLDescription("unformatted last command time")
-    @GraphQLNonNull
-    public Long getUnformattedLastCommandTime() {
-        return userVisit.getLastCommandTime();
-    }
-    
-    @GraphQLField
     @GraphQLDescription("last command time")
     @GraphQLNonNull
-    public String getLastCommandTime(final DataFetchingEnvironment env) {
-        return DateUtils.getInstance().formatTypicalDateTime(getUserVisit(env), userVisit.getLastCommandTime());
+    public TimeObject getLastCommandTime(final DataFetchingEnvironment env) {
+        return new TimeObject(userVisit.getLastCommandTime());
     }
     
     @GraphQLField
     @GraphQLDescription("offer use")
     public OfferUseObject getOfferUse(final DataFetchingEnvironment env) {
-        return OfferSecurityUtils.getInstance().getHasOfferUseAccess(env) ?
-                new OfferUseObject(userVisit.getOfferUse()) : null;
+        var offeruse = userVisit.getOfferUse();
+
+        return offeruse != null && OfferSecurityUtils.getHasOfferUseAccess(env) ? new OfferUseObject(userVisit.getOfferUse()) : null;
     }
 
 //    @GraphQLField
 //    @GraphQLDescription("associate referral")
 //    public AssociateReferralObject getAssociateReferral() {
-//        AssociateReferral associateReferral = userVisit.getAssociateReferral();
+//        var associateReferral = userVisit.getAssociateReferral();
 //
-//        return associateReferral != null && getHasAssociateReferralAccess(env) ? new AssociateReferralObject(associateReferral) : null;
+//        return associateReferral != null && AssociateSecurityUtils.getHasAssociateReferralAccess(env) ? new AssociateReferralObject(associateReferral) : null;
 //    }
 
     @GraphQLField
-    @GraphQLDescription("unformatted retain until time")
-    public Long getUnformattedRetainUntilTime() {
-        return userVisit.getRetainUntilTime();
-    }
-    
-    @GraphQLField
     @GraphQLDescription("retain until time")
-    public String getRetainUntilTime(final DataFetchingEnvironment env) {
-        Long retainUntilTime = userVisit.getRetainUntilTime();
+    public TimeObject getRetainUntilTime(final DataFetchingEnvironment env) {
+        var retainUntilTime = userVisit.getRetainUntilTime();
 
-        return retainUntilTime == null ? null : DateUtils.getInstance().formatTypicalDateTime(getUserVisit(env), retainUntilTime);
+        return retainUntilTime == null ? null : new TimeObject(retainUntilTime);
     }
 }

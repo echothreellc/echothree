@@ -1,7 +1,7 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" %>
 
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -51,13 +51,44 @@
                 </c:otherwise>
             </c:choose>
             <br />
-            Party Alias Type Name: ${partyAliasType.partyAliasTypeName}<br />
+            <fmt:message key="label.partyTypeName" />: ${partyAliasType.partyType.partyTypeName}<br />
+            <fmt:message key="label.partyType" />: ${partyAliasType.partyType.description}<br />
+            <fmt:message key="label.partyAliasTypeName" />: ${partyAliasType.partyAliasTypeName}<br />
+            <fmt:message key="label.partyAliasType" />: ${partyAliasType.description}<br />
             <br />
-            Validation Pattern: <c:out value="${partyAliasType.validationPattern}" /><br />
+            <fmt:message key="label.validationPattern" />:
+            <c:choose>
+                <c:when test="${partyAliasType.validationPattern != null}">
+                    <c:out value="${partyAliasType.validationPattern}" />
+                </c:when>
+                <c:otherwise>
+                    <i><fmt:message key="phrase.notSet" /></i>
+                </c:otherwise>
+            </c:choose>
+            <br />
+            <fmt:message key="label.isDefault" />:
+            <c:choose>
+                <c:when test="${partyAliasType.isDefault}">
+                    <fmt:message key="phrase.yes" />
+                </c:when>
+                <c:otherwise>
+                    <fmt:message key="phrase.no" />
+                </c:otherwise>
+            </c:choose>
+            <br />
+            <fmt:message key="label.sortOrder" />: <c:out value="${partyAliasType.sortOrder}" /><br />
             <br />
             <br />
             <br />
+            <c:set var="tagScopes" scope="request" value="${partyAliasType.tagScopes}" />
+            <c:set var="entityAttributeGroups" scope="request" value="${partyAliasType.entityAttributeGroups}" />
             <c:set var="entityInstance" scope="request" value="${partyAliasType.entityInstance}" />
+            <c:url var="returnUrl" scope="request" value="/../action/Configuration/PartyAliasType/Review">
+                <c:param name="PartyTypeName" value="${partyAliasType.partyType.partyTypeName}" />
+                <c:param name="PartyAliasTypeName" value="${partyAliasType.partyAliasTypeName}" />
+            </c:url>
+            <jsp:include page="../../include/tagScopes.jsp" />
+            <jsp:include page="../../include/entityAttributeGroups.jsp" />
             <jsp:include page="../../include/entityInstance.jsp" />
         </div>
         <jsp:include page="../../include/userSession.jsp" />

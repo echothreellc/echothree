@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -73,7 +73,7 @@ public class GetDateTimeFormatCommand
             case 1:
                 if(dateTimeFormatName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.DateTimeFormat.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.DateTimeFormat.name());
                     
                     if(!hasExecutionErrors()) {
                         dateTimeFormat = partyControl.getDateTimeFormatByEntityInstance(entityInstance);
@@ -88,14 +88,14 @@ public class GetDateTimeFormatCommand
         }
         
         if(dateTimeFormat != null) {
-            sendEventUsingNames(dateTimeFormat.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(dateTimeFormat.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return dateTimeFormat;
     }
     
     @Override
-    protected BaseResult getTransfer(DateTimeFormat dateTimeFormat) {
+    protected BaseResult getResult(DateTimeFormat dateTimeFormat) {
         var partyControl = Session.getModelController(PartyControl.class);
         GetDateTimeFormatResult result = PartyResultFactory.getGetDateTimeFormatResult();
 

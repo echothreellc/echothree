@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -60,7 +60,7 @@
         allowUserLogins="true" allowPartyAliases="false" isDefault="false" sortOrder="1">
             <partyTypeDescription languageIsoName="en" description="Vendor" />
         </partyType>
-        <partyType partyTypeName="WAREHOUSE" parentPartyTypeName="FACILITY" allowUserLogins="false" allowPartyAliases="false" isDefault="false" sortOrder="1">
+        <partyType partyTypeName="WAREHOUSE" parentPartyTypeName="FACILITY" allowUserLogins="false" allowPartyAliases="true" isDefault="false" sortOrder="1">
             <partyTypeDescription languageIsoName="en" description="Warehouse" />
         </partyType>
     </partyTypes>

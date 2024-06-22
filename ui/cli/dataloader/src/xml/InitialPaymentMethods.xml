@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -16,7 +16,7 @@
 <!--                                                                                  -->
 <initialData>
     <workflows>
-        <workflow workflowName="CUSTOMER_CREDIT_CARD_PAYMENT_METHOD" workflowTypeName="SYSTEM" sortOrder="0">
+        <workflow workflowName="CUSTOMER_CREDIT_CARD_PAYMENT_METHOD" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Customer Credit Card Payment Method" />
             <workflowStep workflowStepName="VALID" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
                 <workflowStepDescription languageIsoName="en" description="Valid" />
@@ -36,9 +36,9 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Valid Credit Card" />
                 <workflowEntranceStep entranceWorkflowStepName="VALID" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="PartyPaymentMethod" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="PartyPaymentMethod" />
         </workflow>
-        <workflow workflowName="CUSTOMER_CHECK_PAYMENT_METHOD" workflowTypeName="SYSTEM" sortOrder="0">
+        <workflow workflowName="CUSTOMER_CHECK_PAYMENT_METHOD" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Customer Check Payment Method" />
             <workflowStep workflowStepName="TEST_1" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
                 <workflowStepDescription languageIsoName="en" description="Test 1" />
@@ -50,9 +50,9 @@
             
             <!-- TODO -->
             
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="PartyPaymentMethod" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="PartyPaymentMethod" />
         </workflow>
-        <workflow workflowName="CUSTOMER_CREDIT_CARD_CONTACT_MECHANISM" workflowTypeName="SYSTEM" selectorKindName="POSTAL_ADDRESS"
+        <workflow workflowName="CUSTOMER_CREDIT_CARD_CONTACT_MECHANISM" selectorKindName="POSTAL_ADDRESS"
             selectorTypeName="CUSTOMER_PAYMENT_METHOD" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Customer Credit Card Contact Mechanism" />
             <workflowStep workflowStepName="AVS_SECURITY_CODE_TEST" workflowStepTypeName="AUTOMATIC_TRANSITION" isDefault="true" sortOrder="1">
@@ -130,7 +130,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Verified" />
                 <workflowEntranceStep entranceWorkflowStepName="VERIFIED" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="PartyPaymentMethodContactMechanism" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="PartyPaymentMethodContactMechanism" />
         </workflow>
     </workflows>
     <paymentMethodTypes>
@@ -232,24 +232,526 @@
         </paymentProcessorResultCode>
     </paymentProcessorResultCodes>
     <paymentProcessorTypes>
-        <paymentProcessorType paymentProcessorTypeName="TEST_PAYMENT_PROCESSOR_TYPE" isDefault="true" sortOrder="1">
-            <paymentProcessorTypeDescription languageIsoName="en" description="Test Payment Processor Type" />
-            <paymentProcessorTypeCodeType paymentProcessorTypeCodeTypeName="TEST_PAYMENT_PROCESSOR_TYPE_CODE_TYPE_1" isDefault="true" sortOrder="1">
-                <paymentProcessorTypeCodeTypeDescription languageIsoName="en" description="Test Payment Processor Type Code Type 1" />
-                <paymentProcessorTypeCode paymentProcessorTypeCodeName="TEST_TYPE_1_CODE_A" isDefault="true" sortOrder="1">
-                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Test Type 1 Code A" />
+        <paymentProcessorType paymentProcessorTypeName="MONETRA" isDefault="false" sortOrder="1">
+            <paymentProcessorTypeDescription languageIsoName="en" description="Monetra" />
+            <paymentProcessorTypeCodeType paymentProcessorTypeCodeTypeName="PROCESSOR" isDefault="true" sortOrder="1">
+                <paymentProcessorTypeCodeTypeDescription languageIsoName="en" description="Processor" />
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="SUCCESS" isDefault="true" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Generic success" />
                 </paymentProcessorTypeCode>
-                <paymentProcessorTypeCode paymentProcessorTypeCodeName="TEST_TYPE_1_CODE_B" isDefault="false" sortOrder="1">
-                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Test Type 1 Code B" />
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="UNKNOWN" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Unknown. Could be pass or fail" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="GENERICFAIL" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Generic undefined failure" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="CALL" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Call issuer for authorization" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="NOREPLY" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="No reply from processor backend" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="PICKUP_NOFRAUD" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Confiscate card (no fraud assumed)" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="PICKUP_FRAUD" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Confiscate card (fraud assumed)" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="PICKUP_LOST" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Confiscate card (reported lost)" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="PICKUP_STOLEN" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Confiscate card (reported stolen)" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="ACCTERROR" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Account number or length error" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="ALREADY_REVERSED" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Reversal already issued" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="BAD_PIN" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Bad Debit/EBT PIN info" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="CASHBACK_EXCEEDED" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Too much cashback" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="CASHBACK_NOAVAIL" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Cashback services unavailable" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="CID_ERROR" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="CVV2/CID error" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="DATE_ERROR" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Date error" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="DONOTHONOR" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Do not honor card" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="INSUFFICIENT_FUNDS" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Insufficient funds" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="EXCEED_WITHDRAWAL_LIMIT" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Exceeds withdrawal limit" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="INVALID_SERVICE_CODE" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Invalid service code" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="EXCEED_ACTIVITY_LIMIT" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Exceeds activity limit" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="VIOLATION" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Violation" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="ENCRYPTION_ERROR" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Encryption Error (usually debit/ebt)" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="CARD_EXPIRED" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Credit card expired" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="REENTER" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Bad transaction data or setup, reenter" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="SECURITY_VIOLATION" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="security violation" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="NOT_PERMITTED_CARD" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Card not permitted for this transaction type" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="NOT_PERMITTED_TRAN" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Transaction type not permitted for this acct" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="SYSTEM_ERROR" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Generic system error" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="BAD_MERCH_ID" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Bad merchant ID" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="DUPLICATE_BATCH" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Duplicate batch number" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="REJECTED_BATCH" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Batch rejected for settlement" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="ACCOUNT_CLOSED" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Account closed" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="RECURRING_CANCEL" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Recurring Payment Failed and will continue to fail" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="ALREADY_ACTIVE" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Gift Card is already activated" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="NOT_ACTIVE" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Gift Card has not been activated" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="BALANCE_MISMATCH" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Balance Mismatch (settlement totals don't match)" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="ID_ERROR" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Valid ID required for transaction" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="REPRESENTED" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Represented Check/Transaction" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="MANAGER_NEEDED" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Manager needed (velocity warning?)" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="INELIGIBLE_CONV" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Check conversion: Auth OK, but check is not eligible for conversion" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="RETRY" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Retry the transaction, it is likely that a second attempt will work (e.g. sequence error)" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="INVALID_ACCOUNT_TYPE" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="For Interac you choose between checking and savings, this indicates the account selected is not set up" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="RETRY_FORCE_INSERT" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="In some specific cases the issuer may need to indicate that a tap transaction that goes online must be inserted to complete" />
                 </paymentProcessorTypeCode>
             </paymentProcessorTypeCodeType>
-            <paymentProcessorTypeCodeType paymentProcessorTypeCodeTypeName="TEST_PAYMENT_PROCESSOR_TYPE_CODE_TYPE_2" isDefault="false" sortOrder="1">
-                <paymentProcessorTypeCodeTypeDescription languageIsoName="en" description="Test Payment Processor Type Code Type 2" />
-                <paymentProcessorTypeCode paymentProcessorTypeCodeName="TEST_TYPE_2_CODE_A" isDefault="true" sortOrder="1">
-                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Test Type 2 Code A" />
+            <paymentProcessorTypeCodeType paymentProcessorTypeCodeTypeName="SOFTWARE" isDefault="false" sortOrder="1">
+                <paymentProcessorTypeCodeTypeDescription languageIsoName="en" description="Software" />
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="INT_SUCCESS" isDefault="true" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="All local System tests passed" />
                 </paymentProcessorTypeCode>
-                <paymentProcessorTypeCode paymentProcessorTypeCodeName="TEST_TYPE_2_CODE_B" isDefault="false" sortOrder="1">
-                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Test Type 2 Code B" />
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="UNKNOWN" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Unknown. Could be pass or fail" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="INT_GENERICFAIL" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Generic undefined failure" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="AUTHFAILED" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Either the username or password sent was invalid" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="ACCT_DISABLED" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Account is disabled" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="ACCT_SSLCERT" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="SSL Certificate check failed" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="ACCT_PASSEXPIRED" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Password reached expiration" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="ACCT_TOOMANYATTEMPTS" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Too many bad login attempts" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="ACCT_INVALIDTRANS" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Invalid transaction type for user" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="ACCT_TRANSNOTALLOWED" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="User does not have permission for transaction type" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="ACCT_OBSCUREREQUIRED" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Request requires obscure data but user does not have this restiction" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="ACCT_ADMINTRANSNOTALLOWED" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Admin level transactions are not allowed to be run" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="ACCT_USERTRANSNOTALLOWED" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="User level transactions are not allowed to be run" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="SETUP_SCHED" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Transaction could not be scheduled" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="SETUP_CARDTYPE" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Card type not in setup" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="SETUP_TRANTYPE" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Transaction type not supported for merchant" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="SETUP_DATA" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Generic setup issue" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="DATA_BADTRANS" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Bad transaction structure/data/unrecognized" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="DATA_ACCOUNT" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Bad account number" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="DATA_EXPDATE" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Bad expiration date" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="DATA_AMOUNT" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Bad amount" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="DATA_TRACKDATA" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Bad track data" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="DATA_BADMICR" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Invalid MICR data, or no MICR sent when required" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="DATA_ABAROUTE" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Invalid ABAROUTE specified" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="DATA_NOOPENBATCHES" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="No open Batches/Batch not found" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="DATA_BATCHLOCKED" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Batch has been locked" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="DATA_RECORDNOTFOUND" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Record not found" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="DATA_INVALIDMOD" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Invalid modification to existing transaction" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="CONN_TOREVERSAL" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="TOReversal must be issued. Status of transaction received unknown" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="CONN_MAXSENDS" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Maximum send attempts reached" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="CONN_MAXATTEMPTS" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Maximum attempts to connect to processor reached" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="SYS_SHUTDOWN" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Shutdown being attempted" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="SYS_MAINTENANCE" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Transaction type not allowed in maintenance mode" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="LIC_USERS" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Max licensed user accounts reached" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="LIC_CARDTYPE" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="License does not allow that card type" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="LIC_TRANEXCEED" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="License Transaction Limit has been exceeded" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="DB_FAIL" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Failure to write to the System database" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="SNF" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="This transaction has been authorized by the store and forward system" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="FRAUDAUTODENY" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Auto-denied transaction due to fraud rule" />
+                </paymentProcessorTypeCode>
+            </paymentProcessorTypeCodeType>
+            <paymentProcessorTypeAction paymentProcessorActionTypeName="PREAUTHORIZE" isDefault="true" sortOrder="1" />
+            <paymentProcessorTypeAction paymentProcessorActionTypeName="PREAUTHORIZATION_COMPLETION" isDefault="false" sortOrder="1" />
+            <paymentProcessorTypeAction paymentProcessorActionTypeName="REFUND" isDefault="false" sortOrder="1" />
+            <paymentProcessorTypeAction paymentProcessorActionTypeName="REFUND_EXISTING_TRANSACTION" isDefault="false" sortOrder="1" />
+            <paymentProcessorTypeAction paymentProcessorActionTypeName="REVERSE_TRANSACTION" isDefault="false" sortOrder="1" />
+            <paymentProcessorTypeAction paymentProcessorActionTypeName="VERIFY_CARD" isDefault="false" sortOrder="1" />
+            <paymentProcessorTypeAction paymentProcessorActionTypeName="VOID_TRANSACTION" isDefault="false" sortOrder="1" />
+        </paymentProcessorType>
+        <paymentProcessorType paymentProcessorTypeName="SIMULATION" isDefault="false" sortOrder="1">
+            <paymentProcessorTypeDescription languageIsoName="en" description="Simulation" />
+            <paymentProcessorTypeCodeType paymentProcessorTypeCodeTypeName="PROCESSOR" isDefault="true" sortOrder="1">
+                <paymentProcessorTypeCodeTypeDescription languageIsoName="en" description="Processor" />
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="SUCCESS" isDefault="true" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Generic success" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="UNKNOWN" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Unknown. Could be pass or fail" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="GENERICFAIL" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Generic undefined failure" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="CALL" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Call issuer for authorization" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="NOREPLY" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="No reply from processor backend" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="PICKUP_NOFRAUD" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Confiscate card (no fraud assumed)" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="PICKUP_FRAUD" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Confiscate card (fraud assumed)" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="PICKUP_LOST" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Confiscate card (reported lost)" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="PICKUP_STOLEN" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Confiscate card (reported stolen)" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="ACCTERROR" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Account number or length error" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="ALREADY_REVERSED" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Reversal already issued" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="BAD_PIN" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Bad Debit/EBT PIN info" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="CASHBACK_EXCEEDED" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Too much cashback" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="CASHBACK_NOAVAIL" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Cashback services unavailable" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="CID_ERROR" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="CVV2/CID error" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="DATE_ERROR" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Date error" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="DONOTHONOR" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Do not honor card" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="INSUFFICIENT_FUNDS" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Insufficient funds" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="EXCEED_WITHDRAWAL_LIMIT" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Exceeds withdrawal limit" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="INVALID_SERVICE_CODE" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Invalid service code" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="EXCEED_ACTIVITY_LIMIT" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Exceeds activity limit" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="VIOLATION" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Violation" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="ENCRYPTION_ERROR" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Encryption Error (usually debit/ebt)" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="CARD_EXPIRED" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Credit card expired" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="REENTER" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Bad transaction data or setup, reenter" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="SECURITY_VIOLATION" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="security violation" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="NOT_PERMITTED_CARD" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Card not permitted for this transaction type" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="NOT_PERMITTED_TRAN" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Transaction type not permitted for this acct" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="SYSTEM_ERROR" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Generic system error" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="BAD_MERCH_ID" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Bad merchant ID" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="DUPLICATE_BATCH" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Duplicate batch number" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="REJECTED_BATCH" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Batch rejected for settlement" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="ACCOUNT_CLOSED" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Account closed" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="RECURRING_CANCEL" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Recurring Payment Failed and will continue to fail" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="ALREADY_ACTIVE" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Gift Card is already activated" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="NOT_ACTIVE" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Gift Card has not been activated" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="BALANCE_MISMATCH" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Balance Mismatch (settlement totals don't match)" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="ID_ERROR" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Valid ID required for transaction" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="REPRESENTED" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Represented Check/Transaction" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="MANAGER_NEEDED" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Manager needed (velocity warning?)" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="INELIGIBLE_CONV" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Check conversion: Auth OK, but check is not eligible for conversion" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="RETRY" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Retry the transaction, it is likely that a second attempt will work (e.g. sequence error)" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="INVALID_ACCOUNT_TYPE" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="For Interac you choose between checking and savings, this indicates the account selected is not set up" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="RETRY_FORCE_INSERT" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="In some specific cases the issuer may need to indicate that a tap transaction that goes online must be inserted to complete" />
+                </paymentProcessorTypeCode>
+            </paymentProcessorTypeCodeType>
+            <paymentProcessorTypeCodeType paymentProcessorTypeCodeTypeName="SOFTWARE" isDefault="false" sortOrder="1">
+                <paymentProcessorTypeCodeTypeDescription languageIsoName="en" description="Software" />
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="INT_SUCCESS" isDefault="true" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="All local System tests passed" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="UNKNOWN" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Unknown. Could be pass or fail" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="INT_GENERICFAIL" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Generic undefined failure" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="AUTHFAILED" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Either the username or password sent was invalid" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="ACCT_DISABLED" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Account is disabled" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="ACCT_SSLCERT" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="SSL Certificate check failed" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="ACCT_PASSEXPIRED" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Password reached expiration" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="ACCT_TOOMANYATTEMPTS" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Too many bad login attempts" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="ACCT_INVALIDTRANS" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Invalid transaction type for user" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="ACCT_TRANSNOTALLOWED" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="User does not have permission for transaction type" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="ACCT_OBSCUREREQUIRED" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Request requires obscure data but user does not have this restiction" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="ACCT_ADMINTRANSNOTALLOWED" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Admin level transactions are not allowed to be run" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="ACCT_USERTRANSNOTALLOWED" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="User level transactions are not allowed to be run" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="SETUP_SCHED" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Transaction could not be scheduled" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="SETUP_CARDTYPE" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Card type not in setup" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="SETUP_TRANTYPE" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Transaction type not supported for merchant" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="SETUP_DATA" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Generic setup issue" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="DATA_BADTRANS" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Bad transaction structure/data/unrecognized" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="DATA_ACCOUNT" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Bad account number" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="DATA_EXPDATE" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Bad expiration date" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="DATA_AMOUNT" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Bad amount" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="DATA_TRACKDATA" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Bad track data" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="DATA_BADMICR" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Invalid MICR data, or no MICR sent when required" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="DATA_ABAROUTE" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Invalid ABAROUTE specified" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="DATA_NOOPENBATCHES" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="No open Batches/Batch not found" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="DATA_BATCHLOCKED" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Batch has been locked" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="DATA_RECORDNOTFOUND" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Record not found" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="DATA_INVALIDMOD" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Invalid modification to existing transaction" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="CONN_TOREVERSAL" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="TOReversal must be issued. Status of transaction received unknown" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="CONN_MAXSENDS" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Maximum send attempts reached" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="CONN_MAXATTEMPTS" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Maximum attempts to connect to processor reached" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="SYS_SHUTDOWN" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Shutdown being attempted" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="SYS_MAINTENANCE" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Transaction type not allowed in maintenance mode" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="LIC_USERS" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Max licensed user accounts reached" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="LIC_CARDTYPE" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="License does not allow that card type" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="LIC_TRANEXCEED" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="License Transaction Limit has been exceeded" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="DB_FAIL" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Failure to write to the System database" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="SNF" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="This transaction has been authorized by the store and forward system" />
+                </paymentProcessorTypeCode>
+                <paymentProcessorTypeCode paymentProcessorTypeCodeName="FRAUDAUTODENY" isDefault="false" sortOrder="1">
+                    <paymentProcessorTypeCodeDescription languageIsoName="en" description="Auto-denied transaction due to fraud rule" />
                 </paymentProcessorTypeCode>
             </paymentProcessorTypeCodeType>
             <paymentProcessorTypeAction paymentProcessorActionTypeName="PREAUTHORIZE" isDefault="true" sortOrder="1" />
@@ -262,8 +764,8 @@
         </paymentProcessorType>
     </paymentProcessorTypes>
     <paymentProcessors>
-        <paymentProcessor paymentProcessorTypeName="TEST_PAYMENT_PROCESSOR_TYPE" paymentProcessorName="TEST_PAYMENT_PROCESSOR" isDefault="true" sortOrder="1">
-            <paymentProcessorDescription languageIsoName="en" description="Test Payment Processor" />
+        <paymentProcessor paymentProcessorTypeName="SIMULATION" paymentProcessorName="SIMULATION" isDefault="true" sortOrder="1">
+            <paymentProcessorDescription languageIsoName="en" description="Simulation" />
             <paymentProcessorAction paymentProcessorActionTypeName="PREAUTHORIZE" />
             <paymentProcessorAction paymentProcessorActionTypeName="PREAUTHORIZATION_COMPLETION" />
             <paymentProcessorAction paymentProcessorActionTypeName="REFUND" />
@@ -290,7 +792,7 @@
             <paymentMethodDescription languageIsoName="en" description="COD" />
         </paymentMethod>
 -->
-        <paymentMethod paymentMethodTypeName="CREDIT_CARD" paymentMethodName="DISCOVER" paymentProcessorName="TEST_PAYMENT_PROCESSOR" isDefault="true"
+        <paymentMethod paymentMethodTypeName="CREDIT_CARD" paymentMethodName="DISCOVER" paymentProcessorName="SIMULATION" isDefault="true"
                 sortOrder="1" requestNameOnCard="true" requireNameOnCard="true" checkCardNumber="true" requestExpirationDate="true"
                 requireExpirationDate="true" checkExpirationDate="true" requestSecurityCode="true" requireSecurityCode="true"
                 retainCreditCard="true" retainSecurityCode="false"
@@ -298,7 +800,7 @@
                 securityCodeValidationPattern="^[0-9][0-9][0-9]$" requestBilling="true" requireBilling="true" requestIssuer="true" requireIssuer="false">
             <paymentMethodDescription languageIsoName="en" description="Discover" />
         </paymentMethod>
-        <paymentMethod paymentMethodTypeName="CREDIT_CARD" paymentMethodName="VISA" paymentProcessorName="TEST_PAYMENT_PROCESSOR" isDefault="false"
+        <paymentMethod paymentMethodTypeName="CREDIT_CARD" paymentMethodName="VISA" paymentProcessorName="SIMULATION" isDefault="false"
                 sortOrder="1" requestNameOnCard="true" requireNameOnCard="true" checkCardNumber="true" requestExpirationDate="true"
                 requireExpirationDate="true" checkExpirationDate="true" requestSecurityCode="true" requireSecurityCode="true"
                 retainCreditCard="true" retainSecurityCode="false"
@@ -306,7 +808,7 @@
                 securityCodeValidationPattern="^[0-9][0-9][0-9]$" requestBilling="true" requireBilling="true" requestIssuer="true" requireIssuer="false">
             <paymentMethodDescription languageIsoName="en" description="Visa" />
         </paymentMethod>
-        <paymentMethod paymentMethodTypeName="CREDIT_CARD" paymentMethodName="MASTERCARD" paymentProcessorName="TEST_PAYMENT_PROCESSOR" isDefault="false"
+        <paymentMethod paymentMethodTypeName="CREDIT_CARD" paymentMethodName="MASTERCARD" paymentProcessorName="SIMULATION" isDefault="false"
                 sortOrder="1" requestNameOnCard="true" requireNameOnCard="true" checkCardNumber="true" requestExpirationDate="true"
                 requireExpirationDate="true" checkExpirationDate="true" requestSecurityCode="true" requireSecurityCode="true"
                 retainCreditCard="true" retainSecurityCode="false"
@@ -314,7 +816,7 @@
                 securityCodeValidationPattern="^[0-9][0-9][0-9]$" requestBilling="true" requireBilling="true" requestIssuer="true" requireIssuer="false">
             <paymentMethodDescription languageIsoName="en" description="Mastercard" />
         </paymentMethod>
-        <paymentMethod paymentMethodTypeName="CREDIT_CARD" paymentMethodName="AMERICAN_EXPRESS" paymentProcessorName="TEST_PAYMENT_PROCESSOR" isDefault="false"
+        <paymentMethod paymentMethodTypeName="CREDIT_CARD" paymentMethodName="AMERICAN_EXPRESS" paymentProcessorName="SIMULATION" isDefault="false"
                 sortOrder="1" requestNameOnCard="true" requireNameOnCard="true" checkCardNumber="true" requestExpirationDate="true"
                 requireExpirationDate="true" checkExpirationDate="true" requestSecurityCode="true" requireSecurityCode="true"
                 retainCreditCard="true" retainSecurityCode="false"

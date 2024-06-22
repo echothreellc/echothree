@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,12 +26,12 @@ public class EntityLongAttributeFacetQuery
     
     public EntityLongAttributeFacetQuery(UserVisitSearch userVisitSearch) {
         super(userVisitSearch.getSearch().getCachedSearch() == null
-                ? "SELECT enia_integerattribute AS IntegerAttribute, COUNT(*) AS Count "
+                ? "SELECT enla_longattribute AS LongAttribute, COUNT(*) AS Count "
                 + "FROM searchresults, entitylongattributes "
                 + "WHERE srchr_srch_searchid = ? "
                 + "AND srchr_eni_entityinstanceid = enla_eni_entityinstanceid AND enla_ena_entityattributeid = ? AND enla_thrutime = ? "
                 + "GROUP BY enla_longattribute"
-                : "SELECT enia_integerattribute AS IntegerAttribute, COUNT(*) AS Count "
+                : "SELECT enla_longattribute AS LongAttribute, COUNT(*) AS Count "
                 + "FROM cachedexecutedsearchresults, entitylongattributes "
                 + "WHERE cxsrchr_cxsrch_cachedexecutedsearchid = ? "
                 + "AND cxsrchr_eni_entityinstanceid = enla_eni_entityinstanceid AND enla_ena_entityattributeid = ? AND enla_thrutime = ? "

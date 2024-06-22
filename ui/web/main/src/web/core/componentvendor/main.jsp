@@ -1,7 +1,7 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" %>
 
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -27,7 +27,7 @@
     <body>
         <div id="Header">
             <h2>
-                <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
+                <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
                 <a href="<c:url value="/action/Core/Main" />">Core</a> &gt;&gt;
                 Component Vendors
             </h2>
@@ -51,15 +51,15 @@
                             <c:url var="reviewUrl" value="/action/Core/ComponentVendor/Review">
                                 <c:param name="ComponentVendorName" value="${componentVendor.componentVendorName}" />
                             </c:url>
-                            <a href="${reviewUrl}"><c:out value="${componentVendor.componentVendorName}" /></a>
+                            <a href="${reviewUrl}"><et:appearance appearance="${componentVendor.entityInstance.entityAppearance.appearance}"><c:out value="${componentVendor.componentVendorName}" /></et:appearance></a>
                         </c:when>
                         <c:otherwise>
-                            <c:out value="${componentVendor.componentVendorName}" />
+                            <et:appearance appearance="${componentVendor.entityInstance.entityAppearance.appearance}"><c:out value="${componentVendor.componentVendorName}" /></et:appearance>
                         </c:otherwise>
                     </c:choose>
                 </display:column>
                 <display:column titleKey="columnTitle.description">
-                    <c:out value="${componentVendor.description}" />
+                    <et:appearance appearance="${componentVendor.entityInstance.entityAppearance.appearance}"><c:out value="${componentVendor.description}" /></et:appearance>
                 </display:column>
                 <c:if test="${linksInFirstRow || linksInSecondRow}">
                     <display:column>

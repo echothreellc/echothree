@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -56,6 +56,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class BillingControl
@@ -192,7 +193,7 @@ public class BillingControl
         billingAccount.setLastDetail(billingAccountDetail);
         billingAccount.store();
         
-        sendEventUsingNames(billingAccount.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(billingAccount.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         createBillingAccountStatus(billingAccount, Long.valueOf(0), null);
         
@@ -395,7 +396,7 @@ public class BillingControl
         return getPaymentTransferCaches(userVisit).getBillingAccountTransferCache().getTransfer(billingAccount);
     }
     
-    public List<BillingAccountTransfer> getBillingAccountTransfers(UserVisit userVisit, List<BillingAccount> billingAccounts) {
+    public List<BillingAccountTransfer> getBillingAccountTransfers(UserVisit userVisit, Collection<BillingAccount> billingAccounts) {
         List<BillingAccountTransfer> billingAccountTransfers = new ArrayList<>(billingAccounts.size());
         BillingAccountTransferCache billingAccountTransferCache = getPaymentTransferCaches(userVisit).getBillingAccountTransferCache();
         
@@ -476,7 +477,7 @@ public class BillingControl
         BillingAccountRole billingAccountRole = BillingAccountRoleFactory.getInstance().create(billingAccount, party, partyContactMechanism,
                 billingAccountRoleType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(billingAccount.getPrimaryKey(), EventTypes.MODIFY.name(), billingAccountRole.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(billingAccount.getPrimaryKey(), EventTypes.MODIFY, billingAccountRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return billingAccountRole;
     }
@@ -620,7 +621,7 @@ public class BillingControl
         return getPaymentTransferCaches(userVisit).getBillingAccountRoleTransferCache().getTransfer(billingAccountRole);
     }
     
-    public List<BillingAccountRoleTransfer> getBillingAccountRoleTransfers(UserVisit userVisit, List<BillingAccountRole> billingAccountRoles) {
+    public List<BillingAccountRoleTransfer> getBillingAccountRoleTransfers(UserVisit userVisit, Collection<BillingAccountRole> billingAccountRoles) {
         List<BillingAccountRoleTransfer> billingAccountRoleTransfers = new ArrayList<>(billingAccountRoles.size());
         BillingAccountRoleTransferCache billingAccountRoleTransferCache = getPaymentTransferCaches(userVisit).getBillingAccountRoleTransferCache();
         
@@ -651,14 +652,14 @@ public class BillingControl
             billingAccountRole = BillingAccountRoleFactory.getInstance().create(billingAccountPK, partyPK, partyContactMechanismPK, billingAccountRoleTypePK,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(billingAccountPK, EventTypes.MODIFY.name(), billingAccountRole.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(billingAccountPK, EventTypes.MODIFY, billingAccountRole.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteBillingAccountRole(BillingAccountRole billingAccountRole, BasePK deletedBy) {
         billingAccountRole.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(billingAccountRole.getBillingAccountPK(), EventTypes.MODIFY.name(), billingAccountRole.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(billingAccountRole.getBillingAccountPK(), EventTypes.MODIFY, billingAccountRole.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteBillingAccountRolesByBillingAccount(BillingAccount billingAccount, BasePK deletedBy) {

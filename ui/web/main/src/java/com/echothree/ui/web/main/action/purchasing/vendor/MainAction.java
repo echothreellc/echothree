@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import com.echothree.control.user.search.common.form.GetVendorResultsForm;
 import com.echothree.control.user.search.common.form.SearchVendorsForm;
 import com.echothree.control.user.search.common.result.GetVendorResultsResult;
 import com.echothree.control.user.search.common.result.SearchVendorsResult;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchTypes;
 import com.echothree.model.control.vendor.common.transfer.VendorResultTransfer;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -64,7 +64,7 @@ public class MainAction
         GetVendorResultsForm commandForm = SearchUtil.getHome().getGetVendorResultsForm();
         String partyName = null;
         
-        commandForm.setSearchTypeName(SearchConstants.SearchType_VENDOR_REVIEW);
+        commandForm.setSearchTypeName(SearchTypes.VENDOR_REVIEW.name());
         
         CommandResult commandResult = SearchUtil.getHome().getVendorResults(getUserVisitPK(request), commandForm);
         ExecutionResult executionResult = commandResult.getExecutionResult();
@@ -87,7 +87,7 @@ public class MainAction
         if(wasPost(request)) {
             SearchVendorsForm commandForm = SearchUtil.getHome().getSearchVendorsForm();
 
-            commandForm.setSearchTypeName(SearchConstants.SearchType_VENDOR_REVIEW);
+            commandForm.setSearchTypeName(SearchTypes.VENDOR_REVIEW.name());
             commandForm.setFirstName(actionForm.getFirstName());
             commandForm.setFirstNameSoundex(actionForm.getFirstNameSoundex().toString());
             commandForm.setMiddleName(actionForm.getMiddleName());
@@ -107,7 +107,7 @@ public class MainAction
             } else {
                 ExecutionResult executionResult = commandResult.getExecutionResult();
                 SearchVendorsResult result = (SearchVendorsResult)executionResult.getResult();
-                int count = result.getCount();
+                var count = result.getCount();
 
                 if(count == 0 || count > 1) {
                     forwardKey = ForwardConstants.DISPLAY;

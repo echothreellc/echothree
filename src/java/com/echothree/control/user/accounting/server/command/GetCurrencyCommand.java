@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -73,7 +73,7 @@ public class GetCurrencyCommand
             case 1:
                 if(currencyIsoName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.Currency.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.Currency.name());
                     
                     if(!hasExecutionErrors()) {
                         currency = accountingControl.getCurrencyByEntityInstance(entityInstance);
@@ -88,14 +88,14 @@ public class GetCurrencyCommand
         }
         
         if(currency != null) {
-            sendEventUsingNames(currency.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(currency.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return currency;
     }
     
     @Override
-    protected BaseResult getTransfer(Currency currency) {
+    protected BaseResult getResult(Currency currency) {
         var accountingControl = Session.getModelController(AccountingControl.class);
         GetCurrencyResult result = AccountingResultFactory.getGetCurrencyResult();
 

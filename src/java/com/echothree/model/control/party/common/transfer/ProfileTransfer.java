@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,10 +22,12 @@ import com.echothree.util.common.transfer.BaseTransfer;
 
 public class ProfileTransfer
         extends BaseTransfer {
-    
+
     private String nickname;
     private IconTransfer icon;
+    private String pronunciation;
     private GenderTransfer gender;
+    private String pronouns;
     private String birthday;
     private Integer unformattedBirthday;
     private BirthdayFormatTransfer birthdayFormat;
@@ -38,12 +40,14 @@ public class ProfileTransfer
     private String signature;
     
     /** Creates a new instance of ProfileTransfer */
-    public ProfileTransfer(String nickname, IconTransfer icon, GenderTransfer gender, String birthday, Integer unformattedBirthday,
-            BirthdayFormatTransfer birthdayFormat, String occupation, String hobbies, String location, MimeTypeTransfer bioMimeType,
-            String bio, MimeTypeTransfer signatureMimeType, String signature) {
+    public ProfileTransfer(String nickname, IconTransfer icon, String pronunciation, GenderTransfer gender, String pronouns,
+            String birthday, Integer unformattedBirthday, BirthdayFormatTransfer birthdayFormat, String occupation, String hobbies,
+            String location, MimeTypeTransfer bioMimeType, String bio, MimeTypeTransfer signatureMimeType, String signature) {
         this.nickname = nickname;
         this.icon = icon;
+        this.pronunciation = pronunciation;
         this.gender = gender;
+        this.pronouns = pronouns;
         this.unformattedBirthday = unformattedBirthday;
         this.birthday = birthday;
         this.birthdayFormat = birthdayFormat;
@@ -89,6 +93,22 @@ public class ProfileTransfer
     }
 
     /**
+     * Returns the pronunciation.
+     * @return the pronunciation
+     */
+    public String getPronunciation() {
+        return pronunciation;
+    }
+
+    /**
+     * Sets the pronunciation.
+     * @param pronunciation the pronunciation to set
+     */
+    public void setPronunciation(String pronunciation) {
+        this.pronunciation = pronunciation;
+    }
+
+    /**
      * Returns the gender.
      * @return the gender
      */
@@ -102,6 +122,22 @@ public class ProfileTransfer
      */
     public void setGender(GenderTransfer gender) {
         this.gender = gender;
+    }
+
+    /**
+     * Returns the pronouns.
+     * @return the pronouns
+     */
+    public String getPronouns() {
+        return pronouns;
+    }
+
+    /**
+     * Sets the pronouns.
+     * @param pronouns the pronouns to set
+     */
+    public void setPronouns(String pronouns) {
+        this.pronouns = pronouns;
     }
 
     /**

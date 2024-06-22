@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -67,7 +67,7 @@ public class GetFontStyleCommand
         if(parameterCount == 1) {
             if(fontStyleName == null) {
                 var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
-                        ComponentVendors.ECHOTHREE.name(), EntityTypes.FontStyle.name());
+                        ComponentVendors.ECHO_THREE.name(), EntityTypes.FontStyle.name());
 
                 if(!hasExecutionErrors()) {
                     fontStyle = coreControl.getFontStyleByEntityInstance(entityInstance);
@@ -77,7 +77,7 @@ public class GetFontStyleCommand
             }
 
             if(fontStyle != null) {
-                sendEventUsingNames(fontStyle.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                sendEvent(fontStyle.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
@@ -87,7 +87,7 @@ public class GetFontStyleCommand
     }
     
     @Override
-    protected BaseResult getTransfer(FontStyle fontStyle) {
+    protected BaseResult getResult(FontStyle fontStyle) {
         var coreControl = getCoreControl();
         GetFontStyleResult result = CoreResultFactory.getGetFontStyleResult();
 

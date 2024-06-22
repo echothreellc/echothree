@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 package com.echothree.model.control.search.server.graphql;
 
 import com.echothree.control.user.search.common.result.SearchVendorsResult;
-import com.echothree.model.control.graphql.server.graphql.CommandResultObject;
+import com.echothree.model.control.graphql.server.graphql.MutationResultObject;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
@@ -25,7 +25,7 @@ import graphql.annotations.annotationTypes.GraphQLName;
 @GraphQLDescription("search vendors result object")
 @GraphQLName("SearchVendorsResult")
 public class SearchVendorsResultObject
-        extends CommandResultObject{
+        extends MutationResultObject {
     
     private SearchVendorsResult result;
     
@@ -35,7 +35,7 @@ public class SearchVendorsResultObject
     
     @GraphQLField
     @GraphQLDescription("count")
-    public Integer getCount() {
+    public Long getCount() {
         return result == null ? null : result.getCount();
     }
     

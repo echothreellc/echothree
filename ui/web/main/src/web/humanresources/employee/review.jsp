@@ -1,7 +1,7 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" %>
 
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -20,16 +20,20 @@
 
 <html:html xhtml="true">
     <head>
-        <title>Review (<c:out value="${employee.employeeName}" />)</title>
+        <title>
+            <fmt:message key="pageTitle.employee">
+                <fmt:param value="${employee.employeeName}" />
+            </fmt:message>
+        </title>
         <html:base/>
         <%@ include file="../../include/environment.jsp" %>
     </head>
     <body>
         <div id="Header">
             <h2>
-                <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
-                <a href="<c:url value="/action/HumanResources/Main" />">Human Resources</a> &gt;&gt;
-                <a href="<c:url value="/action/HumanResources/Employee/Main" />">Employees</a> &gt;&gt;
+                <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
+                <a href="<c:url value="/action/HumanResources/Main" />"><fmt:message key="navigation.humanResources" /></a> &gt;&gt;
+                <a href="<c:url value="/action/HumanResources/Employee/Main" />"><fmt:message key="navigation.employees" /></a> &gt;&gt;
                 <et:countEmployeeResults searchTypeName="HUMAN_RESOURCES" countVar="employeeResultsCount" commandResultVar="countEmployeeResultsCommandResult" logErrors="false" />
                 <c:if test="${employeeResultsCount > 0}">
                     <a href="<c:url value="/action/HumanResources/Employee/Result" />"><fmt:message key="navigation.results" /></a> &gt;&gt;
@@ -50,8 +54,8 @@
             <c:out value="${employee.person.middleName}" /> <c:out value="${employee.person.lastName}" />
             <c:out value="${employee.person.nameSuffix.description}" /></b></font></p>
             <br />
-            Employee Name: <c:out value="${employee.employeeName}" /><br />
-            Employee Type:
+            <fmt:message key="label.employeeName" />: <c:out value="${employee.employeeName}" /><br />
+            <fmt:message key="label.employeeType" />:
             <c:url var="employeeTypeUrl" value="/action/HumanResources/EmployeeType/Review">
                 <c:param name="EmployeeTypeName" value="${employee.employeeType.employeeTypeName}" />
             </c:url>
@@ -114,7 +118,7 @@
             Last Login Time:
             <c:choose>
                 <c:when test='${employee.userLogin.lastLoginTime == null}'>
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:out value="${employee.userLogin.lastLoginTime}" />
@@ -125,7 +129,7 @@
             First Failure Time:
             <c:choose>
                 <c:when test='${employee.userLogin.firstFailureTime == null}'>
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:out value="${employee.userLogin.firstFailureTime}" />
@@ -135,7 +139,7 @@
             Last Failure Time:
             <c:choose>
                 <c:when test='${employee.userLogin.lastFailureTime == null}'>
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:out value="${employee.userLogin.lastFailureTime}" />
@@ -146,10 +150,10 @@
             Force Change:
             <c:choose>
                 <c:when test="${employee.userLogin.forceChange}">
-                    Yes
+                    <fmt:message key="phrase.yes" />
                 </c:when>
                 <c:otherwise>
-                    No
+                    <fmt:message key="phrase.no" />
                 </c:otherwise>
             </c:choose>
             <br />
@@ -165,11 +169,13 @@
                 </c:otherwise>
             </c:choose>
             <a href="${changePasswordUrl}">Change Password</a><br />
-            <c:url var="resetLockoutUrl" value="/action/HumanResources/Employee/ResetLockout">
-                <c:param name="EmployeeName" value="${employee.employeeName}" />
-                <c:param name="ReturnUrl" value="${returnUrl}" />
-            </c:url>
-            <a href="${resetLockoutUrl}">Reset Lockout</a><br />
+            <c:if test="${employee.userLogin.failureCount > partyType.partyTypeLockoutPolicy.lockoutFailureCount}">
+                <c:url var="resetLockoutUrl" value="/action/HumanResources/Employee/ResetLockout">
+                    <c:param name="PartyName" value="${employee.partyName}" />
+                    <c:param name="ReturnUrl" value="${returnUrl}" />
+                </c:url>
+                <a href="${resetLockoutUrl}">Reset Lockout</a><br />
+            </c:if>
             <br /><br />
             <h2>Responsibilities</h2>
             <c:url var="addUrl" value="/action/HumanResources/PartyResponsibility/Add">
@@ -336,6 +342,11 @@
             <c:set var="commonUrl" scope="request" value="HumanResources/Employee" />
             <c:set var="partyContactLists" scope="request" value="${employee.partyContactLists}" />
             <jsp:include page="../../include/partyContactLists.jsp" />
+
+            <c:set var="commonUrl" scope="request" value="HumanResources/EmployeeAlias" />
+            <c:set var="partyAliases" scope="request" value="${employee.partyAliases}" />
+            <c:set var="securityRoleGroupNamePrefix" scope="request" value="Employee" />
+            <jsp:include page="../../include/partyAliases.jsp" />
 
             <c:set var="tagScopes" scope="request" value="${employee.tagScopes}" />
             <c:set var="entityAttributeGroups" scope="request" value="${employee.entityAttributeGroups}" />

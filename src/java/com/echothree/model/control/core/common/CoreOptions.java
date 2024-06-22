@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,15 +29,21 @@ public interface CoreOptions {
     String EntityAttributeGroupIncludeEntityAttributes = "EntityAttributeGroupIncludeEntityAttributes";
     
     String EntityAttributeIncludeEntityListItems = "EntityAttributeIncludeEntityListItems";
+    String EntityAttributeIncludeEntityListItemsCount = "EntityAttributeIncludeEntityListItemsCount";
     String EntityAttributeIncludeEntityAttributeEntityTypes = "EntityAttributeIncludeEntityAttributeEntityTypes";
+    String EntityAttributeIncludeEntityAttributeEntityTypesCount = "EntityAttributeIncludeEntityAttributeEntityTypesCount";
     String EntityAttributeIncludeValue = "EntityAttributeIncludeValue";
 
     String EntityInstanceIncludeEntityAppearance = "EntityInstanceIncludeEntityAppearance";
+    String EntityInstanceIncludeEntityVisit = "EntityInstanceIncludeEntityVisit";
     String EntityInstanceIncludeNames = "EntityInstanceIncludeNames";
     String EntityInstanceIncludeKeyIfAvailable = "EntityInstanceIncludeKeyIfAvailable";
     String EntityInstanceIncludeGuidIfAvailable = "EntityInstanceIncludeGuidIfAvailable";
     String EntityInstanceIncludeUlidIfAvailable = "EntityInstanceIncludeUlidIfAvailable";
-    
+
+    String EntityListItemIncludeEntityAttributeGroups = "EntityListItemIncludeEntityAttributeGroups";
+    String EntityListItemIncludeTagScopes = "EntityListItemIncludeTagScopes";
+
     String CommandMessageIncludeTranslations = "CommandMessageIncludeTranslations";
 
     String CacheEntryIncludeClob = "CacheEntryIncludeClob";
@@ -54,5 +60,17 @@ public interface CoreOptions {
 
     String EntityTypeIncludeIndexTypes = "EntityTypeIncludeIndexTypes";
     String EntityTypeIncludeIndexTypesCount = "EntityTypeIncludeIndexTypesCount";
-    
+    String EntityTypeIncludeEntityAttributes = "EntityTypeIncludeEntityAttributes";
+    String EntityTypeIncludeCommentTypes = "EntityTypeIncludeCommentTypes";
+    String EntityTypeIncludeRatingTypes = "EntityTypeIncludeRatingTypes";
+    String EntityTypeIncludeMessageTypes = "EntityTypeIncludeMessageTypes";
+    String EntityTypeIncludeEntityInstancesCount = "EntityTypeIncludeEntityInstancesCount";
+    String EntityTypeIncludeEntityInstances = "EntityTypeIncludeEntityInstances";
+
+    String EntityVisitIncludeEntityInstance = "EntityVisitIncludeEntityInstance";
+    String EntityVisitIncludeVisitedEntityInstance = "EntityVisitIncludeVisitedEntityInstance";
+    String EntityVisitIncludeVisitedTime = "EntityVisitIncludeVisitedTime";
+
+    String EntityAliasTypeIncludeAlias = "EntityAliasTypeIncludeAlias";
+
 }

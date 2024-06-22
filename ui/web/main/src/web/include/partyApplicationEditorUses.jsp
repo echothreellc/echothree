@@ -68,7 +68,7 @@
                         <c:out value="${partyApplicationEditorUse.preferredHeight}" />
                     </c:when>
                     <c:otherwise>
-                        <i>Not Set.</i>
+                        <i><fmt:message key="phrase.notSet" /></i>
                     </c:otherwise>
                 </c:choose>
                         x
@@ -77,7 +77,7 @@
                         <c:out value="${partyApplicationEditorUse.preferredWidth}" />
                     </c:when>
                     <c:otherwise>
-                        <i>Not Set.</i>
+                        <i><fmt:message key="phrase.notSet" /></i>
                     </c:otherwise>
                 </c:choose>
             </display:column>

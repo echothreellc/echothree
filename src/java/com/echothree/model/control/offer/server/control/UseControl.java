@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -85,7 +85,7 @@ public class UseControl
         use.setLastDetail(useDetail);
         use.store();
 
-        sendEventUsingNames(use.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(use.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return use;
     }
@@ -105,7 +105,7 @@ public class UseControl
                 useType);
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.Use */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Use */
     public Use getUseByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new UsePK(entityInstance.getEntityUniqueId());
         var use = UseFactory.getInstance().getEntityFromPK(entityPermission, pk);
@@ -352,7 +352,7 @@ public class UseControl
             use.setActiveDetail(useDetail);
             use.setLastDetail(useDetail);
 
-            sendEventUsingNames(usePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(usePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -389,7 +389,7 @@ public class UseControl
             }
         }
 
-        sendEventUsingNames(use.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(use.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteUses(List<Use> uses, BasePK deletedBy) {
@@ -410,8 +410,8 @@ public class UseControl
         UseDescription useDescription = UseDescriptionFactory.getInstance().create(use, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(use.getPrimaryKey(), EventTypes.MODIFY.name(), useDescription.getPrimaryKey(),
-                EventTypes.CREATE.name(), createdBy);
+        sendEvent(use.getPrimaryKey(), EventTypes.MODIFY, useDescription.getPrimaryKey(),
+                EventTypes.CREATE, createdBy);
 
         return useDescription;
     }
@@ -548,16 +548,16 @@ public class UseControl
 
             useDescription = UseDescriptionFactory.getInstance().create(use, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(use.getPrimaryKey(), EventTypes.MODIFY.name(), useDescription.getPrimaryKey(),
-                    EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(use.getPrimaryKey(), EventTypes.MODIFY, useDescription.getPrimaryKey(),
+                    EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteUseDescription(UseDescription useDescription, BasePK deletedBy) {
         useDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(useDescription.getUsePK(), EventTypes.MODIFY.name(),
-                useDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(useDescription.getUsePK(), EventTypes.MODIFY,
+                useDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 
     public void deleteUseDescriptionsByUse(Use use, BasePK deletedBy) {

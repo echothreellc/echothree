@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 package com.echothree.control.user.party.common.result;
 
 import com.echothree.model.control.party.common.transfer.PartyAliasTransfer;
+import com.echothree.model.control.party.common.transfer.PartyAliasTypeTransfer;
 import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.util.common.command.BaseResult;
 import java.util.List;
@@ -26,6 +27,12 @@ public interface GetPartyAliasesResult
 
     PartyTransfer getParty();
     void setParty(PartyTransfer party);
+
+    PartyAliasTypeTransfer getPartyAliasType();
+    void setPartyAliasType(PartyAliasTypeTransfer partyAliasType);
+
+    Long getPartyAliasCount();
+    void setPartyAliasCount(Long partyAliasCount);
 
     List<PartyAliasTransfer> getPartyAliases();
     void setPartyAliases(List<PartyAliasTransfer> partyAliases);

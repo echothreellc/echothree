@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,25 +17,18 @@
 package com.echothree.control.user.cancellationpolicy.server.command;
 
 import com.echothree.control.user.cancellationpolicy.common.form.CreateCancellationPolicyForm;
-import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
-import com.echothree.model.control.core.common.MimeTypeUsageTypes;
-import com.echothree.model.control.core.server.logic.MimeTypeLogic;
+import com.echothree.model.control.cancellationpolicy.server.logic.CancellationPolicyLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;
-import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
-import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -59,7 +52,7 @@ public class CreateCancellationPolicyCommand
                 new FieldDefinition("CancellationPolicyName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
-                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L),
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L),
                 new FieldDefinition("PolicyMimeTypeName", FieldType.MIME_TYPE, false, null, null),
                 new FieldDefinition("Policy", FieldType.STRING, false, null, null)
                 ));
@@ -72,42 +65,18 @@ public class CreateCancellationPolicyCommand
     
     @Override
     protected BaseResult execute() {
-        var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-        String cancellationKindName = form.getCancellationKindName();
-        CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
-        
-        if(cancellationKind != null) {
-            String cancellationPolicyName = form.getCancellationPolicyName();
-            CancellationPolicy cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind,cancellationPolicyName);
-            
-            if(cancellationPolicy == null) {
-                MimeTypeLogic mimeTypeLogic = MimeTypeLogic.getInstance();
-                String policy = form.getPolicy();
-                MimeType policyMimeType = mimeTypeLogic.checkMimeType(this, form.getPolicyMimeTypeName(), policy, MimeTypeUsageTypes.TEXT.name(),
-                        ExecutionErrors.MissingRequiredPolicyMimeTypeName.name(), ExecutionErrors.MissingRequiredPolicy.name(),
-                        ExecutionErrors.UnknownPolicyMimeTypeName.name(), ExecutionErrors.UnknownPolicyMimeTypeUsage.name());
+        var cancellationKindName = form.getCancellationKindName();
+        var cancellationPolicyName = form.getCancellationPolicyName();
+        var isDefault = Boolean.valueOf(form.getIsDefault());
+        var sortOrder = Integer.valueOf(form.getSortOrder());
+        var description = form.getDescription();
+        var policyMimeTypeName = form.getPolicyMimeTypeName();
+        var policy = form.getPolicy();
+        var partyPK = getPartyPK();
 
-                if(!hasExecutionErrors()) {
-                    var partyPK = getPartyPK();
-                    var isDefault = Boolean.valueOf(form.getIsDefault());
-                    var sortOrder = Integer.valueOf(form.getSortOrder());
-                    var description = form.getDescription();
+        CancellationPolicyLogic.getInstance().createCancellationPolicy(this, cancellationKindName, cancellationPolicyName,
+                isDefault, sortOrder, getPreferredLanguage(), description, policyMimeTypeName, policy, partyPK);
 
-                    cancellationPolicy = cancellationPolicyControl.createCancellationPolicy(cancellationKind, cancellationPolicyName, isDefault, sortOrder,
-                            partyPK);
-
-                    if(description != null || policy != null) {
-                        cancellationPolicyControl.createCancellationPolicyTranslation(cancellationPolicy, getPreferredLanguage(), description, policyMimeType,
-                                policy, partyPK);
-                    }
-                }
-            } else {
-                addExecutionError(ExecutionErrors.DuplicateCancellationPolicyName.name(), cancellationPolicyName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownCancellationKindName.name(), cancellationKindName);
-        }
-        
         return null;
     }
     

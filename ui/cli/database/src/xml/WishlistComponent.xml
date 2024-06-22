@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -93,15 +93,15 @@
                         </index>
                     </indexes>
                 </table>
-                <table namePlural="WishlistTypePriorities" nameSingular="WishlistTypePriority" columnPrefix="wshltyprty">
+                <table namePlural="WishlistPriorities" nameSingular="WishlistPriority" columnPrefix="wshlprty">
                     <columns>
-                        <column name="WishlistTypePriorityId" type="EID" nullAllowed="false" />
-                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="WishlistTypePriorityDetails" destinationColumn="WishlistTypePriorityDetailId"/>
-                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="WishlistTypePriorityDetails" destinationColumn="WishlistTypePriorityDetailId"/>
+                        <column name="WishlistPriorityId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="WishlistPriorityDetails" destinationColumn="WishlistPriorityDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="WishlistPriorityDetails" destinationColumn="WishlistPriorityDetailId"/>
                     </columns>
                     <indexes>
                         <index type="PrimaryKey">
-                            <indexColumn name="WishlistTypePriorityId" />
+                            <indexColumn name="WishlistPriorityId" />
                         </index>
                         <index type="Unique">
                             <indexColumn name="ActiveDetailId"/>
@@ -111,12 +111,12 @@
                         </index>
                     </indexes>
                 </table>
-                <table namePlural="WishlistTypePriorityDetails" nameSingular="WishlistTypePriorityDetail" columnPrefix="wshltyprtydt">
+                <table namePlural="WishlistPriorityDetails" nameSingular="WishlistPriorityDetail" columnPrefix="wshlprtydt">
                     <columns>
-                        <column name="WishlistTypePriorityDetailId" type="EID" nullAllowed="false" />
-                        <column name="WishlistTypePriorityId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WishlistTypePriorities" destinationColumn="WishlistTypePriorityId" />
+                        <column name="WishlistPriorityDetailId" type="EID" nullAllowed="false" />
+                        <column name="WishlistPriorityId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WishlistPriorities" destinationColumn="WishlistPriorityId" />
                         <column name="WishlistTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WishlistTypes" destinationColumn="WishlistTypeId" />
-                        <column name="WishlistTypePriorityName" type="Name" nullAllowed="false" />
+                        <column name="WishlistPriorityName" type="Name" nullAllowed="false" />
                         <column name="IsDefault" type="Boolean" nullAllowed="false" />
                         <column name="SortOrder" type="Integer" nullAllowed="false" />
                         <column name="FromTime" type="Time" nullAllowed="false" />
@@ -124,15 +124,15 @@
                     </columns>
                     <indexes>
                         <index type="PrimaryKey">
-                            <indexColumn name="WishlistTypePriorityDetailId" />
+                            <indexColumn name="WishlistPriorityDetailId" />
                         </index>
                         <index type="Unique" name="Index1">
-                            <indexColumn name="WishlistTypePriorityId" />
+                            <indexColumn name="WishlistPriorityId" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Unique" name="Index2">
                             <indexColumn name="WishlistTypeId" />
-                            <indexColumn name="WishlistTypePriorityName" />
+                            <indexColumn name="WishlistPriorityName" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index3">
@@ -142,10 +142,10 @@
                         </index>
                     </indexes>
                 </table>
-                <table namePlural="WishlistTypePriorityDescriptions" nameSingular="WishlistTypePriorityDescription" columnPrefix="wshltyprtyd">
+                <table namePlural="WishlistPriorityDescriptions" nameSingular="WishlistPriorityDescription" columnPrefix="wshlprtyd">
                     <columns>
-                        <column name="WishlistTypePriorityDescriptionId" type="EID" nullAllowed="false" />
-                        <column name="WishlistTypePriorityId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WishlistTypePriorities" destinationColumn="WishlistTypePriorityId" />
+                        <column name="WishlistPriorityDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="WishlistPriorityId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WishlistPriorities" destinationColumn="WishlistPriorityId" />
                         <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
                         <column name="Description" type="Description" nullAllowed="false" />
                         <column name="FromTime" type="Time" nullAllowed="false" />
@@ -153,15 +153,15 @@
                     </columns>
                     <indexes>
                         <index type="PrimaryKey">
-                            <indexColumn name="WishlistTypePriorityDescriptionId" />
+                            <indexColumn name="WishlistPriorityDescriptionId" />
                         </index>
                         <index type="Unique" name="Index1">
-                            <indexColumn name="WishlistTypePriorityId" />
+                            <indexColumn name="WishlistPriorityId" />
                             <indexColumn name="LanguageId" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index2">
-                            <indexColumn name="WishlistTypePriorityId" />
+                            <indexColumn name="WishlistPriorityId" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index3">
@@ -202,7 +202,7 @@
                         <column name="WishlistLineId" type="EID" nullAllowed="false" />
                         <column name="OrderLineId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="OrderLines" destinationColumn="OrderLineId" />
                         <column name="OfferUseId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="OfferUses" destinationColumn="OfferUseId" />
-                        <column name="WishlistTypePriorityId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WishlistTypePriorities" destinationColumn="WishlistTypePriorityId" />
+                        <column name="WishlistPriorityId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WishlistPriorities" destinationColumn="WishlistPriorityId" />
                         <column name="AssociateReferralId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="AssociateReferrals" destinationColumn="AssociateReferralId" />
                         <column name="Comment" type="Comment" nullAllowed="true" />
                         <column name="FromTime" type="Time" nullAllowed="false" />
@@ -221,7 +221,7 @@
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index3">
-                            <indexColumn name="WishlistTypePriorityId" />
+                            <indexColumn name="WishlistPriorityId" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index4">

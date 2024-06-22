@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,23 +16,29 @@
 
 package com.echothree.model.control.inventory.server.graphql;
 
+import com.echothree.control.user.inventory.server.command.GetAllocationPrioritiesCommand;
+import com.echothree.control.user.inventory.server.command.GetAllocationPriorityCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryConditionCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryConditionsCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class InventorySecurityUtils
-        extends BaseGraphQl {
+public interface InventorySecurityUtils {
 
-    private static class InventorySecurityUtilsHolder {
-        static InventorySecurityUtils instance = new InventorySecurityUtils();
+    static boolean getHasInventoryConditionAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetInventoryConditionCommand.class);
     }
-    
-    public static InventorySecurityUtils getInstance() {
-        return InventorySecurityUtilsHolder.instance;
+
+    static boolean getHasInventoryConditionsAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetInventoryConditionsCommand.class);
     }
-    
-    public boolean getHasInventoryConditionAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetInventoryConditionCommand.class);
+
+    static boolean getHasAllocationPriorityAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetAllocationPriorityCommand.class);
     }
-    
+
+    static boolean getHasAllocationPrioritiesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetAllocationPrioritiesCommand.class);
+    }
+
 }

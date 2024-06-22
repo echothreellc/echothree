@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,8 +20,7 @@ import com.echothree.control.user.search.common.form.GetEntityListItemResultsFor
 import com.echothree.control.user.search.common.result.GetEntityListItemResultsResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.core.server.control.EntityListItemControl;
-import com.echothree.model.control.core.server.control.EntityTypeControl;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.data.search.server.entity.SearchKind;
@@ -59,7 +58,7 @@ public class GetEntityListItemResultsCommand
     protected BaseResult execute() {
         GetEntityListItemResultsResult result = SearchResultFactory.getGetEntityListItemResultsResult();
         var searchControl = Session.getModelController(SearchControl.class);
-        SearchKind searchKind = searchControl.getSearchKindByName(SearchConstants.SearchKind_ENTITY_LIST_ITEM);
+        SearchKind searchKind = searchControl.getSearchKindByName(SearchKinds.ENTITY_LIST_ITEM.name());
         
         if(searchKind != null) {
             String searchTypeName = form.getSearchTypeName();
@@ -81,10 +80,10 @@ public class GetEntityListItemResultsCommand
                     addExecutionError(ExecutionErrors.UnknownUserVisitSearch.name());
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownSearchTypeName.name(), SearchConstants.SearchKind_ENTITY_LIST_ITEM, searchTypeName);
+                addExecutionError(ExecutionErrors.UnknownSearchTypeName.name(), SearchKinds.ENTITY_LIST_ITEM.name(), searchTypeName);
             }
         } else {
-            addExecutionError(ExecutionErrors.UnknownSearchKindName.name(), SearchConstants.SearchKind_ENTITY_LIST_ITEM);
+            addExecutionError(ExecutionErrors.UnknownSearchKindName.name(), SearchKinds.ENTITY_LIST_ITEM.name());
         }
         
         return result;

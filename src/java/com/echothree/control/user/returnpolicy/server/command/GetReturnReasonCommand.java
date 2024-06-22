@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -79,7 +79,7 @@ public class GetReturnReasonCommand
             if(returnReason != null) {
                 result.setReturnReason(returnPolicyControl.getReturnReasonTransfer(getUserVisit(), returnReason));
                 
-                sendEventUsingNames(returnReason.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                sendEvent(returnReason.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownReturnReasonName.name(), returnReasonName);
             }

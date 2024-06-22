@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,12 +17,12 @@
 package com.echothree.control.user.core.common.form;
 
 import com.echothree.control.user.core.common.edit.EntityAttributeEdit;
-import com.echothree.control.user.core.common.spec.EntityAttributeSpec;
 import com.echothree.control.user.core.common.spec.EntityAttributeTypeSpec;
+import com.echothree.control.user.core.common.spec.EntityTypeUniversalSpec;
 
 public interface CreateEntityAttributeForm
-        extends EntityAttributeSpec, EntityAttributeEdit, EntityAttributeTypeSpec {
+        extends EntityTypeUniversalSpec, EntityAttributeEdit, EntityAttributeTypeSpec {
     
-    // Nothing additional beyond EntityAttributeSpec, EntityAttributeEdit, EntityAttributeTypeSpec
+    // Nothing additional beyond EntityTypeUniversalSpec, EntityAttributeEdit, EntityAttributeTypeSpec
     
 }

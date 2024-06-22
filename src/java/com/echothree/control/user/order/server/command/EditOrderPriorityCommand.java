@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,19 +21,18 @@ import com.echothree.control.user.order.common.edit.OrderPriorityEdit;
 import com.echothree.control.user.order.common.form.EditOrderPriorityForm;
 import com.echothree.control.user.order.common.result.EditOrderPriorityResult;
 import com.echothree.control.user.order.common.result.OrderResultFactory;
-import com.echothree.control.user.order.common.spec.OrderPrioritySpec;
+import com.echothree.control.user.order.common.spec.OrderPriorityUniversalSpec;
 import com.echothree.model.control.order.server.control.OrderPriorityControl;
 import com.echothree.model.control.order.server.control.OrderTypeControl;
+import com.echothree.model.control.order.server.logic.OrderPriorityLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.order.server.entity.OrderPriority;
 import com.echothree.model.data.order.server.entity.OrderPriorityDescription;
 import com.echothree.model.data.order.server.entity.OrderPriorityDetail;
-import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.order.server.value.OrderPriorityDescriptionValue;
 import com.echothree.model.data.order.server.value.OrderPriorityDetailValue;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -49,7 +48,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class EditOrderPriorityCommand
-        extends BaseAbstractEditCommand<OrderPrioritySpec, OrderPriorityEdit, EditOrderPriorityResult, OrderPriority, OrderPriority> {
+        extends BaseAbstractEditCommand<OrderPriorityUniversalSpec, OrderPriorityEdit, EditOrderPriorityResult, OrderPriority, OrderPriority> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
@@ -64,8 +63,12 @@ public class EditOrderPriorityCommand
                 )));
         
         SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("OrderTypeName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("OrderPriorityName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("OrderTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("OrderPriorityName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
                 ));
         
         EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
@@ -73,7 +76,7 @@ public class EditOrderPriorityCommand
                 new FieldDefinition("Priority", FieldType.UNSIGNED_INTEGER, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
-                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 ));
     }
     
@@ -94,29 +97,14 @@ public class EditOrderPriorityCommand
 
     @Override
     public OrderPriority getEntity(EditOrderPriorityResult result) {
-        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
-        OrderPriority orderPriority = null;
-        String orderTypeName = spec.getOrderTypeName();
-        var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
+        OrderPriority orderPriority;
 
-        if(orderType != null) {
-            var orderPriorityControl = Session.getModelController(OrderPriorityControl.class);
-            String orderPriorityName = spec.getOrderPriorityName();
-
-            if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                orderPriority = orderPriorityControl.getOrderPriorityByName(orderType, orderPriorityName);
-            } else { // EditMode.UPDATE
-                orderPriority = orderPriorityControl.getOrderPriorityByNameForUpdate(orderType, orderPriorityName);
-            }
-
-            if(orderPriority != null) {
-                result.setOrderPriority(orderPriorityControl.getOrderPriorityTransfer(getUserVisit(), orderPriority));
-            } else {
-                addExecutionError(ExecutionErrors.UnknownOrderPriorityName.name(), orderTypeName, orderPriorityName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownOrderTypeName.name(), orderTypeName);
+        if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
+            orderPriority = OrderPriorityLogic.getInstance().getOrderPriorityByUniversalSpec(this, spec, false);
+        } else { // EditMode.UPDATE
+            orderPriority = OrderPriorityLogic.getInstance().getOrderPriorityByUniversalSpecForUpdate(this, spec, false);
         }
+
 
         return orderPriority;
     }
@@ -181,7 +169,7 @@ public class EditOrderPriorityCommand
         orderPriorityDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         orderPriorityDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        orderPriorityControl.updateOrderPriorityFromValue(orderPriorityDetailValue, partyPK);
+        OrderPriorityLogic.getInstance().updateOrderPriorityFromValue(this, orderPriorityDetailValue, partyPK);
 
         if(orderPriorityDescription == null && description != null) {
             orderPriorityControl.createOrderPriorityDescription(orderPriority, getPreferredLanguage(), description, partyPK);

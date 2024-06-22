@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,15 +18,14 @@ package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.DeleteAllocationPriorityForm;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.logic.AllocationPriorityLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.inventory.server.entity.AllocationPriority;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -51,7 +50,11 @@ public class DeleteAllocationPriorityCommand
                 )));
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("AllocationPriorityName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("AllocationPriorityName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
                 ));
     }
     
@@ -63,14 +66,11 @@ public class DeleteAllocationPriorityCommand
     @Override
     protected BaseResult execute() {
         var inventoryControl = Session.getModelController(InventoryControl.class);
-            String allocationPriorityName = form.getAllocationPriorityName();
-            AllocationPriority allocationPriority = inventoryControl.getAllocationPriorityByNameForUpdate(allocationPriorityName);
+        var allocationPriority = AllocationPriorityLogic.getInstance().getAllocationPriorityByUniversalSpecForUpdate(this, form, false);
 
-            if(allocationPriority != null) {
-                inventoryControl.deleteAllocationPriority(allocationPriority, getPartyPK());
-            } else {
-                addExecutionError(ExecutionErrors.UnknownAllocationPriorityName.name(), allocationPriorityName);
-            }
+        if(!hasExecutionErrors()) {
+            AllocationPriorityLogic.getInstance().deleteAllocationPriority(this, allocationPriority, getPartyPK());
+        }
 
         return null;
     }

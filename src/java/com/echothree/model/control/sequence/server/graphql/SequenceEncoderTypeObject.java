@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("sequence encoder type object")
 @GraphQLName("SequenceEncoderType")
 public class SequenceEncoderTypeObject
-        extends BaseGraphQl {
+        implements BaseGraphQl {
     
     private final SequenceEncoderType sequenceEncoderType; // Always Present
     
@@ -66,7 +66,7 @@ public class SequenceEncoderTypeObject
         var sequenceControl = Session.getModelController(SequenceControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return sequenceControl.getBestSequenceEncoderTypeDescription(sequenceEncoderType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return sequenceControl.getBestSequenceEncoderTypeDescription(sequenceEncoderType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
     
 }

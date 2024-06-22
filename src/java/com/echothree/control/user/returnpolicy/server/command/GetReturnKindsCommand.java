@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,55 +17,69 @@
 package com.echothree.control.user.returnpolicy.server.command;
 
 import com.echothree.control.user.returnpolicy.common.form.GetReturnKindsForm;
-import com.echothree.control.user.returnpolicy.common.result.GetReturnKindsResult;
 import com.echothree.control.user.returnpolicy.common.result.ReturnPolicyResultFactory;
-import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.returnpolicy.server.entity.ReturnKind;
+import com.echothree.model.data.returnpolicy.server.factory.ReturnKindFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.Collection;
 import java.util.List;
 
 public class GetReturnKindsCommand
-        extends BaseSimpleCommand<GetReturnKindsForm> {
-    
+        extends BaseMultipleEntitiesCommand<ReturnKind, GetReturnKindsForm> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
-                    new SecurityRoleDefinition(SecurityRoleGroups.ReturnKind.name(), SecurityRoles.List.name())
-                    )))
-                )));
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.ReturnKind.name(), SecurityRoles.List.name())
+                ))
+        ));
 
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                ));
+        FORM_FIELD_DEFINITIONS = List.of(
+        );
     }
 
     /** Creates a new instance of GetReturnKindsCommand */
     public GetReturnKindsCommand(UserVisitPK userVisitPK, GetReturnKindsForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-        GetReturnKindsResult result = ReturnPolicyResultFactory.getGetReturnKindsResult();
-        
-        result.setReturnKinds(returnPolicyControl.getReturnKindTransfers(getUserVisit()));
-        
+    protected Collection<ReturnKind> getEntities() {
+        var returnControl = Session.getModelController(ReturnPolicyControl.class);
+
+        return returnControl.getReturnKinds();
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<ReturnKind> entities) {
+        var result = ReturnPolicyResultFactory.getGetReturnKindsResult();
+
+        if(entities != null) {
+            var returnControl = Session.getModelController(ReturnPolicyControl.class);
+
+            if(session.hasLimit(ReturnKindFactory.class)) {
+                result.setReturnKindCount(returnControl.countReturnKinds());
+            }
+
+            result.setReturnKinds(returnControl.getReturnKindTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
-    
+
 }

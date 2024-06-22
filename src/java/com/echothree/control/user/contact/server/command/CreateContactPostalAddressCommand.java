@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -58,6 +58,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import org.apache.commons.codec.language.Soundex;
 
 public class CreateContactPostalAddressCommand
@@ -98,7 +99,7 @@ public class CreateContactPostalAddressCommand
         temp.add(new FieldDefinition("CountryName", FieldType.ENTITY_NAME, true, null, null));
         temp.add(new FieldDefinition("IsCommercial", FieldType.BOOLEAN, true, null, null));
         temp.add(new FieldDefinition("AllowSolicitation", FieldType.BOOLEAN, true, null, null));
-        temp.add(new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L));
+        temp.add(new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L));
         customerFormFieldDefinitions = Collections.unmodifiableList(temp);
         
         temp = new ArrayList<>(17);
@@ -119,7 +120,7 @@ public class CreateContactPostalAddressCommand
         temp.add(new FieldDefinition("CountryName", FieldType.ENTITY_NAME, true, null, null));
         temp.add(new FieldDefinition("IsCommercial", FieldType.BOOLEAN, true, null, null));
         temp.add(new FieldDefinition("AllowSolicitation", FieldType.BOOLEAN, true, null, null));
-        temp.add(new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L));
+        temp.add(new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L));
         otherFormFieldDefinitions = Collections.unmodifiableList(temp);
     }
     
@@ -155,7 +156,7 @@ public class CreateContactPostalAddressCommand
         if(party != null) {
             var geoControl = Session.getModelController(GeoControl.class);
             String countryName = form.getCountryName();
-            String countryAlias = StringUtils.getInstance().cleanStringToName(countryName).toUpperCase();
+            String countryAlias = StringUtils.getInstance().cleanStringToName(countryName).toUpperCase(Locale.getDefault());
             GeoCode countryGeoCode = geoControl.getCountryByAlias(countryAlias);
             
             if(countryGeoCode != null) {
@@ -163,7 +164,7 @@ public class CreateContactPostalAddressCommand
                 String postalCode = form.getPostalCode();
 
                 if(postalCode != null) {
-                    postalCode = postalCode.toUpperCase();
+                    postalCode = postalCode.toUpperCase(Locale.getDefault());
                 }
 
                 if(!geoCodeCountry.getPostalCodeRequired() || postalCode != null) {
@@ -196,7 +197,7 @@ public class CreateContactPostalAddressCommand
                             
                             if(!geoCodeCountry.getStateRequired() || state != null) {
                                 GeoCode stateGeoCode = null;
-                                String stateAlias = state == null? null: StringUtils.getInstance().cleanStringToName(state).toUpperCase();
+                                String stateAlias = state == null? null: StringUtils.getInstance().cleanStringToName(state).toUpperCase(Locale.getDefault());
                                 
                                 if(stateAlias != null) {
                                     stateGeoCode = geoControl.getStateByAlias(countryGeoCode, stateAlias);
@@ -207,7 +208,7 @@ public class CreateContactPostalAddressCommand
                                     
                                     if(!geoCodeCountry.getCityRequired() || city != null) {
                                         GeoCode cityGeoCode = null;
-                                        String cityAlias = city == null? null: StringUtils.getInstance().cleanStringToName(city).toUpperCase();
+                                        String cityAlias = city == null? null: StringUtils.getInstance().cleanStringToName(city).toUpperCase(Locale.getDefault());
                                         
                                         if(stateGeoCode != null && cityAlias != null) {
                                             cityGeoCode = geoControl.getCityByAlias(stateGeoCode, cityAlias);

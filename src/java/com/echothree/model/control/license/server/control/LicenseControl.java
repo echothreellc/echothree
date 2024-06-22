@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -96,12 +96,12 @@ public class LicenseControl
         licenseType.setLastDetail(licenseTypeDetail);
         licenseType.store();
 
-        sendEventUsingNames(licenseType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(licenseType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return licenseType;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.LicenseType */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.LicenseType */
     public LicenseType getLicenseTypeByEntityInstance(EntityInstance entityInstance) {
         LicenseTypePK pk = new LicenseTypePK(entityInstance.getEntityUniqueId());
         LicenseType licenseType = LicenseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
@@ -300,7 +300,7 @@ public class LicenseControl
             licenseType.setActiveDetail(licenseTypeDetail);
             licenseType.setLastDetail(licenseTypeDetail);
 
-            sendEventUsingNames(licenseTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(licenseTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -337,7 +337,7 @@ public class LicenseControl
             }
         }
 
-        sendEventUsingNames(licenseType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(licenseType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteLicenseType(LicenseType licenseType, BasePK deletedBy) {
@@ -360,7 +360,7 @@ public class LicenseControl
         LicenseTypeDescription licenseTypeDescription = LicenseTypeDescriptionFactory.getInstance().create(licenseType, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(licenseType.getPrimaryKey(), EventTypes.MODIFY.name(), licenseTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(licenseType.getPrimaryKey(), EventTypes.MODIFY, licenseTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return licenseTypeDescription;
     }
@@ -482,14 +482,14 @@ public class LicenseControl
             licenseTypeDescription = LicenseTypeDescriptionFactory.getInstance().create(licenseType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(licenseType.getPrimaryKey(), EventTypes.MODIFY.name(), licenseTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(licenseType.getPrimaryKey(), EventTypes.MODIFY, licenseTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteLicenseTypeDescription(LicenseTypeDescription licenseTypeDescription, BasePK deletedBy) {
         licenseTypeDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(licenseTypeDescription.getLicenseTypePK(), EventTypes.MODIFY.name(), licenseTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(licenseTypeDescription.getLicenseTypePK(), EventTypes.MODIFY, licenseTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 

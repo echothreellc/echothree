@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -76,7 +76,7 @@ public class GetEntityMessagesCommand
                 EntityInstance entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
                 
                 if(entityInstance != null) {
-                    result.setEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, entityInstance, false, false, false, false, false));
+                    result.setEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, entityInstance, false, false, false, false, false, false));
                     result.setEntityMessages(messageControl.getEntityMessageTransfersByEntityInstance(userVisit, entityInstance));
                 } else {
                     addExecutionError(ExecutionErrors.UnknownEntityRef.name(), entityRef);

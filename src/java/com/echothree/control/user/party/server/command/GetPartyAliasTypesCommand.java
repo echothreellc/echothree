@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,29 +17,31 @@
 package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.GetPartyAliasTypesForm;
-import com.echothree.control.user.party.common.result.GetPartyAliasTypesResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.party.server.logic.PartyTypeLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.party.server.entity.PartyAliasType;
 import com.echothree.model.data.party.server.entity.PartyType;
+import com.echothree.model.data.party.server.factory.PartyAliasTypeFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 public class GetPartyAliasTypesCommand
-        extends BaseSimpleCommand<GetPartyAliasTypesForm> {
+        extends BaseMultipleEntitiesCommand<PartyAliasType, GetPartyAliasTypesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -61,21 +63,32 @@ public class GetPartyAliasTypesCommand
     public GetPartyAliasTypesCommand(UserVisitPK userVisitPK, GetPartyAliasTypesForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    PartyType partyType;
+
     @Override
-    protected BaseResult execute() {
+    protected Collection<PartyAliasType> getEntities() {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetPartyAliasTypesResult result = PartyResultFactory.getGetPartyAliasTypesResult();
-        String partyTypeName = form.getPartyTypeName();
-        PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
 
-        if(partyType != null) {
+        partyType = PartyTypeLogic.getInstance().getPartyTypeByName(this, form.getPartyTypeName());
+
+        return hasExecutionErrors() ? null : partyControl.getPartyAliasTypes(partyType);
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<PartyAliasType> entities) {
+        var result = PartyResultFactory.getGetPartyAliasTypesResult();
+
+        if(entities != null) {
+            var partyControl = Session.getModelController(PartyControl.class);
+
+            if(session.hasLimit(PartyAliasTypeFactory.class)) {
+                result.setPartyAliasTypeCount(partyControl.countPartyAliasTypesByPartyType(partyType));
+            }
+
             result.setPartyType(partyControl.getPartyTypeTransfer(getUserVisit(), partyType));
-            result.setPartyAliasTypes(partyControl.getPartyAliasTypeTransfers(getUserVisit(), partyType));
-        } else {
-            addExecutionError(ExecutionErrors.UnknownPartyTypeName.name(), partyTypeName);
+            result.setPartyAliasTypes(partyControl.getPartyAliasTypeTransfers(getUserVisit(), entities));
         }
-
 
         return result;
     }

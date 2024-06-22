@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -50,11 +50,11 @@ public class CreateFilterCommand
                 new FieldDefinition("FilterKindName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("FilterTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("FilterName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("InitialFilterAdjustmentName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("InitialFilterAdjustmentName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("FilterItemSelectorName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
-                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
     

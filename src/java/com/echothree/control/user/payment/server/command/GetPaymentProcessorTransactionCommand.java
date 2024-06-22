@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -72,14 +72,14 @@ public class GetPaymentProcessorTransactionCommand
         PaymentProcessorTransaction paymentProcessorTransaction = PaymentProcessorTransactionLogic.getInstance().getPaymentProcessorTransactionByUniversalSpec(this, form);
 
         if(paymentProcessorTransaction != null) {
-            sendEventUsingNames(paymentProcessorTransaction.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(paymentProcessorTransaction.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return paymentProcessorTransaction;
     }
     
     @Override
-    protected BaseResult getTransfer(PaymentProcessorTransaction paymentProcessorTransaction) {
+    protected BaseResult getResult(PaymentProcessorTransaction paymentProcessorTransaction) {
         var paymentProcessorTransactionControl = Session.getModelController(PaymentProcessorTransactionControl.class);
         GetPaymentProcessorTransactionResult result = PaymentResultFactory.getGetPaymentProcessorTransactionResult();
 

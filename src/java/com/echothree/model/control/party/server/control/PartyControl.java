@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import com.echothree.model.control.cancellationpolicy.server.control.Cancellatio
 import com.echothree.model.control.carrier.server.control.CarrierControl;
 import com.echothree.model.control.contactlist.server.ContactListControl;
 import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.control.customer.common.transfer.CustomerTransfer;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -107,6 +108,8 @@ import com.echothree.model.data.core.common.pk.MimeTypePK;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.core.server.entity.MimeType;
+import com.echothree.model.data.customer.server.entity.Customer;
+import com.echothree.model.data.filter.server.entity.FilterKind;
 import com.echothree.model.data.icon.common.pk.IconPK;
 import com.echothree.model.data.icon.server.entity.Icon;
 import com.echothree.model.data.party.common.pk.BirthdayFormatPK;
@@ -244,6 +247,7 @@ import com.echothree.model.data.party.server.value.PartyGroupValue;
 import com.echothree.model.data.party.server.value.PartyTypeAuditPolicyDetailValue;
 import com.echothree.model.data.party.server.value.PartyTypeLockoutPolicyDetailValue;
 import com.echothree.model.data.party.server.value.PartyTypePasswordStringPolicyDetailValue;
+import com.echothree.model.data.party.server.value.PartyTypeValue;
 import com.echothree.model.data.party.server.value.PersonValue;
 import com.echothree.model.data.party.server.value.PersonalTitleDetailValue;
 import com.echothree.model.data.party.server.value.ProfileValue;
@@ -296,12 +300,12 @@ public class PartyControl
     public Language createLanguage(String languageIsoName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         Language language = LanguageFactory.getInstance().create(languageIsoName, isDefault, sortOrder);
         
-        sendEventUsingNames(language.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(language.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return language;
     }
     
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.Language */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Language */
     public Language getLanguageByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new LanguagePK(entityInstance.getEntityUniqueId());
 
@@ -315,7 +319,13 @@ public class PartyControl
     public Language getLanguageByEntityInstanceForUpdate(EntityInstance entityInstance) {
         return getLanguageByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
-    
+
+    public long countLanguages() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM languages");
+    }
+
     public Language getDefaultLanguage() {
         Language language;
         PreparedStatement ps = LanguageFactory.getInstance().prepareStatement(
@@ -362,7 +372,8 @@ public class PartyControl
         PreparedStatement ps = LanguageFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM languages " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
+                "ORDER BY lang_sortorder, lang_languageisoname " +
+                "_LIMIT_");
         
         languages = LanguageFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
         
@@ -428,7 +439,7 @@ public class PartyControl
             BasePK createdBy) {
         LanguageDescription languageDescription = LanguageDescriptionFactory.getInstance().create(language, descriptionLanguage, description);
         
-        sendEventUsingNames(language.getPrimaryKey(), EventTypes.MODIFY.name(), languageDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(language.getPrimaryKey(), EventTypes.MODIFY, languageDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return languageDescription;
     }
@@ -477,38 +488,133 @@ public class PartyControl
     
     public PartyType createPartyType(String partyTypeName, PartyType parentPartyType, SequenceType billingAccountSequenceType, Boolean allowUserLogins,
             Boolean allowPartyAliases, Boolean isDefault, Integer sortOrder) {
-        return PartyTypeFactory.getInstance().create(partyTypeName, parentPartyType, billingAccountSequenceType, allowUserLogins, allowUserLogins, isDefault,
+        return PartyTypeFactory.getInstance().create(partyTypeName, parentPartyType, billingAccountSequenceType, allowUserLogins, allowPartyAliases, isDefault,
                 sortOrder);
     }
-    
-    public List<PartyType> getPartyTypes() {
-        PreparedStatement ps = PartyTypeFactory.getInstance().prepareStatement(
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.PartyType */
+    public PartyType getPartyTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new PartyTypePK(entityInstance.getEntityUniqueId());
+
+        return PartyTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public PartyType getPartyTypeByEntityInstance(EntityInstance entityInstance) {
+        return getPartyTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public PartyType getPartyTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getPartyTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countPartyTypes() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM partytypes");
+    }
+
+    private static final Map<EntityPermission, String> getPartyTypeByNameQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
                 "SELECT _ALL_ " +
-                "FROM partytypes " +
-                "ORDER BY ptyp_sortorder, ptyp_partytypename");
-        
-        return PartyTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+                        "FROM partytypes " +
+                        "WHERE ptyp_partytypename = ?");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ " +
+                        "FROM partytypes " +
+                        "WHERE ptyp_partytypename = ? " +
+                        "FOR UPDATE");
+        getPartyTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
-    
+
+    public PartyType getPartyTypeByName(String partyTypeName, EntityPermission entityPermission) {
+        return PartyTypeFactory.getInstance().getEntityFromQuery(entityPermission, getPartyTypeByNameQueries,
+                partyTypeName);
+    }
+
     public PartyType getPartyTypeByName(String partyTypeName) {
-        PartyType partyType;
-        
-        try {
-            PreparedStatement ps = PartyTypeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM partytypes " +
-                    "WHERE ptyp_partytypename = ?");
-            
-            ps.setString(1, partyTypeName);
-            
-            partyType = PartyTypeFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return partyType;
+        return getPartyTypeByName(partyTypeName, EntityPermission.READ_ONLY);
     }
-    
+
+    public PartyType getPartyTypeByNameForUpdate(String partyTypeName) {
+        return getPartyTypeByName(partyTypeName, EntityPermission.READ_WRITE);
+    }
+
+    public PartyTypeValue getPartyTypeValueForUpdate(PartyType partyType) {
+        return partyType == null? null: partyType.getPartyTypeValue().clone();
+    }
+
+    public PartyTypeValue getPartyTypeValueByNameForUpdate(String partyTypeName) {
+        return getPartyTypeValueForUpdate(getPartyTypeByNameForUpdate(partyTypeName));
+    }
+
+    private static final Map<EntityPermission, String> getDefaultPartyTypeQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ " +
+                        "FROM partyaliastypes, partyaliastypedetails " +
+                        "WHERE pat_activedetailid = patdt_partyaliastypedetailid AND patdt_ptyp_partytypeid = ? " +
+                        "AND patdt_isdefault = 1");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ " +
+                        "FROM partyaliastypes, partyaliastypedetails " +
+                        "WHERE pat_activedetailid = patdt_partyaliastypedetailid AND patdt_ptyp_partytypeid = ? " +
+                        "AND patdt_isdefault = 1 " +
+                        "FOR UPDATE");
+        getDefaultPartyTypeQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    public PartyType getDefaultPartyType(EntityPermission entityPermission) {
+        return PartyTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultPartyTypeQueries);
+    }
+
+    public PartyType getDefaultPartyType() {
+        return getDefaultPartyType(EntityPermission.READ_ONLY);
+    }
+
+    public PartyType getDefaultPartyTypeForUpdate() {
+        return getDefaultPartyType(EntityPermission.READ_WRITE);
+    }
+
+    public PartyTypeValue getDefaultPartyTypeValueForUpdate() {
+        return getDefaultPartyTypeForUpdate().getPartyTypeValue().clone();
+    }
+
+    private static final Map<EntityPermission, String> getPartyTypesQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ " +
+                        "FROM partytypes " +
+                        "ORDER BY ptyp_sortorder, ptyp_partytypename " +
+                        "_LIMIT_");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ " +
+                        "FROM partytypes " +
+                        "FOR UPDATE");
+        getPartyTypesQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    private List<PartyType> getPartyTypes(EntityPermission entityPermission) {
+        return PartyTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyTypesQueries);
+    }
+
+    public List<PartyType> getPartyTypes() {
+        return getPartyTypes(EntityPermission.READ_ONLY);
+    }
+
+    public List<PartyType> getPartyTypesForUpdate() {
+        return getPartyTypes(EntityPermission.READ_WRITE);
+    }
+
     public PartyTypeChoicesBean getPartyTypeChoices(String defaultPartyTypeChoice, Language language, boolean allowNullChoice) {
         List<PartyType> partyTypes = getPartyTypes();
         var size = partyTypes.size();
@@ -541,7 +647,7 @@ public class PartyControl
         return getPartyTransferCaches(userVisit).getPartyTypeTransferCache().getPartyTypeTransfer(partyType);
     }
     
-    public List<PartyTypeTransfer> getPartyTypeTransfers(UserVisit userVisit, List<PartyType> partyTypes) {
+    public List<PartyTypeTransfer> getPartyTypeTransfers(UserVisit userVisit, Collection<PartyType> partyTypes) {
         List<PartyTypeTransfer> partyTypeTransfers = new ArrayList<>(partyTypes.size());
         PartyTypeTransferCache partyTypeTransferCache = getPartyTransferCaches(userVisit).getPartyTypeTransferCache();
         
@@ -732,11 +838,33 @@ public class PartyControl
         personalTitle.setLastDetail(personalTitleDetail);
         personalTitle.store();
         
-        sendEventUsingNames(personalTitle.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(personalTitle.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return personalTitle;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.PersonalTitle */
+    public PersonalTitle getPersonalTitleByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new PersonalTitlePK(entityInstance.getEntityUniqueId());
+
+        return PersonalTitleFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public PersonalTitle getPersonalTitleByEntityInstance(EntityInstance entityInstance) {
+        return getPersonalTitleByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public PersonalTitle getPersonalTitleByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getPersonalTitleByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countPersonalTitles() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM personaltitles, personaltitledetails " +
+                "WHERE pert_activedetailid = pertd_personaltitledetailid");
+    }
+
     private List<PersonalTitle> getPersonalTitles(EntityPermission entityPermission) {
         String query = null;
         
@@ -744,7 +872,8 @@ public class PartyControl
             query = "SELECT _ALL_ " +
                     "FROM personaltitles, personaltitledetails " +
                     "WHERE pert_activedetailid = pertd_personaltitledetailid " +
-                    "ORDER BY pertd_sortorder, pertd_description";
+                    "ORDER BY pertd_sortorder, pertd_description " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM personaltitles, personaltitledetails " +
@@ -901,7 +1030,7 @@ public class PartyControl
             personalTitle.setActiveDetail(personalTitleDetail);
             personalTitle.setLastDetail(personalTitleDetail);
             
-            sendEventUsingNames(personalTitle.getPrimaryKey(), EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(personalTitle.getPrimaryKey(), EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -951,7 +1080,7 @@ public class PartyControl
             }
         }
         
-        sendEventUsingNames(personalTitle.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(personalTitle.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -981,11 +1110,33 @@ public class PartyControl
         nameSuffix.setLastDetail(nameSuffixDetail);
         nameSuffix.store();
         
-        sendEventUsingNames(nameSuffix.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(nameSuffix.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return nameSuffix;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.NameSuffix */
+    public NameSuffix getNameSuffixByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new NameSuffixPK(entityInstance.getEntityUniqueId());
+
+        return NameSuffixFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public NameSuffix getNameSuffixByEntityInstance(EntityInstance entityInstance) {
+        return getNameSuffixByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public NameSuffix getNameSuffixByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getNameSuffixByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countNameSuffixes() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM namesuffixes, namesuffixdetails " +
+                "WHERE nsfx_activedetailid = nsfxd_namesuffixdetailid");
+    }
+
     private List<NameSuffix> getNameSuffixes(EntityPermission entityPermission) {
         String query = null;
         
@@ -993,7 +1144,8 @@ public class PartyControl
             query = "SELECT _ALL_ " +
                     "FROM namesuffixes, namesuffixdetails " +
                     "WHERE nsfx_activedetailid = nsfxd_namesuffixdetailid " +
-                    "ORDER BY nsfxd_sortorder, nsfxd_description";
+                    "ORDER BY nsfxd_sortorder, nsfxd_description " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM namesuffixes, namesuffixdetails " +
@@ -1148,7 +1300,7 @@ public class PartyControl
             nameSuffix.setActiveDetail(nameSuffixDetail);
             nameSuffix.setLastDetail(nameSuffixDetail);
             
-            sendEventUsingNames(nameSuffix.getPrimaryKey(), EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(nameSuffix.getPrimaryKey(), EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -1198,7 +1350,7 @@ public class PartyControl
             }
         }
         
-        sendEventUsingNames(nameSuffix.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(nameSuffix.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -1218,11 +1370,33 @@ public class PartyControl
         timeZone.setLastDetail(timeZoneDetail);
         timeZone.store();
         
-        sendEventUsingNames(timeZone.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(timeZone.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return timeZone;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.TimeZone */
+    public TimeZone getTimeZoneByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new TimeZonePK(entityInstance.getEntityUniqueId());
+
+        return TimeZoneFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public TimeZone getTimeZoneByEntityInstance(EntityInstance entityInstance) {
+        return getTimeZoneByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public TimeZone getTimeZoneByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getTimeZoneByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countTimeZones() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM timezones, timezonedetails " +
+                "WHERE tz_activedetailid = tzdt_timezonedetailid");
+    }
+
     public List<TimeZone> getTimeZones() {
         List<TimeZone> timeZones;
         
@@ -1231,7 +1405,8 @@ public class PartyControl
                     "SELECT _ALL_ " +
                     "FROM timezones, timezonedetails " +
                     "WHERE tz_timezoneid = tzdt_tz_timezoneid AND tzdt_thrutime = ? " +
-                    "ORDER BY tzdt_sortorder, tzdt_javatimezonename");
+                    "ORDER BY tzdt_sortorder, tzdt_javatimezonename " +
+                    "_LIMIT_");
             
             ps.setLong(1, Session.MAX_TIME);
             
@@ -1282,21 +1457,6 @@ public class PartyControl
         return timeZone;
     }
     
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.TimeZone */
-    public TimeZone getTimeZoneByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        var pk = new TimeZonePK(entityInstance.getEntityUniqueId());
-
-        return TimeZoneFactory.getInstance().getEntityFromPK(entityPermission, pk);
-    }
-
-    public TimeZone getTimeZoneByEntityInstance(EntityInstance entityInstance) {
-        return getTimeZoneByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
-    }
-
-    public TimeZone getTimeZoneByEntityInstanceForUpdate(EntityInstance entityInstance) {
-        return getTimeZoneByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
-    }
-
     public TimeZoneChoicesBean getTimeZoneChoices(String defaultTimeZoneChoice, Language language, boolean allowNullChoice) {
         List<TimeZone> timeZones = getTimeZones();
         var size = timeZones.size();
@@ -1356,7 +1516,7 @@ public class PartyControl
         TimeZoneDescription timeZoneDescription = TimeZoneDescriptionFactory.getInstance().create(timeZone, language,
                 description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(timeZone.getPrimaryKey(), EventTypes.MODIFY.name(), timeZoneDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(timeZone.getPrimaryKey(), EventTypes.MODIFY, timeZoneDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return timeZoneDescription;
     }
@@ -1371,7 +1531,8 @@ public class PartyControl
                 query = "SELECT _ALL_ " +
                         "FROM timezonedescriptions, languages " +
                         "WHERE tzd_tz_timezoneid = ? AND tzd_thrutime = ? AND tzd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM timezonedescriptions " +
@@ -1495,14 +1656,14 @@ public class PartyControl
             timeZoneDescription = TimeZoneDescriptionFactory.getInstance().create(timeZone, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(timeZone.getPrimaryKey(), EventTypes.MODIFY.name(), timeZoneDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(timeZone.getPrimaryKey(), EventTypes.MODIFY, timeZoneDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteTimeZoneDescription(TimeZoneDescription timeZoneDescription, BasePK deletedBy) {
         timeZoneDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(timeZoneDescription.getTimeZonePK(), EventTypes.MODIFY.name(), timeZoneDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(timeZoneDescription.getTimeZonePK(), EventTypes.MODIFY, timeZoneDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteTimeZoneDescriptionsByTimeZone(TimeZone timeZone, BasePK deletedBy) {
@@ -1538,11 +1699,33 @@ public class PartyControl
         dateTimeFormat.setLastDetail(dateTimeFormatDetail);
         dateTimeFormat.store();
         
-        sendEventUsingNames(dateTimeFormat.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(dateTimeFormat.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return dateTimeFormat;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.DateTimeFormat */
+    public DateTimeFormat getDateTimeFormatByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new DateTimeFormatPK(entityInstance.getEntityUniqueId());
+
+        return DateTimeFormatFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public DateTimeFormat getDateTimeFormatByEntityInstance(EntityInstance entityInstance) {
+        return getDateTimeFormatByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public DateTimeFormat getDateTimeFormatByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getDateTimeFormatByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countDateTimeFormats() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM datetimeformats, datetimeformatdetails " +
+                "WHERE dtf_activedetailid = dtfdt_datetimeformatdetailid");
+    }
+
     public List<DateTimeFormat> getDateTimeFormats() {
         List<DateTimeFormat> dateTimeFormats;
         
@@ -1551,7 +1734,8 @@ public class PartyControl
                     "SELECT _ALL_ " +
                     "FROM datetimeformats, datetimeformatdetails " +
                     "WHERE dtf_datetimeformatid = dtfdt_dtf_datetimeformatid AND dtfdt_thrutime = ? " +
-                    "ORDER BY dtfdt_sortorder, dtfdt_datetimeformatname");
+                    "ORDER BY dtfdt_sortorder, dtfdt_datetimeformatname " +
+                    "_LIMIT_");
             
             ps.setLong(1, Session.MAX_TIME);
             
@@ -1602,21 +1786,6 @@ public class PartyControl
         return dateTimeFormat;
     }
     
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.DateTimeFormat */
-    public DateTimeFormat getDateTimeFormatByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        var pk = new DateTimeFormatPK(entityInstance.getEntityUniqueId());
-
-        return DateTimeFormatFactory.getInstance().getEntityFromPK(entityPermission, pk);
-    }
-
-    public DateTimeFormat getDateTimeFormatByEntityInstance(EntityInstance entityInstance) {
-        return getDateTimeFormatByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
-    }
-
-    public DateTimeFormat getDateTimeFormatByEntityInstanceForUpdate(EntityInstance entityInstance) {
-        return getDateTimeFormatByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
-    }
-
     public DateTimeFormatChoicesBean getDateTimeFormatChoices(String defaultDateTimeFormatChoice, Language language, boolean allowNullChoice) {
         List<DateTimeFormat> dateTimeFormats = getDateTimeFormats();
         var size = dateTimeFormats.size();
@@ -1677,7 +1846,7 @@ public class PartyControl
         DateTimeFormatDescription dateTimeFormatDescription = DateTimeFormatDescriptionFactory.getInstance().create(session,
                 dateTimeFormat, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(dateTimeFormat.getPrimaryKey(), EventTypes.MODIFY.name(), dateTimeFormatDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(dateTimeFormat.getPrimaryKey(), EventTypes.MODIFY, dateTimeFormatDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return dateTimeFormatDescription;
     }
@@ -1692,7 +1861,8 @@ public class PartyControl
                 query = "SELECT _ALL_ " +
                         "FROM datetimeformatdescriptions, languages " +
                         "WHERE dtfd_dtf_datetimeformatid = ? AND dtfd_thrutime = ? AND dtfd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM datetimeformatdescriptions " +
@@ -1816,14 +1986,14 @@ public class PartyControl
             dateTimeFormatDescription = DateTimeFormatDescriptionFactory.getInstance().create(dateTimeFormat, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(dateTimeFormat.getPrimaryKey(), EventTypes.MODIFY.name(), dateTimeFormatDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(dateTimeFormat.getPrimaryKey(), EventTypes.MODIFY, dateTimeFormatDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteDateTimeFormatDescription(DateTimeFormatDescription dateTimeFormatDescription, BasePK deletedBy) {
         dateTimeFormatDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(dateTimeFormatDescription.getDateTimeFormatPK(), EventTypes.MODIFY.name(), dateTimeFormatDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(dateTimeFormatDescription.getDateTimeFormatPK(), EventTypes.MODIFY, dateTimeFormatDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -1871,20 +2041,27 @@ public class PartyControl
             party.setActiveDetail(partyDetail);
             party.setLastDetail(partyDetail);
             
-            sendEventUsingNames(party.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+            sendEvent(party.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         }
         
         return party;
     }
-    
-    public long countPartiesByPartyType(PartyType partyType) {
+
+    public long countParties() {
         return session.queryForLong(
                 "SELECT COUNT(*) " +
                 "FROM parties, partydetails " +
-                "WHERE par_activedetailid = pardt_partydetailid AND pardt_ptyp_partytypeid = ?",
+                "WHERE par_activedetailid = pardt_partydetailid");
+    }
+
+    public long countPartiesByPartyType(PartyType partyType) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM parties, partydetails " +
+                        "WHERE par_activedetailid = pardt_partydetailid AND pardt_ptyp_partytypeid = ?",
                 partyType);
     }
-    
+
     public long countPartiesByPartyTypeUsingNames(String partyTypeName) {
         return session.queryForLong(
                 "SELECT COUNT(*) " +
@@ -1971,26 +2148,37 @@ public class PartyControl
         return getPartyByAlias(partyAliasType, alias, EntityPermission.READ_WRITE);
     }
 
+    public List<Party> getParties() {
+        var ps = PartyFactory.getInstance().prepareStatement(
+                "SELECT _ALL_ " +
+                "FROM parties, partydetails " +
+                "WHERE par_activedetailid = pardt_partydetailid " +
+                "_LIMIT_");
+
+        return PartyFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+    }
+
     public List<Party> getPartiesByPartyType(PartyType partyType) {
         List<Party> parties;
-        
+
         try {
             PreparedStatement ps = PartyFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM parties, partydetails " +
-                    "WHERE par_partyid = pardt_par_partyid AND pardt_ptyp_partytypeid = ? AND pardt_thrutime = ?");
-            
+                    "WHERE par_partyid = pardt_par_partyid AND pardt_ptyp_partytypeid = ? AND pardt_thrutime = ? " +
+                    "_LIMIT_");
+
             ps.setLong(1, partyType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
-            
+
             parties = PartyFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
-        
+
         return parties;
     }
-    
+
     public Language getPreferredLanguage(Party party) {
         Language language = party.getLastDetail().getPreferredLanguage();
         
@@ -2032,7 +2220,26 @@ public class PartyControl
         
         return dateTimeFormat;
     }
-    
+
+    public PartyTransfer getPartyTransfer(UserVisit userVisit, Party party) {
+        return getPartyTransferCaches(userVisit).getPartyTransferCache().getTransfer(party);
+    }
+
+    public List<PartyTransfer> getPartyTransfers(UserVisit userVisit, Collection<Party> parties) {
+        var partyTransfers = new ArrayList<PartyTransfer>(parties.size());
+        var partyTransferCache = getPartyTransferCaches(userVisit).getPartyTransferCache();
+
+        parties.forEach((party) ->
+                partyTransfers.add(partyTransferCache.getTransfer(party))
+        );
+
+        return partyTransfers;
+    }
+
+    public List<PartyTransfer> getPartyTransfers(UserVisit userVisit) {
+        return getPartyTransfers(userVisit, getParties());
+    }
+
     public void updatePartyFromValue(PartyDetailValue partyDetailValue, BasePK updatedBy) {
         if(partyDetailValue.hasBeenModified()) {
             PartyPK partyPK = partyDetailValue.getPartyPK();
@@ -2055,7 +2262,7 @@ public class PartyControl
             party.setActiveDetail(partyDetail);
             party.setLastDetail(partyDetail);
             
-            sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -2063,7 +2270,7 @@ public class PartyControl
         return PartyFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, partyPK);
     }
     
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.Party */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Party */
     public Party getPartyByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new PartyPK(entityInstance.getEntityUniqueId());
 
@@ -2160,11 +2367,7 @@ public class PartyControl
         partyDetail.store();
         party.setActiveDetail(null);
         
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
-    }
-    
-    public PartyTransfer getPartyTransfer(UserVisit userVisit, Party party) {
-        return getPartyTransferCaches(userVisit).getPartyTransferCache().getPartyTransfer(party);
+        sendEvent(party.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -2307,9 +2510,25 @@ public class PartyControl
     public PartyAlias createPartyAlias(Party party, PartyAliasType partyAliasType, String alias, BasePK createdBy) {
         PartyAlias partyAlias = PartyAliasFactory.getInstance().create(party, partyAliasType, alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), partyAlias.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyAlias.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return partyAlias;
+    }
+
+    public long countPartyAliasesByParty(Party party) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM partyaliases " +
+                "WHERE pal_par_partyid = ? AND pal_thrutime = ?",
+                party, Session.MAX_TIME_LONG);
+    }
+
+    public long countPartyAliasesByPartyAliasType(PartyAliasType partyAliasType) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM partyaliases " +
+                "WHERE pal_pat_partyaliastypeid = ? AND pal_thrutime = ?",
+                partyAliasType, Session.MAX_TIME_LONG);
     }
 
     private static final Map<EntityPermission, String> getPartyAliasQueries;
@@ -2419,10 +2638,11 @@ public class PartyControl
 
         queryMap.put(EntityPermission.READ_ONLY,
                 "SELECT _ALL_ " +
-                "FROM partyaliases, partyes, partydetails " +
+                "FROM partyaliases, parties, partydetails " +
                 "WHERE pal_pat_partyaliastypeid = ? AND pal_thrutime = ? " +
-                "AND pal_par_partyid = par_partyid AND p_lastdetailid = pdt_partydetailid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
+                "AND pal_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid " +
+                "ORDER BY pardt_par_partyid " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM partyaliases " +
@@ -2448,8 +2668,7 @@ public class PartyControl
         return getPartyTransferCaches(userVisit).getPartyAliasTransferCache().getPartyAliasTransfer(partyAlias);
     }
 
-    public List<PartyAliasTransfer> getPartyAliasTransfersByParty(UserVisit userVisit, Party party) {
-        List<PartyAlias> partyaliases = getPartyAliasesByParty(party);
+    public List<PartyAliasTransfer> getPartyAliasTransfers(UserVisit userVisit, Collection<PartyAlias> partyaliases) {
         List<PartyAliasTransfer> partyAliasTransfers = new ArrayList<>(partyaliases.size());
         PartyAliasTransferCache partyAliasTransferCache = getPartyTransferCaches(userVisit).getPartyAliasTransferCache();
 
@@ -2458,6 +2677,10 @@ public class PartyControl
         );
 
         return partyAliasTransfers;
+    }
+
+    public List<PartyAliasTransfer> getPartyAliasTransfersByParty(UserVisit userVisit, Party party) {
+        return getPartyAliasTransfers(userVisit, getPartyAliasesByParty(party));
     }
 
     public void updatePartyAliasFromValue(PartyAliasValue partyAliasValue, BasePK updatedBy) {
@@ -2473,14 +2696,14 @@ public class PartyControl
 
             partyAlias = PartyAliasFactory.getInstance().create(partyPK, partyAliasTypePK, alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(partyPK, EventTypes.MODIFY.name(), partyAlias.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(partyPK, EventTypes.MODIFY, partyAlias.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deletePartyAlias(PartyAlias partyAlias, BasePK deletedBy) {
         partyAlias.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(partyAlias.getPartyPK(), EventTypes.MODIFY.name(), partyAlias.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(partyAlias.getPartyPK(), EventTypes.MODIFY, partyAlias.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -2557,7 +2780,24 @@ public class PartyControl
         
         return partyRelationshipTypeDescription;
     }
-    
+
+    public String getBestPartyRelationshipTypeDescription(PartyRelationshipType partyRelationshipType, Language language) {
+        var partyRelationshipTypeDescription = getPartyRelationshipTypeDescription(partyRelationshipType, language);
+        String description;
+
+        if(partyRelationshipTypeDescription == null && !language.getIsDefault()) {
+            partyRelationshipTypeDescription = getPartyRelationshipTypeDescription(partyRelationshipType, getPartyControl().getDefaultLanguage());
+        }
+
+        if(partyRelationshipTypeDescription == null) {
+            description = partyRelationshipType.getPartyRelationshipTypeName();
+        } else {
+            description = partyRelationshipTypeDescription.getDescription();
+        }
+
+        return description;
+    }
+
     // --------------------------------------------------------------------------------
     //   Party Alias Types
     // --------------------------------------------------------------------------------
@@ -2586,9 +2826,32 @@ public class PartyControl
         partyAliasType.setLastDetail(partyAliasTypeDetail);
         partyAliasType.store();
 
-        sendEventUsingNames(partyAliasType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(partyAliasType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return partyAliasType;
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.PartyAliasType */
+    public PartyAliasType getPartyAliasTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new PartyAliasTypePK(entityInstance.getEntityUniqueId());
+
+        return PartyAliasTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public PartyAliasType getPartyAliasTypeByEntityInstance(EntityInstance entityInstance) {
+        return getPartyAliasTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public PartyAliasType getPartyAliasTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getPartyAliasTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countPartyAliasTypesByPartyType(PartyType partyType) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM partyaliastypes, partyaliastypedetails " +
+                "WHERE pat_activedetailid = patdt_partyaliastypedetailid AND patdt_ptyp_partytypeid = ?",
+                partyType);
     }
 
     private static final Map<EntityPermission, String> getPartyAliasTypeByNameQueries;
@@ -2610,7 +2873,7 @@ public class PartyControl
         getPartyAliasTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private PartyAliasType getPartyAliasTypeByName(PartyType partyType, String partyAliasTypeName, EntityPermission entityPermission) {
+    public PartyAliasType getPartyAliasTypeByName(PartyType partyType, String partyAliasTypeName, EntityPermission entityPermission) {
         return PartyAliasTypeFactory.getInstance().getEntityFromQuery(entityPermission, getPartyAliasTypeByNameQueries,
                 partyType, partyAliasTypeName);
     }
@@ -2651,7 +2914,7 @@ public class PartyControl
         getDefaultPartyAliasTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private PartyAliasType getDefaultPartyAliasType(PartyType partyType, EntityPermission entityPermission) {
+    public PartyAliasType getDefaultPartyAliasType(PartyType partyType, EntityPermission entityPermission) {
         return PartyAliasTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultPartyAliasTypeQueries, partyType);
     }
 
@@ -2676,7 +2939,8 @@ public class PartyControl
                 "SELECT _ALL_ " +
                 "FROM partyaliastypes, partyaliastypedetails " +
                 "WHERE pat_activedetailid = patdt_partyaliastypedetailid AND patdt_ptyp_partytypeid = ? " +
-                "ORDER BY patdt_sortorder, patdt_partyaliastypename");
+                "ORDER BY patdt_sortorder, patdt_partyaliastypename " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM partyaliastypes, partyaliastypedetails " +
@@ -2701,8 +2965,7 @@ public class PartyControl
         return getPartyTransferCaches(userVisit).getPartyAliasTypeTransferCache().getPartyAliasTypeTransfer(partyAliasType);
     }
 
-    public List<PartyAliasTypeTransfer> getPartyAliasTypeTransfers(UserVisit userVisit, PartyType partyType) {
-        List<PartyAliasType> partyAliasTypes = getPartyAliasTypes(partyType);
+    public List<PartyAliasTypeTransfer> getPartyAliasTypeTransfers(UserVisit userVisit, Collection<PartyAliasType> partyAliasTypes) {
         List<PartyAliasTypeTransfer> partyAliasTypeTransfers = new ArrayList<>(partyAliasTypes.size());
         PartyAliasTypeTransferCache partyAliasTypeTransferCache = getPartyTransferCaches(userVisit).getPartyAliasTypeTransferCache();
 
@@ -2711,6 +2974,10 @@ public class PartyControl
         );
 
         return partyAliasTypeTransfers;
+    }
+
+    public List<PartyAliasTypeTransfer> getPartyAliasTypeTransfers(UserVisit userVisit, PartyType partyType) {
+        return getPartyAliasTypeTransfers(userVisit, getPartyAliasTypes(partyType));
     }
 
     public PartyAliasTypeChoicesBean getPartyAliasTypeChoices(String defaultPartyAliasTypeChoice, Language language,
@@ -2788,7 +3055,7 @@ public class PartyControl
             partyAliasType.setActiveDetail(partyAliasTypeDetail);
             partyAliasType.setLastDetail(partyAliasTypeDetail);
 
-            sendEventUsingNames(partyAliasTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(partyAliasTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -2823,7 +3090,7 @@ public class PartyControl
             }
         }
 
-        sendEventUsingNames(partyAliasType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(partyAliasType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deletePartyAliasTypes(List<PartyAliasType> partyAliasTypes, BasePK deletedBy) {
@@ -2844,7 +3111,7 @@ public class PartyControl
         PartyAliasTypeDescription partyAliasTypeDescription = PartyAliasTypeDescriptionFactory.getInstance().create(partyAliasType, language,
                 description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(partyAliasType.getPrimaryKey(), EventTypes.MODIFY.name(), partyAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(partyAliasType.getPrimaryKey(), EventTypes.MODIFY, partyAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return partyAliasTypeDescription;
     }
@@ -2896,7 +3163,8 @@ public class PartyControl
                 "SELECT _ALL_ " +
                 "FROM partyaliastypedescriptions, languages " +
                 "WHERE patd_pat_partyaliastypeid = ? AND patd_thrutime = ? AND patd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
+                "ORDER BY lang_sortorder, lang_languageisoname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM partyaliastypedescriptions " +
@@ -2966,14 +3234,14 @@ public class PartyControl
             partyAliasTypeDescription = PartyAliasTypeDescriptionFactory.getInstance().create(partyAliasType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(partyAliasType.getPrimaryKey(), EventTypes.MODIFY.name(), partyAliasTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(partyAliasType.getPrimaryKey(), EventTypes.MODIFY, partyAliasTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deletePartyAliasTypeDescription(PartyAliasTypeDescription partyAliasTypeDescription, BasePK deletedBy) {
         partyAliasTypeDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(partyAliasTypeDescription.getPartyAliasTypePK(), EventTypes.MODIFY.name(), partyAliasTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(partyAliasTypeDescription.getPartyAliasTypePK(), EventTypes.MODIFY, partyAliasTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -3068,7 +3336,7 @@ public class PartyControl
     public PartyGroup createPartyGroup(Party party, String name, BasePK createdBy) {
         PartyGroup partyGroup = PartyGroupFactory.getInstance().create(party, name, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), partyGroup.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyGroup.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return partyGroup;
     }
@@ -3132,7 +3400,7 @@ public class PartyControl
             
             partyGroup = PartyGroupFactory.getInstance().create(partyPK, name, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(partyPK, EventTypes.MODIFY.name(), partyGroup.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(partyPK, EventTypes.MODIFY, partyGroup.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -3140,7 +3408,7 @@ public class PartyControl
         partyGroup.setThruTime(session.START_TIME_LONG);
         partyGroup.store();
         
-        sendEventUsingNames(partyGroup.getPartyPK(), EventTypes.MODIFY.name(), partyGroup.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(partyGroup.getPartyPK(), EventTypes.MODIFY, partyGroup.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deletePartyGroupByParty(Party party, BasePK deletedBy) {
@@ -3176,7 +3444,7 @@ public class PartyControl
         PartyCompany partyCompany = PartyCompanyFactory.getInstance().create(party, partyCompanyName, isDefault, sortOrder,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), partyCompany.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyCompany.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return partyCompany;
     }
@@ -3453,7 +3721,7 @@ public class PartyControl
             partyCompany = PartyCompanyFactory.getInstance().create(partyPK, partyCompanyName, isDefault, sortOrder,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(partyPK, EventTypes.MODIFY.name(), partyCompany.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(partyPK, EventTypes.MODIFY, partyCompany.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -3482,7 +3750,7 @@ public class PartyControl
         PartyDivision partyDivision = PartyDivisionFactory.getInstance().create(party, companyParty, partyDivisionName,
                 isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), partyDivision.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyDivision.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return partyDivision;
     }
@@ -3631,13 +3899,13 @@ public class PartyControl
     public PartyDivisionValue getPartyDivisionValueByNameForUpdate(Party companyParty, String partyDivisionName) {
         return getPartyDivisionValueForUpdate(getPartyDivisionByNameForUpdate(companyParty, partyDivisionName));
     }
-    
+
     private List<PartyDivision> getDivisionsByCompany(Party companyParty, EntityPermission entityPermission) {
         List<PartyDivision> partyDivisions;
-        
+
         try {
             String query = null;
-            
+
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 query = "SELECT _ALL_ " +
                         "FROM partydivisions, partydetails " +
@@ -3652,29 +3920,71 @@ public class PartyControl
                         "AND pdiv_par_partyid = pardt_par_partyid AND pardt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
+
             PreparedStatement ps = PartyDivisionFactory.getInstance().prepareStatement(query);
-            
+
             ps.setLong(1, companyParty.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             ps.setLong(3, Session.MAX_TIME);
-            
+
             partyDivisions = PartyDivisionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
-        
+
         return partyDivisions;
     }
-    
+
     public List<PartyDivision> getDivisionsByCompany(Party companyParty) {
         return getDivisionsByCompany(companyParty, EntityPermission.READ_ONLY);
     }
-    
+
     public List<PartyDivision> getDivisionsByCompanyForUpdate(Party companyParty) {
         return getDivisionsByCompany(companyParty, EntityPermission.READ_WRITE);
     }
-    
+
+    private List<PartyDivision> getDivisionsByName(String partyDivisionName, EntityPermission entityPermission) {
+        List<PartyDivision> partyDivisions;
+
+        try {
+            String query = null;
+
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM partydivisions, parties, partydetails " +
+                        "WHERE pdiv_partydivisionname = ? AND pdiv_thrutime = ? " +
+                        "AND pdiv_par_partyid = par_partyid AND par_activedetailid = pardt_partydetailid " +
+                        "ORDER BY pardt_partyname " +
+                        "_LIMIT_";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM partydivisions, parties, partydetails " +
+                        "WHERE pdiv_partydivisionname = ? AND pdiv_thrutime = ? " +
+                        "AND pdiv_par_partyid = par_partyid AND par_activedetailid = pardt_partydetailid " +
+                        "FOR UPDATE";
+            }
+
+            PreparedStatement ps = PartyDivisionFactory.getInstance().prepareStatement(query);
+
+            ps.setString(1, partyDivisionName);
+            ps.setLong(2, Session.MAX_TIME);
+
+            partyDivisions = PartyDivisionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return partyDivisions;
+    }
+
+    public List<PartyDivision> getDivisionsByName(String partyDivisionName) {
+        return getDivisionsByName(partyDivisionName, EntityPermission.READ_ONLY);
+    }
+
+    public List<PartyDivision> getDivisionsByNameForUpdate(String partyDivisionName) {
+        return getDivisionsByName(partyDivisionName, EntityPermission.READ_WRITE);
+    }
+
     public DivisionChoicesBean getDivisionChoices(Party companyParty, String defaultDivisionChoice, boolean allowNullChoice) {
         List<PartyDivision> partyDivisions = getDivisionsByCompany(companyParty);
         var size = partyDivisions.size() + (allowNullChoice ? 1 : 0);
@@ -3765,7 +4075,7 @@ public class PartyControl
             partyDivision = PartyDivisionFactory.getInstance().create(partyPK, companyParty.getPrimaryKey(), partyDivisionName,
                     isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(partyPK, EventTypes.MODIFY.name(), partyDivision.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(partyPK, EventTypes.MODIFY, partyDivision.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -3794,7 +4104,7 @@ public class PartyControl
         PartyDepartment partyDepartment = PartyDepartmentFactory.getInstance().create(party, divisionParty,
                 partyDepartmentName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), partyDepartment.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyDepartment.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return partyDepartment;
     }
@@ -3944,18 +4254,19 @@ public class PartyControl
     public PartyDepartmentValue getPartyDepartmentValueByNameForUpdate(Party divisionParty, String partyDepartmentName) {
         return getPartyDepartmentValueForUpdate(getPartyDepartmentByNameForUpdate(divisionParty, partyDepartmentName));
     }
-    
+
     private List<PartyDepartment> getDepartmentsByDivision(Party divisionParty, EntityPermission entityPermission) {
         List<PartyDepartment> partyDepartments;
-        
+
         try {
             String query = null;
-            
+
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 query = "SELECT _ALL_ " +
                         "FROM partydepartments, partydetails " +
                         "WHERE pdept_divisionpartyid = ? AND pdept_thrutime = ? " +
                         "AND pdept_par_partyid = pardt_par_partyid AND pardt_thrutime = ? " +
+                        "ORDER BY pdept_sortorder, pdept_partydepartmentname " +
                         "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
@@ -3964,29 +4275,71 @@ public class PartyControl
                         "AND pdept_par_partyid = pardt_par_partyid AND pardt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
+
             PreparedStatement ps = PartyDepartmentFactory.getInstance().prepareStatement(query);
-            
+
             ps.setLong(1, divisionParty.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             ps.setLong(3, Session.MAX_TIME);
-            
+
             partyDepartments = PartyDepartmentFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
-        
+
         return partyDepartments;
     }
-    
+
     public List<PartyDepartment> getDepartmentsByDivision(Party divisionParty) {
         return getDepartmentsByDivision(divisionParty, EntityPermission.READ_ONLY);
     }
-    
+
     public List<PartyDepartment> getDepartmentsByDivisionForUpdate(Party divisionParty) {
         return getDepartmentsByDivision(divisionParty, EntityPermission.READ_WRITE);
     }
-    
+
+    private List<PartyDepartment> getDepartmentsByName(String partyDepartmentName, EntityPermission entityPermission) {
+        List<PartyDepartment> partyDepartments;
+
+        try {
+            String query = null;
+
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM partydepartments, parties, partydetails " +
+                        "WHERE pdept_partydepartmentname = ? AND pdept_thrutime = ? " +
+                        "AND pdept_par_partyid = par_partyid AND par_activedetailid = pardt_partydetailid " +
+                        "ORDER BY pardt_partyname " +
+                        "_LIMIT_";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM partydepartments, parties, partydetails " +
+                        "WHERE pdept_partydepartmentname = ? AND pdept_thrutime = ? " +
+                        "AND pdept_par_partyid = par_partyid AND par_activedetailid = pardt_partydetailid " +
+                        "FOR UPDATE";
+            }
+
+            PreparedStatement ps = PartyDepartmentFactory.getInstance().prepareStatement(query);
+
+            ps.setString(1, partyDepartmentName);
+            ps.setLong(2, Session.MAX_TIME);
+
+            partyDepartments = PartyDepartmentFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return partyDepartments;
+    }
+
+    public List<PartyDepartment> getDepartmentsByName(String partyDepartmentName) {
+        return getDepartmentsByName(partyDepartmentName, EntityPermission.READ_ONLY);
+    }
+
+    public List<PartyDepartment> getDepartmentsByNameForUpdate(String partyDepartmentName) {
+        return getDepartmentsByName(partyDepartmentName, EntityPermission.READ_WRITE);
+    }
+
     public DepartmentChoicesBean getDepartmentChoices(Party divisionParty, String defaultDepartmentChoice, boolean allowNullChoice) {
         List<PartyDepartment> partyDepartments = getDepartmentsByDivision(divisionParty);
         var size = partyDepartments.size() + (allowNullChoice ? 1 : 0);
@@ -4077,7 +4430,7 @@ public class PartyControl
             partyDepartment = PartyDepartmentFactory.getInstance().create(partyPK, companyParty.getPrimaryKey(), partyDepartmentName,
                     isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(partyPK, EventTypes.MODIFY.name(), partyDepartment.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(partyPK, EventTypes.MODIFY, partyDepartment.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -4094,7 +4447,7 @@ public class PartyControl
         Person person = PersonFactory.getInstance().create(party, personalTitle, firstName, firstNameSdx, middleName, middleNameSdx, lastName, lastNameSdx,
                 nameSuffix, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), person.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, person.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return person;
     }
@@ -4182,7 +4535,7 @@ public class PartyControl
             person = PersonFactory.getInstance().create(partyPK, personalTitlePK, firstName, firstNameSdx, middleName, middleNameSdx, lastName, lastNameSdx,
                     nameSuffixPK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(partyPK, EventTypes.MODIFY.name(), person.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(partyPK, EventTypes.MODIFY, person.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -4190,7 +4543,7 @@ public class PartyControl
         person.setThruTime(session.START_TIME_LONG);
         person.store();
         
-        sendEventUsingNames(person.getPartyPK(), EventTypes.MODIFY.name(), person.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(person.getPartyPK(), EventTypes.MODIFY, person.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deletePersonByParty(Party party, BasePK deletedBy) {
@@ -4214,8 +4567,8 @@ public class PartyControl
         PartyRelationship partyRelationship = PartyRelationshipFactory.getInstance().create(partyRelationshipType,
                 fromParty, fromRoleType, toParty, toRoleType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(fromParty.getPrimaryKey(), EventTypes.MODIFY.name(), partyRelationship.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
-        sendEventUsingNames(toParty.getPrimaryKey(), EventTypes.MODIFY.name(), partyRelationship.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(fromParty.getPrimaryKey(), EventTypes.MODIFY, partyRelationship.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(toParty.getPrimaryKey(), EventTypes.MODIFY, partyRelationship.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return partyRelationship;
     }
@@ -4274,7 +4627,8 @@ public class PartyControl
                 "SELECT _ALL_ " +
                 "FROM partyrelationships " +
                 "WHERE prel_prt_partyrelationshiptypeid = ? AND prel_frompartyid = ? AND prel_fromroletypeid = ? " +
-                "AND prel_thrutime = ?");
+                "AND prel_thrutime = ? " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM partyrelationships " +
@@ -4309,7 +4663,8 @@ public class PartyControl
                 "SELECT _ALL_ " +
                 "FROM partyrelationships " +
                 "WHERE prel_prt_partyrelationshiptypeid = ? AND prel_topartyid = ? AND prel_toroletypeid = ? " +
-                "AND prel_thrutime = ?");
+                "AND prel_thrutime = ? " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM partyrelationships " +
@@ -4343,7 +4698,8 @@ public class PartyControl
         queryMap.put(EntityPermission.READ_ONLY,
                 "SELECT _ALL_ " +
                 "FROM partyrelationships " +
-                "WHERE prel_frompartyid = ? AND prel_thrutime = ?");
+                "WHERE prel_frompartyid = ? AND prel_thrutime = ? " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM partyrelationships " +
@@ -4373,7 +4729,8 @@ public class PartyControl
         queryMap.put(EntityPermission.READ_ONLY,
                 "SELECT _ALL_ " +
                 "FROM partyrelationships " +
-                "WHERE prel_topartyid = ? AND prel_thrutime = ?");
+                "WHERE prel_topartyid = ? AND prel_thrutime = ? " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM partyrelationships " +
@@ -4399,7 +4756,7 @@ public class PartyControl
         return getPartyTransferCaches(userVisit).getPartyRelationshipTransferCache().getPartyRelationshipTransfer(partyRelationship);
     }
     
-    public List<PartyRelationshipTransfer> getPartyRelationshipTransfers(UserVisit userVisit, List<PartyRelationship> partyRelationships) {
+    public List<PartyRelationshipTransfer> getPartyRelationshipTransfers(UserVisit userVisit, Collection<PartyRelationship> partyRelationships) {
         List<PartyRelationshipTransfer> partyRelationshipTransfers = new ArrayList<>(partyRelationships.size());
         PartyRelationshipTransferCache partyRelationshipTransferCache = getPartyTransferCaches(userVisit).getPartyRelationshipTransferCache();
         
@@ -4433,8 +4790,8 @@ public class PartyControl
     public void deletePartyRelationship(PartyRelationship partyRelationship, BasePK deletedBy) {
         partyRelationship.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(partyRelationship.getFromPartyPK(), EventTypes.MODIFY.name(), partyRelationship.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
-        sendEventUsingNames(partyRelationship.getToPartyPK(), EventTypes.MODIFY.name(), partyRelationship.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(partyRelationship.getFromPartyPK(), EventTypes.MODIFY, partyRelationship.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(partyRelationship.getToPartyPK(), EventTypes.MODIFY, partyRelationship.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deletePartyRelationships(List<PartyRelationship> partyRelationships, BasePK deletedBy) {
@@ -4463,7 +4820,7 @@ public class PartyControl
         partyTypeAuditPolicy.setLastDetail(partyTypeAuditPolicyDetail);
         partyTypeAuditPolicy.store();
 
-        sendEventUsingNames(partyTypeAuditPolicy.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(partyTypeAuditPolicy.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return partyTypeAuditPolicy;
     }
@@ -4541,7 +4898,7 @@ public class PartyControl
             partyTypeAuditPolicy.setActiveDetail(partyTypeAuditPolicyDetail);
             partyTypeAuditPolicy.setLastDetail(partyTypeAuditPolicyDetail);
 
-            sendEventUsingNames(partyTypeAuditPolicyPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(partyTypeAuditPolicyPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -4551,7 +4908,7 @@ public class PartyControl
         partyTypeAuditPolicy.setActiveDetail(null);
         partyTypeAuditPolicy.store();
         
-        sendEventUsingNames(partyTypeAuditPolicy.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(partyTypeAuditPolicy.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -4572,7 +4929,7 @@ public class PartyControl
         partyTypeLockoutPolicy.setLastDetail(partyTypeLockoutPolicyDetail);
         partyTypeLockoutPolicy.store();
         
-        sendEventUsingNames(partyTypeLockoutPolicy.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(partyTypeLockoutPolicy.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return partyTypeLockoutPolicy;
     }
@@ -4653,7 +5010,7 @@ public class PartyControl
             partyTypeLockoutPolicy.setActiveDetail(partyTypeLockoutPolicyDetail);
             partyTypeLockoutPolicy.setLastDetail(partyTypeLockoutPolicyDetail);
             
-            sendEventUsingNames(partyTypeLockoutPolicyPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(partyTypeLockoutPolicyPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -4663,7 +5020,7 @@ public class PartyControl
         partyTypeLockoutPolicy.setActiveDetail(null);
         partyTypeLockoutPolicy.store();
         
-        sendEventUsingNames(partyTypeLockoutPolicy.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(partyTypeLockoutPolicy.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -4689,7 +5046,7 @@ public class PartyControl
         partyTypePasswordStringPolicy.setLastDetail(partyTypePasswordStringPolicyDetail);
         partyTypePasswordStringPolicy.store();
         
-        sendEventUsingNames(partyTypePasswordStringPolicy.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(partyTypePasswordStringPolicy.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return partyTypePasswordStringPolicy;
     }
@@ -4784,7 +5141,7 @@ public class PartyControl
             partyTypePasswordStringPolicy.setActiveDetail(partyTypePasswordStringPolicyDetail);
             partyTypePasswordStringPolicy.setLastDetail(partyTypePasswordStringPolicyDetail);
             
-            sendEventUsingNames(partyTypePasswordStringPolicyPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(partyTypePasswordStringPolicyPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -4794,7 +5151,7 @@ public class PartyControl
         partyTypePasswordStringPolicy.setActiveDetail(null);
         partyTypePasswordStringPolicy.store();
         
-        sendEventUsingNames(partyTypePasswordStringPolicy.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(partyTypePasswordStringPolicy.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -4824,7 +5181,7 @@ public class PartyControl
         gender.setLastDetail(genderDetail);
         gender.store();
         
-        sendEventUsingNames(gender.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(gender.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return gender;
     }
@@ -4912,7 +5269,8 @@ public class PartyControl
             query = "SELECT _ALL_ " +
                     "FROM genders, genderdetails " +
                     "WHERE gndr_activedetailid = gndrdt_genderdetailid " +
-                    "ORDER BY gndrdt_sortorder, gndrdt_gendername";
+                    "ORDER BY gndrdt_sortorder, gndrdt_gendername " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM genders, genderdetails " +
@@ -5019,7 +5377,7 @@ public class PartyControl
         gender.setLastDetail(genderDetail);
         gender.store();
         
-        sendEventUsingNames(genderPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+        sendEvent(genderPK, EventTypes.MODIFY, null, null, updatedBy);
     }
     
     public void updateGenderFromValue(GenderDetailValue genderDetailValue, BasePK updatedBy) {
@@ -5051,7 +5409,7 @@ public class PartyControl
             }
         }
         
-        sendEventUsingNames(gender.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(gender.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -5062,7 +5420,7 @@ public class PartyControl
         GenderDescription genderDescription = GenderDescriptionFactory.getInstance().create(gender, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(gender.getPrimaryKey(), EventTypes.MODIFY.name(), genderDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(gender.getPrimaryKey(), EventTypes.MODIFY, genderDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return genderDescription;
     }
@@ -5124,7 +5482,8 @@ public class PartyControl
                 query = "SELECT _ALL_ " +
                         "FROM genderdescriptions, languages " +
                         "WHERE gndrd_gndr_genderid = ? AND gndrd_thrutime = ? AND gndrd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM genderdescriptions " +
@@ -5201,14 +5560,14 @@ public class PartyControl
             genderDescription = GenderDescriptionFactory.getInstance().create(gender, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(gender.getPrimaryKey(), EventTypes.MODIFY.name(), genderDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(gender.getPrimaryKey(), EventTypes.MODIFY, genderDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteGenderDescription(GenderDescription genderDescription, BasePK deletedBy) {
         genderDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(genderDescription.getGenderPK(), EventTypes.MODIFY.name(), genderDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(genderDescription.getGenderPK(), EventTypes.MODIFY, genderDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -5246,7 +5605,7 @@ public class PartyControl
         mood.setLastDetail(moodDetail);
         mood.store();
         
-        sendEventUsingNames(mood.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(mood.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return mood;
     }
@@ -5334,7 +5693,8 @@ public class PartyControl
             query = "SELECT _ALL_ " +
                     "FROM moods, mooddetails " +
                     "WHERE md_activedetailid = mddt_mooddetailid " +
-                    "ORDER BY mddt_sortorder, mddt_moodname";
+                    "ORDER BY mddt_sortorder, mddt_moodname " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM moods, mooddetails " +
@@ -5442,7 +5802,7 @@ public class PartyControl
         mood.setLastDetail(moodDetail);
         mood.store();
         
-        sendEventUsingNames(moodPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+        sendEvent(moodPK, EventTypes.MODIFY, null, null, updatedBy);
     }
     
     public void updateMoodFromValue(MoodDetailValue moodDetailValue, BasePK updatedBy) {
@@ -5474,7 +5834,7 @@ public class PartyControl
             }
         }
         
-        sendEventUsingNames(mood.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(mood.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -5485,7 +5845,7 @@ public class PartyControl
         MoodDescription moodDescription = MoodDescriptionFactory.getInstance().create(mood, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(mood.getPrimaryKey(), EventTypes.MODIFY.name(), moodDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(mood.getPrimaryKey(), EventTypes.MODIFY, moodDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return moodDescription;
     }
@@ -5547,7 +5907,8 @@ public class PartyControl
                 query = "SELECT _ALL_ " +
                         "FROM mooddescriptions, languages " +
                         "WHERE mdd_md_moodid = ? AND mdd_thrutime = ? AND mdd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM mooddescriptions " +
@@ -5624,14 +5985,14 @@ public class PartyControl
             moodDescription = MoodDescriptionFactory.getInstance().create(mood, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(mood.getPrimaryKey(), EventTypes.MODIFY.name(), moodDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(mood.getPrimaryKey(), EventTypes.MODIFY, moodDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteMoodDescription(MoodDescription moodDescription, BasePK deletedBy) {
         moodDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(moodDescription.getMoodPK(), EventTypes.MODIFY.name(), moodDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(moodDescription.getMoodPK(), EventTypes.MODIFY, moodDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -5671,7 +6032,7 @@ public class PartyControl
         birthdayFormat.setLastDetail(birthdayFormatDetail);
         birthdayFormat.store();
 
-        sendEventUsingNames(birthdayFormat.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(birthdayFormat.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return birthdayFormat;
     }
@@ -5683,7 +6044,8 @@ public class PartyControl
             query = "SELECT _ALL_ " +
                     "FROM birthdayformats, birthdayformatdetails " +
                     "WHERE bdyf_activedetailid = bdyfdt_birthdayformatdetailid " +
-                    "ORDER BY bdyfdt_sortorder, bdyfdt_birthdayformatname";
+                    "ORDER BY bdyfdt_sortorder, bdyfdt_birthdayformatname " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM birthdayformats, birthdayformatdetails " +
@@ -5715,7 +6077,8 @@ public class PartyControl
                         "FROM birthdayformats, birthdayformatdetails, birthdayformatentitytypes " +
                         "WHERE bdyf_activedetailid = bdyfdt_birthdayformatdetailid " +
                         "AND bdyf_birthdayformatid = tent_bdyf_birthdayformatid AND tent_ent_entitytypeid = ? AND tent_thrutime = ? " +
-                        "ORDER BY bdyfdt_sortorder, bdyfdt_birthdayformatname";
+                        "ORDER BY bdyfdt_sortorder, bdyfdt_birthdayformatname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM birthdayformats, birthdayformatdetails, birthdayformatentitytypes " +
@@ -5858,7 +6221,7 @@ public class PartyControl
         return getPartyTransferCaches(userVisit).getBirthdayFormatTransferCache().getBirthdayFormatTransfer(birthdayFormat);
     }
 
-    public List<BirthdayFormatTransfer> getBirthdayFormatTransfers(UserVisit userVisit, List<BirthdayFormat> birthdayFormats) {
+    public List<BirthdayFormatTransfer> getBirthdayFormatTransfers(UserVisit userVisit, Collection<BirthdayFormat> birthdayFormats) {
         List<BirthdayFormatTransfer> birthdayFormatTransfers = new ArrayList<>(birthdayFormats.size());
         BirthdayFormatTransferCache birthdayFormatTransferCache = getPartyTransferCaches(userVisit).getBirthdayFormatTransferCache();
 
@@ -5913,7 +6276,7 @@ public class PartyControl
             birthdayFormat.setActiveDetail(birthdayFormatDetail);
             birthdayFormat.setLastDetail(birthdayFormatDetail);
 
-            sendEventUsingNames(birthdayFormatPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(birthdayFormatPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -5946,7 +6309,7 @@ public class PartyControl
             }
         }
 
-        sendEventUsingNames(birthdayFormat.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(birthdayFormat.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     // --------------------------------------------------------------------------------
@@ -5959,7 +6322,7 @@ public class PartyControl
                 language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(birthdayFormat.getPrimaryKey(), EventTypes.MODIFY.name(), birthdayFormatDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(birthdayFormat.getPrimaryKey(), EventTypes.MODIFY, birthdayFormatDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return birthdayFormatDescription;
     }
@@ -6022,7 +6385,8 @@ public class PartyControl
                         "FROM birthdayformatdescriptions, languages " +
                         "WHERE bdyfd_bdyf_birthdayformatid = ? AND bdyfd_thrutime = ? " +
                         "AND bdyfd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM birthdayformatdescriptions " +
@@ -6099,14 +6463,14 @@ public class PartyControl
             birthdayFormatDescription = BirthdayFormatDescriptionFactory.getInstance().create(birthdayFormat, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(birthdayFormat.getPrimaryKey(), EventTypes.MODIFY.name(), birthdayFormatDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(birthdayFormat.getPrimaryKey(), EventTypes.MODIFY, birthdayFormatDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteBirthdayFormatDescription(BirthdayFormatDescription birthdayFormatDescription, BasePK deletedBy) {
         birthdayFormatDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(birthdayFormatDescription.getBirthdayFormatPK(), EventTypes.MODIFY.name(), birthdayFormatDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(birthdayFormatDescription.getBirthdayFormatPK(), EventTypes.MODIFY, birthdayFormatDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 
     public void deleteBirthdayFormatDescriptionsByBirthdayFormat(BirthdayFormat birthdayFormat, BasePK deletedBy) {
@@ -6121,14 +6485,14 @@ public class PartyControl
     //   Profiles
     // --------------------------------------------------------------------------------
     
-    public Profile createProfile(Party party, String nickname, Icon icon, Gender gender, Integer birthday, BirthdayFormat birthdayFormat,
-            String occupation, String hobbies, String location, MimeType bioMimeType, String bio, MimeType signatureMimeType,
-            String signature, BasePK createdBy) {
-        Profile profile = ProfileFactory.getInstance().create(party, nickname, icon, gender, birthday, birthdayFormat,
-                occupation, hobbies, location, bioMimeType, bio, signatureMimeType, signature, session.START_TIME_LONG,
-                Session.MAX_TIME_LONG);
+    public Profile createProfile(Party party, String nickname, Icon icon, String pronunciation, Gender gender, String pronouns,
+            Integer birthday, BirthdayFormat birthdayFormat, String occupation, String hobbies, String location, MimeType bioMimeType,
+            String bio, MimeType signatureMimeType, String signature, BasePK createdBy) {
+        Profile profile = ProfileFactory.getInstance().create(party, nickname, icon, pronunciation, gender, pronouns,
+                birthday, birthdayFormat, occupation, hobbies, location, bioMimeType, bio, signatureMimeType, signature,
+                session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), profile.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, profile.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return profile;
     }
@@ -6228,7 +6592,9 @@ public class PartyControl
             PartyPK partyPK = profile.getPartyPK();
             String nickname = profileValue.getNickname();
             IconPK iconPK = profileValue.getIconPK();
+            String pronunciation = profileValue.getPronunciation();
             GenderPK genderPK = profileValue.getGenderPK();
+            String pronouns = profileValue.getPronouns();
             Integer birthday = profileValue.getBirthday();
             BirthdayFormatPK birthdayFormatPK = profileValue.getBirthdayFormatPK();
             String occupation = profileValue.getOccupation();
@@ -6239,11 +6605,11 @@ public class PartyControl
             MimeTypePK signatureMimeTypePK = profileValue.getSignatureMimeTypePK();
             String signature = profileValue.getSignature();
             
-            profile = ProfileFactory.getInstance().create(partyPK, nickname, iconPK, genderPK, birthday, birthdayFormatPK,
-                    occupation, hobbies, location, bioMimeTypePK, bio, signatureMimeTypePK, signature, session.START_TIME_LONG,
-                    Session.MAX_TIME_LONG);
+            profile = ProfileFactory.getInstance().create(partyPK, nickname, iconPK, pronunciation, genderPK, pronouns,
+                    birthday, birthdayFormatPK, occupation, hobbies, location, bioMimeTypePK, bio, signatureMimeTypePK,
+                    signature, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(partyPK, EventTypes.MODIFY.name(), profile.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(partyPK, EventTypes.MODIFY, profile.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -6251,7 +6617,7 @@ public class PartyControl
         profile.setThruTime(session.START_TIME_LONG);
         profile.store();
         
-        sendEventUsingNames(profile.getPartyPK(), EventTypes.MODIFY.name(), profile.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(profile.getPartyPK(), EventTypes.MODIFY, profile.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteProfileByParty(Party party, BasePK deletedBy) {

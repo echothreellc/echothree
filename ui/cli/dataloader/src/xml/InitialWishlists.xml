@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -17,7 +17,7 @@
 <initialData>
     <orderTypes>
         <orderType orderTypeName="WISHLIST" orderSequenceTypeName="WISHLIST" isDefault="false" sortOrder="1">
-            <orderTypeDescription languageIsoName="en" description="Wish List" />
+            <orderTypeDescription languageIsoName="en" description="Wishlist" />
             <orderAdjustmentType orderAdjustmentTypeName="TEST_ORDER_ADJUSTMENT_TYPE" isDefault="false" sortOrder="1">
                 <orderAdjustmentTypeDescription languageIsoName="en" description="Test Order Adjustment Type" />
             </orderAdjustmentType>
@@ -29,57 +29,57 @@
     <wishlistTypes>
         <wishlistType wishlistTypeName="WISHLIST_EXAMPLE_1" isDefault="true" sortOrder="1">
             <wishlistTypeDescription languageIsoName="en" description="Wishlist Example 1" />
-            <wishlistTypePriority wishlistTypePriorityName="HIGHEST" isDefault="false" sortOrder="1">
-                <wishlistTypePriorityDescription languageIsoName="en" description="Highest" />
-            </wishlistTypePriority>
-            <wishlistTypePriority wishlistTypePriorityName="HIGH" isDefault="false" sortOrder="2">
-                <wishlistTypePriorityDescription languageIsoName="en" description="High" />
-            </wishlistTypePriority>
-            <wishlistTypePriority wishlistTypePriorityName="MEDIUM" isDefault="true" sortOrder="3">
-                <wishlistTypePriorityDescription languageIsoName="en" description="Medium" />
-            </wishlistTypePriority>
-            <wishlistTypePriority wishlistTypePriorityName="LOW" isDefault="false" sortOrder="4">
-                <wishlistTypePriorityDescription languageIsoName="en" description="Low" />
-            </wishlistTypePriority>
-            <wishlistTypePriority wishlistTypePriorityName="LOWEST" isDefault="false" sortOrder="5">
-                <wishlistTypePriorityDescription languageIsoName="en" description="Lowest" />
-            </wishlistTypePriority>
+            <wishlistPriority wishlistPriorityName="HIGHEST" isDefault="false" sortOrder="1">
+                <wishlistPriorityDescription languageIsoName="en" description="Highest" />
+            </wishlistPriority>
+            <wishlistPriority wishlistPriorityName="HIGH" isDefault="false" sortOrder="2">
+                <wishlistPriorityDescription languageIsoName="en" description="High" />
+            </wishlistPriority>
+            <wishlistPriority wishlistPriorityName="MEDIUM" isDefault="true" sortOrder="3">
+                <wishlistPriorityDescription languageIsoName="en" description="Medium" />
+            </wishlistPriority>
+            <wishlistPriority wishlistPriorityName="LOW" isDefault="false" sortOrder="4">
+                <wishlistPriorityDescription languageIsoName="en" description="Low" />
+            </wishlistPriority>
+            <wishlistPriority wishlistPriorityName="LOWEST" isDefault="false" sortOrder="5">
+                <wishlistPriorityDescription languageIsoName="en" description="Lowest" />
+            </wishlistPriority>
         </wishlistType>
         <wishlistType wishlistTypeName="WISHLIST_EXAMPLE_2" isDefault="false" sortOrder="1">
             <wishlistTypeDescription languageIsoName="en" description="Wishlist Example 2" />
-            <wishlistTypePriority wishlistTypePriorityName="HIGHEST" isDefault="false" sortOrder="1">
-                <wishlistTypePriorityDescription languageIsoName="en" description="Highest" />
-            </wishlistTypePriority>
-            <wishlistTypePriority wishlistTypePriorityName="HIGH" isDefault="false" sortOrder="2">
-                <wishlistTypePriorityDescription languageIsoName="en" description="High" />
-            </wishlistTypePriority>
-            <wishlistTypePriority wishlistTypePriorityName="MEDIUM" isDefault="true" sortOrder="3">
-                <wishlistTypePriorityDescription languageIsoName="en" description="Medium" />
-            </wishlistTypePriority>
-            <wishlistTypePriority wishlistTypePriorityName="LOW" isDefault="false" sortOrder="4">
-                <wishlistTypePriorityDescription languageIsoName="en" description="Low" />
-            </wishlistTypePriority>
-            <wishlistTypePriority wishlistTypePriorityName="LOWEST" isDefault="false" sortOrder="5">
-                <wishlistTypePriorityDescription languageIsoName="en" description="Lowest" />
-            </wishlistTypePriority>
+            <wishlistPriority wishlistPriorityName="HIGHEST" isDefault="false" sortOrder="1">
+                <wishlistPriorityDescription languageIsoName="en" description="Highest" />
+            </wishlistPriority>
+            <wishlistPriority wishlistPriorityName="HIGH" isDefault="false" sortOrder="2">
+                <wishlistPriorityDescription languageIsoName="en" description="High" />
+            </wishlistPriority>
+            <wishlistPriority wishlistPriorityName="MEDIUM" isDefault="true" sortOrder="3">
+                <wishlistPriorityDescription languageIsoName="en" description="Medium" />
+            </wishlistPriority>
+            <wishlistPriority wishlistPriorityName="LOW" isDefault="false" sortOrder="4">
+                <wishlistPriorityDescription languageIsoName="en" description="Low" />
+            </wishlistPriority>
+            <wishlistPriority wishlistPriorityName="LOWEST" isDefault="false" sortOrder="5">
+                <wishlistPriorityDescription languageIsoName="en" description="Lowest" />
+            </wishlistPriority>
         </wishlistType>
         <wishlistType wishlistTypeName="WISHLIST_EXAMPLE_3" isDefault="false" sortOrder="1">
             <wishlistTypeDescription languageIsoName="en" description="Wishlist Example 3" />
-            <wishlistTypePriority wishlistTypePriorityName="HIGHEST" isDefault="false" sortOrder="1">
-                <wishlistTypePriorityDescription languageIsoName="en" description="Highest" />
-            </wishlistTypePriority>
-            <wishlistTypePriority wishlistTypePriorityName="HIGH" isDefault="false" sortOrder="2">
-                <wishlistTypePriorityDescription languageIsoName="en" description="High" />
-            </wishlistTypePriority>
-            <wishlistTypePriority wishlistTypePriorityName="MEDIUM" isDefault="true" sortOrder="3">
-                <wishlistTypePriorityDescription languageIsoName="en" description="Medium" />
-            </wishlistTypePriority>
-            <wishlistTypePriority wishlistTypePriorityName="LOW" isDefault="false" sortOrder="4">
-                <wishlistTypePriorityDescription languageIsoName="en" description="Low" />
-            </wishlistTypePriority>
-            <wishlistTypePriority wishlistTypePriorityName="LOWEST" isDefault="false" sortOrder="5">
-                <wishlistTypePriorityDescription languageIsoName="en" description="Lowest" />
-            </wishlistTypePriority>
+            <wishlistPriority wishlistPriorityName="HIGHEST" isDefault="false" sortOrder="1">
+                <wishlistPriorityDescription languageIsoName="en" description="Highest" />
+            </wishlistPriority>
+            <wishlistPriority wishlistPriorityName="HIGH" isDefault="false" sortOrder="2">
+                <wishlistPriorityDescription languageIsoName="en" description="High" />
+            </wishlistPriority>
+            <wishlistPriority wishlistPriorityName="MEDIUM" isDefault="true" sortOrder="3">
+                <wishlistPriorityDescription languageIsoName="en" description="Medium" />
+            </wishlistPriority>
+            <wishlistPriority wishlistPriorityName="LOW" isDefault="false" sortOrder="4">
+                <wishlistPriorityDescription languageIsoName="en" description="Low" />
+            </wishlistPriority>
+            <wishlistPriority wishlistPriorityName="LOWEST" isDefault="false" sortOrder="5">
+                <wishlistPriorityDescription languageIsoName="en" description="Lowest" />
+            </wishlistPriority>
         </wishlistType>
     </wishlistTypes>
 </initialData>

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,11 +17,11 @@
 package com.echothree.control.user.accounting.common.form;
 
 import com.echothree.control.user.accounting.common.edit.ItemAccountingCategoryEdit;
-import com.echothree.control.user.accounting.common.spec.ItemAccountingCategorySpec;
+import com.echothree.control.user.accounting.common.spec.ItemAccountingCategoryUniversalSpec;
 import com.echothree.util.common.form.BaseEditForm;
 
 public interface EditItemAccountingCategoryForm
-        extends BaseEditForm<ItemAccountingCategorySpec, ItemAccountingCategoryEdit> {
+        extends BaseEditForm<ItemAccountingCategoryUniversalSpec, ItemAccountingCategoryEdit> {
     
     // Nothing additional beyond BaseEditForm
     

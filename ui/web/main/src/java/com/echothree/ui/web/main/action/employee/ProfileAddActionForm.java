@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -55,7 +55,9 @@ public class ProfileAddActionForm
     
     private String nickname;
     private String iconChoice;
+    private String pronunciation;
     private String genderChoice;
+    private String pronouns;
     private String birthday;
     private String birthdayFormatChoice;
     private String occupation;
@@ -163,15 +165,15 @@ public class ProfileAddActionForm
             }
         }
     }
-    
+
     public String getNickname() {
         return nickname;
     }
-    
+
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
-    
+
     public List<LabelValueBean> getIconChoices()
             throws NamingException {
         List<LabelValueBean> choices = null;
@@ -194,7 +196,15 @@ public class ProfileAddActionForm
         
         return iconChoice;
     }
-    
+
+    public String getPronunciation() {
+        return pronunciation;
+    }
+
+    public void setPronunciation(String pronunciation) {
+        this.pronunciation = pronunciation;
+    }
+
     public List<LabelValueBean> getGenderChoices()
             throws NamingException {
         List<LabelValueBean> choices = null;
@@ -217,7 +227,15 @@ public class ProfileAddActionForm
         
         return genderChoice;
     }
-    
+
+    public String getPronouns() {
+        return pronouns;
+    }
+
+    public void setPronouns(String pronouns) {
+        this.pronouns = pronouns;
+    }
+
     public String getBirthday() {
         return birthday;
     }

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,17 +25,20 @@ import com.echothree.model.data.core.server.entity.EntityAttributeGroupDetail;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.MapWrapper;
+import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import java.util.Set;
 
 public class EntityAttributeGroupTransferCache
         extends BaseCoreTransferCache<EntityAttributeGroup, EntityAttributeGroupTransfer> {
-    
+
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+
     boolean includeEntityAttributes;
     
     /** Creates a new instance of EntityAttributeGroupTransferCache */
-    public EntityAttributeGroupTransferCache(UserVisit userVisit, CoreControl coreControl) {
-        super(userVisit, coreControl);
+    public EntityAttributeGroupTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         var options = session.getOptions();
         if(options != null) {

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,16 +21,15 @@ import com.echothree.control.user.content.common.result.ContentResultFactory;
 import com.echothree.control.user.content.common.result.GetContentCatalogsResult;
 import com.echothree.model.control.associate.server.logic.AssociateReferralLogic;
 import com.echothree.model.control.content.server.control.ContentControl;
-import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.data.content.server.entity.ContentCatalog;
 import com.echothree.model.data.content.server.entity.ContentCollection;
 import com.echothree.model.data.content.server.entity.ContentWebAddress;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -94,8 +93,6 @@ public class GetContentCatalogsCommand
 
                 if(!hasExecutionErrors()) {
                     contentCatalogs = contentControl.getContentCatalogs(contentCollection);
-                    
-                    sendEventUsingNames(contentCollection.getPrimaryKey(), EventTypes.READ.name(), null, null, partyPK);
                 }
             }
         } else {
@@ -106,7 +103,7 @@ public class GetContentCatalogsCommand
     }
     
     @Override
-    protected BaseResult getTransfers(Collection<ContentCatalog> entities) {
+    protected BaseResult getResult(Collection<ContentCatalog> entities) {
         GetContentCatalogsResult result = ContentResultFactory.getGetContentCatalogsResult();
         
         if(entities != null) {

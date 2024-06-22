@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -114,7 +114,7 @@ public class OfferControl
         offer.setLastDetail(offerDetail);
         offer.store();
         
-        sendEventUsingNames(offer.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(offer.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return offer;
     }
@@ -158,7 +158,7 @@ public class OfferControl
                 filter);
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.Offer */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Offer */
     public Offer getOfferByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new OfferPK(entityInstance.getEntityUniqueId());
         var offer = OfferFactory.getInstance().getEntityFromPK(entityPermission, pk);
@@ -413,7 +413,7 @@ public class OfferControl
             offer.setActiveDetail(offerDetail);
             offer.setLastDetail(offerDetail);
             
-            sendEventUsingNames(offerPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(offerPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -456,7 +456,7 @@ public class OfferControl
             }
         }
         
-        sendEventUsingNames(offer.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(offer.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -467,8 +467,8 @@ public class OfferControl
         OfferDescription offerDescription = OfferDescriptionFactory.getInstance().create(offer, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(offer.getPrimaryKey(), EventTypes.MODIFY.name(), offerDescription.getPrimaryKey(),
-                EventTypes.CREATE.name(), createdBy);
+        sendEvent(offer.getPrimaryKey(), EventTypes.MODIFY, offerDescription.getPrimaryKey(),
+                EventTypes.CREATE, createdBy);
         
         return offerDescription;
     }
@@ -606,16 +606,16 @@ public class OfferControl
             offerDescription = OfferDescriptionFactory.getInstance().create(offer, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(offer.getPrimaryKey(), EventTypes.MODIFY.name(), offerDescription.getPrimaryKey(),
-                    EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(offer.getPrimaryKey(), EventTypes.MODIFY, offerDescription.getPrimaryKey(),
+                    EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteOfferDescription(OfferDescription offerDescription, BasePK deletedBy) {
         offerDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(offerDescription.getOfferPK(), EventTypes.MODIFY.name(), offerDescription.getPrimaryKey(),
-                EventTypes.DELETE.name(), deletedBy);
+        sendEvent(offerDescription.getOfferPK(), EventTypes.MODIFY, offerDescription.getPrimaryKey(),
+                EventTypes.DELETE, deletedBy);
     }
     
     public void deleteOfferDescriptionsByOffer(Offer offer, BasePK deletedBy) {
@@ -687,7 +687,7 @@ public class OfferControl
         OfferCustomerType offerCustomerType = OfferCustomerTypeFactory.getInstance().create(offer, customerType,
                 isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(offer.getPrimaryKey(), EventTypes.MODIFY.name(), offerCustomerType.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(offer.getPrimaryKey(), EventTypes.MODIFY, offerCustomerType.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return offerCustomerType;
     }
@@ -917,7 +917,7 @@ public class OfferControl
             offerCustomerType = OfferCustomerTypeFactory.getInstance().create(offerPK, customerTypePK,
                     isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(offerPK, EventTypes.MODIFY.name(), offerCustomerType.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(offerPK, EventTypes.MODIFY, offerCustomerType.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
@@ -947,7 +947,7 @@ public class OfferControl
             }
         }
 
-        sendEventUsingNames(offer.getPrimaryKey(), EventTypes.MODIFY.name(), offerCustomerType.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(offer.getPrimaryKey(), EventTypes.MODIFY, offerCustomerType.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 
     public void deleteOfferCustomerTypes(List<OfferCustomerType> offerCustomerTypes, BasePK deletedBy) {
@@ -972,8 +972,8 @@ public class OfferControl
         OfferChainType offerChainType = OfferChainTypeFactory.getInstance().create(offer, chainType, chain,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(offer.getPrimaryKey(), EventTypes.MODIFY.name(), offerChainType.getPrimaryKey(),
-                EventTypes.CREATE.name(), createdBy);
+        sendEvent(offer.getPrimaryKey(), EventTypes.MODIFY, offerChainType.getPrimaryKey(),
+                EventTypes.CREATE, createdBy);
         
         return offerChainType;
     }
@@ -1185,15 +1185,15 @@ public class OfferControl
             offerChainType = OfferChainTypeFactory.getInstance().create(offerPK, chainTypePK, chainPK,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(offerPK, EventTypes.MODIFY.name(), offerChainType.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(offerPK, EventTypes.MODIFY, offerChainType.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteOfferChainType(OfferChainType offerChainType, BasePK deletedBy) {
         offerChainType.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(offerChainType.getOfferPK(), EventTypes.MODIFY.name(), offerChainType.getPrimaryKey(),
-                EventTypes.DELETE.name(), deletedBy);
+        sendEvent(offerChainType.getOfferPK(), EventTypes.MODIFY, offerChainType.getPrimaryKey(),
+                EventTypes.DELETE, deletedBy);
     }
     
     public void deleteOfferChainTypes(List<OfferChainType> offerChainTypes, BasePK deletedBy) {

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.control.user.search.common.result.SearchVendorsResult;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.vendor.server.search.VendorSearchEvaluator;
 import com.echothree.model.control.search.server.logic.SearchLogic;
@@ -89,7 +89,7 @@ public class SearchVendorsCommand
     protected BaseResult execute() {
         SearchVendorsResult result = SearchResultFactory.getSearchVendorsResult();
         var searchControl = Session.getModelController(SearchControl.class);
-        SearchKind searchKind = searchControl.getSearchKindByName(SearchConstants.SearchKind_VENDOR);
+        SearchKind searchKind = searchControl.getSearchKindByName(SearchKinds.VENDOR.name());
         
         if(searchKind != null) {
             String searchTypeName = form.getSearchTypeName();
@@ -102,16 +102,16 @@ public class SearchVendorsCommand
 
                 if(partyAliasTypeName != null) {
                     var partyControl = Session.getModelController(PartyControl.class);
-                    PartyType partyType = partyControl.getPartyTypeByName(PartyTypes.CUSTOMER.name());
+                    PartyType partyType = partyControl.getPartyTypeByName(PartyTypes.VENDOR.name());
 
                     if(partyType != null) {
                         partyAliasType = partyControl.getPartyAliasTypeByName(partyType, partyAliasTypeName);
 
                         if(partyAliasType == null) {
-                            addExecutionError(ExecutionErrors.UnknownPartyAliasTypeName.name(), PartyTypes.CUSTOMER.name(), partyAliasTypeName);
+                            addExecutionError(ExecutionErrors.UnknownPartyAliasTypeName.name(), PartyTypes.VENDOR.name(), partyAliasTypeName);
                         }
                     } else {
-                        addExecutionError(ExecutionErrors.UnknownPartyTypeName.name(), PartyTypes.CUSTOMER.name());
+                        addExecutionError(ExecutionErrors.UnknownPartyTypeName.name(), PartyTypes.VENDOR.name());
                     }
                 }
 
@@ -145,10 +145,10 @@ public class SearchVendorsCommand
                     }
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownSearchTypeName.name(), SearchConstants.SearchKind_VENDOR, searchTypeName);
+                addExecutionError(ExecutionErrors.UnknownSearchTypeName.name(), SearchKinds.VENDOR.name(), searchTypeName);
             }
         } else {
-            addExecutionError(ExecutionErrors.UnknownSearchKindName.name(), SearchConstants.SearchKind_VENDOR);
+            addExecutionError(ExecutionErrors.UnknownSearchKindName.name(), SearchKinds.VENDOR.name());
         }
         
         return result;

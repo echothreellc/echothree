@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,17 +23,14 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.EntityLockException;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
-import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.persistence.BaseValue;
 import com.echothree.util.server.persistence.DslContextFactory;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class EntityLockControl
-        extends BaseModelControl {
+        extends BaseCoreControl {
     
     /** Creates a new instance of EntityLockControl */
     public EntityLockControl() {
@@ -45,12 +42,12 @@ public class EntityLockControl
     // -------------------------------------------------------------------------
     
     public EntityLockTransfer getEntityLockTransfer(UserVisit userVisit, BaseEntity lockTarget)
-    throws EntityLockException {
+            throws EntityLockException {
         return getEntityLockTransfer(userVisit, lockTarget.getPrimaryKey());
     }
     
-    public EntityLockTransfer getEntityLockTransfer(UserVisit userVisit, BaseValue lockTarget)
-    throws EntityLockException {
+    public EntityLockTransfer getEntityLockTransfer(UserVisit userVisit, BaseValue<?> lockTarget)
+            throws EntityLockException {
         return getEntityLockTransfer(userVisit, lockTarget.getPrimaryKey());
     }
     
@@ -65,7 +62,7 @@ public class EntityLockControl
     private static final long defaultLockDuration = 5 * 60 * 1000; // 5 Minutes
 
     private long getLockDuration(EntityInstance lockTargetEntityInstance) {
-        Long lockTimeout = lockTargetEntityInstance.getEntityType().getLastDetail().getLockTimeout();
+        var lockTimeout = lockTargetEntityInstance.getEntityType().getLastDetail().getLockTimeout();
 
         return lockTimeout == null ? defaultLockDuration : lockTimeout;
     }
@@ -77,7 +74,7 @@ public class EntityLockControl
      * returned, then a lock was not able to be obtained.
      */
     public long lockEntity(BaseEntity lockTarget, BasePK lockedBy)
-    throws EntityLockException {
+            throws EntityLockException {
         return lockEntity(lockTarget.getPrimaryKey(), lockedBy);
     }
     
@@ -87,11 +84,21 @@ public class EntityLockControl
      * @return Returns a Long value indicating the expiration time of the lock. If 0 is
      * returned, then a lock was not able to be obtained.
      */
-    public long lockEntity(BaseValue lockTarget, BasePK lockedBy)
-    throws EntityLockException {
+    public long lockEntity(BaseValue<?> lockTarget, BasePK lockedBy)
+            throws EntityLockException {
         return lockEntity(lockTarget.getPrimaryKey(), lockedBy);
     }
-    
+
+    // Must be held by any other EntityInstance, must have an expiration time, and that expiration time must be before the current time.
+    private static boolean doesTargetEntityInstanceHaveExpiredLock(final long currentTime, final long currentLockedByEntityInstanceId, final long currentLockExpirationTime) {
+        return (currentLockedByEntityInstanceId != 0) && (currentLockExpirationTime != 0) && (currentLockExpirationTime < currentTime);
+    }
+
+    // Must be held by the EntityInstance requesting the lock, and it must have an expiration time.
+    private static boolean doesLockedByEntityInstanceHaveCurrentLock(final long currentLockedByEntityInstanceId, final long lockedByEntityInstanceId, final long currentLockExpirationTime) {
+        return (currentLockedByEntityInstanceId == lockedByEntityInstanceId) && (currentLockExpirationTime != 0);
+    }
+
     /** Create a lock on a given entity.
      * @param lockTarget Entity to hold the lock on
      * @param lockedBy Entity holding the lock on lockTarget
@@ -102,9 +109,9 @@ public class EntityLockControl
             throws EntityLockException {
         var coreControl = getCoreControl();
         long lockExpirationTime;
-        EntityInstance lockTargetEntityInstance = coreControl.getEntityInstanceByBasePK(lockTarget);
-        long lockTargetEntityInstanceId = lockTargetEntityInstance.getPrimaryKey().getEntityId();
-        long lockedByEntityInstanceId = coreControl.getEntityInstanceByBasePK(lockedBy).getPrimaryKey().getEntityId();
+        var lockTargetEntityInstance = coreControl.getEntityInstanceByBasePK(lockTarget);
+        var lockTargetEntityInstanceId = lockTargetEntityInstance.getPrimaryKey().getEntityId();
+        var lockedByEntityInstanceId = coreControl.getEntityInstanceByBasePK(lockedBy).getPrimaryKey().getEntityId();
         
         if(CoreDebugFlags.LogEntityLocks) {
             getLog().info(">>> lockEntity(lockTarget=" + lockTarget + ", lockedBy=" + lockedBy + ")");
@@ -112,25 +119,26 @@ public class EntityLockControl
         }
         
         if(lockTargetEntityInstanceId != 0 && lockedByEntityInstanceId != 0) {
-            long currentTime = System.currentTimeMillis();
-            long proposedExpirationTime = currentTime + getLockDuration(lockTargetEntityInstance);
+            var currentTime = System.currentTimeMillis();
+            var proposedExpirationTime = currentTime + getLockDuration(lockTargetEntityInstance);
             
-            try (Connection conn = DslContextFactory.getInstance().getNTDslContext().parsingConnection()) {
+            try(var conn = DslContextFactory.getInstance().getNTDslContext().parsingConnection()) {
                 // First, see if a lock is currently being held on the entity. If it is,
                 // then retrieve enough information so that we can tell if it should have
                 // already expired, and if so, grab control of it (that is the second step
                 // shown below).
-                long currentLockedByEntityInstanceId = 0;
-                long currentLockedTime = 0;
-                long currentLockExpirationTime = 0;
+                var currentLockedByEntityInstanceId = 0L;
+                var currentLockedTime = 0L;
+                var currentLockExpirationTime = 0L;
 
-                try (PreparedStatement ps = conn.prepareStatement(
-                        "SELECT lcks_lockedbyentityinstanceid, lcks_lockedtime, lcks_lockexpirationtime "
-                        + "FROM entitylocks "
-                        + "WHERE lcks_locktargetentityinstanceid = ?")) {
+                try(var ps = conn.prepareStatement("""
+                            SELECT lcks_lockedbyentityinstanceid, lcks_lockedtime, lcks_lockexpirationtime
+                            FROM entitylocks
+                            WHERE lcks_locktargetentityinstanceid = ?
+                            """)) {
                     ps.setLong(1, lockTargetEntityInstanceId);
 
-                    try(ResultSet rs = ps.executeQuery()) {
+                    try(var rs = ps.executeQuery()) {
                         if(rs.next()) {
                             currentLockedByEntityInstanceId = rs.getLong(1);
                             currentLockedTime = rs.getLong(2);
@@ -143,14 +151,19 @@ public class EntityLockControl
                     throw new EntityLockException(se);
                 }
 
-                // Secondly, we try to reuse an existing lock, as long as it has expired.
-                // There should not be any exceptions thrown by this code, since we're
-                // only updating a record, and it will either exist or it will not.
-                if((currentLockedByEntityInstanceId != 0) && (currentLockExpirationTime != 0) && (currentLockExpirationTime < currentTime)) {
-                    try (PreparedStatement ps = conn.prepareStatement(
-                            "UPDATE entitylocks SET lcks_lockedbyentityinstanceid = ?, lcks_lockedtime = ?, lcks_lockexpirationtime = ? "
-                            + "WHERE lcks_locktargetentityinstanceid = ? AND lcks_lockedbyentityinstanceid = ? "
-                            + "AND lcks_lockedtime = ? AND lcks_lockexpirationtime = ?")) {
+                // Secondly, we try to reuse an existing lock, based on one of two possible criteria passing.
+                // First, try to claim an existing, expired lock, held by any Entity Instance. Secondly, we
+                // will try to reclaim a lock held by ourselves - expiration status does not matter.
+                // There should not be any exceptions thrown by this code, since we're only updating a record,
+                // and it will either exist or it will not.
+                if(doesTargetEntityInstanceHaveExpiredLock(currentTime, currentLockedByEntityInstanceId, currentLockExpirationTime)
+                || doesLockedByEntityInstanceHaveCurrentLock(currentLockedByEntityInstanceId, lockedByEntityInstanceId, currentLockExpirationTime)) {
+                    try(var ps = conn.prepareStatement("""
+                                UPDATE entitylocks
+                                SET lcks_lockedbyentityinstanceid = ?, lcks_lockedtime = ?, lcks_lockexpirationtime = ?
+                                WHERE lcks_locktargetentityinstanceid = ? AND lcks_lockedbyentityinstanceid = ?
+                                AND lcks_lockedtime = ? AND lcks_lockexpirationtime = ?
+                                """)) {
                         ps.setLong(1, lockedByEntityInstanceId);
                         ps.setLong(2, currentTime);
                         ps.setLong(3, proposedExpirationTime);
@@ -159,7 +172,7 @@ public class EntityLockControl
                         ps.setLong(6, currentLockedTime);
                         ps.setLong(7, currentLockExpirationTime);
 
-                        int rowCount = ps.executeUpdate();
+                        var rowCount = ps.executeUpdate();
                         if(rowCount == 0) {
                             lockExpirationTime = 0;
                         } else {
@@ -172,15 +185,16 @@ public class EntityLockControl
                     lockExpirationTime = 0;
                 }
 
-                // Finally, if there was no lock aleady being held on it, and the lockExpirationTime
+                // Finally, if there was no lock already being held on it, and the lockExpirationTime
                 // is 0, then we need to attempt to insert a new lock. This code may generate
                 // an exception if someone else tries this between now and the time the SELECT
                 // statement was tried.
                 if(currentLockedByEntityInstanceId == 0) {
-                    try (PreparedStatement ps = conn.prepareStatement(
-                            "INSERT INTO entitylocks (lcks_locktargetentityinstanceid, lcks_lockedbyentityinstanceid,"
-                            + "lcks_lockedtime, lcks_lockexpirationtime) "
-                            + "VALUES (?, ?, ?, ?)")) {
+                    try(var ps = conn.prepareStatement("""
+                                INSERT INTO entitylocks
+                                (lcks_locktargetentityinstanceid, lcks_lockedbyentityinstanceid, lcks_lockedtime, lcks_lockexpirationtime)
+                                VALUES (?, ?, ?, ?)
+                                """)) {
                         ps.setLong(1, lockTargetEntityInstanceId);
                         ps.setLong(2, lockedByEntityInstanceId);
                         ps.setLong(3, currentTime);
@@ -205,7 +219,7 @@ public class EntityLockControl
         
         return lockExpirationTime;
     }
-    
+
     /** Converts an existing lock that is held on an entity into one that is no longer
      * time limited.
      * @return Returns a Boolean value indicating whether the lock was successful
@@ -219,7 +233,7 @@ public class EntityLockControl
      * time limited.
      * @return Returns a Boolean value indicating whether the lock was successful
      */
-    public boolean lockEntityForUpdate(final BaseValue lockTarget, final BasePK lockedBy)
+    public boolean lockEntityForUpdate(final BaseValue<?> lockTarget, final BasePK lockedBy)
             throws EntityLockException {
         return lockEntityForUpdate(lockTarget.getPrimaryKey(), lockedBy);
     }
@@ -232,8 +246,8 @@ public class EntityLockControl
             throws EntityLockException {
         var coreControl = getCoreControl();
         boolean isLocked;
-        long lockTargetEntityInstanceId = coreControl.getEntityInstanceByBasePK(lockTarget).getPrimaryKey().getEntityId();
-        long lockedByEntityInstanceId = coreControl.getEntityInstanceByBasePK(lockedBy).getPrimaryKey().getEntityId();
+        var lockTargetEntityInstanceId = coreControl.getEntityInstanceByBasePK(lockTarget).getPrimaryKey().getEntityId();
+        var lockedByEntityInstanceId = coreControl.getEntityInstanceByBasePK(lockedBy).getPrimaryKey().getEntityId();
         
         if(CoreDebugFlags.LogEntityLocks) {
             getLog().info(">>> lockEntity(lockTarget=" + lockTarget + ", lockedBy=" + lockedBy + ")");
@@ -241,21 +255,22 @@ public class EntityLockControl
         }
         
         if(lockTargetEntityInstanceId != 0 && lockedByEntityInstanceId != 0) {
-            try (Connection conn = DslContextFactory.getInstance().getNTDslContext().parsingConnection()){
-                // First, we check to make sure that we do infact have a lock on the
-                // the entity. Also, enough information is retried so that we can use it
+            try(var conn = DslContextFactory.getInstance().getNTDslContext().parsingConnection()){
+                // First, we check to make sure that we do in fact have a lock on the
+                // entity. Also, enough information is retried so that we can use it
                 // in the next step to properly identify the lock.
-                long currentLockedTime = 0;
-                long currentLockExpirationTime = 0;
+                var currentLockedTime = 0L;
+                var currentLockExpirationTime = 0L;
 
-                try (PreparedStatement ps = conn.prepareStatement(
-                        "SELECT lcks_lockedtime, lcks_lockexpirationtime "
-                        + "FROM entitylocks "
-                        + "WHERE lcks_locktargetentityinstanceid = ? AND lcks_lockedbyentityinstanceid = ?")) {
+                try(var ps = conn.prepareStatement("""
+                            SELECT lcks_lockedtime, lcks_lockexpirationtime
+                            FROM entitylocks
+                            WHERE lcks_locktargetentityinstanceid = ? AND lcks_lockedbyentityinstanceid = ?
+                            """)) {
                     ps.setLong(1, lockTargetEntityInstanceId);
                     ps.setLong(2, lockedByEntityInstanceId);
 
-                    try (ResultSet rs = ps.executeQuery()) {
+                    try(var rs = ps.executeQuery()) {
                         if(rs.next()) {
                             currentLockedTime = rs.getLong(1);
                             currentLockExpirationTime = rs.getLong(2);
@@ -266,15 +281,16 @@ public class EntityLockControl
                 }
 
                 // Secondly, we try to set the lock expiration time to 0 to indicate that
-                // we're going to hold onto it indefinately. If the lock's expiration time is
+                // we're going to hold onto it indefinitely. If the lock's expiration time is
                 // before the current time, we're going to allow the user to reclaim their expired
                 // locked, as long as it was locked by them (indicated by the currentLockExpirationTime
                 // being != 0).
                 if(currentLockExpirationTime != 0) {
-                    try (PreparedStatement ps = conn.prepareStatement(
-                            "UPDATE entitylocks SET lcks_lockexpirationtime = 0 "
-                            + "WHERE lcks_locktargetentityinstanceid = ? AND lcks_lockedbyentityinstanceid = ? "
-                            + "AND lcks_lockedtime = ? AND lcks_lockexpirationtime = ?")) {
+                    try(var ps = conn.prepareStatement("""
+                                UPDATE entitylocks SET lcks_lockexpirationtime = 0
+                                WHERE lcks_locktargetentityinstanceid = ? AND lcks_lockedbyentityinstanceid = ?
+                                AND lcks_lockedtime = ? AND lcks_lockexpirationtime = ?
+                                """)) {
                         ps.setLong(1, lockTargetEntityInstanceId);
                         ps.setLong(2, lockedByEntityInstanceId);
                         ps.setLong(3, currentLockedTime);
@@ -317,17 +333,15 @@ public class EntityLockControl
      * @param lockedBy Optional parameter if you want to specifically release a lock held by lockedBy
      * @return Returns a Boolean value indicating whether lockTarget had a lock on it
      */
-    public boolean unlockEntity(final BaseValue lockTarget, final BasePK lockedBy)
+    public boolean unlockEntity(final BaseValue<?> lockTarget, final BasePK lockedBy)
             throws EntityLockException {
         return unlockEntity(lockTarget.getPrimaryKey(), lockedBy);
     }
     
     private boolean getUnlockEntityResult(PreparedStatement ps)
             throws SQLException {
-        boolean wasUnlocked;
-        
-        int rowCount = ps.executeUpdate();
-        wasUnlocked = rowCount > 0;
+        var rowCount = ps.executeUpdate();
+        var wasUnlocked = rowCount > 0;
         
         return wasUnlocked;
     }
@@ -341,7 +355,7 @@ public class EntityLockControl
             throws EntityLockException {
         var coreControl = getCoreControl();
         boolean wasUnlocked;
-        long lockTargetEntityInstanceId = coreControl.getEntityInstanceByBasePK(lockTarget).getPrimaryKey().getEntityId();
+        var lockTargetEntityInstanceId = coreControl.getEntityInstanceByBasePK(lockTarget).getPrimaryKey().getEntityId();
         
         if(CoreDebugFlags.LogEntityLocks) {
             getLog().info(">>> lockEntity(lockTarget=" + lockTarget + ", lockedBy=" + lockedBy + ")");
@@ -349,10 +363,12 @@ public class EntityLockControl
         }
         
         if(lockTargetEntityInstanceId != 0) {
-            try(Connection conn = DslContextFactory.getInstance().getNTDslContext().parsingConnection()) {
+            try(var conn = DslContextFactory.getInstance().getNTDslContext().parsingConnection()) {
                 if(lockedBy == null) {
-                    try (PreparedStatement ps = conn.prepareStatement(
-                            "DELETE FROM entitylocks WHERE lcks_locktargetentityinstanceid = ?")) {
+                    try(var ps = conn.prepareStatement("""
+                                DELETE FROM entitylocks
+                                WHERE lcks_locktargetentityinstanceid = ?
+                                """)) {
                         ps.setLong(1, lockTargetEntityInstanceId);
 
                         wasUnlocked = getUnlockEntityResult(ps);
@@ -360,16 +376,17 @@ public class EntityLockControl
                         throw new EntityLockException(se);
                     }
                 } else {
-                    long lockedByEntityInstanceId = coreControl.getEntityInstanceByBasePK(lockedBy).getPrimaryKey().getEntityId();
+                    var lockedByEntityInstanceId = coreControl.getEntityInstanceByBasePK(lockedBy).getPrimaryKey().getEntityId();
                     
                     if(CoreDebugFlags.LogEntityLocks) {
                         getLog().info("--- lockedByEntityInstanceId=" + lockedByEntityInstanceId);
                     }
                     
                     if(lockedByEntityInstanceId != 0) {
-                        try (PreparedStatement ps = conn.prepareStatement(
-                                "DELETE FROM entitylocks WHERE lcks_locktargetentityinstanceid = ? "
-                                + "AND lcks_lockedbyentityinstanceid = ?")) {
+                        try(var ps = conn.prepareStatement("""
+                                DELETE FROM entitylocks
+                                WHERE lcks_locktargetentityinstanceid = ? AND lcks_lockedbyentityinstanceid = ?
+                                """)) {
                             ps.setLong(1, lockTargetEntityInstanceId);
                             ps.setLong(2, lockedByEntityInstanceId);
 
@@ -395,8 +412,8 @@ public class EntityLockControl
         return wasUnlocked;
     }
     
-    /** Tests whether or not a valid lock is being held on a given entity.
-     * @param lockTarget Entity your are testing to see if it is locked or not
+    /** Tests whether a valid lock is being held on a given entity.
+     * @param lockTarget Entity you are testing to see if it is locked or not
      * @param lockedBy Optional parameter if you want to see if the lock on lockTarget is being held by
      * a specific entity
      * @return Returns a Boolean value indicating whether lockTarget has a lock on it
@@ -406,13 +423,13 @@ public class EntityLockControl
         return isEntityLocked(lockTarget.getPrimaryKey(), lockedBy);
     }
     
-    /** Tests whether or not a valid lock is being held on a given entity.
-     * @param lockTarget Entity your are testing to see if it is locked or not
+    /** Tests whether  a valid lock is being held on a given entity.
+     * @param lockTarget Entity you are testing to see if it is locked or not
      * @param lockedBy Optional parameter if you want to see if the lock on lockTarget is being held by
      * a specific entity
      * @return Returns a Boolean value indicating whether lockTarget has a lock on it
      */
-    public boolean isEntityLocked(final BaseValue lockTarget, final BasePK lockedBy)
+    public boolean isEntityLocked(final BaseValue<?> lockTarget, final BasePK lockedBy)
             throws EntityLockException {
         return isEntityLocked(lockTarget.getPrimaryKey(), lockedBy);
     }
@@ -420,11 +437,11 @@ public class EntityLockControl
     private boolean getIsEntityLockedResult(PreparedStatement ps) {
         boolean isLocked;
 
-        try (ResultSet rs = ps.executeQuery()) {
+        try(var rs = ps.executeQuery()) {
             if(rs.next()) {
                 long lockExpirationTime = rs.getLong(1);
 
-                isLocked = lockExpirationTime == 0? true: System.currentTimeMillis() < lockExpirationTime;
+                isLocked = lockExpirationTime == 0 || System.currentTimeMillis() < lockExpirationTime;
             } else {
                 isLocked = false;
             }
@@ -435,8 +452,8 @@ public class EntityLockControl
         return isLocked;
     }
     
-    /** Tests whether or not a valid lock is being held on a given entity.
-     * @param lockTarget Entity your are testing to see if it is locked or not
+    /** Tests whether a valid lock is being held on a given entity.
+     * @param lockTarget Entity you are testing to see if it is locked or not
      * @param lockedBy Optional parameter if you want to see if the lock on lockTarget is being held by
      * a specific entity
      * @return Returns a Boolean value indicating whether lockTarget has a lock on it
@@ -445,7 +462,7 @@ public class EntityLockControl
             throws EntityLockException {
         var coreControl = getCoreControl();
         boolean isLocked;
-        long lockTargetEntityInstanceId = coreControl.getEntityInstanceByBasePK(lockTarget).getPrimaryKey().getEntityId();
+        var lockTargetEntityInstanceId = coreControl.getEntityInstanceByBasePK(lockTarget).getPrimaryKey().getEntityId();
         
         if(CoreDebugFlags.LogEntityLocks) {
             getLog().info(">>> isEntityLocked(lockTarget=" + lockTarget + ", lockedBy=" + lockedBy + ")");
@@ -453,12 +470,13 @@ public class EntityLockControl
         }
         
         if(lockTargetEntityInstanceId != 0) {
-            try (Connection conn = DslContextFactory.getInstance().getNTDslContext().parsingConnection()) {
+            try(var conn = DslContextFactory.getInstance().getNTDslContext().parsingConnection()) {
                 if(lockedBy == null) {
-                    try (PreparedStatement ps = conn.prepareStatement(
-                            "SELECT lcks_lockexpirationtime "
-                            + "FROM entitylocks "
-                            + "WHERE lcks_locktargetentityinstanceid = ?")) {
+                    try(var ps = conn.prepareStatement("""
+                                SELECT lcks_lockexpirationtime
+                                FROM entitylocks
+                                WHERE lcks_locktargetentityinstanceid = ?
+                                """)) {
                         ps.setLong(1, lockTargetEntityInstanceId);
 
                         isLocked = getIsEntityLockedResult(ps);
@@ -466,16 +484,17 @@ public class EntityLockControl
                         throw new EntityLockException(se);
                     }
                 } else {
-                    long lockedByEntityInstanceId = coreControl.getEntityInstanceByBasePK(lockedBy).getPrimaryKey().getEntityId();
+                    var lockedByEntityInstanceId = coreControl.getEntityInstanceByBasePK(lockedBy).getPrimaryKey().getEntityId();
                     if(CoreDebugFlags.LogEntityLocks) {
                         getLog().info("--- lockedByEntityInstanceId=" + lockedByEntityInstanceId);
                     }
                     
                     if(lockedByEntityInstanceId != 0) {
-                        try (PreparedStatement ps = conn.prepareStatement(
-                                "SELECT lcks_lockexpirationtime "
-                                + "FROM entitylocks "
-                                + "WHERE lcks_locktargetentityinstanceid = ? AND lcks_lockedbyentityinstanceid = ?")) {
+                        try(var ps = conn.prepareStatement("""
+                                    SELECT lcks_lockexpirationtime
+                                    FROM entitylocks
+                                    WHERE lcks_locktargetentityinstanceid = ? AND lcks_lockedbyentityinstanceid = ?
+                                    """)) {
                             ps.setLong(1, lockTargetEntityInstanceId);
                             ps.setLong(2, lockedByEntityInstanceId);
 
@@ -503,11 +522,10 @@ public class EntityLockControl
     }
     
     public void removeEntityLocksByLockExpirationTime(final Long lockExpirationTime) {
-        try {
-            PreparedStatement ps = session.getConnection().prepareStatement(
-                    "DELETE FROM entitylocks "
-                    + "WHERE lcks_lockexpirationtime < ?");
-            
+        try(var ps = session.getConnection().prepareStatement("""
+                    DELETE FROM entitylocks
+                    WHERE lcks_lockexpirationtime < ?
+                    """)) {
             ps.setLong(1, lockExpirationTime);
             ps.execute();
         } catch (SQLException se) {

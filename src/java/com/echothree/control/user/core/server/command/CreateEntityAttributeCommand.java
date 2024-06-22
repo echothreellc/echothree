@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ package com.echothree.control.user.core.server.command;
 import com.echothree.control.user.core.common.edit.EntityAttributeEdit;
 import com.echothree.control.user.core.common.form.CreateEntityAttributeForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.CreateEntityAttributeResult;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityTypeLogic;
@@ -30,29 +29,22 @@ import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceTypeLogic;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
-import com.echothree.model.data.core.server.entity.ComponentVendorDetail;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
-import com.echothree.model.data.core.server.entity.EntityAttributeDetail;
 import com.echothree.model.data.core.server.entity.EntityAttributeType;
-import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.core.server.entity.EntityTypeDetail;
 import com.echothree.model.data.sequence.server.entity.Sequence;
-import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.form.ValidationResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.form.ValidationResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.Validator;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class CreateEntityAttributeCommand
@@ -70,24 +62,28 @@ public class CreateEntityAttributeCommand
     private final static List<FieldDefinition> OTHER_FORM_FIELD_DEFINITIONS;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.EntityAttribute.name(), SecurityRoles.Create.name())
-                        )))
-                )));
+                ))
+        ));
         
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
+        FORM_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null),
+                new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, false, null, null),
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityAttributeTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("TrackRevisions", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
-                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
-                ));
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
+        );
         
-        BLOB_FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        BLOB_FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CheckContentWebAddress", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("ValidationPattern", FieldType.NULL, false, null, null),
                 new FieldDefinition("UpperRangeIntegerValue", FieldType.SIGNED_INTEGER, false, null, null),
@@ -101,9 +97,9 @@ public class CreateEntityAttributeCommand
                 new FieldDefinition("UnitOfMeasureKindName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityListItemSequenceName", FieldType.ENTITY_NAME, false, null, null)
-                ));
+        );
         
-        STRING_FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        STRING_FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CheckContentWebAddress", FieldType.NULL, false, null, null),
                 new FieldDefinition("ValidationPattern", FieldType.REGULAR_EXPRESSION, false, null, null),
                 new FieldDefinition("UpperRangeIntegerValue", FieldType.NULL, false, null, null),
@@ -117,9 +113,9 @@ public class CreateEntityAttributeCommand
                 new FieldDefinition("UnitOfMeasureKindName", FieldType.NULL, false, null, null),
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.NULL, false, null, null),
                 new FieldDefinition("EntityListItemSequenceName", FieldType.NULL, false, null, null)
-                ));
+        );
         
-        INTEGER_FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        INTEGER_FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CheckContentWebAddress", FieldType.NULL, false, null, null),
                 new FieldDefinition("ValidationPattern", FieldType.NULL, false, null, null),
                 new FieldDefinition("UpperRangeIntegerValue", FieldType.SIGNED_INTEGER, false, null, null),
@@ -133,9 +129,9 @@ public class CreateEntityAttributeCommand
                 new FieldDefinition("UnitOfMeasureKindName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityListItemSequenceName", FieldType.NULL, false, null, null)
-                ));
+        );
         
-        LONG_FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        LONG_FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CheckContentWebAddress", FieldType.NULL, false, null, null),
                 new FieldDefinition("ValidationPattern", FieldType.NULL, false, null, null),
                 new FieldDefinition("UpperRangeIntegerValue", FieldType.NULL, false, null, null),
@@ -149,9 +145,9 @@ public class CreateEntityAttributeCommand
                 new FieldDefinition("UnitOfMeasureKindName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityListItemSequenceName", FieldType.NULL, false, null, null)
-                ));
+        );
         
-        LISTITEM_FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        LISTITEM_FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CheckContentWebAddress", FieldType.NULL, false, null, null),
                 new FieldDefinition("ValidationPattern", FieldType.NULL, false, null, null),
                 new FieldDefinition("UpperRangeIntegerValue", FieldType.NULL, false, null, null),
@@ -165,9 +161,9 @@ public class CreateEntityAttributeCommand
                 new FieldDefinition("UnitOfMeasureKindName", FieldType.NULL, false, null, null),
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.NULL, false, null, null),
                 new FieldDefinition("EntityListItemSequenceName", FieldType.ENTITY_NAME, false, null, null)
-                ));
+        );
         
-        MULTIPLELISTITEM_FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        MULTIPLELISTITEM_FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CheckContentWebAddress", FieldType.NULL, false, null, null),
                 new FieldDefinition("ValidationPattern", FieldType.NULL, false, null, null),
                 new FieldDefinition("UpperRangeIntegerValue", FieldType.NULL, false, null, null),
@@ -181,9 +177,9 @@ public class CreateEntityAttributeCommand
                 new FieldDefinition("UnitOfMeasureKindName", FieldType.NULL, false, null, null),
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.NULL, false, null, null),
                 new FieldDefinition("EntityListItemSequenceName", FieldType.ENTITY_NAME, false, null, null)
-                ));
+        );
         
-        OTHER_FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        OTHER_FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CheckContentWebAddress", FieldType.NULL, false, null, null),
                 new FieldDefinition("ValidationPattern", FieldType.NULL, false, null, null),
                 new FieldDefinition("UpperRangeIntegerValue", FieldType.NULL, false, null, null),
@@ -197,7 +193,7 @@ public class CreateEntityAttributeCommand
                 new FieldDefinition("UnitOfMeasureKindName", FieldType.NULL, false, null, null),
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.NULL, false, null, null),
                 new FieldDefinition("EntityListItemSequenceName", FieldType.NULL, false, null, null)
-                ));
+        );
     }
     
     /** Creates a new instance of CreateEntityAttributeCommand */
@@ -207,42 +203,24 @@ public class CreateEntityAttributeCommand
     
     public static ValidationResult AdditionalEntityAttributeValidation(EntityAttributeEdit edit, Validator validator,
             EntityAttributeType entityAttributeType) {
-        ValidationResult validationResult;
-        
-        switch (EntityAttributeTypes.valueOf(entityAttributeType.getEntityAttributeTypeName())) {
-            case BLOB:
-                validationResult = validator.validate(edit, BLOB_FORM_FIELD_DEFINITIONS);
-                break;
-            case STRING:
-                validationResult = validator.validate(edit, STRING_FORM_FIELD_DEFINITIONS);
-                break;
-            case INTEGER:
-                validationResult = validator.validate(edit, INTEGER_FORM_FIELD_DEFINITIONS);
-                break;
-            case LONG:
-                validationResult = validator.validate(edit, LONG_FORM_FIELD_DEFINITIONS);
-                break;
-            case LISTITEM:
-                validationResult = validator.validate(edit, LISTITEM_FORM_FIELD_DEFINITIONS);
-                break;
-            case MULTIPLELISTITEM:
-                validationResult = validator.validate(edit, MULTIPLELISTITEM_FORM_FIELD_DEFINITIONS);
-                break;
-            default:
-                validationResult = validator.validate(edit, OTHER_FORM_FIELD_DEFINITIONS);
-                break;
-        }
-        
-        return validationResult;
+        return switch(EntityAttributeTypes.valueOf(entityAttributeType.getEntityAttributeTypeName())) {
+            case BLOB -> validator.validate(edit, BLOB_FORM_FIELD_DEFINITIONS);
+            case STRING -> validator.validate(edit, STRING_FORM_FIELD_DEFINITIONS);
+            case INTEGER -> validator.validate(edit, INTEGER_FORM_FIELD_DEFINITIONS);
+            case LONG -> validator.validate(edit, LONG_FORM_FIELD_DEFINITIONS);
+            case LISTITEM -> validator.validate(edit, LISTITEM_FORM_FIELD_DEFINITIONS);
+            case MULTIPLELISTITEM -> validator.validate(edit, MULTIPLELISTITEM_FORM_FIELD_DEFINITIONS);
+            default -> validator.validate(edit, OTHER_FORM_FIELD_DEFINITIONS);
+        };
     }
     
     @Override
     protected ValidationResult validate() {
-        Validator validator = new Validator(this);
-        ValidationResult validationResult = validator.validate(form, FORM_FIELD_DEFINITIONS);
+        var validator = new Validator(this);
+        var validationResult = validator.validate(form, FORM_FIELD_DEFINITIONS);
         
         if(!validationResult.getHasErrors()) {
-            EntityAttributeType entityAttributeType = EntityAttributeLogic.getInstance().getEntityAttributeTypeByName(this, form.getEntityAttributeTypeName());
+            var entityAttributeType = EntityAttributeLogic.getInstance().getEntityAttributeTypeByName(this, form.getEntityAttributeTypeName());
             
             if(!hasExecutionErrors()) {
                 validationResult = AdditionalEntityAttributeValidation(form, validator, entityAttributeType);
@@ -254,29 +232,27 @@ public class CreateEntityAttributeCommand
     
     @Override
     protected BaseResult execute() {
-        CreateEntityAttributeResult result = CoreResultFactory.getCreateEntityAttributeResult();
+        var result = CoreResultFactory.getCreateEntityAttributeResult();
         EntityAttribute entityAttribute = null;
         
         if(!hasExecutionErrors()) {
-            String unitOfMeasureKindName = form.getUnitOfMeasureKindName();
-            String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
+            var unitOfMeasureKindName = form.getUnitOfMeasureKindName();
+            var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
             var parameterCount = (unitOfMeasureKindName == null ? 0 : 1) + (unitOfMeasureTypeName == null ? 0 : 1);
 
             if(parameterCount == 0 || parameterCount == 2) {
-                String componentVendorName = form.getComponentVendorName();
-                String entityTypeName = form.getEntityTypeName();
-                String entityAttributeTypeName = form.getEntityAttributeTypeName();
-                EntityType entityType = EntityTypeLogic.getInstance().getEntityTypeByName(this, componentVendorName, entityTypeName);
-                EntityAttributeType entityAttributeType = EntityAttributeLogic.getInstance().getEntityAttributeTypeByName(this, entityAttributeTypeName);
+                var entityType = EntityTypeLogic.getInstance().getEntityTypeByUniversalSpec(this, form);
+                var entityAttributeTypeName = form.getEntityAttributeTypeName();
+                var entityAttributeType = EntityAttributeLogic.getInstance().getEntityAttributeTypeByName(this, entityAttributeTypeName);
 
                 if(!hasExecutionErrors()) {
-                    String entityListItemSequenceName = entityAttributeTypeName.equals(EntityAttributeTypes.LISTITEM.name())
+                    var entityListItemSequenceName = entityAttributeTypeName.equals(EntityAttributeTypes.LISTITEM.name())
                             || entityAttributeTypeName.equals(EntityAttributeTypes.MULTIPLELISTITEM.name()) ?
                             form.getEntityListItemSequenceName() : null;
                     Sequence entityListItemSequence = null;
 
                     if(entityListItemSequenceName != null) {
-                        SequenceType sequenceType = SequenceTypeLogic.getInstance().getSequenceTypeByName(this, SequenceTypes.ENTITY_LIST_ITEM.name());
+                        var sequenceType = SequenceTypeLogic.getInstance().getSequenceTypeByName(this, SequenceTypes.ENTITY_LIST_ITEM.name());
 
                         if(!hasExecutionErrors()) {
                             var sequenceControl = Session.getModelController(SequenceControl.class);
@@ -298,27 +274,27 @@ public class CreateEntityAttributeCommand
 
                         if(!hasExecutionErrors()) {
                             var partyPK = getPartyPK();
-                            String entityAttributeName = form.getEntityAttributeName();
-                            Boolean trackRevisions = Boolean.valueOf(form.getTrackRevisions());
-                            String strCheckContentWebAddress = form.getCheckContentWebAddress();
-                            Boolean checkContentWebAddress = strCheckContentWebAddress == null ? null : Boolean.valueOf(strCheckContentWebAddress);
-                            String validationPattern = form.getValidationPattern();
-                            String strUpperRangeIntegerValue = form.getUpperRangeIntegerValue();
-                            Integer upperRangeIntegerValue = strUpperRangeIntegerValue == null ? null : Integer.valueOf(strUpperRangeIntegerValue);
-                            String strUpperLimitIntegerValue = form.getUpperLimitIntegerValue();
-                            Integer upperLimitIntegerValue = strUpperLimitIntegerValue == null ? null : Integer.valueOf(strUpperLimitIntegerValue);
-                            String strLowerLimitIntegerValue = form.getLowerLimitIntegerValue();
-                            Integer lowerLimitIntegerValue = strLowerLimitIntegerValue == null ? null : Integer.valueOf(strLowerLimitIntegerValue);
-                            String strLowerRangeIntegerValue = form.getLowerRangeIntegerValue();
-                            Integer lowerRangeIntegerValue = strLowerRangeIntegerValue == null ? null : Integer.valueOf(strLowerRangeIntegerValue);
-                            String strUpperRangeLongValue = form.getUpperRangeLongValue();
-                            Long upperRangeLongValue = strUpperRangeLongValue == null ? null : Long.valueOf(strUpperRangeLongValue);
-                            String strUpperLimitLongValue = form.getUpperLimitLongValue();
-                            Long upperLimitLongValue = strUpperLimitLongValue == null ? null : Long.valueOf(strUpperLimitLongValue);
-                            String strLowerLimitLongValue = form.getLowerLimitLongValue();
-                            Long lowerLimitLongValue = strLowerLimitLongValue == null ? null : Long.valueOf(strLowerLimitLongValue);
-                            String strLowerRangeLongValue = form.getLowerRangeLongValue();
-                            Long lowerRangeLongValue = strLowerRangeLongValue == null ? null : Long.valueOf(strLowerRangeLongValue);
+                            var entityAttributeName = form.getEntityAttributeName();
+                            var trackRevisions = Boolean.valueOf(form.getTrackRevisions());
+                            var strCheckContentWebAddress = form.getCheckContentWebAddress();
+                            var checkContentWebAddress = strCheckContentWebAddress == null ? null : Boolean.valueOf(strCheckContentWebAddress);
+                            var validationPattern = form.getValidationPattern();
+                            var strUpperRangeIntegerValue = form.getUpperRangeIntegerValue();
+                            var upperRangeIntegerValue = strUpperRangeIntegerValue == null ? null : Integer.valueOf(strUpperRangeIntegerValue);
+                            var strUpperLimitIntegerValue = form.getUpperLimitIntegerValue();
+                            var upperLimitIntegerValue = strUpperLimitIntegerValue == null ? null : Integer.valueOf(strUpperLimitIntegerValue);
+                            var strLowerLimitIntegerValue = form.getLowerLimitIntegerValue();
+                            var lowerLimitIntegerValue = strLowerLimitIntegerValue == null ? null : Integer.valueOf(strLowerLimitIntegerValue);
+                            var strLowerRangeIntegerValue = form.getLowerRangeIntegerValue();
+                            var lowerRangeIntegerValue = strLowerRangeIntegerValue == null ? null : Integer.valueOf(strLowerRangeIntegerValue);
+                            var strUpperRangeLongValue = form.getUpperRangeLongValue();
+                            var upperRangeLongValue = strUpperRangeLongValue == null ? null : Long.valueOf(strUpperRangeLongValue);
+                            var strUpperLimitLongValue = form.getUpperLimitLongValue();
+                            var upperLimitLongValue = strUpperLimitLongValue == null ? null : Long.valueOf(strUpperLimitLongValue);
+                            var strLowerLimitLongValue = form.getLowerLimitLongValue();
+                            var lowerLimitLongValue = strLowerLimitLongValue == null ? null : Long.valueOf(strLowerLimitLongValue);
+                            var strLowerRangeLongValue = form.getLowerRangeLongValue();
+                            var lowerRangeLongValue = strLowerRangeLongValue == null ? null : Long.valueOf(strLowerRangeLongValue);
                             var sortOrder = Integer.valueOf(form.getSortOrder());
                             var description = form.getDescription();
 
@@ -337,14 +313,10 @@ public class CreateEntityAttributeCommand
         }
         
         if(entityAttribute != null) {
-            EntityAttributeDetail entityAttributeDetail = entityAttribute.getLastDetail();
-            EntityTypeDetail entityTypeDetail = entityAttributeDetail.getEntityType().getLastDetail();
-            ComponentVendorDetail componentVendorDetail = entityTypeDetail.getComponentVendor().getLastDetail();
-            
-            result.setComponentVendorName(componentVendorDetail.getComponentVendorName());
-            result.setEntityTypeName(entityTypeDetail.getEntityTypeName());
-            result.setEntityAttributeName(entityAttributeDetail.getEntityAttributeName());
-            result.setEntityRef(entityAttribute.getPrimaryKey().getEntityRef());
+            var basePK = entityAttribute.getPrimaryKey();
+
+            result.setEntityAttributeName(entityAttribute.getLastDetail().getEntityAttributeName());
+            result.setEntityRef(basePK.getEntityRef());
         }
         
         return result;

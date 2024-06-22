@@ -41,9 +41,13 @@
     </module>
 
     <module>
-        <ejb>lucene-core.jar</ejb>
+        <ejb>lucene-backward-codecs.jar</ejb>
     </module>
     
+    <module>
+        <ejb>lucene-core.jar</ejb>
+    </module>
+
     <module>
         <ejb>lucene-analysis-common.jar</ejb>
     </module>
@@ -81,7 +85,7 @@
     </module>
     
     <module>
-        <ejb>slf4j-log4j12.jar</ejb>
+        <ejb>slf4j-reload4j.jar</ejb>
     </module>
     
     <module>
@@ -126,6 +130,14 @@
 
     <module>
         <ejb>r2dbc-spi.jar</ejb>
+    </module>
+
+    <module>
+        <ejb>avro.jar</ejb>
+    </module>
+
+    <module>
+        <ejb>java-uuid-generator.jar</ejb>
     </module>
 
     <module>

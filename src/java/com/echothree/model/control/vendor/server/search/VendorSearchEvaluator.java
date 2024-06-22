@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,11 +16,14 @@
 
 package com.echothree.model.control.vendor.server.search;
 
-import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.IndexFields;
+import com.echothree.model.control.index.common.Indexes;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.search.server.search.EntityInstancePKHolder;
 import com.echothree.model.control.party.server.search.PartySearchEvaluator;
+import com.echothree.model.control.search.server.search.EntityInstancePKHolder;
+import com.echothree.model.control.vendor.server.analysis.VendorAnalyzer;
 import com.echothree.model.control.vendor.server.control.VendorControl;
+import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.search.server.entity.SearchDefaultOperator;
 import com.echothree.model.data.search.server.entity.SearchSortDirection;
 import com.echothree.model.data.search.server.entity.SearchSortOrder;
@@ -29,6 +32,7 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.vendor.server.entity.Vendor;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import org.apache.lucene.analysis.Analyzer;
 
 public class VendorSearchEvaluator
         extends PartySearchEvaluator {
@@ -36,9 +40,10 @@ public class VendorSearchEvaluator
     private String vendorName;
     
     /** Creates a new instance of VendorSearchEvaluator */
-    public VendorSearchEvaluator(UserVisit userVisit, SearchType searchType, SearchDefaultOperator searchDefaultOperator, SearchSortOrder searchSortOrder,
-            SearchSortDirection searchSortDirection) {
-        super(userVisit, searchType, searchDefaultOperator, searchSortOrder, searchSortDirection, PartyTypes.VENDOR.name(), IndexConstants.Index_VENDOR);
+    public VendorSearchEvaluator(UserVisit userVisit, SearchType searchType, SearchDefaultOperator searchDefaultOperator,
+            SearchSortOrder searchSortOrder, SearchSortDirection searchSortDirection) {
+        super(userVisit, searchType, searchDefaultOperator, searchSortOrder, searchSortDirection, PartyTypes.VENDOR.name(),
+                IndexFields.vendorName.name(), Indexes.VENDOR.name());
     }
     
     public String getVendorName() {
@@ -48,7 +53,12 @@ public class VendorSearchEvaluator
     public void setVendorName(String vendorName) {
         this.vendorName = vendorName;
     }
-    
+
+    @Override
+    public Analyzer getAnalyzer(final ExecutionErrorAccumulator eea, final Language language) {
+        return new VendorAnalyzer(eea, language, entityType, partyType, entityNameIndexField);
+    }
+
     @Override
     protected EntityInstancePKHolder executeSearch(final ExecutionErrorAccumulator eea) {
         EntityInstancePKHolder resultSet = null;

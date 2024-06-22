@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -59,7 +59,7 @@ public class GetWorkEffortTypeCommand
         if(workEffortType != null) {
             result.setWorkEffortType(workEffortControl.getWorkEffortTypeTransfer(getUserVisit(), workEffortType));
             
-            sendEventUsingNames(workEffortType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(workEffortType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownWorkEffortTypeName.name(), workEffortTypeName);
         }

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -44,6 +44,7 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -87,7 +88,7 @@ public class LotTimeControl
         lotTimeType.setLastDetail(lotTimeTypeDetail);
         lotTimeType.store();
 
-        sendEventUsingNames(lotTimeType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(lotTimeType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return lotTimeType;
     }
@@ -284,7 +285,7 @@ public class LotTimeControl
             lotTimeType.setActiveDetail(lotTimeTypeDetail);
             lotTimeType.setLastDetail(lotTimeTypeDetail);
 
-            sendEventUsingNames(lotTimeTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(lotTimeTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -318,7 +319,7 @@ public class LotTimeControl
             }
         }
 
-        sendEventUsingNames(lotTimeType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(lotTimeType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     // --------------------------------------------------------------------------------
@@ -329,7 +330,7 @@ public class LotTimeControl
         LotTimeTypeDescription lotTimeTypeDescription = LotTimeTypeDescriptionFactory.getInstance().create(lotTimeType, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(lotTimeType.getPrimaryKey(), EventTypes.MODIFY.name(), lotTimeTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(lotTimeType.getPrimaryKey(), EventTypes.MODIFY, lotTimeTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return lotTimeTypeDescription;
     }
@@ -451,14 +452,14 @@ public class LotTimeControl
             lotTimeTypeDescription = LotTimeTypeDescriptionFactory.getInstance().create(lotTimeType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(lotTimeType.getPrimaryKey(), EventTypes.MODIFY.name(), lotTimeTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(lotTimeType.getPrimaryKey(), EventTypes.MODIFY, lotTimeTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteLotTimeTypeDescription(LotTimeTypeDescription lotTimeTypeDescription, BasePK deletedBy) {
         lotTimeTypeDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(lotTimeTypeDescription.getLotTimeTypePK(), EventTypes.MODIFY.name(), lotTimeTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(lotTimeTypeDescription.getLotTimeTypePK(), EventTypes.MODIFY, lotTimeTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -477,7 +478,7 @@ public class LotTimeControl
     public LotTime createLotTime(Lot lot, LotTimeType lotTimeType, Long time, BasePK createdBy) {
         LotTime lotTime = LotTimeFactory.getInstance().create(lot, lotTimeType, time, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(lot.getPrimaryKey(), EventTypes.MODIFY.name(), lotTime.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(lot.getPrimaryKey(), EventTypes.MODIFY, lotTime.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return lotTime;
     }
@@ -601,7 +602,7 @@ public class LotTimeControl
         return getInventoryTransferCaches(userVisit).getLotTimeTransferCache().getTransfer(lotTime);
     }
 
-    public List<LotTimeTransfer> getLotTimeTransfers(UserVisit userVisit, List<LotTime> lotTimes) {
+    public List<LotTimeTransfer> getLotTimeTransfers(UserVisit userVisit, Collection<LotTime> lotTimes) {
         List<LotTimeTransfer> lotTimeTransfers = new ArrayList<>(lotTimes.size());
         LotTimeTransferCache lotTimeTransferCache = getInventoryTransferCaches(userVisit).getLotTimeTransferCache();
 
@@ -634,14 +635,14 @@ public class LotTimeControl
 
             lotTime = LotTimeFactory.getInstance().create(lotPK, lotTimeTypePK, time, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(lotPK, EventTypes.MODIFY.name(), lotTime.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(lotPK, EventTypes.MODIFY, lotTime.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteLotTime(LotTime lotTime, BasePK deletedBy) {
         lotTime.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(lotTime.getLotTimeTypePK(), EventTypes.MODIFY.name(), lotTime.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(lotTime.getLotTimeTypePK(), EventTypes.MODIFY, lotTime.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 

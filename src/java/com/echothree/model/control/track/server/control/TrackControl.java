@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -58,10 +58,12 @@ import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.persistence.Sha1Utils;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -100,7 +102,7 @@ public class TrackControl
     }
     
     public Track createTrack(String trackName, String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase());
+        String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
         Track defaultTrack = getDefaultTrack();
         boolean defaultFound = defaultTrack != null;
 
@@ -124,7 +126,7 @@ public class TrackControl
         track.store();
 
         TrackPK trackPK = track.getPrimaryKey();
-        sendEventUsingNames(trackPK, EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(trackPK, EventTypes.CREATE, null, null, createdBy);
 
         EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(trackPK);
         getWorkflowControl().addEntityToWorkflowUsingNames(null, TrackStatusConstants.Workflow_TRACK_STATUS,
@@ -133,7 +135,7 @@ public class TrackControl
         return track;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.Track */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Track */
     public Track getTrackByEntityInstance(EntityInstance entityInstance) {
         TrackPK pk = new TrackPK(entityInstance.getEntityUniqueId());
         Track track = TrackFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
@@ -193,7 +195,7 @@ public class TrackControl
 
     private Track getTrackByValue(String value, EntityPermission entityPermission) {
         return TrackFactory.getInstance().getEntityFromQuery(entityPermission, getTrackByValueQueries, 
-                Sha1Utils.getInstance().hash(value));
+                Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault())));
     }
 
     public Track getTrackByValue(String value) {
@@ -375,7 +377,7 @@ public class TrackControl
             TrackPK trackPK = trackDetail.getTrackPK(); // Not updated
             String trackName = trackDetailValue.getTrackName();
             var value = trackDetailValue.getValue();
-            String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase());
+            String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
             Boolean isDefault = trackDetailValue.getIsDefault();
             Integer sortOrder = trackDetailValue.getSortOrder();
 
@@ -401,7 +403,7 @@ public class TrackControl
             track.setActiveDetail(trackDetail);
             track.setLastDetail(trackDetail);
 
-            sendEventUsingNames(trackPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(trackPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -439,7 +441,7 @@ public class TrackControl
             }
         }
 
-        sendEventUsingNames(track.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(track.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteTrack(Track track, BasePK deletedBy) {
@@ -462,7 +464,7 @@ public class TrackControl
         TrackDescription trackDescription = TrackDescriptionFactory.getInstance().create(track, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(track.getPrimaryKey(), EventTypes.MODIFY.name(), trackDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(track.getPrimaryKey(), EventTypes.MODIFY, trackDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return trackDescription;
     }
@@ -584,14 +586,14 @@ public class TrackControl
             trackDescription = TrackDescriptionFactory.getInstance().create(track, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(track.getPrimaryKey(), EventTypes.MODIFY.name(), trackDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(track.getPrimaryKey(), EventTypes.MODIFY, trackDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteTrackDescription(TrackDescription trackDescription, BasePK deletedBy) {
         trackDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(trackDescription.getTrackPK(), EventTypes.MODIFY.name(), trackDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(trackDescription.getTrackPK(), EventTypes.MODIFY, trackDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -719,7 +721,7 @@ public class TrackControl
         return getTrackTransferCaches(userVisit).getUserVisitTrackTransferCache().getUserVisitTrackTransfer(userVisitTrack);
     }
 
-    public List<UserVisitTrackTransfer> getUserVisitTrackTransfers(UserVisit userVisit, List<UserVisitTrack> userVisitTracks) {
+    public List<UserVisitTrackTransfer> getUserVisitTrackTransfers(UserVisit userVisit, Collection<UserVisitTrack> userVisitTracks) {
         var userVisitTrackTransfers = new ArrayList<UserVisitTrackTransfer>(userVisitTracks.size());
         var userVisitTrackTransferCache = getTrackTransferCaches(userVisit).getUserVisitTrackTransferCache();
 

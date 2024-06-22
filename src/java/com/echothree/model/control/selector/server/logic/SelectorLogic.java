@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,16 +21,18 @@ import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.selector.common.exception.DuplicateSelectorNameException;
 import com.echothree.model.control.selector.common.exception.UnknownDefaultSelectorException;
 import com.echothree.model.control.selector.common.exception.UnknownDefaultSelectorKindException;
 import com.echothree.model.control.selector.common.exception.UnknownDefaultSelectorTypeException;
 import com.echothree.model.control.selector.common.exception.UnknownSelectorNameException;
 import com.echothree.model.control.selector.server.control.SelectorControl;
-import com.echothree.model.data.core.server.entity.EntityInstance;
+import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.selector.server.entity.SelectorKind;
 import com.echothree.model.data.selector.server.entity.SelectorType;
 import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
@@ -50,6 +52,38 @@ public class SelectorLogic
     
     public static SelectorLogic getInstance() {
         return SelectorLogicHolder.instance;
+    }
+
+    public Selector createSelector(final ExecutionErrorAccumulator eea, final String selectorKindName, final String selectorTypeName,
+            final String selectorName, final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
+            final BasePK createdBy) {
+        var selectorType = SelectorTypeLogic.getInstance().getSelectorTypeByName(eea, selectorKindName, selectorTypeName);
+        Selector selector = null;
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            selector = createSelector(eea, selectorType, selectorName, isDefault, sortOrder, language, description, createdBy);
+        }
+
+        return selector;
+    }
+
+    public Selector createSelector(final ExecutionErrorAccumulator eea, final SelectorType selectorType, final String selectorName,
+            final Boolean isDefault, final Integer sortOrder, final Language language, final String description, final BasePK createdBy) {
+        var selectorControl = Session.getModelController(SelectorControl.class);
+        var selector = selectorControl.getSelectorByName(selectorType, selectorName);
+
+        if(selector == null) {
+            selector = selectorControl.createSelector(selectorType, selectorName, isDefault, sortOrder, createdBy);
+
+            if(description != null) {
+                selectorControl.createSelectorDescription(selector, language, description, createdBy);
+            }
+        } else {
+            handleExecutionError(DuplicateSelectorNameException.class, eea, ExecutionErrors.DuplicateSelectorName.name(),
+                    selectorType.getLastDetail().getSelectorKind().getLastDetail().getSelectorKindName(),
+                    selectorType.getLastDetail().getSelectorTypeName(), selectorName);
+        }
+        return selector;
     }
 
     public Selector getSelectorByName(final ExecutionErrorAccumulator eea, final SelectorType selectorType, final String selectorName,
@@ -157,7 +191,7 @@ public class SelectorLogic
             }
         } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
             var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                    ComponentVendors.ECHOTHREE.name(), EntityTypes.Selector.name());
+                    ComponentVendors.ECHO_THREE.name(), EntityTypes.Selector.name());
 
             if(!eea.hasExecutionErrors()) {
                 selector = selectorControl.getSelectorByEntityInstance(entityInstance, entityPermission);

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,10 +19,9 @@ package com.echothree.control.user.search.server.command;
 import com.echothree.control.user.search.common.form.GetSecurityRoleGroupResultsForm;
 import com.echothree.control.user.search.common.result.GetSecurityRoleGroupResultsResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.search.server.logic.SearchLogic;
-import com.echothree.model.control.security.server.control.SecurityRoleControl;
 import com.echothree.model.control.security.server.control.SecurityRoleGroupControl;
 import com.echothree.model.data.search.server.entity.SearchKind;
 import com.echothree.model.data.search.server.entity.SearchType;
@@ -59,7 +58,7 @@ public class GetSecurityRoleGroupResultsCommand
     protected BaseResult execute() {
         GetSecurityRoleGroupResultsResult result = SearchResultFactory.getGetSecurityRoleGroupResultsResult();
         var searchControl = Session.getModelController(SearchControl.class);
-        SearchKind searchKind = searchControl.getSearchKindByName(SearchConstants.SearchKind_SECURITY_ROLE_GROUP);
+        SearchKind searchKind = searchControl.getSearchKindByName(SearchKinds.SECURITY_ROLE_GROUP.name());
         
         if(searchKind != null) {
             String searchTypeName = form.getSearchTypeName();
@@ -81,10 +80,10 @@ public class GetSecurityRoleGroupResultsCommand
                     addExecutionError(ExecutionErrors.UnknownUserVisitSearch.name());
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownSearchTypeName.name(), SearchConstants.SearchKind_SECURITY_ROLE_GROUP, searchTypeName);
+                addExecutionError(ExecutionErrors.UnknownSearchTypeName.name(), SearchKinds.SECURITY_ROLE_GROUP.name(), searchTypeName);
             }
         } else {
-            addExecutionError(ExecutionErrors.UnknownSearchKindName.name(), SearchConstants.SearchKind_SECURITY_ROLE_GROUP);
+            addExecutionError(ExecutionErrors.UnknownSearchKindName.name(), SearchKinds.SECURITY_ROLE_GROUP.name());
         }
         
         return result;

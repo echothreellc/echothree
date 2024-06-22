@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,23 +17,19 @@
 package com.echothree.control.user.tag.server.command;
 
 import com.echothree.control.user.tag.common.form.GetEntityTagForm;
-import com.echothree.control.user.tag.common.result.GetEntityTagResult;
 import com.echothree.control.user.tag.common.result.TagResultFactory;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.tag.server.control.TagControl;
-import com.echothree.model.data.core.server.entity.EntityInstance;
+import com.echothree.model.control.tag.server.logic.TagLogic;
 import com.echothree.model.data.tag.server.entity.EntityTag;
-import com.echothree.model.data.tag.server.entity.Tag;
-import com.echothree.model.data.tag.server.entity.TagScope;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -43,8 +39,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class GetEntityTagCommand
-        extends BaseSimpleCommand<GetEntityTagForm> {
-    
+        extends BaseSingleEntityCommand<EntityTag, GetEntityTagForm> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -57,7 +53,10 @@ public class GetEntityTagCommand
                 )));
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, true, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null),
                 new FieldDefinition("TagScopeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("TagName", FieldType.TAG, true, null, null)
                 ));
@@ -67,43 +66,33 @@ public class GetEntityTagCommand
     public GetEntityTagCommand(UserVisitPK userVisitPK, GetEntityTagForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var coreControl = getCoreControl();
-        GetEntityTagResult result = TagResultFactory.getGetEntityTagResult();
-        String entityRef = form.getEntityRef();
-        EntityInstance taggedEntityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
-        
-        if(taggedEntityInstance != null) {
+    protected EntityTag getEntity() {
+        var taggedEntityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
+        var tag = TagLogic.getInstance().getTagByName(this, form.getTagScopeName(), form.getTagName());
+        EntityTag entityTag = null;
+
+        if(!hasExecutionErrors()) {
             var tagControl = Session.getModelController(TagControl.class);
-            String tagScopeName = form.getTagScopeName();
-            TagScope tagScope = tagControl.getTagScopeByName(tagScopeName);
-            UserVisit userVisit = getUserVisit();
-            
-            if(tagScope != null) {
-                String tagName = form.getTagName();
-                Tag tag = tagControl.getTagByName(tagScope, tagName);
-                
-                if(tag != null) {
-                    EntityTag entityTag = tagControl.getEntityTag(taggedEntityInstance, tag);
-                    
-                    if(entityTag != null) {
-                        result.setEntityTag(tagControl.getEntityTagTransfer(userVisit, entityTag));
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownEntityTag.name(), entityRef, tagScopeName, tagName);
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownTagName.name(), tagScopeName, tagName);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownTagScopeName.name(), tagScopeName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownEntityRef.name(), entityRef);
+
+            entityTag = tagControl.getEntityTag(taggedEntityInstance, tag);
         }
-        
+
+        return entityTag;
+    }
+
+    @Override
+    protected BaseResult getResult(EntityTag entityTag) {
+        var result = TagResultFactory.getGetEntityTagResult();
+
+        if(entityTag != null) {
+            var tagControl = Session.getModelController(TagControl.class);
+
+            result.setEntityTag(tagControl.getEntityTagTransfer(getUserVisit(), entityTag));
+        }
+
         return result;
     }
-    
+
 }

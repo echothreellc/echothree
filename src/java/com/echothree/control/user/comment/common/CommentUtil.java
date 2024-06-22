@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.comment.common;
 
-import com.echothree.control.user.comment.common.CommentRemote;
 import com.echothree.control.user.comment.server.CommentLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -26,7 +25,8 @@ public class CommentUtil {
     
     private static CommentLocal cachedLocal = null;
     private static CommentRemote cachedRemote = null;
-    
+
+    @SuppressWarnings("BanJNDI")
     public static CommentLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
@@ -37,7 +37,8 @@ public class CommentUtil {
         
         return cachedLocal;
     }
-    
+
+    @SuppressWarnings("BanJNDI")
     public static CommentRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {

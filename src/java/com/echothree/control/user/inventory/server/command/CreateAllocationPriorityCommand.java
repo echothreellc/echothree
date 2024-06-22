@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,22 +17,19 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.CreateAllocationPriorityForm;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
+import com.echothree.model.control.inventory.server.logic.AllocationPriorityLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.inventory.server.entity.AllocationPriority;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -56,7 +53,7 @@ public class CreateAllocationPriorityCommand
                 new FieldDefinition("Priority", FieldType.UNSIGNED_INTEGER, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
-                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 ));
     }
     
@@ -67,27 +64,23 @@ public class CreateAllocationPriorityCommand
     
     @Override
     protected BaseResult execute() {
-        var inventoryControl = Session.getModelController(InventoryControl.class);
-        String allocationPriorityName = form.getAllocationPriorityName();
-        AllocationPriority allocationPriority = inventoryControl.getAllocationPriorityByName(allocationPriorityName);
+        var result = InventoryResultFactory.getCreateAllocationPriorityResult();
+        var allocationPriorityName = form.getAllocationPriorityName();
+        var priority = Integer.valueOf(form.getPriority());
+        var isDefault = Boolean.valueOf(form.getIsDefault());
+        var sortOrder = Integer.valueOf(form.getSortOrder());
+        var description = form.getDescription();
+        var partyPK = getPartyPK();
 
-        if(allocationPriority == null) {
-            var partyPK = getPartyPK();
-            Integer priority = Integer.valueOf(form.getPriority());
-            var isDefault = Boolean.valueOf(form.getIsDefault());
-            var sortOrder = Integer.valueOf(form.getSortOrder());
-            var description = form.getDescription();
+        var allocationPriority = AllocationPriorityLogic.getInstance().createAllocationPriority(this, allocationPriorityName,
+                priority, isDefault, sortOrder, getPreferredLanguage(), description, partyPK);
 
-            allocationPriority = inventoryControl.createAllocationPriority(allocationPriorityName, priority, isDefault, sortOrder, partyPK);
-
-            if(description != null) {
-                inventoryControl.createAllocationPriorityDescription(allocationPriority, getPreferredLanguage(), description, partyPK);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.DuplicateAllocationPriorityName.name(), allocationPriorityName);
+        if(allocationPriority != null) {
+            result.setAllocationPriorityName(allocationPriority.getLastDetail().getAllocationPriorityName());
+            result.setEntityRef(allocationPriority.getPrimaryKey().getEntityRef());
         }
 
-        return null;
+        return result;
     }
     
 }

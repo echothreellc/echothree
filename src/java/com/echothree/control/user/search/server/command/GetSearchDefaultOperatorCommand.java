@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -82,7 +82,7 @@ public class GetSearchDefaultOperatorCommand
             SearchDefaultOperator searchDefaultOperator = null;
 
             if(searchDefaultOperatorName == null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHOTHREE.name(),
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
                         EntityTypes.SearchDefaultOperator.name());
                 
                 if(!hasExecutionErrors()) {
@@ -98,7 +98,7 @@ public class GetSearchDefaultOperatorCommand
 
             if(!hasExecutionErrors()) {
                 result.setSearchDefaultOperator(searchControl.getSearchDefaultOperatorTransfer(getUserVisit(), searchDefaultOperator));
-                sendEventUsingNames(searchDefaultOperator.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                sendEvent(searchDefaultOperator.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());

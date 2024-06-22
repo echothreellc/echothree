@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -54,7 +54,7 @@ public class GetRecoveryQuestionsCommand
     }
     
     @Override
-    protected BaseResult getTransfers(Collection<RecoveryQuestion> entities) {
+    protected BaseResult getResult(Collection<RecoveryQuestion> entities) {
         GetRecoveryQuestionsResult result = UserResultFactory.getGetRecoveryQuestionsResult();
         UserControl userControl = getUserControl();
         

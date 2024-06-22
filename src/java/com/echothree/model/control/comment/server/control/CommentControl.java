@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -96,6 +96,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class CommentControl
@@ -138,7 +139,7 @@ public class CommentControl
         commentType.setLastDetail(commentTypeDetail);
         commentType.store();
         
-        sendEventUsingNames(commentType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(commentType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return commentType;
     }
@@ -269,7 +270,7 @@ public class CommentControl
             commentType.setActiveDetail(commentTypeDetail);
             commentType.setLastDetail(commentTypeDetail);
             
-            sendEventUsingNames(commentTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(commentTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -283,7 +284,7 @@ public class CommentControl
         commentType.setActiveDetail(null);
         commentType.store();
         
-        sendEventUsingNames(commentType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(commentType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteCommentTypes(List<CommentType> commentTypes, BasePK deletedBy) {
@@ -305,7 +306,7 @@ public class CommentControl
         CommentTypeDescription commentTypeDescription = CommentTypeDescriptionFactory.getInstance().create(commentType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(commentType.getPrimaryKey(), EventTypes.MODIFY.name(), commentTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(commentType.getPrimaryKey(), EventTypes.MODIFY, commentTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return commentTypeDescription;
     }
@@ -442,14 +443,14 @@ public class CommentControl
             
             commentTypeDescription = CommentTypeDescriptionFactory.getInstance().create(commentType, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(commentType.getPrimaryKey(), EventTypes.MODIFY.name(), commentTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(commentType.getPrimaryKey(), EventTypes.MODIFY, commentTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteCommentTypeDescription(CommentTypeDescription commentTypeDescription, BasePK deletedBy) {
         commentTypeDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(commentTypeDescription.getCommentTypePK(), EventTypes.MODIFY.name(), commentTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(commentTypeDescription.getCommentTypePK(), EventTypes.MODIFY, commentTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -479,7 +480,7 @@ public class CommentControl
         commentUsageType.setLastDetail(commentUsageTypeDetail);
         commentUsageType.store();
         
-        sendEventUsingNames(commentUsageType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(commentUsageType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return commentUsageType;
     }
@@ -610,7 +611,7 @@ public class CommentControl
             commentUsageType.setActiveDetail(commentUsageTypeDetail);
             commentUsageType.setLastDetail(commentUsageTypeDetail);
             
-            sendEventUsingNames(commentUsageTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(commentUsageTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -623,7 +624,7 @@ public class CommentControl
         commentUsageType.setActiveDetail(null);
         commentUsageType.store();
         
-        sendEventUsingNames(commentUsageType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(commentUsageType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteCommentUsageTypes(List<CommentUsageType> commentUsageTypes, BasePK deletedBy) {
@@ -645,7 +646,7 @@ public class CommentControl
         CommentUsageTypeDescription commentUsageTypeDescription = CommentUsageTypeDescriptionFactory.getInstance().create(session,
                 commentUsageType, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(commentUsageType.getPrimaryKey(), EventTypes.MODIFY.name(), commentUsageTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(commentUsageType.getPrimaryKey(), EventTypes.MODIFY, commentUsageTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return commentUsageTypeDescription;
     }
@@ -787,14 +788,14 @@ public class CommentControl
             commentUsageTypeDescription = CommentUsageTypeDescriptionFactory.getInstance().create(commentUsageType,
                     language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(commentUsageType.getPrimaryKey(), EventTypes.MODIFY.name(), commentUsageTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(commentUsageType.getPrimaryKey(), EventTypes.MODIFY, commentUsageTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteCommentUsageTypeDescription(CommentUsageTypeDescription commentUsageTypeDescription, BasePK deletedBy) {
         commentUsageTypeDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(commentUsageTypeDescription.getCommentUsageTypePK(), EventTypes.MODIFY.name(), commentUsageTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(commentUsageTypeDescription.getCommentUsageTypePK(), EventTypes.MODIFY, commentUsageTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -823,8 +824,8 @@ public class CommentControl
         comment.setLastDetail(commentDetail);
         comment.store();
         
-        sendEventUsingNames(comment.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
-        sendEventUsingNames(commentedEntityInstance, EventTypes.TOUCH.name(), comment.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(comment.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(commentedEntityInstance, EventTypes.TOUCH, comment.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return comment;
     }
@@ -1036,7 +1037,7 @@ public class CommentControl
         return getCommentTransferCaches(userVisit).getCommentTransferCache().getCommentTransfer(comment);
     }
     
-    public List<CommentTransfer> getCommentTransfers(UserVisit userVisit, List<Comment> comments) {
+    public List<CommentTransfer> getCommentTransfers(UserVisit userVisit, Collection<Comment> comments) {
         List<CommentTransfer> commentTransfers = new ArrayList<>(comments.size());
         CommentTransferCache commentTransferCache = getCommentTransferCaches(userVisit).getCommentTransferCache();
         
@@ -1081,8 +1082,8 @@ public class CommentControl
             comment.setActiveDetail(commentDetail);
             comment.setLastDetail(commentDetail);
             
-            sendEventUsingNames(comment.getPrimaryKey(), EventTypes.MODIFY.name(), null, null, updatedBy);
-            sendEventUsingNames(commentDetail.getCommentedEntityInstance(), EventTypes.TOUCH.name(), comment.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(comment.getPrimaryKey(), EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(commentDetail.getCommentedEntityInstance(), EventTypes.TOUCH, comment.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -1133,7 +1134,7 @@ public class CommentControl
                 workflowControl.transitionEntityInWorkflow(eea, workflowEntityStatus, workflowDestination, null, modifiedBy);
                 
                 if(!eea.hasExecutionErrors()) {
-                    sendEventUsingNames(comment.getLastDetail().getCommentedEntityInstance(), EventTypes.TOUCH.name(), comment.getPrimaryKey(), EventTypes.MODIFY.name(), modifiedBy);
+                    sendEvent(comment.getLastDetail().getCommentedEntityInstance(), EventTypes.TOUCH, comment.getPrimaryKey(), EventTypes.MODIFY, modifiedBy);
                 }
             } else {
                 eea.addExecutionError(ExecutionErrors.UnknownWorkflowDestinationName.name(), workflow.getLastDetail().getWorkflowName(),
@@ -1167,8 +1168,8 @@ public class CommentControl
         commentDetail.store();
         comment.setActiveDetail(null);
         
-        sendEventUsingNames(comment.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
-        sendEventUsingNames(commentDetail.getCommentedEntityInstance(), EventTypes.TOUCH.name(), comment.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(comment.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(commentDetail.getCommentedEntityInstance(), EventTypes.TOUCH, comment.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteComments(List<Comment> comments, BasePK deletedBy) {
@@ -1201,8 +1202,8 @@ public class CommentControl
     public CommentString createCommentString(Comment comment, String string, BasePK createdBy) {
         CommentString commentString = CommentStringFactory.getInstance().create(comment, string, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(comment.getPrimaryKey(), EventTypes.MODIFY.name(), commentString.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
-        sendEventUsingNames(comment.getLastDetail().getCommentedEntityInstance(), EventTypes.TOUCH.name(), comment.getPrimaryKey(), EventTypes.MODIFY.name(), createdBy);
+        sendEvent(comment.getPrimaryKey(), EventTypes.MODIFY, commentString.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(comment.getLastDetail().getCommentedEntityInstance(), EventTypes.TOUCH, comment.getPrimaryKey(), EventTypes.MODIFY, createdBy);
         
         return commentString;
     }
@@ -1267,16 +1268,16 @@ public class CommentControl
             
             commentString = CommentStringFactory.getInstance().create(commentPK, string, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(commentPK, EventTypes.MODIFY.name(), commentString.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
-            sendEventUsingNames(commentString.getComment().getLastDetail().getCommentedEntityInstance(), EventTypes.TOUCH.name(), commentString.getCommentPK(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(commentPK, EventTypes.MODIFY, commentString.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(commentString.getComment().getLastDetail().getCommentedEntityInstance(), EventTypes.TOUCH, commentString.getCommentPK(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteCommentString(CommentString commentString, BasePK deletedBy) {
         commentString.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(commentString.getCommentPK(), EventTypes.MODIFY.name(), commentString.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
-        sendEventUsingNames(commentString.getComment().getLastDetail().getCommentedEntityInstance(), EventTypes.TOUCH.name(), commentString.getCommentPK(), EventTypes.MODIFY.name(), deletedBy);
+        sendEvent(commentString.getCommentPK(), EventTypes.MODIFY, commentString.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(commentString.getComment().getLastDetail().getCommentedEntityInstance(), EventTypes.TOUCH, commentString.getCommentPK(), EventTypes.MODIFY, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -1286,8 +1287,8 @@ public class CommentControl
     public CommentBlob createCommentBlob(Comment comment, ByteArray blob, BasePK createdBy) {
         CommentBlob commentBlob = CommentBlobFactory.getInstance().create(comment, blob, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(comment.getPrimaryKey(), EventTypes.MODIFY.name(), commentBlob.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
-        sendEventUsingNames(comment.getLastDetail().getCommentedEntityInstance(), EventTypes.TOUCH.name(), comment.getPrimaryKey(), EventTypes.MODIFY.name(), createdBy);
+        sendEvent(comment.getPrimaryKey(), EventTypes.MODIFY, commentBlob.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(comment.getLastDetail().getCommentedEntityInstance(), EventTypes.TOUCH, comment.getPrimaryKey(), EventTypes.MODIFY, createdBy);
         
         return commentBlob;
     }
@@ -1352,16 +1353,16 @@ public class CommentControl
             
             commentBlob = CommentBlobFactory.getInstance().create(commentPK, blob, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(commentPK, EventTypes.MODIFY.name(), commentBlob.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
-            sendEventUsingNames(commentBlob.getComment().getLastDetail().getCommentedEntityInstance(), EventTypes.TOUCH.name(), commentBlob.getCommentPK(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(commentPK, EventTypes.MODIFY, commentBlob.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(commentBlob.getComment().getLastDetail().getCommentedEntityInstance(), EventTypes.TOUCH, commentBlob.getCommentPK(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteCommentBlob(CommentBlob commentBlob, BasePK deletedBy) {
         commentBlob.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(commentBlob.getCommentPK(), EventTypes.MODIFY.name(), commentBlob.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
-        sendEventUsingNames(commentBlob.getComment().getLastDetail().getCommentedEntityInstance(), EventTypes.TOUCH.name(), commentBlob.getCommentPK(), EventTypes.MODIFY.name(), deletedBy);
+        sendEvent(commentBlob.getCommentPK(), EventTypes.MODIFY, commentBlob.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(commentBlob.getComment().getLastDetail().getCommentedEntityInstance(), EventTypes.TOUCH, commentBlob.getCommentPK(), EventTypes.MODIFY, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -1372,8 +1373,8 @@ public class CommentControl
         CommentClob commentClob = CommentClobFactory.getInstance().create(comment, clob, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(comment.getPrimaryKey(), EventTypes.MODIFY.name(), commentClob.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
-        sendEventUsingNames(comment.getLastDetail().getCommentedEntityInstance(), EventTypes.TOUCH.name(), comment.getPrimaryKey(), EventTypes.MODIFY.name(), createdBy);
+        sendEvent(comment.getPrimaryKey(), EventTypes.MODIFY, commentClob.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(comment.getLastDetail().getCommentedEntityInstance(), EventTypes.TOUCH, comment.getPrimaryKey(), EventTypes.MODIFY, createdBy);
         
         return commentClob;
     }
@@ -1438,16 +1439,16 @@ public class CommentControl
 
             commentClob = CommentClobFactory.getInstance().create(commentPK, clob, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(commentPK, EventTypes.MODIFY.name(), commentClob.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
-            sendEventUsingNames(commentClob.getComment().getLastDetail().getCommentedEntityInstance(), EventTypes.TOUCH.name(), commentClob.getCommentPK(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(commentPK, EventTypes.MODIFY, commentClob.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(commentClob.getComment().getLastDetail().getCommentedEntityInstance(), EventTypes.TOUCH, commentClob.getCommentPK(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteCommentClob(CommentClob commentClob, BasePK deletedBy) {
         commentClob.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(commentClob.getCommentPK(), EventTypes.MODIFY.name(), commentClob.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
-        sendEventUsingNames(commentClob.getComment().getLastDetail().getCommentedEntityInstance(), EventTypes.TOUCH.name(), commentClob.getCommentPK(), EventTypes.MODIFY.name(), deletedBy);
+        sendEvent(commentClob.getCommentPK(), EventTypes.MODIFY, commentClob.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(commentClob.getComment().getLastDetail().getCommentedEntityInstance(), EventTypes.TOUCH, commentClob.getCommentPK(), EventTypes.MODIFY, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -1458,8 +1459,8 @@ public class CommentControl
         CommentUsage commentUsage = CommentUsageFactory.getInstance().create(comment, commentUsageType,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(comment.getPrimaryKey(), EventTypes.MODIFY.name(), commentUsage.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
-        sendEventUsingNames(comment.getLastDetail().getCommentedEntityInstance(), EventTypes.TOUCH.name(), comment.getPrimaryKey(), EventTypes.MODIFY.name(), createdBy);
+        sendEvent(comment.getPrimaryKey(), EventTypes.MODIFY, commentUsage.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(comment.getLastDetail().getCommentedEntityInstance(), EventTypes.TOUCH, comment.getPrimaryKey(), EventTypes.MODIFY, createdBy);
         
         return commentUsage;
     }
@@ -1605,8 +1606,8 @@ public class CommentControl
         commentUsage.setThruTime(session.START_TIME_LONG);
         commentUsage.store();
         
-        sendEventUsingNames(commentUsage.getCommentPK(), EventTypes.MODIFY.name(), commentUsage.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
-        sendEventUsingNames(commentUsage.getComment().getLastDetail().getCommentedEntityInstance(), EventTypes.TOUCH.name(), commentUsage.getCommentPK(), EventTypes.MODIFY.name(), deletedBy);
+        sendEvent(commentUsage.getCommentPK(), EventTypes.MODIFY, commentUsage.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(commentUsage.getComment().getLastDetail().getCommentedEntityInstance(), EventTypes.TOUCH, commentUsage.getCommentPK(), EventTypes.MODIFY, deletedBy);
     }
     
     public void deleteCommentUsages(List<CommentUsage> commentUsages, BasePK deletedBy) {

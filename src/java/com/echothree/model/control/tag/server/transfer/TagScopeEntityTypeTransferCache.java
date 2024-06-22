@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -27,14 +27,13 @@ import com.echothree.util.server.persistence.Session;
 
 public class TagScopeEntityTypeTransferCache
         extends BaseTagTransferCache<TagScopeEntityType, TagScopeEntityTypeTransfer> {
-    
-    CoreControl coreControl;
-    
+
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    TagControl tagControl = Session.getModelController(TagControl.class);
+
     /** Creates a new instance of TagScopeEntityTypeTransferCache */
-    public TagScopeEntityTypeTransferCache(UserVisit userVisit, TagControl tagControl) {
-        super(userVisit, tagControl);
-        
-        coreControl = Session.getModelController(CoreControl.class);
+    public TagScopeEntityTypeTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
     
     public TagScopeEntityTypeTransfer getTagScopeEntityTypeTransfer(TagScopeEntityType tagScopeEntityType) {

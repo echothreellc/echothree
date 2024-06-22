@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,6 +17,9 @@
 package com.echothree.control.user.vendor.server.command;
 
 import com.echothree.control.user.vendor.common.form.DeleteItemPurchasingCategoryForm;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -24,10 +27,10 @@ import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.control.vendor.server.logic.ItemPurchasingCategoryLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.vendor.server.entity.ItemPurchasingCategory;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -52,7 +55,11 @@ public class DeleteItemPurchasingCategoryCommand
                 )));
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("ItemPurchasingCategoryName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("ItemPurchasingCategoryName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
                 ));
     }
     
@@ -63,22 +70,37 @@ public class DeleteItemPurchasingCategoryCommand
     
     @Override
     protected BaseResult execute() {
-        var vendorControl = Session.getModelController(VendorControl.class);
         String itemPurchasingCategoryName = form.getItemPurchasingCategoryName();
-        ItemPurchasingCategory itemPurchasingCategory = vendorControl.getItemPurchasingCategoryByNameForUpdate(itemPurchasingCategoryName);
-        
-        if(itemPurchasingCategory != null) {
-            ItemPurchasingCategoryLogic itemPurchasingCategoryLogic = ItemPurchasingCategoryLogic.getInstance();
+        var parameterCount = (itemPurchasingCategoryName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
-            itemPurchasingCategoryLogic.checkDeleteItemPurchasingCategory(this, itemPurchasingCategory);
+        if(parameterCount == 1) {
+            var vendorControl = Session.getModelController(VendorControl.class);
+            ItemPurchasingCategory itemPurchasingCategory = null;
+
+            if(itemPurchasingCategoryName == null) {
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
+                        EntityTypes.ItemPurchasingCategory.name());
+
+                if(!hasExecutionErrors()) {
+                    itemPurchasingCategory = vendorControl.getItemPurchasingCategoryByEntityInstanceForUpdate(entityInstance);
+                }
+            } else {
+                itemPurchasingCategory = ItemPurchasingCategoryLogic.getInstance().getItemPurchasingCategoryByNameForUpdate(this, itemPurchasingCategoryName);
+            }
 
             if(!hasExecutionErrors()) {
-                itemPurchasingCategoryLogic.deleteItemPurchasingCategory(itemPurchasingCategory, getPartyPK());
+                ItemPurchasingCategoryLogic itemPurchasingCategoryLogic = ItemPurchasingCategoryLogic.getInstance();
+
+                itemPurchasingCategoryLogic.checkDeleteItemPurchasingCategory(this, itemPurchasingCategory);
+
+                if(!hasExecutionErrors()) {
+                    itemPurchasingCategoryLogic.deleteItemPurchasingCategory(itemPurchasingCategory, getPartyPK());
+                }
             }
         } else {
-            addExecutionError(ExecutionErrors.UnknownItemPurchasingCategoryName.name(), itemPurchasingCategoryName);
+            addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
-        
+
         return null;
     }
     

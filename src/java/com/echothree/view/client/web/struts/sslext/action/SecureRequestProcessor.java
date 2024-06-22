@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -78,13 +78,13 @@ import com.echothree.view.client.web.struts.sslext.util.SecureRequestUtils;
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.springframework.web.struts.DelegatingRequestProcessor;
+import org.apache.struts.action.RequestProcessor;
 
 /**
  * Extension of a RequestProcessor for use with sslext
  */
 public class SecureRequestProcessor
-        extends DelegatingRequestProcessor {
+        extends RequestProcessor {
     
     /**
      * Override of the base class's processPreprocess() method,
@@ -120,7 +120,7 @@ public class SecureRequestProcessor
             return false;
         }
         
-        // Redirect to https/http if necesssary
+        // Redirect to https/http if necessary
         if(SecureRequestUtils.checkSsl(mapping, getServletContext(), request, response)) {
             return false;
         }

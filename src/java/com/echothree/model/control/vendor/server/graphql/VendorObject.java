@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,29 +16,39 @@
 
 package com.echothree.model.control.vendor.server.graphql;
 
+import com.echothree.model.control.accounting.server.graphql.AccountingSecurityUtils;
+import com.echothree.model.control.accounting.server.graphql.GlAccountObject;
+import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationPolicyObject;
+import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationPolicySecurityUtils;
 import com.echothree.model.control.filter.server.graphql.FilterObject;
 import com.echothree.model.control.filter.server.graphql.FilterSecurityUtils;
-import com.echothree.model.control.selector.server.graphql.SelectorSecurityUtils;
-import com.echothree.model.control.vendor.server.control.VendorControl;
-import com.echothree.model.control.offer.server.graphql.OfferSecurityUtils;
-import com.echothree.model.control.offer.server.graphql.OfferUseObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
+import com.echothree.model.control.item.server.graphql.ItemAliasTypeObject;
+import com.echothree.model.control.item.server.graphql.ItemSecurityUtils;
 import com.echothree.model.control.party.server.graphql.BasePartyObject;
-import com.echothree.model.data.accounting.common.pk.GlAccountPK;
-import com.echothree.model.data.cancellationpolicy.common.pk.CancellationPolicyPK;
-import com.echothree.model.data.filter.common.pk.FilterPK;
-import com.echothree.model.data.item.common.pk.ItemAliasTypePK;
-import com.echothree.model.data.party.common.pk.PartyPK;
-import com.echothree.model.data.returnpolicy.common.pk.ReturnPolicyPK;
-import com.echothree.model.data.selector.common.pk.SelectorPK;
-import com.echothree.model.data.vendor.common.pk.VendorTypePK;
-import com.echothree.model.data.vendor.server.entity.Vendor;
+import com.echothree.model.control.returnpolicy.server.graphql.ReturnPolicyObject;
+import com.echothree.model.control.returnpolicy.server.graphql.ReturnPolicySecurityUtils;
+import com.echothree.model.control.selector.server.graphql.SelectorObject;
+import com.echothree.model.control.selector.server.graphql.SelectorSecurityUtils;
+import com.echothree.model.control.vendor.common.workflow.VendorStatusConstants;
+import com.echothree.model.control.vendor.server.control.VendorControl;
+import com.echothree.model.control.workflow.server.graphql.WorkflowEntityStatusObject;
 import com.echothree.model.data.party.server.entity.Party;
+import com.echothree.model.data.vendor.common.VendorItemConstants;
+import com.echothree.model.data.vendor.server.entity.Vendor;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("vendor object")
 @GraphQLName("Vendor")
@@ -74,13 +84,13 @@ public class VendorObject
         return getVendor().getVendorName();
     }
 
-//    @GraphQLField
-//    @GraphQLDescription("vendor type")
-//    @GraphQLNonNull
-//    public VendorTypeObject getVendorType(final DataFetchingEnvironment env) {
-//        return VendorSecurityUtils.getInstance().getHasVendorTypeAccess(env) ?
-//                new VendorTypeObject(getVendor().getVendorType()) : null;
-//    }
+    @GraphQLField
+    @GraphQLDescription("vendor type")
+    @GraphQLNonNull
+    public VendorTypeObject getVendorType(final DataFetchingEnvironment env) {
+        return VendorSecurityUtils.getHasVendorTypeAccess(env) ?
+                new VendorTypeObject(getVendor().getVendorType()) : null;
+    }
 
     @GraphQLField
     @GraphQLDescription("minimum purchase order lines")
@@ -113,41 +123,41 @@ public class VendorObject
         return getVendor().getUseItemPurchasingCategories();
     }
 
-//    @GraphQLField
-//    @GraphQLDescription("default item alias type")
-//    public ItemAliasTypeObject getDefaultItemAliasType(final DataFetchingEnvironment env) {
-//        var defaultItemAliasType = getVendor().getDefaultItemAliasType();
-//
-//        return defaultItemAliasType == null ? null : ItemSecurityUtils.getInstance().getHasItemAliasAccess(env) ?
-//                new ItemAliasObject(defaultItemAliasType) : null;
-//    }
-//
-//    @GraphQLField
-//    @GraphQLDescription("cancellation policy")
-//    public CancellationPolicyObject getCancellationPolicy(final DataFetchingEnvironment env) {
-//        var cancellationPolicy = getVendor().getCancellationPolicy();
-//
-//        return cancellationPolicy == null ? null : CancellationPolicySecurityUtils.getInstance().getHasCancellationPolicyAccess(env) ?
-//                new CancellationPolicyObject(cancellationPolicy) : null;
-//    }
-//
-//    @GraphQLField
-//    @GraphQLDescription("return policy")
-//    public ReturnPolicyObject getReturnPolicy(final DataFetchingEnvironment env) {
-//        var returnPolicy = getVendor().getReturnPolicy();
-//
-//        return returnPolicy == null ? null : ReturnPolicySecurityUtils.getInstance().getHasReturnPolicyAccess(env) ?
-//                new ReturnPolicyObject(returnPolicy) : null;
-//    }
-//
-//    @GraphQLField
-//    @GraphQLDescription("AP GL account")
-//    public GlAccountObject getApGlAccount(final DataFetchingEnvironment env) {
-//        var apGlAccount = getVendor().getApGlAccount();
-//
-//        return apGlAccount == null ? null : AccountingSecurityUtils.getInstance().getHasGlAccountAccess(env) ?
-//                new GlAccountObject(getVendor().getApGlAccount()) : null;
-//    }
+    @GraphQLField
+    @GraphQLDescription("default item alias type")
+    public ItemAliasTypeObject getDefaultItemAliasType(final DataFetchingEnvironment env) {
+        var defaultItemAliasType = getVendor().getDefaultItemAliasType();
+
+        return defaultItemAliasType == null ? null : ItemSecurityUtils.getHasItemAliasAccess(env) ?
+                new ItemAliasTypeObject(defaultItemAliasType) : null;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("cancellation policy")
+    public CancellationPolicyObject getCancellationPolicy(final DataFetchingEnvironment env) {
+        var cancellationPolicy = getVendor().getCancellationPolicy();
+
+        return cancellationPolicy == null ? null : CancellationPolicySecurityUtils.getHasCancellationPolicyAccess(env) ?
+                new CancellationPolicyObject(cancellationPolicy) : null;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("return policy")
+    public ReturnPolicyObject getReturnPolicy(final DataFetchingEnvironment env) {
+        var returnPolicy = getVendor().getReturnPolicy();
+
+        return returnPolicy == null ? null : ReturnPolicySecurityUtils.getHasReturnPolicyAccess(env) ?
+                new ReturnPolicyObject(returnPolicy) : null;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("AP GL account")
+    public GlAccountObject getApGlAccount(final DataFetchingEnvironment env) {
+        var apGlAccount = getVendor().getApGlAccount();
+
+        return apGlAccount == null ? null : AccountingSecurityUtils.getHasGlAccountAccess(env) ?
+                new GlAccountObject(apGlAccount) : null;
+    }
 
     @GraphQLField
     @GraphQLDescription("hold until complete")
@@ -197,22 +207,48 @@ public class VendorObject
         return getVendor().getReferenceValidationPattern();
     }
 
-//    @GraphQLField
-//    @GraphQLDescription("vendor item selector")
-//    public FilterObject getApGlAccount(final DataFetchingEnvironment env) {
-//        var vendorItemSelector = getVendor().getVendorItemSelector();
-//
-//        return vendorItemSelector == null ? null : SelectorSecurityUtils.getInstance().getHasSelectorAccess(env) ?
-//                new SelectorObject(vendorItemSelector) : null;
-//    }
+    @GraphQLField
+    @GraphQLDescription("vendor item selector")
+    public SelectorObject getVendorItemSelector(final DataFetchingEnvironment env) {
+        var vendorItemSelector = getVendor().getVendorItemSelector();
+
+        return vendorItemSelector == null ? null : SelectorSecurityUtils.getHasSelectorAccess(env) ?
+                new SelectorObject(vendorItemSelector) : null;
+    }
 
     @GraphQLField
     @GraphQLDescription("vendor item cost filter")
     public FilterObject getVendorItemCostFilter(final DataFetchingEnvironment env) {
         var vendorItemCostFilter = getVendor().getVendorItemCostFilter();
 
-        return vendorItemCostFilter == null ? null : FilterSecurityUtils.getInstance().getHasFilterAccess(env) ?
+        return vendorItemCostFilter == null ? null : FilterSecurityUtils.getHasFilterAccess(env) ?
                 new FilterObject(vendorItemCostFilter) : null;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("vendor status")
+    public WorkflowEntityStatusObject getVendorStatus(final DataFetchingEnvironment env) {
+        return getWorkflowEntityStatusObject(env, VendorStatusConstants.Workflow_VENDOR_STATUS);
+    }
+
+    @GraphQLField
+    @GraphQLDescription("vendor items")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<VendorItemObject> getVendorItems(final DataFetchingEnvironment env) {
+        if(VendorSecurityUtils.getHasVendorItemsAccess(env)) {
+            var itemControl = Session.getModelController(VendorControl.class);
+            var totalCount = itemControl.countVendorItemsByVendorParty(party);
+
+            try(var objectLimiter = new ObjectLimiter(env, VendorItemConstants.COMPONENT_VENDOR_NAME, VendorItemConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = itemControl.getVendorItemsByVendorParty(party);
+                var items = entities.stream().map(VendorItemObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, items);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
     }
 
 }

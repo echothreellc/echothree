@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,8 +19,12 @@ package com.echothree.model.control.offer.server.search;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.IndexFieldVariations;
+import com.echothree.model.control.index.common.IndexFields;
+import com.echothree.model.control.index.common.IndexTypes;
 import com.echothree.model.control.index.server.analysis.SecurityRoleGroupAnalyzer;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchSortOrders;
+import com.echothree.model.control.search.common.SearchSortDirections;
 import com.echothree.model.control.search.server.search.BaseSearchEvaluator;
 import com.echothree.model.control.search.server.search.EntityInstancePKHolder;
 import com.echothree.model.data.party.server.entity.Language;
@@ -40,36 +44,31 @@ public class OfferSearchEvaluator
     /** Creates a new instance of SecurityRoleGroupSearchEvaluator */
     public OfferSearchEvaluator(UserVisit userVisit, Language language, SearchType searchType, SearchDefaultOperator searchDefaultOperator,
             SearchSortOrder searchSortOrder, SearchSortDirection searchSortDirection, SearchUseType searchUseType) {
-        super(userVisit, searchDefaultOperator, searchType, searchSortOrder, searchSortDirection, searchUseType, ComponentVendors.ECHOTHREE.name(),
-                EntityTypes.Offer.name(), IndexConstants.IndexType_OFFER, language, null);
+        super(userVisit, searchDefaultOperator, searchType, searchSortOrder, searchSortDirection, searchUseType, ComponentVendors.ECHO_THREE.name(),
+                EntityTypes.Offer.name(), IndexTypes.OFFER.name(), language, null);
         
-        setField(IndexConstants.IndexField_Description);
+        setField(IndexFields.description.name());
     }
 
     @Override
-    public SortField[] getSortFields(String searchSortOrderName) {
+    public SortField[] getSortFields(final String searchSortOrderName) {
         SortField[] sortFields = null;
-        boolean reverse = searchSortDirection.getLastDetail().getSearchSortDirectionName().equals(SearchConstants.SearchSortDirection_DESCENDING);
-        
-        switch (searchSortOrderName) {
-            case SearchConstants.SearchSortOrder_SCORE:
-                sortFields = new SortField[]{
-                    new SortField(null, SortField.Type.SCORE, reverse),
-                    new SortField(IndexConstants.IndexField_Description + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)
-                };
-                break;
-            case SearchConstants.SearchSortOrder_DESCRIPTION:
-                sortFields = new SortField[]{new SortField(IndexConstants.IndexField_Description + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)};
-                break;
-            case SearchConstants.SearchSortOrder_OFFER_NAME:
-                sortFields = new SortField[]{new SortField(IndexConstants.IndexField_OfferName + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)};
-                break;
-            case SearchConstants.SearchSortOrder_CREATED_TIME:
-                sortFields = new SortField[]{new SortField(IndexConstants.IndexField_CreatedTime, SortField.Type.LONG, reverse)};
-                break;
-            case SearchConstants.SearchSortOrder_MODIFIED_TIME:
-                sortFields = new SortField[]{new SortField(IndexConstants.IndexField_ModifiedTime, SortField.Type.LONG, reverse)};
-                break;
+        boolean reverse = searchSortDirection.getLastDetail().getSearchSortDirectionName().equals(SearchSortDirections.DESCENDING.name());
+
+        switch(SearchSortOrders.valueOf(searchSortOrderName)) {
+            case SCORE ->
+                    sortFields = new SortField[]{
+                            new SortField(null, SortField.Type.SCORE, reverse),
+                            new SortField(IndexFields.description.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(), SortField.Type.STRING, reverse)};
+            case DESCRIPTION ->
+                    sortFields = new SortField[]{new SortField(IndexFields.description.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(), SortField.Type.STRING, reverse)};
+            case OFFER_NAME ->
+                    sortFields = new SortField[]{new SortField(IndexFields.offerName.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(), SortField.Type.STRING, reverse)};
+            case CREATED_TIME ->
+                    sortFields = new SortField[]{new SortField(IndexFields.createdTime.name(), SortField.Type.LONG, reverse)};
+            case MODIFIED_TIME ->
+                    sortFields = new SortField[]{new SortField(IndexFields.modifiedTime.name(), SortField.Type.LONG, reverse)};
+            default -> {}
         }
         
         return sortFields;

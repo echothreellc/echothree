@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,21 +21,19 @@ import com.echothree.control.user.order.common.edit.OrderTimeTypeEdit;
 import com.echothree.control.user.order.common.form.EditOrderTimeTypeForm;
 import com.echothree.control.user.order.common.result.EditOrderTimeTypeResult;
 import com.echothree.control.user.order.common.result.OrderResultFactory;
-import com.echothree.control.user.order.common.spec.OrderTimeTypeSpec;
+import com.echothree.control.user.order.common.spec.OrderTimeTypeUniversalSpec;
 import com.echothree.model.control.order.server.control.OrderTimeControl;
 import com.echothree.model.control.order.server.control.OrderTypeControl;
+import com.echothree.model.control.order.server.logic.OrderTimeTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.order.server.entity.OrderTimeType;
 import com.echothree.model.data.order.server.entity.OrderTimeTypeDescription;
 import com.echothree.model.data.order.server.entity.OrderTimeTypeDetail;
-import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.order.server.value.OrderTimeTypeDescriptionValue;
 import com.echothree.model.data.order.server.value.OrderTimeTypeDetailValue;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -49,7 +47,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class EditOrderTimeTypeCommand
-        extends BaseAbstractEditCommand<OrderTimeTypeSpec, OrderTimeTypeEdit, EditOrderTimeTypeResult, OrderTimeType, OrderTimeType> {
+        extends BaseAbstractEditCommand<OrderTimeTypeUniversalSpec, OrderTimeTypeEdit, EditOrderTimeTypeResult, OrderTimeType, OrderTimeType> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
@@ -64,15 +62,19 @@ public class EditOrderTimeTypeCommand
                 )));
         
         SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("OrderTypeName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("OrderTimeTypeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("OrderTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("OrderTimeTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
                 ));
         
         EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("OrderTimeTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
-                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 ));
     }
     
@@ -93,31 +95,7 @@ public class EditOrderTimeTypeCommand
 
     @Override
     public OrderTimeType getEntity(EditOrderTimeTypeResult result) {
-        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
-        OrderTimeType orderTimeType = null;
-        String orderTypeName = spec.getOrderTypeName();
-        var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
-
-        if(orderType != null) {
-            var orderTimeControl = Session.getModelController(OrderTimeControl.class);
-            String orderTimeTypeName = spec.getOrderTimeTypeName();
-
-            if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                orderTimeType = orderTimeControl.getOrderTimeTypeByName(orderType, orderTimeTypeName);
-            } else { // EditMode.UPDATE
-                orderTimeType = orderTimeControl.getOrderTimeTypeByNameForUpdate(orderType, orderTimeTypeName);
-            }
-
-            if(orderTimeType != null) {
-                result.setOrderTimeType(orderTimeControl.getOrderTimeTypeTransfer(getUserVisit(), orderTimeType));
-            } else {
-                addExecutionError(ExecutionErrors.UnknownOrderTimeTypeName.name(), orderTypeName, orderTimeTypeName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownOrderTypeName.name(), orderTypeName);
-        }
-
-        return orderTimeType;
+        return OrderTimeTypeLogic.getInstance().getOrderTimeTypeByUniversalSpec(this, spec, false, editModeToEntityPermission(editMode));
     }
 
     @Override

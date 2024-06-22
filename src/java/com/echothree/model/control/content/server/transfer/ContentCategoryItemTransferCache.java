@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -34,26 +34,22 @@ public class ContentCategoryItemTransferCache
     boolean filterContentCatalogItem;
     boolean filterIsDefault;
     boolean filterSortOrder;
-    boolean filterEntityInstance;
-    
+
     /** Creates a new instance of ContentCategoryItemTransferCache */
     public ContentCategoryItemTransferCache(UserVisit userVisit, ContentControl contentControl) {
         super(userVisit, contentControl);
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
-            Set<String> properties = transferProperties.getProperties(ContentCategoryItemTransfer.class);
+            var properties = transferProperties.getProperties(ContentCategoryItemTransfer.class);
             
             if(properties != null) {
                 filterContentCategory = !properties.contains(ContentProperties.CONTENT_CATEGORY);
                 filterContentCatalogItem = !properties.contains(ContentProperties.CONTENT_CATALOG_ITEM);
                 filterIsDefault = !properties.contains(ContentProperties.IS_DEFAULT);
                 filterSortOrder = !properties.contains(ContentProperties.SORT_ORDER);
-                filterEntityInstance = !properties.contains(ContentProperties.ENTITY_INSTANCE);
             }
         }
-        
-        setIncludeEntityInstance(!filterEntityInstance);
     }
     
     public ContentCategoryItemTransfer getContentCategoryItemTransfer(ContentCategoryItem contentCategoryItem) {

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -47,9 +47,9 @@ public class RatingTransferCache
             
             ratingTransfer.setRatingName(ratingDetail.getRatingName());
             ratingTransfer.setRatingTypeListItem(ratingControl.getRatingTypeListItemTransfer(userVisit, ratingDetail.getRatingTypeListItem()));
-            ratingTransfer.setRatedEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, ratingDetail.getRatedEntityInstance(), false, false, false, false, false));
-            ratingTransfer.setRatedByEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, ratingDetail.getRatedByEntityInstance(), false, false, false, false, false));
-            ratingTransfer.setEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, coreControl.getEntityInstanceByBasePK(rating.getPrimaryKey()), false, false, false, false, false));
+            ratingTransfer.setRatedEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, ratingDetail.getRatedEntityInstance(), false, false, false, false, false, false));
+            ratingTransfer.setRatedByEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, ratingDetail.getRatedByEntityInstance(), false, false, false, false, false, false));
+            ratingTransfer.setEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, coreControl.getEntityInstanceByBasePK(rating.getPrimaryKey()), false, false, false, false, false, false));
             
         }
         

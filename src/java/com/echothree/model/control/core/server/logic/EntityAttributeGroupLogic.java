@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -113,7 +113,7 @@ public class EntityAttributeGroupLogic
             case 1:
                 if(entityAttributeGroupName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.EntityAttributeGroup.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.EntityAttributeGroup.name());
 
                     if(!eea.hasExecutionErrors()) {
                         entityAttributeGroup = coreControl.getEntityAttributeGroupByEntityInstance(entityInstance, entityPermission);

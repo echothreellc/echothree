@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -16,14 +16,14 @@
 <!--                                                                                  -->
 <initialData>
     <componentVendors>
-        <componentVendor componentVendorName="ECHOTHREE" commandAction="none">
-            <entityType entityTypeName="ContactMechanism" keepAllHistory="false" sortOrder="1">
+        <componentVendor componentVendorName="ECHO_THREE" commandAction="none">
+            <entityType entityTypeName="ContactMechanism" keepAllHistory="false" isExtensible="true" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Contact Mechanism" />
                 <commentType commentTypeName="CONTACT_MECHANISM" mimeTypeUsageTypeName="TEXT" sortOrder="1">
                     <commentTypeDescription languageIsoName="en" description="Contact Mechanism" />
                 </commentType>
             </entityType>
-            <entityType entityTypeName="Order" keepAllHistory="false" sortOrder="1">
+            <entityType entityTypeName="Order" keepAllHistory="false" isExtensible="true" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Order" />
                 <messageType messageTypeName="EXAMPLE_SALES_ORDER" mimeTypeUsageTypeName="TEXT" sortOrder="0">
                     <messageTypeDescription languageIsoName="en" description="Example Sales Order Message Type" />
@@ -42,7 +42,7 @@
                     <message messageName="STRING_1" includeByDefault="false" isDefault="true" sortOrder="0" stringMessage="String 1" />
                 </messageType>
             </entityType>
-            <entityType entityTypeName="Party" keepAllHistory="false" sortOrder="1">
+            <entityType entityTypeName="Party" keepAllHistory="false" isExtensible="true" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Party" />
                 <commentType commentTypeName="CUSTOMER_ORDER_ENTRY" mimeTypeUsageTypeName="TEXT" sortOrder="1">
                     <commentTypeDescription languageIsoName="en" description="Order Entry" />
@@ -54,37 +54,37 @@
                     <commentTypeDescription languageIsoName="en" description="Purchasing" />
                 </commentType>
             </entityType>
-            <entityType entityTypeName="PartyPaymentMethod" keepAllHistory="true" sortOrder="1">
+            <entityType entityTypeName="PartyPaymentMethod" keepAllHistory="true" isExtensible="true" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Party Payment Method" />
                 <commentType commentTypeName="PARTY_PAYMENT_METHOD" mimeTypeUsageTypeName="TEXT" sortOrder="1">
                     <commentTypeDescription languageIsoName="en" description="Party Payment Method" />
                 </commentType>
             </entityType>
-            <entityType entityTypeName="PartyContactList" keepAllHistory="false" sortOrder="1">
+            <entityType entityTypeName="PartyContactList" keepAllHistory="false" isExtensible="true" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Party Contact List" />
                 <commentType commentTypeName="PARTY_CONTACT_LIST" mimeTypeUsageTypeName="TEXT" sortOrder="1">
                     <commentTypeDescription languageIsoName="en" description="Party Contact List" />
                 </commentType>
             </entityType>
-            <entityType entityTypeName="PaymentMethod" keepAllHistory="false" sortOrder="1">
+            <entityType entityTypeName="PaymentMethod" keepAllHistory="false" isExtensible="true" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Payment Method" />
                 <commentType commentTypeName="PAYMENT_METHOD" mimeTypeUsageTypeName="TEXT" sortOrder="1">
                     <commentTypeDescription languageIsoName="en" description="Payment Method" />
                 </commentType>
             </entityType>
-            <entityType entityTypeName="PaymentProcessor" keepAllHistory="false" sortOrder="1">
+            <entityType entityTypeName="PaymentProcessor" keepAllHistory="false" isExtensible="true" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Payment Processor" />
                 <commentType commentTypeName="PAYMENT_PROCESSOR" mimeTypeUsageTypeName="TEXT" sortOrder="1">
                     <commentTypeDescription languageIsoName="en" description="Payment Processor" />
                 </commentType>
             </entityType>
-            <entityType entityTypeName="ShippingMethod" keepAllHistory="false" sortOrder="1">
+            <entityType entityTypeName="ShippingMethod" keepAllHistory="false" isExtensible="true" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Shipping Method" />
                 <commentType commentTypeName="SHIPPING_METHOD" mimeTypeUsageTypeName="TEXT" sortOrder="1">
                     <commentTypeDescription languageIsoName="en" description="Shipping Method" />
                 </commentType>
             </entityType>
-            <entityType entityTypeName="VendorItem" keepAllHistory="false" sortOrder="1">
+            <entityType entityTypeName="VendorItem" keepAllHistory="false" isExtensible="true" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Vendor Item" />
                 <commentType commentTypeName="VENDOR_ITEM_PURCHASING" mimeTypeUsageTypeName="TEXT" sortOrder="1">
                     <commentTypeDescription languageIsoName="en" description="Purchasing" />

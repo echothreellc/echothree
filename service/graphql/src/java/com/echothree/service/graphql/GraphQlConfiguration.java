@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 // Copyright 2016 Yurii Rashkovskii and Contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,9 +29,9 @@ public class GraphQlConfiguration {
         return new Builder(invocationInputFactory);
     }
 
-    public static GraphQlConfiguration build(GraphQlConfiguration.Builder builder) {
-        return builder.build();
-    }
+//    public static GraphQlConfiguration build(GraphQlConfiguration.Builder builder) {
+//        return builder.build();
+//    }
 
     private GraphQlConfiguration(GraphQlInvocationInputFactory invocationInputFactory, GraphQlQueryInvoker queryInvoker) {
         this.invocationInputFactory = invocationInputFactory;
@@ -52,18 +52,18 @@ public class GraphQlConfiguration {
         private GraphQlInvocationInputFactory invocationInputFactory;
         private GraphQlQueryInvoker queryInvoker = GraphQlQueryInvoker.newBuilder().build();
 
-        private Builder(GraphQlInvocationInputFactory.Builder invocationInputFactoryBuilder) {
-            this.invocationInputFactoryBuilder = invocationInputFactoryBuilder;
-        }
+//        private Builder(GraphQlInvocationInputFactory.Builder invocationInputFactoryBuilder) {
+//            this.invocationInputFactoryBuilder = invocationInputFactoryBuilder;
+//        }
 
         private Builder(GraphQlInvocationInputFactory invocationInputFactory) {
             this.invocationInputFactory = invocationInputFactory;
         }
 
-        public Builder with(GraphQlQueryInvoker queryInvoker) {
-            this.queryInvoker = queryInvoker;
-            return this;
-        }
+//        public Builder with(GraphQlQueryInvoker queryInvoker) {
+//            this.queryInvoker = queryInvoker;
+//            return this;
+//        }
 
         public GraphQlConfiguration build() {
             return new GraphQlConfiguration(

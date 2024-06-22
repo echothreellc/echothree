@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,6 +17,10 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteEntityMultipleListItemAttributeForm;
+import com.echothree.model.control.core.common.EntityAttributeTypes;
+import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityListItem;
@@ -27,61 +31,65 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class DeleteEntityMultipleListItemAttributeCommand
         extends BaseSimpleCommand<DeleteEntityMultipleListItemAttributeForm> {
-    
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-        new FieldDefinition("EntityRef", FieldType.ENTITY_REF, true, null, null),
-        new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, true, null, null),
-        new FieldDefinition("EntityListItemName", FieldType.ENTITY_NAME, true, null, null)
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), null)
         ));
+
+        FORM_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null),
+                new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityAttributeUlid", FieldType.ULID, false, null, null),
+                new FieldDefinition("EntityListItemName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityListItemUlid", FieldType.ULID, false, null, null)
+        );
     }
     
     /** Creates a new instance of DeleteEntityMultipleListItemAttributeCommand */
     public DeleteEntityMultipleListItemAttributeCommand(UserVisitPK userVisitPK, DeleteEntityMultipleListItemAttributeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
-        String entityRef = form.getEntityRef();
-        EntityInstance entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
-        
-        if(entityInstance != null) {
-            String entityAttributeName = form.getEntityAttributeName();
-            EntityAttribute entityAttribute = coreControl.getEntityAttributeByName(entityInstance.getEntityType(), entityAttributeName);
-            
-            if(entityAttribute != null) {
-                String entityListItemName = form.getEntityListItemName();
-                EntityListItem entityListItem = coreControl.getEntityListItemByName(entityAttribute, entityListItemName);
-                
-                if(entityListItem != null) {
-                    EntityMultipleListItemAttribute entityMultipleListItemAttribute = coreControl.getEntityMultipleListItemAttributeForUpdate(entityAttribute,
-                            entityInstance, entityListItem);
-                    
-                    if(entityMultipleListItemAttribute != null) {
-                        coreControl.deleteEntityMultipleListItemAttribute(entityMultipleListItemAttribute, getPartyPK());
+        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
+
+        if(!hasExecutionErrors()) {
+            var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttribute(this, entityInstance, form, form,
+                    EntityAttributeTypes.MULTIPLELISTITEM);
+
+            if(!hasExecutionErrors()) {
+                var entityListItem = EntityAttributeLogic.getInstance().getEntityListItem(this, entityAttribute, form);
+
+                if(!hasExecutionErrors()) {
+                    var coreControl = getCoreControl();
+                    var entityListItemAttribute = coreControl.getEntityMultipleListItemAttributeForUpdate(entityAttribute, entityInstance, entityListItem);
+
+                    if(entityListItemAttribute != null) {
+                        coreControl.deleteEntityMultipleListItemAttribute(entityListItemAttribute, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.UnknownEntityMultipleListItemAttribute.name());
                     }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownEntityListItemName.name(), entityListItemName);
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownEntityAttributeName.name(), entityAttributeName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownEntityRef.name(), entityRef);
         }
-        
+
         return null;
     }
     

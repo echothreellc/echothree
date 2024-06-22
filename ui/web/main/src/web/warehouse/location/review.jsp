@@ -1,7 +1,7 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" %>
 
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -20,33 +20,42 @@
 
 <html:html xhtml="true">
     <head>
-        <title>Review (<c:out value="${location.locationName}" />)</title>
+        <title>
+            <fmt:message key="pageTitle.location">
+                <fmt:param value="${location.locationName}" />
+            </fmt:message>
+        </title>
         <html:base/>
         <%@ include file="../../include/environment.jsp" %>
     </head>
     <body>
         <div id="Header">
             <h2>
-                <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
-                <a href="<c:url value="/action/Warehouse/Main" />">Warehouses</a> &gt;&gt;
-                <a href="<c:url value="/action/Warehouse/Warehouse/Main" />">Warehouses</a> &gt;&gt;
+                <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
+                <a href="<c:url value="/action/Warehouse/Main" />"><fmt:message key="navigation.warehouses" /></a> &gt;&gt;
+                <a href="<c:url value="/action/Warehouse/Warehouse/Main" />"><fmt:message key="navigation.warehouses" /></a> &gt;&gt;
+                <et:countWarehouseResults searchTypeName="EMPLOYEE" countVar="warehouseResultsCount" commandResultVar="countWarehouseResultsCommandResult" logErrors="false" />
+                <c:if test="${warehouseResultsCount > 0}">
+                    <a href="<c:url value="/action/Warehouse/Warehouse/Result" />"><fmt:message key="navigation.results" /></a> &gt;&gt;
+                </c:if>
                 <c:url var="locationsUrl" value="/action/Warehouse/Location/Main">
                     <c:param name="WarehouseName" value="${location.warehouse.warehouseName}" />
                 </c:url>
-                <a href="${locationsUrl}">Locations</a> &gt;&gt;
+                <a href="${locationsUrl}"><fmt:message key="navigation.locations" /></a> &gt;&gt;
                 Review (<c:out value="${location.locationName}" />)
             </h2>
         </div>
         <div id="Content">
-            <p><font size="+2"><b><c:out value="${location.description}" /></b></font></p>
+            <p><font size="+2"><b><et:appearance appearance="${warehouse.entityInstance.entityAppearance.appearance}"><c:out value="${location.description}" /></et:appearance></b></font></p>
+            <p><font size="+1"><et:appearance appearance="${warehouse.entityInstance.entityAppearance.appearance}">${location.locationName}</et:appearance></font></p>
             <br />
-            Warehouse: <c:out value="${location.warehouse.partyGroup.name}" /><br />
-            Location Name: ${location.locationName}<br />
-            Location Type: <c:out value="${location.locationType.description}" /><br />
-            Location Use Type: <c:out value="${location.locationUseType.description}" /><br />
-            Velocity: ${location.velocity}<br />
-            Inventory Location Group: <c:out value="${location.inventoryLocationGroup.description}" /><br />
-            Status: <c:out value="${location.locationStatus.workflowStep.description}" />
+            <fmt:message key="label.warehouse" />: <c:out value="${location.warehouse.partyGroup.name}" /><br />
+            <fmt:message key="label.locationName" />: ${location.locationName}<br />
+            <fmt:message key="label.locationType" />: <c:out value="${location.locationType.description}" /><br />
+            <fmt:message key="label.locationUseType" />: <c:out value="${location.locationUseType.description}" /><br />
+            <fmt:message key="label.velocity" />: ${location.velocity}<br />
+            <fmt:message key="label.inventoryLocationGroup" />: <c:out value="${location.inventoryLocationGroup.description}" /><br />
+            <fmt:message key="label.locationStatus" />: <c:out value="${location.locationStatus.workflowStep.description}" />
             <c:url var="editUrl" value="/action/Warehouse/Location/LocationStatus">
                 <c:param name="WarehouseName" value="${location.warehouse.warehouseName}" />
                 <c:param name="LocationName" value="${location.locationName}" />
@@ -55,10 +64,10 @@
             <br />
             <br />
             <br />
-            Location Volume:
+            <fmt:message key="label.locationVolume" />:
             <c:choose>
                 <c:when test="${locationVolume == null}">
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     Height: <c:out value="${locationVolume.height}" />,
@@ -69,7 +78,7 @@
             <br />
             <br />
             <br />
-            <h2>Location Capacities</h2>
+            <h2><fmt:message key="label.locationCapacities" /></h2>
             <c:url var="addUrl" value="/action/Warehouse/Location/LocationCapacityAdd">
                 <c:param name="WarehouseName" value="${location.warehouse.warehouseName}" />
                 <c:param name="LocationName" value="${location.locationName}" />
@@ -112,7 +121,7 @@
                     <br />
                 </c:otherwise>
             </c:choose>
-            <h2>Location Name Elements</h2>
+            <h2><fmt:message key="label.locationNameElements" /></h2>
             <display:table name="locationNameElements" id="locationNameElement" class="displaytag">
                 <display:column titleKey="columnTitle.locationNameElement">
                     <c:out value="${locationNameElement.description}" />
@@ -122,20 +131,16 @@
                 </display:column>
             </display:table>
             <br />
-            Created: <c:out value="${location.entityInstance.entityTime.createdTime}" /><br />
-            <c:if test='${location.entityInstance.entityTime.modifiedTime != null}'>
-                Modified: <c:out value="${location.entityInstance.entityTime.modifiedTime}" /><br />
-            </c:if>
-            <c:if test='${location.entityInstance.entityTime.deletedTime != null}'>
-                Deleted: <c:out value="${location.entityInstance.entityTime.deletedTime}" /><br />
-            </c:if>
-            <et:checkSecurityRoles securityRoles="Event.List" />
-            <et:hasSecurityRole securityRole="Event.List">
-                <c:url var="eventsUrl" value="/action/Core/Event/Main">
-                    <c:param name="EntityRef" value="${location.entityInstance.entityRef}" />
-                </c:url>
-                <a href="${eventsUrl}">Events</a>
-            </et:hasSecurityRole>
+            <c:set var="tagScopes" scope="request" value="${location.tagScopes}" />
+            <c:set var="entityAttributeGroups" scope="request" value="${location.entityAttributeGroups}" />
+            <c:set var="entityInstance" scope="request" value="${location.entityInstance}" />
+            <c:url var="returnUrl" scope="request" value="/../action/Warehouse/Location/Review">
+                <c:param name="WarehouseName" value="${location.warehouse.warehouseName}" />
+                <c:param name="LocationName" value="${location.locationName}" />
+            </c:url>
+            <jsp:include page="../../include/tagScopes.jsp" />
+            <jsp:include page="../../include/entityAttributeGroups.jsp" />
+            <jsp:include page="../../include/entityInstance.jsp" />
         </div>
         <jsp:include page="../../include/userSession.jsp" />
         <jsp:include page="../../include/copyright.jsp" />

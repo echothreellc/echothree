@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,72 +18,92 @@ package com.echothree.control.user.accounting.server.command;
 
 import com.echothree.control.user.accounting.common.form.GetGlAccountsForm;
 import com.echothree.control.user.accounting.common.result.AccountingResultFactory;
-import com.echothree.control.user.accounting.common.result.GetGlAccountsResult;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
+import com.echothree.model.control.accounting.server.logic.GlAccountCategoryLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.accounting.server.entity.GlAccount;
 import com.echothree.model.data.accounting.server.entity.GlAccountCategory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.Collection;
 import java.util.List;
 
 public class GetGlAccountsCommand
-        extends BaseSimpleCommand<GetGlAccountsForm> {
+        extends BaseMultipleEntitiesCommand<GlAccount, GetGlAccountsForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
-                    new SecurityRoleDefinition(SecurityRoleGroups.GlAccount.name(), SecurityRoles.List.name())
-                    )))
-                )));
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.GlAccount.name(), SecurityRoles.List.name())
+                ))
+        ));
         
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("GlAccountCategoryName", FieldType.ENTITY_NAME, false, null, null)
-                ));
+        );
     }
     
     /** Creates a new instance of GetGlAccountsCommand */
     public GetGlAccountsCommand(UserVisitPK userVisitPK, GetGlAccountsForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    GlAccountCategory glAccountCategory = null;
+
     @Override
-    protected BaseResult execute() {
-        var accountingControl = Session.getModelController(AccountingControl.class);
-        GetGlAccountsResult result = AccountingResultFactory.getGetGlAccountsResult();
-        String glAccountCategoryName = form.getGlAccountCategoryName();
-        GlAccountCategory glAccountCategory = glAccountCategoryName == null? null: accountingControl.getGlAccountCategoryByName(glAccountCategoryName);
-        
-        if(glAccountCategoryName == null || glAccountCategory != null) {
-            if(glAccountCategory == null) {
-                result.setGlAccounts(accountingControl.getGlAccountTransfers(getUserVisit()));
-            } else {
-                UserVisit userVisit = getUserVisit();
-                
-                result.setGlAccountCategory(accountingControl.getGlAccountCategoryTransfer(userVisit, glAccountCategory));
-                result.setGlAccounts(accountingControl.getGlAccountTransfersByGlAccountCategory(userVisit, glAccountCategory));
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownGlAccountCategoryName.name(), glAccountCategoryName);
+    protected Collection<GlAccount> getEntities() {
+        var glAccountCategoryName = form.getGlAccountCategoryName();
+        Collection<GlAccount> glAccounts = null;
+
+        // Optionally allow the list of GlAccounts to be narrowed by the GlAccountCategory.
+        if(glAccountCategoryName != null) {
+            glAccountCategory = GlAccountCategoryLogic.getInstance().getGlAccountCategoryByName(this, glAccountCategoryName);
         }
-        
+
+        if(!hasExecutionErrors()) {
+            var accountingControl = Session.getModelController(AccountingControl.class);
+
+            glAccounts = glAccountCategory == null ?
+                    accountingControl.getGlAccounts() :
+                    accountingControl.getGlAccountsByGlAccountCategory(glAccountCategory);
+        }
+
+        return glAccounts;
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<GlAccount> entities) {
+        var result = AccountingResultFactory.getGetGlAccountsResult();
+
+        if(entities != null) {
+            var accountingControl = Session.getModelController(AccountingControl.class);
+
+            if(glAccountCategory == null) {
+                result.setGlAccountCount(accountingControl.countGlAccounts());
+                result.setGlAccounts(accountingControl.getGlAccountTransfers(getUserVisit(), entities));
+            } else {
+                var userVisit = getUserVisit();
+
+                result.setGlAccountCount(accountingControl.countGlAccountsByGlAccountCategory(glAccountCategory));
+                result.setGlAccountCategory(accountingControl.getGlAccountCategoryTransfer(userVisit, glAccountCategory));
+                result.setGlAccounts(accountingControl.getGlAccountTransfers(userVisit, entities));
+            }
+        }
+
         return result;
     }
-    
+
 }

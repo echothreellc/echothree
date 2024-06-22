@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.CreateItemDescriptionForm;
+import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.item.server.control.ItemControl;
@@ -37,12 +38,12 @@ import com.echothree.model.data.item.server.entity.ItemImageDescriptionType;
 import com.echothree.model.data.item.server.entity.ItemImageType;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
-import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.persistence.type.ByteArray;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -82,10 +83,11 @@ public class CreateItemDescriptionCommand
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
 
-    protected void createItemDescription(ItemControl itemControl, ItemDescriptionType itemDescriptionType, Item item, Language language, MimeType mimeType,
+    protected ItemDescription createItemDescription(ItemControl itemControl, ItemDescriptionType itemDescriptionType, Item item, Language language, MimeType mimeType,
             BasePK createdBy, ByteArray blobDescription, String clobDescription, String stringDescription, MimeTypeUsageType mimeTypeUsageType) {
         ItemImageType itemImageType = null;
         ImageDimensions imageDimensions = null;
+        ItemDescription itemDescription = null;
 
         if(mimeTypeUsageType != null) {
             String mimeTypeUsageTypeName = mimeTypeUsageType.getMimeTypeUsageTypeName();
@@ -142,7 +144,7 @@ public class CreateItemDescriptionCommand
         }
 
         if(!hasExecutionErrors()) {
-            ItemDescription itemDescription = itemControl.createItemDescription(itemDescriptionType, item, language, mimeType,
+            itemDescription = itemControl.createItemDescription(itemDescriptionType, item, language, mimeType,
                     createdBy);
 
             if(blobDescription != null) {
@@ -160,13 +162,17 @@ public class CreateItemDescriptionCommand
                 ItemDescriptionLogic.getInstance().deleteItemImageDescriptionChildren(itemDescription, createdBy);
             }
         }
+
+        return itemDescription;
     }
     
     @Override
     protected BaseResult execute() {
+        var result = ItemResultFactory.getCreateItemDescriptionResult();
         var itemControl = Session.getModelController(ItemControl.class);
         String itemName = form.getItemName();
         Item item = itemControl.getItemByName(itemName);
+        ItemDescription itemDescription = null;
         
         if(item != null) {
             String itemDescriptionTypeName = form.getItemDescriptionTypeName();
@@ -179,7 +185,8 @@ public class CreateItemDescriptionCommand
                 
                 if(language != null) {
                     BasePK createdBy = getPartyPK();
-                    ItemDescription itemDescription = itemControl.getItemDescription(itemDescriptionType, item, language);
+
+                    itemDescription = itemControl.getItemDescription(itemDescriptionType, item, language);
                     
                     if(itemDescription == null) {
                         String mimeTypeName = form.getMimeTypeName();
@@ -189,7 +196,7 @@ public class CreateItemDescriptionCommand
                                 String stringDescription = form.getStringDescription();
                                 
                                 if(stringDescription != null) {
-                                    createItemDescription(itemControl, itemDescriptionType, item, language, null, createdBy, null,
+                                    itemDescription = createItemDescription(itemControl, itemDescriptionType, item, language, null, createdBy, null,
                                             null, stringDescription, null);
                                 } else {
                                     addExecutionError(ExecutionErrors.MissingStringDescription.name());
@@ -216,7 +223,7 @@ public class CreateItemDescriptionCommand
                                             ByteArray blobDescription = form.getBlobDescription();
                                             
                                             if(blobDescription != null) {
-                                                createItemDescription(itemControl, itemDescriptionType, item, language, mimeType,
+                                                itemDescription = createItemDescription(itemControl, itemDescriptionType, item, language, mimeType,
                                                         createdBy, blobDescription, null, null, mimeTypeUsageType);
                                             } else {
                                                 addExecutionError(ExecutionErrors.MissingBlobDescription.name());
@@ -225,7 +232,7 @@ public class CreateItemDescriptionCommand
                                             String clobDescription = form.getClobDescription();
                                             
                                             if(clobDescription != null) {
-                                                createItemDescription(itemControl, itemDescriptionType, item, language, mimeType,
+                                                itemDescription = createItemDescription(itemControl, itemDescriptionType, item, language, mimeType,
                                                         createdBy, null, clobDescription, null, mimeTypeUsageType);
                                             } else {
                                                 addExecutionError(ExecutionErrors.MissingClobDescription.name());
@@ -257,7 +264,16 @@ public class CreateItemDescriptionCommand
             addExecutionError(ExecutionErrors.UnknownItemName.name(), itemName);
         }
         
-        return null;
+        if(itemDescription != null) {
+            var itemDescriptionDetail = itemDescription.getLastDetail();
+
+            result.setItemName(itemDescriptionDetail.getItem().getLastDetail().getItemName());
+            result.setItemDescriptionTypeName(itemDescriptionDetail.getItemDescriptionType().getLastDetail().getItemDescriptionTypeName());
+            result.setLanguageIsoName(itemDescriptionDetail.getLanguage().getLanguageIsoName());
+            result.setEntityRef(itemDescription.getPrimaryKey().getEntityRef());
+        }
+
+        return result;
     }
     
 }

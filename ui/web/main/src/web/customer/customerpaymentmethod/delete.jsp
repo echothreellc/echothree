@@ -1,7 +1,7 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" %>
 
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -27,7 +27,7 @@
     <body>
         <div id="Header">
             <h2>
-                <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
+                <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
                 <a href="<c:url value="/action/Customer/Main" />">Customers</a> &gt;&gt;
                 <a href="<c:url value="/action/Customer/Customer/Main" />">Search</a> &gt;&gt;
                 <et:countCustomerResults searchTypeName="ORDER_ENTRY" countVar="customerResultsCount" commandResultVar="countCustomerResultsCommandResult" logErrors="false" />
@@ -53,10 +53,10 @@
                     </et:executionErrors>
                 </c:when>
                 <c:otherwise>
-                    <p>You are about to delete the <c:out value="${fn:toLowerCase(partyEntityType.entityType.description)}" />,
+                    <p>You are about to delete the <c:out value="${fn:toLowerCase(partyEntityType.entityType.description)}" />
                         <c:choose>
                             <c:when test="${partyPaymentMethod.description == null}">
-                                <c:out value="${partyPaymentMethod.partyPaymentMethodName}" />.
+                                &quot;<c:out value="${partyPaymentMethod.partyPaymentMethodName}" />.&quot;
                             </c:when>
                             <c:otherwise>
                                 &quot;<c:out value="${partyPaymentMethod.description}" />.&quot;

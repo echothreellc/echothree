@@ -1,7 +1,7 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" %>
 
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -27,7 +27,7 @@
     <body>
         <div id="Header">
             <h2>
-                <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
+                <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
                 <a href="<c:url value="/action/Customer/Main" />">Customers</a> &gt;&gt;
                 <a href="<c:url value="/action/Customer/Customer/Main" />">Search</a> &gt;&gt;
                 <et:countCustomerResults searchTypeName="ORDER_ENTRY" countVar="customerResultsCount" commandResultVar="countCustomerResultsCommandResult" logErrors="false" />
@@ -86,12 +86,12 @@
                 <display:column titleKey="columnTitle.unitPrice" class="amount">
                     <c:out value="${wishlistLine.unitAmount}" />
                 </display:column>
-                <display:column titleKey="columnTitle.priority" sortable="true" sortProperty="wishlistTypePriority.wishlistTypePriorityName">
-                    <c:url var="wishlistTypePriorityUrl" value="/action/Inventory/InventoryCondition/Review">
-                        <c:param name="WishlistTypeName" value="${wishlistLine.wishlistTypePriority.wishlistType.wishlistTypeName}" />
-                        <c:param name="WishlistTypePriorityName" value="${wishlistLine.wishlistTypePriority.wishlistTypePriorityName}" />
+                <display:column titleKey="columnTitle.priority" sortable="true" sortProperty="wishlistPriority.wishlistPriorityName">
+                    <c:url var="wishlistPriorityUrl" value="/action/Inventory/InventoryCondition/Review">
+                        <c:param name="WishlistTypeName" value="${wishlistLine.wishlistPriority.wishlistType.wishlistTypeName}" />
+                        <c:param name="WishlistPriorityName" value="${wishlistLine.wishlistPriority.wishlistPriorityName}" />
                     </c:url>
-                    <a href="${wishlistTypePriorityUrl}"><c:out value="${wishlistLine.wishlistTypePriority.description}" /></a>
+                    <a href="${wishlistPriorityUrl}"><c:out value="${wishlistLine.wishlistPriority.description}" /></a>
                 </display:column>
                 <et:hasSecurityRole securityRole="Event.List">
                     <display:column>

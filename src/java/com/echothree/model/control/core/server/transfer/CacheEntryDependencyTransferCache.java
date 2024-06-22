@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,22 +24,25 @@ import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.CacheEntryDependency;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
+import com.echothree.util.server.persistence.Session;
 import java.util.Set;
 
 public class CacheEntryDependencyTransferCache
         extends BaseCoreTransferCache<CacheEntryDependency, CacheEntryDependencyTransfer> {
-    
+
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+
     TransferProperties transferProperties;
     boolean filterCacheEntry;
     boolean filterEntityInstance;
     
     /** Creates a new instance of CacheEntryTransferCache */
-    public CacheEntryDependencyTransferCache(UserVisit userVisit, CoreControl coreControl) {
-        super(userVisit, coreControl);
+    public CacheEntryDependencyTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
-            Set<String> properties = transferProperties.getProperties(CacheEntryDependencyTransfer.class);
+            var properties = transferProperties.getProperties(CacheEntryDependencyTransfer.class);
             
             if(properties != null) {
                 filterCacheEntry = !properties.contains(CoreProperties.CACHE_ENTRY);
@@ -53,7 +56,7 @@ public class CacheEntryDependencyTransferCache
         
         if(cacheEntryDependencyTransfer == null) {
             CacheEntryTransfer cacheEntry = filterCacheEntry ? null : coreControl.getCacheEntryTransfer(userVisit, cacheEntryDependency.getCacheEntry());
-            EntityInstanceTransfer entityInstance = filterEntityInstance ? null : coreControl.getEntityInstanceTransfer(userVisit, cacheEntryDependency.getEntityInstance(), false, false, false, false, false);
+            EntityInstanceTransfer entityInstance = filterEntityInstance ? null : coreControl.getEntityInstanceTransfer(userVisit, cacheEntryDependency.getEntityInstance(), false, false, false, false, false, false);
 
             cacheEntryDependencyTransfer = new CacheEntryDependencyTransfer(cacheEntry, entityInstance);
             put(cacheEntryDependency, cacheEntryDependencyTransfer);

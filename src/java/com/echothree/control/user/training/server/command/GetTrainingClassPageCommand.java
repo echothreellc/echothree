@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -110,7 +110,7 @@ public class GetTrainingClassPageCommand
 
                             result.setTrainingClassPage(trainingControl.getTrainingClassPageTransfer(userVisit, trainingClassPage));
 
-                            sendEventUsingNames(trainingClassPage.getPrimaryKey(), EventTypes.READ.name(), null, null, partyPK);
+                            sendEvent(trainingClassPage.getPrimaryKey(), EventTypes.READ, null, null, partyPK);
 
                             if(partyTrainingClassSessionStatus != null) {
                                 PartyTrainingClassSessionPage partyTrainingClassSessionPage = trainingControl.createPartyTrainingClassSessionPage(partyTrainingClassSession,

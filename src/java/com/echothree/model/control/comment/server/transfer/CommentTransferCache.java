@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -83,13 +83,13 @@ public class CommentTransferCache
             
             commentTransfer.setCommentName(commentDetail.getCommentName());
             commentTransfer.setCommentType(commentControl.getCommentTypeTransfer(userVisit, commentType));
-            commentTransfer.setCommentedEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, commentDetail.getCommentedEntityInstance(), false, false, false, false, false));
-            commentTransfer.setCommentedByEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, commentDetail.getCommentedByEntityInstance(), false, false, false, false, false));
+            commentTransfer.setCommentedEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, commentDetail.getCommentedEntityInstance(), false, false, false, false, false, false));
+            commentTransfer.setCommentedByEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, commentDetail.getCommentedByEntityInstance(), false, false, false, false, false, false));
             commentTransfer.setLanguage(partyControl.getLanguageTransfer(userVisit, commentDetail.getLanguage()));
             commentTransfer.setDescription(commentDetail.getDescription());
             MimeType mimeType = commentDetail.getMimeType();
             commentTransfer.setMimeType(mimeType == null? null: coreControl.getMimeTypeTransfer(userVisit, mimeType));
-            commentTransfer.setEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, entityInstance, false, false, false, false, false));
+            commentTransfer.setEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, entityInstance, false, false, false, false, false, false));
             
             if(includeString) {
                 CommentString commentString = commentControl.getCommentString(comment);

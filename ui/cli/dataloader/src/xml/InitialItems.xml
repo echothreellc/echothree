@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -406,6 +406,12 @@
             <partyInventoryLevel warehouseName="WAREHOUSE_1" inventoryConditionName="GOOD" minimumInventoryUnitOfMeasureTypeName="EACH"
                 minimumInventory="10" maximumInventoryUnitOfMeasureTypeName="EACH" maximumInventory="100"
                 reorderQuantityUnitOfMeasureTypeName="EACH" reorderQuantity="20" />
+            <!--
+            <entityAliases>
+                <entityAlias entityAliasTypeName="TEST_ENTITY_ALIAS_TYPE" alias="1234" />
+            </entityAliases>
+            -->
+            <!--
             <entityAttributes>
                 <entityNameAttribute entityAttributeName="EXAMPLE_NAME" nameAttribute="NAME_ATTRIBUTE" />
                 <entityIntegerAttribute entityAttributeName="EXAMPLE_INTEGER" integerAttribute="500" />
@@ -418,6 +424,7 @@
                     <entityMultipleListItemAttribute entityListItemName="CHOICE_2" />
                 </entityMultipleListItemAttributes>
             </entityAttributes>
+            -->
         </item>
         <item itemName="KIT_MEMBER_1" itemTypeName="REGULAR" itemUseTypeName="REGULAR" itemCategoryName="DEFAULT" itemAccountingCategoryName="DEFAULT"
         itemPurchasingCategoryName="DEFAULT" itemDeliveryTypeName="PHYSICAL" itemInventoryTypeName="INVENTORY"  inventorySerialized="false" shippingChargeExempt="false"

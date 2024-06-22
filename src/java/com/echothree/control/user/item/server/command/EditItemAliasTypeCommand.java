@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,22 +21,19 @@ import com.echothree.control.user.item.common.edit.ItemEditFactory;
 import com.echothree.control.user.item.common.form.EditItemAliasTypeForm;
 import com.echothree.control.user.item.common.result.EditItemAliasTypeResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
-import com.echothree.control.user.item.common.spec.ItemAliasTypeSpec;
+import com.echothree.control.user.item.common.spec.ItemAliasTypeUniversalSpec;
 import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.item.server.logic.ItemAliasTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.item.server.entity.ItemAliasChecksumType;
 import com.echothree.model.data.item.server.entity.ItemAliasType;
-import com.echothree.model.data.item.server.entity.ItemAliasTypeDescription;
-import com.echothree.model.data.item.server.entity.ItemAliasTypeDetail;
 import com.echothree.model.data.item.server.value.ItemAliasTypeDescriptionValue;
-import com.echothree.model.data.item.server.value.ItemAliasTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -47,7 +44,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class EditItemAliasTypeCommand
-        extends BaseAbstractEditCommand<ItemAliasTypeSpec, ItemAliasTypeEdit, EditItemAliasTypeResult, ItemAliasType, ItemAliasType> {
+        extends BaseAbstractEditCommand<ItemAliasTypeUniversalSpec, ItemAliasTypeEdit, EditItemAliasTypeResult, ItemAliasType, ItemAliasType> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
@@ -62,7 +59,11 @@ public class EditItemAliasTypeCommand
                 )));
         
         SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("ItemAliasTypeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("ItemAliasTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
                 ));
         
         EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
@@ -72,7 +73,7 @@ public class EditItemAliasTypeCommand
                 new FieldDefinition("AllowMultiple", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
-                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 ));
     }
     
@@ -93,23 +94,8 @@ public class EditItemAliasTypeCommand
     
     @Override
     public ItemAliasType getEntity(EditItemAliasTypeResult result) {
-        var itemControl = Session.getModelController(ItemControl.class);
-        ItemAliasType itemAliasType = null;
-        String itemAliasTypeName = spec.getItemAliasTypeName();
-
-        if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            itemAliasType = itemControl.getItemAliasTypeByName(itemAliasTypeName);
-        } else { // EditMode.UPDATE
-            itemAliasType = itemControl.getItemAliasTypeByNameForUpdate(itemAliasTypeName);
-        }
-
-        if(itemAliasType != null) {
-            result.setItemAliasType(itemControl.getItemAliasTypeTransfer(getUserVisit(), itemAliasType));
-        } else {
-            addExecutionError(ExecutionErrors.UnknownItemAliasTypeName.name(), itemAliasTypeName);
-        }
-
-        return itemAliasType;
+        return ItemAliasTypeLogic.getInstance().getItemAliasTypeByUniversalSpec(this,
+                spec, false, editModeToEntityPermission(editMode));
     }
     
     @Override
@@ -119,18 +105,18 @@ public class EditItemAliasTypeCommand
     
     @Override
     public void fillInResult(EditItemAliasTypeResult result, ItemAliasType itemAliasType) {
-        var itemControl = Session.getModelController(ItemControl.class);
+        final var itemControl = Session.getModelController(ItemControl.class);
         
         result.setItemAliasType(itemControl.getItemAliasTypeTransfer(getUserVisit(), itemAliasType));
     }
     
-    ItemAliasChecksumType itemAliasChecksumType = null;
+    ItemAliasChecksumType itemAliasChecksumType;
     
     @Override
     public void doLock(ItemAliasTypeEdit edit, ItemAliasType itemAliasType) {
-        var itemControl = Session.getModelController(ItemControl.class);
-        ItemAliasTypeDescription itemAliasTypeDescription = itemControl.getItemAliasTypeDescription(itemAliasType, getPreferredLanguage());
-        ItemAliasTypeDetail itemAliasTypeDetail = itemAliasType.getLastDetail();
+        final var itemControl = Session.getModelController(ItemControl.class);
+        final var itemAliasTypeDescription = itemControl.getItemAliasTypeDescription(itemAliasType, getPreferredLanguage());
+        final var itemAliasTypeDetail = itemAliasType.getLastDetail();
         
         edit.setItemAliasTypeName(itemAliasTypeDetail.getItemAliasTypeName());
         edit.setValidationPattern(itemAliasTypeDetail.getValidationPattern());
@@ -146,12 +132,12 @@ public class EditItemAliasTypeCommand
         
     @Override
     public void canUpdate(ItemAliasType itemAliasType) {
-        var itemControl = Session.getModelController(ItemControl.class);
-        String itemAliasTypeName = edit.getItemAliasTypeName();
-        ItemAliasType duplicateItemAliasType = itemControl.getItemAliasTypeByName(itemAliasTypeName);
+        final var itemControl = Session.getModelController(ItemControl.class);
+        final var itemAliasTypeName = edit.getItemAliasTypeName();
+        final var duplicateItemAliasType = itemControl.getItemAliasTypeByName(itemAliasTypeName);
 
         if(duplicateItemAliasType == null || itemAliasType.equals(duplicateItemAliasType)) {
-            String itemAliasChecksumTypeName = edit.getItemAliasChecksumTypeName();
+            final var itemAliasChecksumTypeName = edit.getItemAliasChecksumTypeName();
 
             itemAliasChecksumType = itemControl.getItemAliasChecksumTypeByName(itemAliasChecksumTypeName);
 
@@ -165,11 +151,11 @@ public class EditItemAliasTypeCommand
     
     @Override
     public void doUpdate(ItemAliasType itemAliasType) {
-        var itemControl = Session.getModelController(ItemControl.class);
-        var partyPK = getPartyPK();
-        ItemAliasTypeDetailValue itemAliasTypeDetailValue = itemControl.getItemAliasTypeDetailValueForUpdate(itemAliasType);
-        ItemAliasTypeDescription itemAliasTypeDescription = itemControl.getItemAliasTypeDescriptionForUpdate(itemAliasType, getPreferredLanguage());
-        String description = edit.getDescription();
+        final var itemControl = Session.getModelController(ItemControl.class);
+        final var partyPK = getPartyPK();
+        final var itemAliasTypeDetailValue = itemControl.getItemAliasTypeDetailValueForUpdate(itemAliasType);
+        final var itemAliasTypeDescription = itemControl.getItemAliasTypeDescriptionForUpdate(itemAliasType, getPreferredLanguage());
+        final var description = edit.getDescription();
 
         itemAliasTypeDetailValue.setItemAliasTypeName(edit.getItemAliasTypeName());
         itemAliasTypeDetailValue.setValidationPattern(edit.getValidationPattern());
@@ -178,7 +164,7 @@ public class EditItemAliasTypeCommand
         itemAliasTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         itemAliasTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        itemControl.updateItemAliasTypeFromValue(itemAliasTypeDetailValue, partyPK);
+        ItemAliasTypeLogic.getInstance().updateItemAliasTypeFromValue(session, itemAliasTypeDetailValue, partyPK);
 
         if(itemAliasTypeDescription == null && description != null) {
             itemControl.createItemAliasTypeDescription(itemAliasType, getPreferredLanguage(), description, partyPK);

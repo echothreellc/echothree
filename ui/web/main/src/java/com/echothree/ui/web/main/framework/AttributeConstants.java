@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -443,10 +443,10 @@ public interface AttributeConstants {
     String RECOVERY_QUESTIONS = "recoveryQuestions";
     String RECOVERY_QUESTION_NAME = "recoveryQuestionName";
     String RECOVERY_QUESTION_DESCRIPTIONS = "recoveryQuestionDescriptions";
-    String WISHLIST_TYPE_PRIORITY = "wishlistTypePriority";
-    String WISHLIST_TYPE_PRIORITY_NAME = "wishlistTypePriorityName";
-    String WISHLIST_TYPE_PRIORITY_DESCRIPTIONS = "wishlistTypePriorityDescriptions";
-    String WISHLIST_TYPE_PRIORITIES = "wishlistTypePriorities";
+    String WISHLIST_TYPE_PRIORITY = "wishlistPriority";
+    String WISHLIST_TYPE_PRIORITY_NAME = "wishlistPriorityName";
+    String WISHLIST_TYPE_PRIORITY_DESCRIPTIONS = "wishlistPriorityDescriptions";
+    String WISHLIST_TYPE_PRIORITIES = "wishlistPriorities";
     String LOCATION_TYPE_NAME = "locationTypeName";
     String LOCATION_NAME_ELEMENT_NAME = "locationNameElementName";
     String LOCATION_VOLUME = "locationVolume";
@@ -1079,5 +1079,12 @@ public interface AttributeConstants {
     String QUEUE_TYPE_DESCRIPTION = "queueTypeDescription";
     String QUEUE_TYPE_DESCRIPTIONS = "queueTypeDescriptions";
     String CREATED_BY_ENTITY_INSTANCE = "createdByEntityInstance";
-    
+    String WAREHOUSE_RESULT = "warehouseResult";
+    String WAREHOUSE_RESULTS = "warehouseResults";
+    String WAREHOUSE_RESULT_COUNT = "warehouseResultCount";
+    String WAREHOUSE_COUNT = "warehouseCount";
+    String WAREHOUSE_TYPE = "warehouseType";
+    String WAREHOUSE_TYPES = "warehouseTypes";
+    String WAREHOUSE_TYPE_COUNT = "warehouseTypeCount";
+
 }

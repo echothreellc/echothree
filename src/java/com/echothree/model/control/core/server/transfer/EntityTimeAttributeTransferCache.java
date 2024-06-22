@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,13 +23,16 @@ import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityTimeAttribute;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class EntityTimeAttributeTransferCache
         extends BaseCoreTransferCache<EntityTimeAttribute, EntityTimeAttributeTransfer> {
-    
+
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+
     /** Creates a new instance of EntityTimeAttributeTransferCache */
-    public EntityTimeAttributeTransferCache(UserVisit userVisit, CoreControl coreControl) {
-        super(userVisit, coreControl);
+    public EntityTimeAttributeTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
     
     public EntityTimeAttributeTransfer getEntityTimeAttributeTransfer(EntityTimeAttribute entityTimeAttribute, EntityInstance entityInstance) {
@@ -37,7 +40,7 @@ public class EntityTimeAttributeTransferCache
         
         if(entityTimeAttributeTransfer == null) {
             EntityAttributeTransfer entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityTimeAttribute.getEntityAttribute(), entityInstance) : null;
-            EntityInstanceTransfer entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityTimeAttribute.getEntityInstance(), false, false, false, false, false);
+            EntityInstanceTransfer entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityTimeAttribute.getEntityInstance(), false, false, false, false, false, false);
             Long unformattedTimeAttribute = entityTimeAttribute.getTimeAttribute();
             String timeAttribute = formatTypicalDateTime(unformattedTimeAttribute);
             

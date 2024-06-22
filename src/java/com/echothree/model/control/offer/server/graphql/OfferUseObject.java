@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -52,19 +52,19 @@ public class OfferUseObject
     @GraphQLField
     @GraphQLDescription("offer")
     public OfferObject getOffer(final DataFetchingEnvironment env) {
-        return OfferSecurityUtils.getInstance().getHasUseAccess(env) ? new OfferObject(getOfferUseDetail().getOffer()) : null;
+        return OfferSecurityUtils.getHasUseAccess(env) ? new OfferObject(getOfferUseDetail().getOffer()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("use")
     public UseObject getUse(final DataFetchingEnvironment env) {
-        return OfferSecurityUtils.getInstance().getHasUseAccess(env) ? new UseObject(getOfferUseDetail().getUse()) : null;
+        return OfferSecurityUtils.getHasUseAccess(env) ? new UseObject(getOfferUseDetail().getUse()) : null;
     }
     
     @GraphQLField
     @GraphQLDescription("sales order sequence")
     public SequenceObject getSalesOrderSequence(final DataFetchingEnvironment env) {
-        if(SequenceSecurityUtils.getInstance().getHasSequenceAccess(env)) {
+        if(SequenceSecurityUtils.getHasSequenceAccess(env)) {
             var salesOrderSequence = getOfferUseDetail().getSalesOrderSequence();
 
             return salesOrderSequence == null ? null : new SequenceObject(salesOrderSequence);

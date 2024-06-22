@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,8 +21,9 @@ import com.echothree.control.user.order.common.edit.OrderTypeEdit;
 import com.echothree.control.user.order.common.form.EditOrderTypeForm;
 import com.echothree.control.user.order.common.result.EditOrderTypeResult;
 import com.echothree.control.user.order.common.result.OrderResultFactory;
-import com.echothree.control.user.order.common.spec.OrderTypeSpec;
+import com.echothree.control.user.order.common.spec.OrderTypeUniversalSpec;
 import com.echothree.model.control.order.server.control.OrderTypeControl;
+import com.echothree.model.control.order.server.logic.OrderTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -37,10 +38,10 @@ import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -51,7 +52,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class EditOrderTypeCommand
-        extends BaseAbstractEditCommand<OrderTypeSpec, OrderTypeEdit, EditOrderTypeResult, OrderType, OrderType> {
+        extends BaseAbstractEditCommand<OrderTypeUniversalSpec, OrderTypeEdit, EditOrderTypeResult, OrderType, OrderType> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
@@ -66,7 +67,11 @@ public class EditOrderTypeCommand
                 )));
         
         SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("OrderTypeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("OrderTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
                 ));
         
         EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
@@ -77,7 +82,7 @@ public class EditOrderTypeCommand
                 new FieldDefinition("OrderWorkflowEntranceName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
-                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 ));
     }
     
@@ -103,9 +108,9 @@ public class EditOrderTypeCommand
         String orderTypeName = spec.getOrderTypeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
+            orderType = OrderTypeLogic.getInstance().getOrderTypeByUniversalSpec(this, spec, false);
         } else { // EditMode.UPDATE
-            orderType = orderTypeControl.getOrderTypeByNameForUpdate(orderTypeName);
+            orderType = OrderTypeLogic.getInstance().getOrderTypeByUniversalSpecForUpdate(this, spec, false);
         }
 
         if(orderType != null) {
@@ -229,7 +234,7 @@ public class EditOrderTypeCommand
         orderTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         orderTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        orderTypeControl.updateOrderTypeFromValue(orderTypeDetailValue, partyPK);
+        OrderTypeLogic.getInstance().updateOrderTypeFromValue(orderTypeDetailValue, partyPK);
 
         if(orderTypeDescription == null && description != null) {
             orderTypeControl.createOrderTypeDescription(orderType, getPreferredLanguage(), description, partyPK);

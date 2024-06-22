@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -55,6 +55,7 @@ import java.io.IOException;
 import java.util.BitSet;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Set;
 import javax.enterprise.inject.spi.Unmanaged;
 import javax.imageio.IIOImage;
@@ -185,8 +186,8 @@ public class ItemDescriptionAction
         // continue to exist.
         String itemName = itemDescriptionNames.itemName;
         StringBuilder fqn = new StringBuilder(fqnItemDescription).append('/')
-                .append(itemDescriptionNames.languageIsoName.toLowerCase()).append('/')
-                .append(itemDescriptionNames.itemDescriptionTypeName.toLowerCase()).append('/');
+                .append(itemDescriptionNames.languageIsoName.toLowerCase(Locale.getDefault())).append('/')
+                .append(itemDescriptionNames.itemDescriptionTypeName.toLowerCase(Locale.getDefault())).append('/');
 
         // Must prefer to use the itemName over the itemNames.
         if(itemName == null) {
@@ -197,10 +198,10 @@ public class ItemDescriptionAction
                     fqn.append(':');
                 }
                 
-                fqn.append(itemNames[i].toLowerCase());
+                fqn.append(itemNames[i].toLowerCase(Locale.getDefault()));
             }
         } else {
-            fqn.append(itemDescriptionNames.itemName.toLowerCase());
+            fqn.append(itemDescriptionNames.itemName.toLowerCase(Locale.getDefault()));
         }
                 
         return fqn.toString();

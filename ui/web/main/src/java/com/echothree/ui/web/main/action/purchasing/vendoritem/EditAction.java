@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -62,7 +62,7 @@ public class EditAction
         String vendorName = request.getParameter(ParameterConstants.VENDOR_NAME);
         String originalVendorItemName = request.getParameter(ParameterConstants.ORIGINAL_VENDOR_ITEM_NAME);
         EditVendorItemForm commandForm = VendorUtil.getHome().getEditVendorItemForm();
-        VendorItemSpec spec = VendorUtil.getHome().getVendorItemSpec();
+        var spec = VendorUtil.getHome().getVendorItemUniversalSpec();
         
         if(vendorName == null)
             vendorName = actionForm.getVendorName();

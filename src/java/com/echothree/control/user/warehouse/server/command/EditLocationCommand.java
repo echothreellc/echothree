@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,42 +23,51 @@ import com.echothree.control.user.warehouse.common.result.EditLocationResult;
 import com.echothree.control.user.warehouse.common.result.WarehouseResultFactory;
 import com.echothree.control.user.warehouse.common.spec.LocationSpec;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
+import com.echothree.model.control.warehouse.server.logic.LocationLogic;
+import com.echothree.model.control.warehouse.server.logic.LocationUseTypeLogic;
 import com.echothree.model.data.inventory.server.entity.InventoryLocationGroup;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.warehouse.server.entity.Location;
 import com.echothree.model.data.warehouse.server.entity.LocationDescription;
 import com.echothree.model.data.warehouse.server.entity.LocationDetail;
-import com.echothree.model.data.warehouse.server.entity.LocationNameElement;
-import com.echothree.model.data.warehouse.server.entity.LocationNameElementDetail;
 import com.echothree.model.data.warehouse.server.entity.LocationType;
-import com.echothree.model.data.warehouse.server.entity.LocationUseType;
 import com.echothree.model.data.warehouse.server.entity.Warehouse;
 import com.echothree.model.data.warehouse.server.value.LocationDescriptionValue;
 import com.echothree.model.data.warehouse.server.value.LocationDetailValue;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class EditLocationCommand
         extends BaseEditCommand<LocationSpec, LocationEdit> {
-    
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
     
     static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.Location.name(), SecurityRoles.Edit.name())
+                ))
+        ));
+
         SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
             new FieldDefinition("WarehouseName", FieldType.ENTITY_NAME, true, null, null),
             new FieldDefinition("LocationName", FieldType.ENTITY_NAME, true, null, null)
@@ -70,13 +79,13 @@ public class EditLocationCommand
             new FieldDefinition("LocationUseTypeName", FieldType.ENTITY_NAME, true, null, null),
             new FieldDefinition("Velocity", FieldType.UNSIGNED_INTEGER, true, null, null),
             new FieldDefinition("InventoryLocationGroupName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+            new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         ));
     }
     
     /** Creates a new instance of EditLocationCommand */
     public EditLocationCommand(UserVisitPK userVisitPK, EditLocationForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override
@@ -131,41 +140,13 @@ public class EditLocationCommand
                         LocationType locationType = warehouseControl.getLocationTypeByName(warehouseParty, locationTypeName);
                         
                         if(locationType != null) {
-                            Collection locationNameElements = warehouseControl.getLocationNameElementsByLocationType(locationType);
-                            int endIndex = 0;
-                            boolean validLocationName = true;
-                            
-                            for(Iterator iter = locationNameElements.iterator(); iter.hasNext() && validLocationName;) {
-                                LocationNameElement locationNameElement = (LocationNameElement)iter.next();
-                                LocationNameElementDetail locationNameElementDetail = locationNameElement.getLastDetail();
-                                String validationPattern = locationNameElementDetail.getValidationPattern();
+                            LocationLogic.getInstance().validateLocationName(this, locationType, locationName);
+
+                            if(!hasExecutionErrors()) {
+                                var locationUseTypeName = edit.getLocationUseTypeName();
+                                var locationUseType = LocationUseTypeLogic.getInstance().getLocationUseTypeByName(this, locationUseTypeName, null, false);
                                 
-                                if(validationPattern != null) {
-                                    try {
-                                        Pattern pattern = Pattern.compile(validationPattern);
-                                        int beginIndex = locationNameElementDetail.getOffset();
-                                        
-                                        endIndex = beginIndex + locationNameElementDetail.getLength();
-                                        String substr = locationName.substring(beginIndex, endIndex);
-                                        Matcher m = pattern.matcher(substr);
-                                        
-                                        if(!m.matches()) {
-                                            validLocationName = false;
-                                        }
-                                    } catch (IndexOutOfBoundsException ioobe) {
-                                        validLocationName = false;
-                                    }
-                                }
-                            }
-                            
-                            if(locationName.length() > endIndex)
-                                validLocationName = false;
-                            
-                            if(validLocationName) {
-                                String locationUseTypeName = edit.getLocationUseTypeName();
-                                LocationUseType locationUseType = warehouseControl.getLocationUseTypeByName(locationUseTypeName);
-                                
-                                if(locationUseType != null) {
+                                if(!hasExecutionErrors()) {
                                     boolean multipleUseError = false;
                                     
                                     if(!locationUseType.getAllowMultiple()) {
@@ -216,11 +197,7 @@ public class EditLocationCommand
                                     } else {
                                         addExecutionError(ExecutionErrors.MultipleLocationUseTypesNotAllowed.name());
                                     }
-                                } else {
-                                    addExecutionError(ExecutionErrors.UnknownLocationUseTypeName.name(), locationUseTypeName);
                                 }
-                            } else {
-                                addExecutionError(ExecutionErrors.InvalidLocationName.name(), locationName);
                             }
                         } else {
                             addExecutionError(ExecutionErrors.UnknownLocationTypeName.name(), locationTypeName);

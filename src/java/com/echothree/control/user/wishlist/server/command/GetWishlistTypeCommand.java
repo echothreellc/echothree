@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,51 +17,60 @@
 package com.echothree.control.user.wishlist.server.command;
 
 import com.echothree.control.user.wishlist.common.form.GetWishlistTypeForm;
-import com.echothree.control.user.wishlist.common.result.GetWishlistTypeResult;
 import com.echothree.control.user.wishlist.common.result.WishlistResultFactory;
+import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
+import com.echothree.model.control.wishlist.server.logic.WishlistTypeLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.wishlist.server.entity.WishlistType;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class GetWishlistTypeCommand
-        extends BaseSimpleCommand<GetWishlistTypeForm> {
-    
+        extends BaseSingleEntityCommand<WishlistType, GetWishlistTypeForm> {
+
+    // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-            new FieldDefinition("WishlistTypeName", FieldType.ENTITY_NAME, true, null, null)
-        ));
+        FORM_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("WishlistTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
+        );
     }
     
     /** Creates a new instance of GetWishlistTypeCommand */
     public GetWishlistTypeCommand(UserVisitPK userVisitPK, GetWishlistTypeForm form) {
         super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var wishlistControl = Session.getModelController(WishlistControl.class);
-        GetWishlistTypeResult result = WishlistResultFactory.getGetWishlistTypeResult();
-        String wishlistTypeName = form.getWishlistTypeName();
-        WishlistType wishlistType = wishlistControl.getWishlistTypeByName(wishlistTypeName);
-        
+    protected WishlistType getEntity() {
+        var wishlistType = WishlistTypeLogic.getInstance().getWishlistTypeByUniversalSpec(this, form, true);
+
         if(wishlistType != null) {
-            result.setWishlistType(wishlistControl.getWishlistTypeTransfer(getUserVisit(), wishlistType));
-            result.setWishlistTypePriorities(wishlistControl.getWishlistTypePriorityTransfers(getUserVisit(), wishlistType));
-        } else {
-            addExecutionError(ExecutionErrors.UnknownWishlistTypeName.name(), wishlistTypeName);
+            sendEvent(wishlistType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
-        
+
+        return wishlistType;
+    }
+
+    @Override
+    protected BaseResult getResult(WishlistType itemAliasType) {
+        var wishlistControl = Session.getModelController(WishlistControl.class);
+        var result = WishlistResultFactory.getGetWishlistTypeResult();
+
+        if(itemAliasType != null) {
+            result.setWishlistType(wishlistControl.getWishlistTypeTransfer(getUserVisit(), itemAliasType));
+        }
+
         return result;
     }
     

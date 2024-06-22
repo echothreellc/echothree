@@ -1,7 +1,7 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" %>
 
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -27,7 +27,7 @@
     <body>
         <div id="Header">
             <h2>
-                <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
+                <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
                 <a href="<c:url value="/action/Payment/Main" />">Payment</a> &gt;&gt;
                 <a href="<c:url value="/action/Payment/PaymentMethod/Main" />">Payment Methods</a> &gt;&gt;
                 Review (<c:out value="${paymentMethod.paymentMethodName}" />)
@@ -80,20 +80,20 @@
                     Request Name On Card:
                     <c:choose>
                         <c:when test="${paymentMethod.requestNameOnCard}">
-                            Yes
+                            <fmt:message key="phrase.yes" />
                         </c:when>
                         <c:otherwise>
-                            No
+                            <fmt:message key="phrase.no" />
                         </c:otherwise>
                     </c:choose>
                     <br />
                     Require Name On Card:
                     <c:choose>
                         <c:when test="${paymentMethod.requireNameOnCard}">
-                            Yes
+                            <fmt:message key="phrase.yes" />
                         </c:when>
                         <c:otherwise>
-                            No
+                            <fmt:message key="phrase.no" />
                         </c:otherwise>
                     </c:choose>
                     <br />
@@ -101,10 +101,10 @@
                     Check Card Number:
                     <c:choose>
                         <c:when test="${paymentMethod.checkCardNumber}">
-                            Yes
+                            <fmt:message key="phrase.yes" />
                         </c:when>
                         <c:otherwise>
-                            No
+                            <fmt:message key="phrase.no" />
                         </c:otherwise>
                     </c:choose>
                     <br />
@@ -112,30 +112,30 @@
                     Request Expiration Date:
                     <c:choose>
                         <c:when test="${paymentMethod.requestExpirationDate}">
-                            Yes
+                            <fmt:message key="phrase.yes" />
                         </c:when>
                         <c:otherwise>
-                            No
+                            <fmt:message key="phrase.no" />
                         </c:otherwise>
                     </c:choose>
                     <br />
                     Require Expiration Date:
                     <c:choose>
                         <c:when test="${paymentMethod.requireExpirationDate}">
-                            Yes
+                            <fmt:message key="phrase.yes" />
                         </c:when>
                         <c:otherwise>
-                            No
+                            <fmt:message key="phrase.no" />
                         </c:otherwise>
                     </c:choose>
                     <br />
                     Check Expiration Date:
                     <c:choose>
                         <c:when test="${paymentMethod.checkExpirationDate}">
-                            Yes
+                            <fmt:message key="phrase.yes" />
                         </c:when>
                         <c:otherwise>
-                            No
+                            <fmt:message key="phrase.no" />
                         </c:otherwise>
                     </c:choose>
                     <br />
@@ -143,20 +143,20 @@
                     Request Security Code:
                     <c:choose>
                         <c:when test="${paymentMethod.requestSecurityCode}">
-                            Yes
+                            <fmt:message key="phrase.yes" />
                         </c:when>
                         <c:otherwise>
-                            No
+                            <fmt:message key="phrase.no" />
                         </c:otherwise>
                     </c:choose>
                     <br />
                     Require Security Code:
                     <c:choose>
                         <c:when test="${paymentMethod.requireSecurityCode}">
-                            Yes
+                            <fmt:message key="phrase.yes" />
                         </c:when>
                         <c:otherwise>
-                            No
+                            <fmt:message key="phrase.no" />
                         </c:otherwise>
                     </c:choose>
                     <br />
@@ -167,20 +167,20 @@
                     Retain Credit Card:
                     <c:choose>
                         <c:when test="${paymentMethod.retainCreditCard}">
-                            Yes
+                            <fmt:message key="phrase.yes" />
                         </c:when>
                         <c:otherwise>
-                            No
+                            <fmt:message key="phrase.no" />
                         </c:otherwise>
                     </c:choose>
                     <br />
                     Retain Security Code:
                     <c:choose>
                         <c:when test="${paymentMethod.retainSecurityCode}">
-                            Yes
+                            <fmt:message key="phrase.yes" />
                         </c:when>
                         <c:otherwise>
-                            No
+                            <fmt:message key="phrase.no" />
                         </c:otherwise>
                     </c:choose>
                     <br />
@@ -188,20 +188,20 @@
                     Request Billing:
                     <c:choose>
                         <c:when test="${paymentMethod.requestBilling}">
-                            Yes
+                            <fmt:message key="phrase.yes" />
                         </c:when>
                         <c:otherwise>
-                            No
+                            <fmt:message key="phrase.no" />
                         </c:otherwise>
                     </c:choose>
                     <br />
                     Require Billing:
                     <c:choose>
                         <c:when test="${paymentMethod.requireBilling}">
-                            Yes
+                            <fmt:message key="phrase.yes" />
                         </c:when>
                         <c:otherwise>
-                            No
+                            <fmt:message key="phrase.no" />
                         </c:otherwise>
                     </c:choose>
                     <br />
@@ -209,20 +209,20 @@
                     Request Issuer:
                     <c:choose>
                         <c:when test="${paymentMethod.requestIssuer}">
-                            Yes
+                            <fmt:message key="phrase.yes" />
                         </c:when>
                         <c:otherwise>
-                            No
+                            <fmt:message key="phrase.no" />
                         </c:otherwise>
                     </c:choose>
                     <br />
                     Require Issuer:
                     <c:choose>
                         <c:when test="${paymentMethod.requireIssuer}">
-                            Yes
+                            <fmt:message key="phrase.yes" />
                         </c:when>
                         <c:otherwise>
-                            No
+                            <fmt:message key="phrase.no" />
                         </c:otherwise>
                     </c:choose>
                     <br />

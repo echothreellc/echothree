@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -59,14 +59,14 @@ public class GetPaymentProcessorTypeCommand
         PaymentProcessorType paymentProcessorType = PaymentProcessorTypeLogic.getInstance().getPaymentProcessorTypeByUniversalSpec(this, form, true);
 
         if(paymentProcessorType != null) {
-            sendEventUsingNames(paymentProcessorType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(paymentProcessorType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return paymentProcessorType;
     }
     
     @Override
-    protected BaseResult getTransfer(PaymentProcessorType paymentProcessorType) {
+    protected BaseResult getResult(PaymentProcessorType paymentProcessorType) {
         var paymentProcessorTypeControl = Session.getModelController(PaymentProcessorTypeControl.class);
         GetPaymentProcessorTypeResult result = PaymentResultFactory.getGetPaymentProcessorTypeResult();
 

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -49,10 +49,14 @@ public class DeleteEntityListItemCommand
                 )));
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
-                new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("EntityListItemName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null),
+                new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, false, null, null),
+                new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityListItemName", FieldType.ENTITY_NAME, false, null, null)
                 ));
     }
     
@@ -63,12 +67,7 @@ public class DeleteEntityListItemCommand
     
     @Override
     protected BaseResult execute() {
-        String componentVendorName = form.getComponentVendorName();
-        String entityTypeName = form.getEntityTypeName();
-        String entityAttributeName = form.getEntityAttributeName();
-        String entityListItemName = form.getEntityListItemName();
-        EntityListItem entityListItem = EntityAttributeLogic.getInstance().getEntityListItemByNameForUpdate(this, componentVendorName,
-                entityTypeName, entityAttributeName, entityListItemName);
+        var entityListItem = EntityAttributeLogic.getInstance().getEntityListItemByUniversalSpecForUpdate(this, form);
         
         if(!hasExecutionErrors()) {
             EntityAttributeLogic.getInstance().deleteEntityListItem(this, entityListItem, getPartyPK());

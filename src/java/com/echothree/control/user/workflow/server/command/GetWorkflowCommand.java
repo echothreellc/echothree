@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -70,14 +70,14 @@ public class GetWorkflowCommand
         var workflow = WorkflowLogic.getInstance().getWorkflowByUniversalSpec(this, form);
 
         if(workflow != null) {
-            sendEventUsingNames(workflow.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(workflow.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return workflow;
     }
 
     @Override
-    protected BaseResult getTransfer(Workflow workflow) {
+    protected BaseResult getResult(Workflow workflow) {
         var result = WorkflowResultFactory.getGetWorkflowResult();
 
         if(workflow != null) {

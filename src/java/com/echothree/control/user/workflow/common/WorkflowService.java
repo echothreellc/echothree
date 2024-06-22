@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -30,24 +30,6 @@ public interface WorkflowService
     String ping();
     
     // --------------------------------------------------------------------------------
-    //   Workflow Types
-    // --------------------------------------------------------------------------------
-    
-    CommandResult createWorkflowType(UserVisitPK userVisitPK, CreateWorkflowTypeForm form);
-
-    CommandResult getWorkflowType(UserVisitPK userVisitPK, GetWorkflowTypeForm form);
-
-    CommandResult getWorkflowTypes(UserVisitPK userVisitPK, GetWorkflowTypesForm form);
-
-    CommandResult getWorkflowTypeChoices(UserVisitPK userVisitPK, GetWorkflowTypeChoicesForm form);
-    
-    // --------------------------------------------------------------------------------
-    //   Workflow Type Descriptions
-    // --------------------------------------------------------------------------------
-    
-    CommandResult createWorkflowTypeDescription(UserVisitPK userVisitPK, CreateWorkflowTypeDescriptionForm form);
-    
-    // --------------------------------------------------------------------------------
     //   Workflow Step Types
     // --------------------------------------------------------------------------------
     
@@ -74,6 +56,8 @@ public interface WorkflowService
     CommandResult getWorkflow(UserVisitPK userVisitPK, GetWorkflowForm form);
     
     CommandResult getWorkflows(UserVisitPK userVisitPK, GetWorkflowsForm form);
+
+    CommandResult getWorkflowChoices(UserVisitPK userVisitPK, GetWorkflowChoicesForm form);
     
     CommandResult editWorkflow(UserVisitPK userVisitPK, EditWorkflowForm form);
     

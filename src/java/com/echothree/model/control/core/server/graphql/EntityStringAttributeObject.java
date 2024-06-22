@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,80 +16,62 @@
 
 package com.echothree.model.control.core.server.graphql;
 
-import com.echothree.control.user.core.server.command.GetEntityAttributeCommand;
-import com.echothree.control.user.party.server.command.GetLanguageCommand;
-import com.echothree.model.control.graphql.server.util.BaseGraphQl;
-import com.echothree.model.control.party.server.graphql.LanguageObject;
+import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.graphql.server.graphql.HistoryInterface;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
+import com.echothree.model.data.core.common.EntityStringAttributeConstants;
 import com.echothree.model.data.core.server.entity.EntityStringAttribute;
-import com.echothree.util.server.control.BaseSingleEntityCommand;
+import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
 
 @GraphQLDescription("entity string attribute object")
 @GraphQLName("EntityStringAttribute")
 public class EntityStringAttributeObject
-        extends BaseGraphQl {
-    
-    private final EntityStringAttribute entityStringAttribute; // Always Present
-    
+        extends BaseEntityStringAttributeObject
+        implements AttributeInterface, HistoryInterface<EntityStringAttributeHistoryObject> {
+
     public EntityStringAttributeObject(EntityStringAttribute entityStringAttribute) {
-        this.entityStringAttribute = entityStringAttribute;
+        super(entityStringAttribute);
     }
 
-    private Boolean hasEntityAttributeAccess;
-    
-    private boolean getHasEntityAttributeAccess(final DataFetchingEnvironment env) {
-        if(hasEntityAttributeAccess == null) {
-            var baseSingleEntityCommand = new GetEntityAttributeCommand(getUserVisitPK(env), null);
-            
-            baseSingleEntityCommand.security();
-            
-            hasEntityAttributeAccess = !baseSingleEntityCommand.hasSecurityMessages();
-        }
-        
-        return hasEntityAttributeAccess;
-    }
-        
-    private Boolean hasLanguageAccess;
-    
-    private boolean getHasLanguageAccess(final DataFetchingEnvironment env) {
-        if(hasLanguageAccess == null) {
-            var baseSingleEntityCommand = new GetLanguageCommand(getUserVisitPK(env), null);
-            
-            baseSingleEntityCommand.security();
-            
-            hasLanguageAccess = !baseSingleEntityCommand.hasSecurityMessages();
-        }
-        
-        return hasLanguageAccess;
-    }
-        
+    @Override
     @GraphQLField
-    @GraphQLDescription("string attribute")
+    @GraphQLDescription("history")
     @GraphQLNonNull
-    public String getStringAttribute() {
-        return entityStringAttribute.getStringAttribute();
-    }
-    
-    @GraphQLField
-    @GraphQLDescription("entity attribute")
-    public EntityAttributeObject getEntityAttribute(final DataFetchingEnvironment env) {
-        return getHasEntityAttributeAccess(env) ? new EntityAttributeObject(entityStringAttribute.getEntityAttribute(), entityStringAttribute.getEntityInstance()) : null;
-    }
-    
-    @GraphQLField
-    @GraphQLDescription("language")
-    public LanguageObject getLanguage(final DataFetchingEnvironment env) {
-        return getHasLanguageAccess(env) ? new LanguageObject(entityStringAttribute.getLanguage()) : null;
-    }
-    
-    @GraphQLField
-    @GraphQLDescription("entity instance")
-    public EntityInstanceObject getEntityInstance(final DataFetchingEnvironment env) {
-        return new EntityInstanceObject(entityStringAttribute.getEntityInstance());
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<EntityStringAttributeHistoryObject> getHistory(final DataFetchingEnvironment env) {
+        if(true) { // TODO: Security Check
+            var coreControl = Session.getModelController(CoreControl.class);
+            var entityAttribute = entityStringAttribute.getEntityAttribute();
+            var entityInstance = entityStringAttribute.getEntityInstance();
+            var language = entityStringAttribute.getLanguage();
+            var totalCount = coreControl.countEntityStringAttributeHistory(entityAttribute, entityInstance, language);
+
+            try(var objectLimiter = new ObjectLimiter(env, EntityStringAttributeConstants.COMPONENT_VENDOR_NAME, EntityStringAttributeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = coreControl.getEntityStringAttributeHistory(entityAttribute, entityInstance, language);
+                var entityObjects = new ArrayList<EntityStringAttributeHistoryObject>(entities.size());
+
+                for(var entity : entities) {
+                    var entityObject = new EntityStringAttributeHistoryObject(entity);
+
+                    entityObjects.add(entityObject);
+                }
+
+                return new CountedObjects<>(objectLimiter, entityObjects);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
     }
     
 }

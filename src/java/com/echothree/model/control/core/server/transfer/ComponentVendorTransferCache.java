@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -34,12 +34,12 @@ public class ComponentVendorTransferCache
     boolean filterEntityInstance;
 
     /** Creates a new instance of ComponentVendorTransferCache */
-    public ComponentVendorTransferCache(UserVisit userVisit, CoreControl coreControl) {
-        super(userVisit, coreControl);
+    public ComponentVendorTransferCache(UserVisit userVisit) {
+        super(userVisit);
 
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
-            Set<String> properties = transferProperties.getProperties(ComponentVendorTransfer.class);
+            var properties = transferProperties.getProperties(ComponentVendorTransfer.class);
             
             if(properties != null) {
                 filterComponentVendorName = !properties.contains(CoreProperties.COMPONENT_VENDOR_NAME);

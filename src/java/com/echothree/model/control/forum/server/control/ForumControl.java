@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -188,6 +188,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -232,12 +233,12 @@ public class ForumControl
         forumGroup.setLastDetail(forumGroupDetail);
         forumGroup.store();
         
-        sendEventUsingNames(forumGroup.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(forumGroup.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return forumGroup;
     }
     
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.ForumGroup */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ForumGroup */
     public ForumGroup getForumGroupByEntityInstance(EntityInstance entityInstance) {
         ForumGroupPK pk = new ForumGroupPK(entityInstance.getEntityUniqueId());
         ForumGroup forumGroup = ForumGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
@@ -344,7 +345,7 @@ public class ForumControl
         return getForumTransferCaches(userVisit).getForumGroupTransferCache().getForumGroupTransfer(forumGroup);
     }
     
-    public List<ForumGroupTransfer> getForumGroupTransfers(UserVisit userVisit, List<ForumGroup> forumGroups) {
+    public List<ForumGroupTransfer> getForumGroupTransfers(UserVisit userVisit, Collection<ForumGroup> forumGroups) {
         List<ForumGroupTransfer> forumGroupTransfers = new ArrayList<>(forumGroups.size());
         ForumGroupTransferCache forumGroupTransferCache = getForumTransferCaches(userVisit).getForumGroupTransferCache();
         
@@ -379,7 +380,7 @@ public class ForumControl
             forumGroup.setActiveDetail(forumGroupDetail);
             forumGroup.setLastDetail(forumGroupDetail);
             
-            sendEventUsingNames(forumGroupPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(forumGroupPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -392,7 +393,7 @@ public class ForumControl
         forumGroup.setActiveDetail(null);
         forumGroup.store();
         
-        sendEventUsingNames(forumGroup.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(forumGroup.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -403,7 +404,7 @@ public class ForumControl
         ForumGroupDescription forumGroupDescription = ForumGroupDescriptionFactory.getInstance().create(forumGroup,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(forumGroup.getPrimaryKey(), EventTypes.MODIFY.name(), forumGroupDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(forumGroup.getPrimaryKey(), EventTypes.MODIFY, forumGroupDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return forumGroupDescription;
     }
@@ -552,14 +553,14 @@ public class ForumControl
             forumGroupDescription = ForumGroupDescriptionFactory.getInstance().create(forumGroup, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(forumGroup.getPrimaryKey(), EventTypes.MODIFY.name(), forumGroupDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(forumGroup.getPrimaryKey(), EventTypes.MODIFY, forumGroupDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteForumGroupDescription(ForumGroupDescription forumGroupDescription, BasePK deletedBy) {
         forumGroupDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(forumGroupDescription.getForumGroupPK(), EventTypes.MODIFY.name(), forumGroupDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(forumGroupDescription.getForumGroupPK(), EventTypes.MODIFY, forumGroupDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteForumGroupDescriptionsByForumGroup(ForumGroup forumGroup, BasePK deletedBy) {
@@ -587,12 +588,12 @@ public class ForumControl
         forum.setLastDetail(forumDetail);
         forum.store();
         
-        sendEventUsingNames(forum.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(forum.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return forum;
     }
     
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.Forum */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Forum */
     public Forum getForumByEntityInstance(EntityInstance entityInstance) {
         ForumPK pk = new ForumPK(entityInstance.getEntityUniqueId());
         Forum forum = ForumFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
@@ -737,15 +738,16 @@ public class ForumControl
             forum.setActiveDetail(forumDetail);
             forum.setLastDetail(forumDetail);
             
-            sendEventUsingNames(forumPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(forumPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
-    public void touchForumsByForumThread(ForumThread forumThread, BasePK relatedPK, String relatedEventTypeName, BasePK touchedBy) {
-        List<ForumForumThread> forumForumThreads = getForumForumThreadsByForumThread(forumThread);
+    public void touchForumsByForumThread(final ForumThread forumThread, final BasePK relatedPK, final EventTypes relatedEventType,
+            final BasePK touchedBy) {
+        var forumForumThreads = getForumForumThreadsByForumThread(forumThread);
         
         forumForumThreads.forEach((forumForumThread) -> {
-            sendEventUsingNames(forumForumThread.getForum().getPrimaryKey(), EventTypes.TOUCH.name(), relatedPK, relatedEventTypeName, touchedBy);
+            sendEvent(forumForumThread.getForum().getPrimaryKey(), EventTypes.TOUCH, relatedPK, relatedEventType, touchedBy);
         });
     }
     
@@ -759,7 +761,7 @@ public class ForumControl
         forum.setActiveDetail(null);
         forum.store();
         
-        sendEventUsingNames(forum.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(forum.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteForums(List<Forum> forums, BasePK deletedBy) {
@@ -776,7 +778,7 @@ public class ForumControl
         ForumDescription forumDescription = ForumDescriptionFactory.getInstance().create(forum, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(forum.getPrimaryKey(), EventTypes.MODIFY.name(), forumDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(forum.getPrimaryKey(), EventTypes.MODIFY, forumDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return forumDescription;
     }
@@ -920,14 +922,14 @@ public class ForumControl
             forumDescription = ForumDescriptionFactory.getInstance().create(forum, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(forum.getPrimaryKey(), EventTypes.MODIFY.name(), forumDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(forum.getPrimaryKey(), EventTypes.MODIFY, forumDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteForumDescription(ForumDescription forumDescription, BasePK deletedBy) {
         forumDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(forumDescription.getForumPK(), EventTypes.MODIFY.name(), forumDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(forumDescription.getForumPK(), EventTypes.MODIFY, forumDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteForumDescriptionsByForum(Forum forum, BasePK deletedBy) {
@@ -959,7 +961,7 @@ public class ForumControl
         ForumGroupForum forumGroupForum = ForumGroupForumFactory.getInstance().create(forumGroup, forum,
                 isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(forumGroup.getPrimaryKey(), EventTypes.MODIFY.name(), forumGroupForum.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(forumGroup.getPrimaryKey(), EventTypes.MODIFY, forumGroupForum.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return forumGroupForum;
     }
@@ -1143,7 +1145,7 @@ public class ForumControl
         return getForumGroupForumsByForum(forum, EntityPermission.READ_WRITE);
     }
     
-    public List<ForumGroupForumTransfer> getForumGroupForumTransfers(UserVisit userVisit, List<ForumGroupForum> forumGroupForums) {
+    public List<ForumGroupForumTransfer> getForumGroupForumTransfers(UserVisit userVisit, Collection<ForumGroupForum> forumGroupForums) {
         List<ForumGroupForumTransfer> forumGroupForumTransfers = new ArrayList<>(forumGroupForums.size());
         ForumGroupForumTransferCache forumGroupForumTransferCache = getForumTransferCaches(userVisit).getForumGroupForumTransferCache();
         
@@ -1198,7 +1200,7 @@ public class ForumControl
             forumGroupForum = ForumGroupForumFactory.getInstance().create(forumGroupPK, forum.getPrimaryKey(), isDefault,
                     sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(forumGroupPK, EventTypes.MODIFY.name(), forumGroupForum.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(forumGroupPK, EventTypes.MODIFY, forumGroupForum.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -1228,7 +1230,7 @@ public class ForumControl
             }
         }
         
-        sendEventUsingNames(forumGroupForum.getForumGroupPK(), EventTypes.MODIFY.name(), forumGroupForum.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(forumGroupForum.getForumGroupPK(), EventTypes.MODIFY, forumGroupForum.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteForumGroupForums(List<ForumGroupForum> forumGroupForums, BasePK deletedBy) {
@@ -1502,7 +1504,7 @@ public class ForumControl
         ForumMimeType forumMimeType = ForumMimeTypeFactory.getInstance().create(forum, mimeType,
                 isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(forum.getPrimaryKey(), EventTypes.MODIFY.name(), forumMimeType.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(forum.getPrimaryKey(), EventTypes.MODIFY, forumMimeType.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return forumMimeType;
     }
@@ -1713,7 +1715,7 @@ public class ForumControl
         return new MimeTypeChoicesBean(labels, values, defaultValue);
     }
     
-    public List<ForumMimeTypeTransfer> getForumMimeTypeTransfers(UserVisit userVisit, List<ForumMimeType> forumMimeTypes) {
+    public List<ForumMimeTypeTransfer> getForumMimeTypeTransfers(UserVisit userVisit, Collection<ForumMimeType> forumMimeTypes) {
         List<ForumMimeTypeTransfer> forumMimeTypeTransfers = new ArrayList<>(forumMimeTypes.size());
         ForumMimeTypeTransferCache forumMimeTypeTransferCache = getForumTransferCaches(userVisit).getForumMimeTypeTransferCache();
         
@@ -1769,7 +1771,7 @@ public class ForumControl
             forumMimeType = ForumMimeTypeFactory.getInstance().create(forumPK, mimeTypePK,
                     isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(forumPK, EventTypes.MODIFY.name(), forumMimeType.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(forumPK, EventTypes.MODIFY, forumMimeType.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -1799,7 +1801,7 @@ public class ForumControl
             }
         }
         
-        sendEventUsingNames(forum.getPrimaryKey(), EventTypes.MODIFY.name(), forumMimeType.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(forum.getPrimaryKey(), EventTypes.MODIFY, forumMimeType.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteForumMimeTypes(List<ForumMimeType> forumMimeTypes, BasePK deletedBy) {
@@ -1824,7 +1826,7 @@ public class ForumControl
         ForumPartyRole forumPartyRole = ForumPartyRoleFactory.getInstance().create(forum, party, forumRoleType,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(forum.getPrimaryKey(), EventTypes.MODIFY.name(), forumPartyRole.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(forum.getPrimaryKey(), EventTypes.MODIFY, forumPartyRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return forumPartyRole;
     }
@@ -1993,7 +1995,7 @@ public class ForumControl
     public void deleteForumPartyRole(ForumPartyRole forumPartyRole, BasePK deletedBy) {
         forumPartyRole.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(forumPartyRole.getForumPK(), EventTypes.MODIFY.name(), forumPartyRole.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(forumPartyRole.getForumPK(), EventTypes.MODIFY, forumPartyRole.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteForumPartyRolesByForum(Forum forum, BasePK deletedBy) {
@@ -2013,7 +2015,7 @@ public class ForumControl
         ForumPartyTypeRole forumPartyTypeRole = ForumPartyTypeRoleFactory.getInstance().create(forum, partyType,
                 forumRoleType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(forum.getPrimaryKey(), EventTypes.MODIFY.name(), forumPartyTypeRole.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(forum.getPrimaryKey(), EventTypes.MODIFY, forumPartyTypeRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return forumPartyTypeRole;
     }
@@ -2141,7 +2143,7 @@ public class ForumControl
     public void deleteForumPartyTypeRole(ForumPartyTypeRole forumPartyTypeRole, BasePK deletedBy) {
         forumPartyTypeRole.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(forumPartyTypeRole.getForumPK(), EventTypes.MODIFY.name(), forumPartyTypeRole.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(forumPartyTypeRole.getForumPK(), EventTypes.MODIFY, forumPartyTypeRole.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteForumPartyTypeRolesByForum(Forum forum, BasePK deletedBy) {
@@ -2296,7 +2298,7 @@ public class ForumControl
         ForumForumThread forumForumThread = ForumForumThreadFactory.getInstance().create(forum, forumThread,
                 isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(forum.getPrimaryKey(), EventTypes.MODIFY.name(), forumForumThread.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(forum.getPrimaryKey(), EventTypes.MODIFY, forumForumThread.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return forumForumThread;
     }
@@ -2472,7 +2474,7 @@ public class ForumControl
         return getForumForumThreadsByForumThread(forumThread, EntityPermission.READ_WRITE);
     }
     
-    public List<ForumForumThreadTransfer> getForumForumThreadTransfers(UserVisit userVisit, List<ForumForumThread> forumForumThreads) {
+    public List<ForumForumThreadTransfer> getForumForumThreadTransfers(UserVisit userVisit, Collection<ForumForumThread> forumForumThreads) {
         List<ForumForumThreadTransfer> forumForumThreadTransfers = new ArrayList<>(forumForumThreads.size());
         ForumForumThreadTransferCache forumForumThreadTransferCache = getForumTransferCaches(userVisit).getForumForumThreadTransferCache();
         
@@ -2527,7 +2529,7 @@ public class ForumControl
             forumForumThread = ForumForumThreadFactory.getInstance().create(forumPK, forumThread.getPrimaryKey(), isDefault,
                     sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(forumPK, EventTypes.MODIFY.name(), forumForumThread.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(forumPK, EventTypes.MODIFY, forumForumThread.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -2561,7 +2563,7 @@ public class ForumControl
             }
         }
         
-        sendEventUsingNames(forumForumThread.getForumPK(), EventTypes.MODIFY.name(), forumForumThread.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(forumForumThread.getForumPK(), EventTypes.MODIFY, forumForumThread.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteForumForumThread(ForumForumThread forumForumThread, BasePK deletedBy) {
@@ -2613,12 +2615,12 @@ public class ForumControl
         forumThread.setLastDetail(forumThreadDetail);
         forumThread.store();
         
-        sendEventUsingNames(forumThread.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(forumThread.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return forumThread;
     }
     
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.ForumThread */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ForumThread */
     public ForumThread getForumThreadByEntityInstance(EntityInstance entityInstance) {
         ForumThreadPK pk = new ForumThreadPK(entityInstance.getEntityUniqueId());
         ForumThread forumThread = ForumThreadFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
@@ -2726,7 +2728,7 @@ public class ForumControl
             
             ps.setLong(1, forum.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
-            ps.setString(3, ComponentVendors.ECHOTHREE.name());
+            ps.setString(3, ComponentVendors.ECHO_THREE.name());
             ps.setString(4, EntityTypes.ForumThread.name());
             if(!includeFutureForumThreads) {
                 ps.setLong(5, session.START_TIME);
@@ -2752,7 +2754,7 @@ public class ForumControl
         return getForumTransferCaches(userVisit).getForumThreadTransferCache().getForumThreadTransfer(forumThread);
     }
     
-    public List<ForumThreadTransfer> getForumThreadTransfers(UserVisit userVisit, List<ForumThread> forumThreads) {
+    public List<ForumThreadTransfer> getForumThreadTransfers(UserVisit userVisit, Collection<ForumThread> forumThreads) {
         List<ForumThreadTransfer> forumThreadTransfers = new ArrayList<>(forumThreads.size());
         ForumThreadTransferCache forumThreadTransferCache = getForumTransferCaches(userVisit).getForumThreadTransferCache();
         
@@ -2788,7 +2790,7 @@ public class ForumControl
             forumThread.setActiveDetail(forumThreadDetail);
             forumThread.setLastDetail(forumThreadDetail);
             
-            sendEventUsingNames(forumThreadPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(forumThreadPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -2801,7 +2803,7 @@ public class ForumControl
         forumThread.setActiveDetail(null);
         forumThread.store();
         
-        sendEventUsingNames(forumThread.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(forumThread.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteForumThreads(List<ForumThread> forumThreads, BasePK deletedBy) {
@@ -2844,16 +2846,16 @@ public class ForumControl
         forumMessage.store();
         
         ForumMessagePK forumMessagePK = forumMessage.getPrimaryKey();
-        sendEventUsingNames(forumMessagePK, EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(forumMessagePK, EventTypes.CREATE, null, null, createdBy);
         if(parentForumMessage != null) {
-            sendEventUsingNames(forumThread.getPrimaryKey(), EventTypes.TOUCH.name(), forumMessagePK, EventTypes.CREATE.name(), createdBy);
-            touchForumsByForumThread(forumThread, forumMessagePK, EventTypes.CREATE.name(), createdBy);
+            sendEvent(forumThread.getPrimaryKey(), EventTypes.TOUCH, forumMessagePK, EventTypes.CREATE, createdBy);
+            touchForumsByForumThread(forumThread, forumMessagePK, EventTypes.CREATE, createdBy);
         }
         
         return forumMessage;
     }
     
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.ForumMessage */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ForumMessage */
     public ForumMessage getForumMessageByEntityInstance(EntityInstance entityInstance) {
         ForumMessagePK pk = new ForumMessagePK(entityInstance.getEntityUniqueId());
         ForumMessage forumMessage = ForumMessageFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
@@ -2997,7 +2999,7 @@ public class ForumControl
         return getForumTransferCaches(userVisit).getForumMessageTransferCache().getForumMessageTransfer(forumMessage);
     }
     
-    public List<ForumMessageTransfer> getForumMessageTransfers(UserVisit userVisit, List<ForumMessage> forumMessages) {
+    public List<ForumMessageTransfer> getForumMessageTransfers(UserVisit userVisit, Collection<ForumMessage> forumMessages) {
         List<ForumMessageTransfer> forumMessageTransfers = new ArrayList<>(forumMessages.size());
         ForumMessageTransferCache forumMessageTransferCache = getForumTransferCaches(userVisit).getForumMessageTransferCache();
         
@@ -3036,7 +3038,7 @@ public class ForumControl
             forumMessage.setActiveDetail(forumMessageDetail);
             forumMessage.setLastDetail(forumMessageDetail);
             
-            sendEventUsingNames(forumMessagePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(forumMessagePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -3052,7 +3054,7 @@ public class ForumControl
         forumMessage.setActiveDetail(null);
         forumMessage.store();
         
-        sendEventUsingNames(forumMessage.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(forumMessage.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteForumMessages(List<ForumMessage> forumMessages, BasePK deletedBy) {
@@ -3142,7 +3144,7 @@ public class ForumControl
         forumMessageAttachment.setLastDetail(forumMessageAttachmentDetail);
         forumMessageAttachment.store();
 
-        sendEventUsingNames(forumMessage.getPrimaryKey(), EventTypes.MODIFY.name(), forumMessageAttachment.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(forumMessage.getPrimaryKey(), EventTypes.MODIFY, forumMessageAttachment.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return forumMessageAttachment;
     }
@@ -3222,7 +3224,7 @@ public class ForumControl
         return getForumTransferCaches(userVisit).getForumMessageAttachmentTransferCache().getForumMessageAttachmentTransfer(forumMessageAttachment);
     }
 
-    public List<ForumMessageAttachmentTransfer> getForumMessageAttachmentTransfers(UserVisit userVisit, List<ForumMessageAttachment> forumMessageAttachments) {
+    public List<ForumMessageAttachmentTransfer> getForumMessageAttachmentTransfers(UserVisit userVisit, Collection<ForumMessageAttachment> forumMessageAttachments) {
         List<ForumMessageAttachmentTransfer> forumMessageAttachmentTransfers = new ArrayList<>(forumMessageAttachments.size());
         ForumMessageAttachmentTransferCache forumMessageAttachmentTransferCache = getForumTransferCaches(userVisit).getForumMessageAttachmentTransferCache();
 
@@ -3257,7 +3259,7 @@ public class ForumControl
             forumMessageAttachment.setActiveDetail(forumMessageAttachmentDetail);
             forumMessageAttachment.setLastDetail(forumMessageAttachmentDetail);
 
-            sendEventUsingNames(forumMessagePK, EventTypes.MODIFY.name(), forumMessageAttachmentPK, EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(forumMessagePK, EventTypes.MODIFY, forumMessageAttachmentPK, EventTypes.MODIFY, updatedBy);
         }
     }
 
@@ -3276,7 +3278,7 @@ public class ForumControl
             deleteForumMessageClobAttachmentByForumMessageAttachment(forumMessageAttachment, deletedBy);
         }
 
-        sendEventUsingNames(forumMessageAttachmentDetail.getForumMessagePK(), EventTypes.MODIFY.name(), forumMessageAttachment.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(forumMessageAttachmentDetail.getForumMessagePK(), EventTypes.MODIFY, forumMessageAttachment.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 
     public void deleteForumMessageAttachments(List<ForumMessageAttachment> forumMessageAttachments, BasePK deletedBy) {
@@ -3310,7 +3312,7 @@ public class ForumControl
 
         ForumMessageBlobAttachment forumMessageAttachmentBlob = ForumMessageBlobAttachmentFactory.getInstance().create(forumMessageAttachment, blob, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(forumMessageAttachment.getLastDetail().getForumMessagePK(), EventTypes.MODIFY.name(), forumMessageAttachmentBlob.getPrimaryKey(), EventTypes.MODIFY.name(), createdBy);
+        sendEvent(forumMessageAttachment.getLastDetail().getForumMessagePK(), EventTypes.MODIFY, forumMessageAttachmentBlob.getPrimaryKey(), EventTypes.MODIFY, createdBy);
 
         return forumMessageAttachmentBlob;
     }
@@ -3367,14 +3369,14 @@ public class ForumControl
             forumMessageAttachmentBlob = ForumMessageBlobAttachmentFactory.getInstance().create(forumMessageAttachmentPK, blob, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(forumMessageAttachmentBlob.getForumMessageAttachment().getLastDetail().getForumMessagePK(), EventTypes.MODIFY.name(), forumMessageAttachmentBlob.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(forumMessageAttachmentBlob.getForumMessageAttachment().getLastDetail().getForumMessagePK(), EventTypes.MODIFY, forumMessageAttachmentBlob.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteForumMessageBlobAttachment(ForumMessageBlobAttachment forumMessageAttachmentBlob, BasePK deletedBy) {
         forumMessageAttachmentBlob.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(forumMessageAttachmentBlob.getForumMessageAttachment().getLastDetail().getForumMessagePK(), EventTypes.MODIFY.name(), forumMessageAttachmentBlob.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(forumMessageAttachmentBlob.getForumMessageAttachment().getLastDetail().getForumMessagePK(), EventTypes.MODIFY, forumMessageAttachmentBlob.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 
     public void deleteForumMessageBlobAttachmentByForumMessageAttachment(ForumMessageAttachment forumMessageAttachment, BasePK deletedBy) {
@@ -3394,7 +3396,7 @@ public class ForumControl
 
         ForumMessageClobAttachment forumMessageAttachmentClob = ForumMessageClobAttachmentFactory.getInstance().create(forumMessageAttachment, clob, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(forumMessageAttachment.getLastDetail().getForumMessagePK(), EventTypes.MODIFY.name(), forumMessageAttachmentClob.getPrimaryKey(), EventTypes.MODIFY.name(), createdBy);
+        sendEvent(forumMessageAttachment.getLastDetail().getForumMessagePK(), EventTypes.MODIFY, forumMessageAttachmentClob.getPrimaryKey(), EventTypes.MODIFY, createdBy);
 
         return forumMessageAttachmentClob;
     }
@@ -3451,14 +3453,14 @@ public class ForumControl
             forumMessageAttachmentClob = ForumMessageClobAttachmentFactory.getInstance().create(forumMessageAttachmentPK, clob, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(forumMessageAttachmentClob.getForumMessageAttachment().getLastDetail().getForumMessagePK(), EventTypes.MODIFY.name(), forumMessageAttachmentClob.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(forumMessageAttachmentClob.getForumMessageAttachment().getLastDetail().getForumMessagePK(), EventTypes.MODIFY, forumMessageAttachmentClob.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteForumMessageClobAttachment(ForumMessageClobAttachment forumMessageAttachmentClob, BasePK deletedBy) {
         forumMessageAttachmentClob.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(forumMessageAttachmentClob.getForumMessageAttachment().getLastDetail().getForumMessagePK(), EventTypes.MODIFY.name(), forumMessageAttachmentClob.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(forumMessageAttachmentClob.getForumMessageAttachment().getLastDetail().getForumMessagePK(), EventTypes.MODIFY, forumMessageAttachmentClob.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 
     public void deleteForumMessageClobAttachmentByForumMessageAttachment(ForumMessageAttachment forumMessageAttachment, BasePK deletedBy) {
@@ -3477,7 +3479,7 @@ public class ForumControl
         ForumMessageAttachmentDescription forumMessageAttachmentDescription = ForumMessageAttachmentDescriptionFactory.getInstance().create(forumMessageAttachment, language,
                 description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(forumMessageAttachment.getLastDetail().getForumMessagePK(), EventTypes.MODIFY.name(), forumMessageAttachmentDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(forumMessageAttachment.getLastDetail().getForumMessagePK(), EventTypes.MODIFY, forumMessageAttachmentDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return forumMessageAttachmentDescription;
     }
@@ -3604,14 +3606,14 @@ public class ForumControl
             forumMessageAttachmentDescription = ForumMessageAttachmentDescriptionFactory.getInstance().create(forumMessageAttachment, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(forumMessageAttachment.getLastDetail().getForumMessagePK(), EventTypes.MODIFY.name(), forumMessageAttachmentDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(forumMessageAttachment.getLastDetail().getForumMessagePK(), EventTypes.MODIFY, forumMessageAttachmentDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteForumMessageAttachmentDescription(ForumMessageAttachmentDescription forumMessageAttachmentDescription, BasePK deletedBy) {
         forumMessageAttachmentDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(forumMessageAttachmentDescription.getForumMessageAttachment().getLastDetail().getForumMessagePK(), EventTypes.MODIFY.name(), forumMessageAttachmentDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(forumMessageAttachmentDescription.getForumMessageAttachment().getLastDetail().getForumMessagePK(), EventTypes.MODIFY, forumMessageAttachmentDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -3632,7 +3634,7 @@ public class ForumControl
         ForumMessageRole forumMessageRole = ForumMessageRoleFactory.getInstance().create(forumMessage, forumRoleType,
                 party, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(forumMessage.getPrimaryKey(), EventTypes.MODIFY.name(), forumMessageRole.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(forumMessage.getPrimaryKey(), EventTypes.MODIFY, forumMessageRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return forumMessageRole;
     }
@@ -3722,7 +3724,7 @@ public class ForumControl
         return getForumTransferCaches(userVisit).getForumMessageRoleTransferCache().getForumMessageRoleTransfer(forumMessageRole);
     }
     
-    public List<ForumMessageRoleTransfer> getForumMessageRoleTransfers(UserVisit userVisit, List<ForumMessageRole> forumMessageRoles) {
+    public List<ForumMessageRoleTransfer> getForumMessageRoleTransfers(UserVisit userVisit, Collection<ForumMessageRole> forumMessageRoles) {
         List<ForumMessageRoleTransfer> forumMessageRoleTransfers = new ArrayList<>(forumMessageRoles.size());
         ForumMessageRoleTransferCache forumMessageRoleTransferCache = getForumTransferCaches(userVisit).getForumMessageRoleTransferCache();
         
@@ -3740,7 +3742,7 @@ public class ForumControl
     public void deleteForumMessageRole(ForumMessageRole forumMessageRole, BasePK deletedBy) {
         forumMessageRole.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(forumMessageRole.getForumMessagePK(), EventTypes.MODIFY.name(), forumMessageRole.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(forumMessageRole.getForumMessagePK(), EventTypes.MODIFY, forumMessageRole.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteForumMessageRoles(List<ForumMessageRole> forumMessageRoles, BasePK deletedBy) {
@@ -3772,7 +3774,7 @@ public class ForumControl
         forumMessagePart.setLastDetail(forumMessagePartDetail);
         forumMessagePart.store();
         
-        sendEventUsingNames(forumMessage.getPrimaryKey(), EventTypes.MODIFY.name(), forumMessagePart.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(forumMessage.getPrimaryKey(), EventTypes.MODIFY, forumMessagePart.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return forumMessagePart;
     }
@@ -3866,7 +3868,7 @@ public class ForumControl
         return getForumTransferCaches(userVisit).getForumMessagePartTransferCache().getForumMessagePartTransfer(forumMessagePart);
     }
     
-    public List<ForumMessagePartTransfer> getForumMessagePartTransfers(UserVisit userVisit, List<ForumMessagePart> forumMessageParts) {
+    public List<ForumMessagePartTransfer> getForumMessagePartTransfers(UserVisit userVisit, Collection<ForumMessagePart> forumMessageParts) {
         List<ForumMessagePartTransfer> forumMessagePartTransfers = new ArrayList<>(forumMessageParts.size());
         ForumMessagePartTransferCache forumMessagePartTransferCache = getForumTransferCaches(userVisit).getForumMessagePartTransferCache();
         
@@ -3910,7 +3912,7 @@ public class ForumControl
             forumMessagePart.setActiveDetail(forumMessagePartDetail);
             forumMessagePart.setLastDetail(forumMessagePartDetail);
             
-            sendEventUsingNames(forumMessagePartPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(forumMessagePartPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -3934,7 +3936,7 @@ public class ForumControl
         forumMessagePart.setActiveDetail(null);
         forumMessagePart.store();
         
-        sendEventUsingNames(forumMessagePartDetail.getForumMessagePK(), EventTypes.MODIFY.name(), forumMessagePart.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(forumMessagePartDetail.getForumMessagePK(), EventTypes.MODIFY, forumMessagePart.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteForumMessageParts(List<ForumMessagePart> forumMessageParts, BasePK deletedBy) {
@@ -3955,7 +3957,7 @@ public class ForumControl
         ForumStringMessagePart forumStringMessagePart = ForumStringMessagePartFactory.getInstance().create(session,
                 forumMessagePart, string, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(forumMessagePart.getLastDetail().getForumMessagePK(), EventTypes.MODIFY.name(), forumStringMessagePart.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(forumMessagePart.getLastDetail().getForumMessagePK(), EventTypes.MODIFY, forumStringMessagePart.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return forumStringMessagePart;
     }
@@ -4020,16 +4022,16 @@ public class ForumControl
             forumStringMessagePart = ForumStringMessagePartFactory.getInstance().create(forumMessagePartPK, string,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(forumStringMessagePart.getForumMessagePart().getLastDetail().getForumMessagePK(),
-                    EventTypes.MODIFY.name(), forumStringMessagePart.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(forumStringMessagePart.getForumMessagePart().getLastDetail().getForumMessagePK(),
+                    EventTypes.MODIFY, forumStringMessagePart.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteForumStringMessagePart(ForumStringMessagePart forumStringMessagePart, BasePK deletedBy) {
         forumStringMessagePart.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(forumStringMessagePart.getForumMessagePart().getLastDetail().getForumMessagePK(),
-                EventTypes.MODIFY.name(), forumStringMessagePart.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(forumStringMessagePart.getForumMessagePart().getLastDetail().getForumMessagePK(),
+                EventTypes.MODIFY, forumStringMessagePart.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteForumStringMessagePartByForumMessagePart(ForumMessagePart forumMessagePart, BasePK deletedBy) {
@@ -4048,7 +4050,7 @@ public class ForumControl
         ForumClobMessagePart forumClobMessagePart = ForumClobMessagePartFactory.getInstance().create(session,
                 forumMessagePart, clob, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(forumMessagePart.getLastDetail().getForumMessagePK(), EventTypes.MODIFY.name(), forumClobMessagePart.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(forumMessagePart.getLastDetail().getForumMessagePK(), EventTypes.MODIFY, forumClobMessagePart.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return forumClobMessagePart;
     }
@@ -4113,14 +4115,14 @@ public class ForumControl
             forumClobMessagePart = ForumClobMessagePartFactory.getInstance().create(forumMessagePartPK, clob,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(forumClobMessagePart.getForumMessagePart().getLastDetail().getForumMessagePK(), EventTypes.MODIFY.name(), forumClobMessagePart.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(forumClobMessagePart.getForumMessagePart().getLastDetail().getForumMessagePK(), EventTypes.MODIFY, forumClobMessagePart.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteForumClobMessagePart(ForumClobMessagePart forumClobMessagePart, BasePK deletedBy) {
         forumClobMessagePart.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(forumClobMessagePart.getForumMessagePart().getLastDetail().getForumMessagePK(), EventTypes.MODIFY.name(), forumClobMessagePart.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(forumClobMessagePart.getForumMessagePart().getLastDetail().getForumMessagePK(), EventTypes.MODIFY, forumClobMessagePart.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteForumClobMessagePartByForumMessagePart(ForumMessagePart forumMessagePart, BasePK deletedBy) {
@@ -4139,7 +4141,7 @@ public class ForumControl
         ForumBlobMessagePart forumBlobMessagePart = ForumBlobMessagePartFactory.getInstance().create(session,
                 forumMessagePart, blob, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(forumMessagePart.getLastDetail().getForumMessagePK(), EventTypes.MODIFY.name(), forumBlobMessagePart.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(forumMessagePart.getLastDetail().getForumMessagePK(), EventTypes.MODIFY, forumBlobMessagePart.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return forumBlobMessagePart;
     }
@@ -4204,14 +4206,14 @@ public class ForumControl
             forumBlobMessagePart = ForumBlobMessagePartFactory.getInstance().create(forumMessagePartPK, blob,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(forumBlobMessagePart.getForumMessagePart().getLastDetail().getForumMessagePK(), EventTypes.MODIFY.name(), forumBlobMessagePart.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(forumBlobMessagePart.getForumMessagePart().getLastDetail().getForumMessagePK(), EventTypes.MODIFY, forumBlobMessagePart.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteForumBlobMessagePart(ForumBlobMessagePart forumBlobMessagePart, BasePK deletedBy) {
         forumBlobMessagePart.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(forumBlobMessagePart.getForumMessagePart().getLastDetail().getForumMessagePK(), EventTypes.MODIFY.name(), forumBlobMessagePart.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(forumBlobMessagePart.getForumMessagePart().getLastDetail().getForumMessagePK(), EventTypes.MODIFY, forumBlobMessagePart.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteForumBlobMessagePartByForumMessagePart(ForumMessagePart forumMessagePart, BasePK deletedBy) {

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,6 +17,8 @@
 package com.echothree.model.control.security.server.indexer;
 
 import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.IndexFieldVariations;
+import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.server.analysis.SecurityRoleGroupAnalyzer;
 import com.echothree.model.control.index.server.indexer.BaseIndexer;
 import com.echothree.model.control.index.server.indexer.FieldTypes;
@@ -45,7 +47,7 @@ public class SecurityRoleGroupIndexer
 
     @Override
     protected Analyzer getAnalyzer() {
-        return new SecurityRoleGroupAnalyzer(eea, language, entityType, entityAttributes, tagScopes);
+        return new SecurityRoleGroupAnalyzer(eea, language, entityType, entityAliasTypes, entityAttributes, tagScopes);
     }
     
     @Override
@@ -58,29 +60,22 @@ public class SecurityRoleGroupIndexer
         SecurityRoleGroupDetail securityRoleGroupDetail = securityRoleGroup.getLastDetail();
         SecurityRoleGroup parentSecurityRoleGroup = securityRoleGroupDetail.getParentSecurityRoleGroup();
         String description = securityControl.getBestSecurityRoleGroupDescription(securityRoleGroup, language);
-        Document document = new Document();
 
-        document.add(new Field(IndexConstants.IndexField_EntityRef, securityRoleGroup.getPrimaryKey().getEntityRef(), FieldTypes.STORED_NOT_TOKENIZED));
-        document.add(new Field(IndexConstants.IndexField_EntityInstanceId, entityInstance.getPrimaryKey().getEntityId().toString(), FieldTypes.STORED_NOT_TOKENIZED));
+        var document = newDocumentWithEntityInstanceFields(entityInstance, securityRoleGroup.getPrimaryKey());
 
-        document.add(new Field(IndexConstants.IndexField_SecurityRoleGroupName, securityRoleGroupDetail.getSecurityRoleGroupName(), FieldTypes.NOT_STORED_TOKENIZED));
-        document.add(new SortedDocValuesField(IndexConstants.IndexField_SecurityRoleGroupName + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable,
+        document.add(new Field(IndexFields.securityRoleGroupName.name(), securityRoleGroupDetail.getSecurityRoleGroupName(), FieldTypes.NOT_STORED_TOKENIZED));
+        document.add(new SortedDocValuesField(IndexFields.securityRoleGroupName.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
                 new BytesRef(securityRoleGroupDetail.getSecurityRoleGroupName())));
         if(parentSecurityRoleGroup != null) {
-            document.add(new Field(IndexConstants.IndexField_ParentSecurityRoleGroupName, parentSecurityRoleGroup.getLastDetail().getSecurityRoleGroupName(),
+            document.add(new Field(IndexFields.parentSecurityRoleGroupName.name(), parentSecurityRoleGroup.getLastDetail().getSecurityRoleGroupName(),
                     FieldTypes.NOT_STORED_TOKENIZED));
         }
         
         if(description != null) {
-            document.add(new Field(IndexConstants.IndexField_Description, description, FieldTypes.NOT_STORED_TOKENIZED));
-            document.add(new SortedDocValuesField(IndexConstants.IndexField_Description + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable,
+            document.add(new Field(IndexFields.description.name(), description, FieldTypes.NOT_STORED_TOKENIZED));
+            document.add(new SortedDocValuesField(IndexFields.description.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
                     new BytesRef(description)));
         }
-        
-        indexWorkflowEntityStatuses(document, entityInstance);
-        indexEntityTimes(document, entityInstance);
-        indexEntityAttributes(document, entityInstance);
-        indexEntityTags(document, entityInstance);
 
         return document;
     }

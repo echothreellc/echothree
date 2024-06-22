@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,33 +16,67 @@
 
 package com.echothree.model.control.graphql.server.util;
 
+import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.accounting.server.entity.Currency;
+import com.echothree.model.data.party.server.entity.DateTimeFormat;
+import com.echothree.model.data.party.server.entity.Language;
+import com.echothree.model.data.party.server.entity.TimeZone;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserSession;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 import graphql.schema.DataFetchingEnvironment;
 
-public abstract class BaseGraphQl {
+public interface BaseGraphQl {
 
-    public static final String GRAPHQL_EXECUTION_CONTEXT = "com.echothree.model.control.graphql.server.util.GraphQlExecutionContext";
+    String GRAPHQL_EXECUTION_CONTEXT = "com.echothree.model.control.graphql.server.util.GraphQlExecutionContext";
 
-    protected static GraphQlExecutionContext getGraphQlExecutionContext(final DataFetchingEnvironment env) {
+    static GraphQlExecutionContext getGraphQlExecutionContext(final DataFetchingEnvironment env) {
         return env.getGraphQlContext().get(GRAPHQL_EXECUTION_CONTEXT);
     }
 
-    protected static UserVisitPK getUserVisitPK(final DataFetchingEnvironment env) {
+    static UserVisitPK getUserVisitPK(final DataFetchingEnvironment env) {
         return getGraphQlExecutionContext(env).getUserVisitPK();
     }
 
-    protected static UserVisit getUserVisit(final DataFetchingEnvironment env) {
+    static UserVisit getUserVisit(final DataFetchingEnvironment env) {
         return getGraphQlExecutionContext(env).getUserVisit();
     }
 
-    protected static UserSession getUserSession(final DataFetchingEnvironment env) {
+    static UserSession getUserSession(final DataFetchingEnvironment env) {
         return getGraphQlExecutionContext(env).getUserSession();
     }
 
-    protected static String getRemoteInet4Address(final DataFetchingEnvironment env) {
+    static String getRemoteInet4Address(final DataFetchingEnvironment env) {
         return getGraphQlExecutionContext(env).getRemoteInet4Address();
+    }
+
+    static Language getLanguageEntity(final DataFetchingEnvironment env) {
+        var userControl = Session.getModelController(UserControl.class);
+
+        return userControl.getPreferredLanguageFromUserVisit(getUserVisit(env));
+    }
+
+    static Currency getCurrencyEntity(final DataFetchingEnvironment env) {
+        var userControl = Session.getModelController(UserControl.class);
+
+        return userControl.getPreferredCurrencyFromUserVisit(getUserVisit(env));
+    }
+
+    static TimeZone getTimeZoneEntity(final DataFetchingEnvironment env) {
+        var userControl = Session.getModelController(UserControl.class);
+
+        return userControl.getPreferredTimeZoneFromUserVisit(getUserVisit(env));
+    }
+
+    static java.util.TimeZone getJavaTimeZone(final DataFetchingEnvironment env) {
+        return java.util.TimeZone.getTimeZone(getTimeZoneEntity(env).getLastDetail().getJavaTimeZoneName());
+    }
+
+    static DateTimeFormat getDateTimeFormatEntity(final DataFetchingEnvironment env) {
+        var userControl = Session.getModelController(UserControl.class);
+
+        return userControl.getPreferredDateTimeFormatFromUserVisit(getUserVisit(env));
     }
 
 }

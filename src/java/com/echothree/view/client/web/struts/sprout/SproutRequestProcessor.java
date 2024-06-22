@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -42,25 +42,29 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 /**
- * Extension of Spring's <code>DelegatingRequestProcessor</code> that adds
+ * Extension of <code>SecureRequestProcessor</code> that adds
  * Sprout initialization.
  * 
- * @see org.springframework.web.struts.DelegatingRequestProcessor
+ * @see com.echothree.view.client.web.struts.sslext.action.SecureRequestProcessor
  * @author Seth Fitzsimmons
  */
 public class SproutRequestProcessor
         extends SecureRequestProcessor {
+
     /**
      * Provides each Sprout with an extensive set of objects during its
      * initialization.
      */
     @Override
-    protected ActionForward processActionPerform(final HttpServletRequest request, final HttpServletResponse response, final Action action, final ActionForm form, final ActionMapping mapping)
+    protected ActionForward processActionPerform(final HttpServletRequest request, final HttpServletResponse response,
+            final Action action, final ActionForm form, final ActionMapping mapping)
             throws IOException, ServletException {
         // initialize Sprout if necessary
-        if ( action instanceof Sprout )
-            ((Sprout) action).init( mapping, form, request, response );
-        
-        return super.processActionPerform( request, response, action, form, mapping );
+        if(action instanceof Sprout) {
+            ((Sprout)action).init(mapping, form, request, response);
+        }
+
+        return super.processActionPerform(request, response, action, form, mapping);
     }
+
 }

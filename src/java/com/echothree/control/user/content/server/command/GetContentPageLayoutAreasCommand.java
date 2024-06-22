@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -86,7 +86,7 @@ public class GetContentPageLayoutAreasCommand
     }
     
     @Override
-    protected BaseResult getTransfers(Collection<ContentPageLayoutArea> entities) {
+    protected BaseResult getResult(Collection<ContentPageLayoutArea> entities) {
         GetContentPageLayoutAreasResult result = ContentResultFactory.getGetContentPageLayoutAreasResult();
         
         if(entities != null) {

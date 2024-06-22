@@ -72,6 +72,14 @@
                 </c:url>
             </et:hasSecurityRole>
         </c:when>
+        <c:when test="${entityInstance.entityNames.target == 'Location'}">
+            <et:hasSecurityRole securityRole="Location.Review">
+                <c:url var="targetUrl" value="/action/Warehouse/Location/Review">
+                    <c:param name="WarehouseName" value="${entityInstance.entityNames.names.map.WarehouseName}" />
+                    <c:param name="LocationName" value="${entityInstance.entityNames.names.map.LocationName}" />
+                </c:url>
+            </et:hasSecurityRole>
+        </c:when>
         <c:when test="${entityInstance.entityNames.target == 'CommunicationEvent'}">
             <et:hasSecurityRole securityRole="CommunicationEvent.Review">
                 <c:url var="targetUrl" value="/action/Communication/CommunicationEvent/Review">
@@ -141,6 +149,17 @@
         <c:when test="${entityInstance.entityNames.target == 'MimeType'}">
             <c:url var="targetUrl" value="/action/Core/MimeType/Review">
                 <c:param name="MimeTypeName" value="${entityInstance.entityNames.names.map.MimeTypeName}" />
+            </c:url>
+        </c:when>
+        <c:when test="${entityInstance.entityNames.target == 'EntityType'}">
+            <c:url var="targetUrl" value="/action/Core/EntityType/Review">
+                <c:param name="ComponentVendorName" value="${entityInstance.entityNames.names.map.ComponentVendorName}" />
+                <c:param name="EntityTypeName" value="${entityInstance.entityNames.names.map.EntityTypeName}" />
+            </c:url>
+        </c:when>
+        <c:when test="${entityInstance.entityNames.target == 'ComponentVendor'}">
+            <c:url var="targetUrl" value="/action/Core/ComponentVendor/Review">
+                <c:param name="ComponentVendorName" value="${entityInstance.entityNames.names.map.ComponentVendorName}" />
             </c:url>
         </c:when>
     </c:choose>

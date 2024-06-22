@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -70,14 +70,14 @@ public class GetPaymentProcessorTypeCodeCommand
                 form.getPaymentProcessorTypeName(), form.getPaymentProcessorTypeCodeTypeName(), form.getPaymentProcessorTypeCodeName());
 
         if(paymentProcessorTypeCode != null) {
-            sendEventUsingNames(paymentProcessorTypeCode.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(paymentProcessorTypeCode.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return paymentProcessorTypeCode;
     }
 
     @Override
-    protected BaseResult getTransfer(PaymentProcessorTypeCode paymentProcessorTypeCode) {
+    protected BaseResult getResult(PaymentProcessorTypeCode paymentProcessorTypeCode) {
         var paymentProcessorTypeCodeControl = Session.getModelController(PaymentProcessorTypeCodeControl.class);
         var result = PaymentResultFactory.getGetPaymentProcessorTypeCodeResult();
 

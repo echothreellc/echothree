@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,9 +16,7 @@
 
 package com.echothree.cucumber.util.persona;
 
-import com.echothree.control.user.authentication.common.AuthenticationService;
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
-import com.echothree.util.common.command.CommandResult;
 import io.cucumber.java8.En;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -43,8 +41,8 @@ public class CurrentPersonaSteps implements En {
         Given("^the user is not currently logged in$",
                 () -> {
                     if(CurrentPersona.persona != null) {
-                        AuthenticationService authenticationService = AuthenticationUtil.getHome();
-                        CommandResult commandResult = authenticationService.logout(CurrentPersona.persona.userVisitPK);
+                        var authenticationService = AuthenticationUtil.getHome();
+                        var commandResult = authenticationService.logout(CurrentPersona.persona.userVisitPK);
 
                         assertThat(commandResult.hasErrors()).isFalse();
                     }

@@ -1,7 +1,7 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" %>
 
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -27,7 +27,7 @@
     <body>
         <div id="Header">
             <h2>
-                <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
+                <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
                 <a href="<c:url value="/action/Core/Main" />">Core</a> &gt;&gt;
                 <a href="<c:url value="/action/Core/ComponentVendor/Main" />">Component Vendors</a> &gt;&gt;
                 <c:url var="entityTypesUrl" value="/action/Core/EntityType/Main">
@@ -71,15 +71,15 @@
                                 <c:param name="EntityAttributeName" value="${entityListItem.entityAttribute.entityAttributeName}" />
                                 <c:param name="EntityListItemName" value="${entityListItem.entityListItemName}" />
                             </c:url>
-                            <a href="${reviewUrl}"><c:out value="${entityListItem.entityListItemName}" /></a>
+                            <a href="${reviewUrl}"><et:appearance appearance="${entityListItem.entityInstance.entityAppearance.appearance}"><c:out value="${entityListItem.entityListItemName}" /></et:appearance></a>
                         </c:when>
                         <c:otherwise>
-                            <c:out value="${entityListItem.entityListItemName}" />
+                            <et:appearance appearance="${entityListItem.entityInstance.entityAppearance.appearance}"><c:out value="${entityListItem.entityListItemName}" /></et:appearance>
                         </c:otherwise>
                     </c:choose>
                 </display:column>
                 <display:column titleKey="columnTitle.description" media="html" sortable="true" sortProperty="description">
-                    <c:out value="${entityListItem.description}" />
+                    <et:appearance appearance="${entityListItem.entityInstance.entityAppearance.appearance}"><c:out value="${entityListItem.description}" /></et:appearance>
                 </display:column>
                 <display:column property="sortOrder" titleKey="columnTitle.sortOrder" media="html" sortable="true" sortProperty="sortOrder" />
                 <display:column titleKey="columnTitle.default" media="html" sortable="true" sortProperty="isDefault">

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -45,9 +45,9 @@ public class PartySecurityRoleTemplatesHandler
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
-    throws SAXException {
+            throws SAXException {
         if(localName.equals("partySecurityRoleTemplate")) {
-            CreatePartySecurityRoleTemplateForm commandForm = SecurityFormFactory.getCreatePartySecurityRoleTemplateForm();
+            var commandForm = SecurityFormFactory.getCreatePartySecurityRoleTemplateForm();
 
             commandForm.set(getAttrsMap(attrs));
 
@@ -59,7 +59,7 @@ public class PartySecurityRoleTemplatesHandler
     
     @Override
     public void endElement(String namespaceURI, String localName, String qName)
-    throws SAXException {
+            throws SAXException {
         if(localName.equals("partySecurityRoleTemplates")) {
             initialDataParser.popHandler();
         }

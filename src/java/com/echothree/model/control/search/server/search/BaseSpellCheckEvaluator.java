@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,8 +17,10 @@
 package com.echothree.model.control.search.server.search;
 
 import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.IndexFieldVariations;
 import com.echothree.model.control.party.common.Languages;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchCheckSpellingActionTypes;
+import com.echothree.model.control.search.common.SearchDefaultOperators;
 import com.echothree.model.control.search.common.exception.ComplexQueriesUnsupportedException;
 import com.echothree.model.control.search.common.exception.FieldRequiredException;
 import com.echothree.model.control.search.common.exception.LanguageRequiredException;
@@ -111,67 +113,57 @@ public abstract class BaseSpellCheckEvaluator
     }
     
     private boolean isSimpleBooleanQuery(final BooleanQuery booleanQuery, final String dictionaryField, final List<String> words) {
+        boolean result = true;
+
         // When searchDefaultOperatorName == AND, Occur.MUST must occur on all clauses.
         // For OR, Occur.SHOULD must occur on all clauses.
-        Occur requiredOccur = null;
-        boolean result = true;
-        
-        switch(getSearchDefaultOperatorName()) {
-            case SearchConstants.SearchDefaultOperator_AND:
-                requiredOccur = Occur.MUST;
-                break;
-            case SearchConstants.SearchDefaultOperator_OR:
-                requiredOccur = Occur.SHOULD;
-                break;
-        }
-        
-        if(requiredOccur != null) {
-            for(var booleanClause : booleanQuery) {
-                Occur occur = booleanClause.getOccur();
+        var requiredOccur = switch(SearchDefaultOperators.valueOf(getSearchDefaultOperatorName())) {
+            case AND -> Occur.MUST;
+            case OR -> Occur.SHOULD;
+        };
+
+        for(var booleanClause : booleanQuery) {
+            Occur occur = booleanClause.getOccur();
+
+            if(EvaluatorDebugFlags.LogCheckSpelling) {
+                getLog().info("booleanClause " + booleanClause);
+                getLog().info("  booleanClause.getOccur() " + occur.name());
+                getLog().info("  booleanClause.isRequired() " + booleanClause.isRequired());
+                getLog().info("  booleanClause.isProhibited() " + booleanClause.isProhibited());
+            }
+
+            // MUST and SHOULD are the only two Occurs that'll make it this far, MUST_NOT will never occur.
+            switch(requiredOccur) {
+                case MUST:
+                    if(!booleanClause.isRequired() || booleanClause.isProhibited()) {
+                        result = false;
+                    }
+                    break;
+                case SHOULD:
+                    if(booleanClause.isRequired() || booleanClause.isProhibited()) {
+                        result = false;
+                    }
+                    break;
+                default:
+                    throw new IllegalStateException("Unexpected requiredOccur");
+            }
+
+            if(result) {
+                Query containedQuery = booleanClause.getQuery();
 
                 if(EvaluatorDebugFlags.LogCheckSpelling) {
-                    getLog().info("booleanClause " + booleanClause);
-                    getLog().info("  booleanClause.getOccur() " + occur.name());
-                    getLog().info("  booleanClause.isRequired() " + booleanClause.isRequired());
-                    getLog().info("  booleanClause.isProhibited() " + booleanClause.isProhibited());
-                }
-                
-                // MUST and SHOULD are the only two Occurs that'll make it this far, MUST_NOT will never occur.
-                switch(requiredOccur) {
-                    case MUST:
-                        if(!booleanClause.isRequired() || booleanClause.isProhibited()) {
-                            result = false;
-                        }
-                        break;
-                    case SHOULD:
-                        if(booleanClause.isRequired() || booleanClause.isProhibited()) {
-                            result = false;
-                        }
-                        break;
-                    default:
-                        throw new IllegalStateException("Unexpected requiredOccur");
+                    getLog().info("  booleanClause.getQuery() " + containedQuery);
+                    getLog().info("  booleanClause.getQuery().getClass() " + containedQuery.getClass());
                 }
 
-                if(result) {
-                    Query containedQuery = booleanClause.getQuery();
-                    
-                    if(EvaluatorDebugFlags.LogCheckSpelling) {
-                        getLog().info("  booleanClause.getQuery() " + containedQuery);
-                        getLog().info("  booleanClause.getQuery().getClass() " + containedQuery.getClass());
-                    }
-                    
-                    result = isSimpleQuery(containedQuery, dictionaryField, words);
-                }
-                
-                if(!result) {
-                    break;
-                }
+                result = isSimpleQuery(containedQuery, dictionaryField, words);
             }
-        } else {
-            // Should never occur.
-            result = false;
+
+            if(!result) {
+                break;
+            }
         }
-        
+
         return result;
     }
     
@@ -214,11 +206,11 @@ public abstract class BaseSpellCheckEvaluator
             String searchCheckSpellingActionTypeName;
             
             if(analyzedWord == null) {
-                searchCheckSpellingActionTypeName = SearchConstants.SearchCheckSpellingActionType_IGNORED;
+                searchCheckSpellingActionTypeName = SearchCheckSpellingActionTypes.IGNORED.name();
             } else if(checkSpellingSuggestions == null) {
-                searchCheckSpellingActionTypeName = SearchConstants.SearchCheckSpellingActionType_NO_SUGGESTIONS;
+                searchCheckSpellingActionTypeName = SearchCheckSpellingActionTypes.NO_SUGGESTIONS.name();
             } else {
-                searchCheckSpellingActionTypeName = SearchConstants.SearchCheckSpellingActionType_HAS_SUGGESTIONS;
+                searchCheckSpellingActionTypeName = SearchCheckSpellingActionTypes.HAS_SUGGESTIONS.name();
             }
             
             checkSpellingWords.add(new CheckSpellingWordTransfer(word,
@@ -240,7 +232,7 @@ public abstract class BaseSpellCheckEvaluator
 
                 // Switch the default field used by parseQuery(...) over to the dictionary one in order to avoid most analysis
                 // beyond splitting the phrase into simple words.
-                final String dictionaryField = field + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Dictionary;
+                final String dictionaryField = field + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.dictionary.name();
                 final boolean simpleQuery = isSimpleQuery(eea, dictionaryField, words);
 
                 if(EvaluatorDebugFlags.LogCheckSpelling) {

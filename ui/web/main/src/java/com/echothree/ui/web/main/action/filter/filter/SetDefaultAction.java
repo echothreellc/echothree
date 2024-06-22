@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,7 +26,6 @@ import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
-import java.util.HashMap;
 import java.util.Map;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
@@ -58,7 +57,7 @@ public class SetDefaultAction
         try {
             String filterName = request.getParameter(ParameterConstants.FILTER_NAME);
             SetDefaultFilterForm commandForm = FilterUtil.getHome().getSetDefaultFilterForm();
-            
+
             commandForm.setFilterKindName(filterKindName);
             commandForm.setFilterTypeName(filterTypeName);
             commandForm.setFilterName(filterName);
@@ -72,12 +71,10 @@ public class SetDefaultAction
         
         CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
-            Map<String, String> parameters = new HashMap<String, String>(2) {{
-                put(ParameterConstants.FILTER_KIND_NAME, filterKindName);
-                put(ParameterConstants.FILTER_TYPE_NAME, filterTypeName);
-            }};
-            
-            customActionForward.setParameters(parameters);
+            customActionForward.setParameters(Map.of(
+                    ParameterConstants.FILTER_KIND_NAME, filterKindName,
+                    ParameterConstants.FILTER_TYPE_NAME, filterTypeName
+            ));
         }
         
         return customActionForward;

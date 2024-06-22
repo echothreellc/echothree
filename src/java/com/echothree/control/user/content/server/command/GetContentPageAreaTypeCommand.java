@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -59,14 +59,14 @@ public class GetContentPageAreaTypeCommand
         ContentPageAreaType contentPageAreaType = ContentPageAreaTypeLogic.getInstance().getContentPageAreaTypeByUniversalSpec(this, form);
 
         if(contentPageAreaType != null) {
-            sendEventUsingNames(contentPageAreaType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(contentPageAreaType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return contentPageAreaType;
     }
     
     @Override
-    protected BaseResult getTransfer(ContentPageAreaType contentPageAreaType) {
+    protected BaseResult getResult(ContentPageAreaType contentPageAreaType) {
         var contentControl = Session.getModelController(ContentControl.class);
         GetContentPageAreaTypeResult result = ContentResultFactory.getGetContentPageAreaTypeResult();
 

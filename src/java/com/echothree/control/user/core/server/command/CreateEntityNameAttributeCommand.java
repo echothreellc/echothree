@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,26 +20,30 @@ import com.echothree.control.user.core.common.form.CreateEntityNameAttributeForm
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
-import com.echothree.model.data.core.server.entity.EntityAttribute;
-import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.core.server.entity.EntityNameAttribute;
-import com.echothree.model.data.core.server.entity.EntityTypeDetail;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class CreateEntityNameAttributeCommand
         extends BaseSimpleCommand<CreateEntityNameAttributeForm> {
-    
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), null)
+        ));
+
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Key", FieldType.KEY, false, null, null),
@@ -53,67 +57,23 @@ public class CreateEntityNameAttributeCommand
     
     /** Creates a new instance of CreateEntityNameAttributeCommand */
     public CreateEntityNameAttributeCommand(UserVisitPK userVisitPK, CreateEntityNameAttributeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
-        var parameterCount = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
 
-        if(parameterCount == 1) {
-            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
+        if(!hasExecutionErrors()) {
+            var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttribute(this, entityInstance, form, form,
+                    EntityAttributeTypes.NAME);
 
             if(!hasExecutionErrors()) {
-                String entityAttributeName = form.getEntityAttributeName();
-                String entityAttributeUlid = form.getEntityAttributeUlid();
-                
-                parameterCount = (entityAttributeName == null ? 0 : 1) + (entityAttributeUlid == null ? 0 : 1);
-                
-                if(parameterCount == 1) {
-                    EntityAttribute entityAttribute = entityAttributeName == null ?
-                            EntityAttributeLogic.getInstance().getEntityAttributeByUlid(this, entityAttributeUlid) :
-                            EntityAttributeLogic.getInstance().getEntityAttributeByName(this, entityInstance.getEntityType(), entityAttributeName);
-
-                    if(!hasExecutionErrors()) {
-                        String entityAttributeTypeName = entityAttribute.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
-
-                        if(EntityAttributeTypes.NAME.name().equals(entityAttributeTypeName)) {
-                            if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
-                                var coreControl = getCoreControl();
-                                EntityNameAttribute entityNameAttribute = coreControl.getEntityNameAttribute(entityAttribute, entityInstance);
-
-                                if(entityNameAttribute == null) {
-                                    String nameAttribute = form.getNameAttribute();
-
-                                    coreControl.createEntityNameAttribute(entityAttribute, nameAttribute, entityInstance, getPartyPK());
-                                } else {
-                                    addExecutionError(ExecutionErrors.DuplicateEntityNameAttribute.name(),
-                                            EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance),
-                                            entityAttribute.getLastDetail().getEntityAttributeName());
-                                }
-                            } else {
-                                EntityTypeDetail expectedEntityTypeDetail = entityAttribute.getLastDetail().getEntityType().getLastDetail();
-                                EntityTypeDetail suppliedEntityTypeDetail = entityInstance.getEntityType().getLastDetail();
-
-                                addExecutionError(ExecutionErrors.MismatchedEntityType.name(),
-                                        expectedEntityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                                        expectedEntityTypeDetail.getEntityTypeName(),
-                                        suppliedEntityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                                        suppliedEntityTypeDetail.getEntityTypeName());
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.MismatchedEntityAttributeType.name(),
-                                    EntityAttributeTypes.NAME.name(), entityAttributeTypeName);
-                        }
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.InvalidParameterCount.name());
-                }
+                EntityAttributeLogic.getInstance().createEntityNameAttribute(this, entityAttribute, form.getNameAttribute(), entityInstance,
+                        getPartyPK());
             }
-        } else {
-            addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
-        
+
         return null;
     }
     

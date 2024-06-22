@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,9 +18,10 @@ package com.echothree.util.common.string;
 
 import com.echothree.model.control.party.common.transfer.DateTimeFormatTransfer;
 import com.echothree.model.control.party.common.transfer.TimeZoneTransfer;
-import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDate;
-import java.util.Date;
+import java.time.LocalTime;
+import java.time.ZoneId;
 
 public class DateUtils {
 
@@ -38,80 +39,72 @@ public class DateUtils {
 
     private final java.time.format.DateTimeFormatter dateTimeFormatter = java.time.format.DateTimeFormatter.ofPattern("yyyyMMdd");
     
-    public String formatDate(DateTimeFormatTransfer dateTimeFormat, Integer date) {
+    public String formatDate(final DateTimeFormatTransfer dateTimeFormat, final Integer date) {
         String result = null;
         
         if(date != null) {
-            LocalDate localDate = LocalDate.parse(date.toString(), dateTimeFormatter);
-            java.time.format.DateTimeFormatter resultDateTimeFormatter = java.time.format.DateTimeFormatter.ofPattern(dateTimeFormat.getJavaShortDateFormat());
+            var localDate = LocalDate.parse(date.toString(), dateTimeFormatter);
+            var resultDateTimeFormatter = java.time.format.DateTimeFormatter.ofPattern(dateTimeFormat.getJavaShortDateFormat());
 
             result = resultDateTimeFormatter.format(localDate);
         }
         
         return result;
     }
-    
-    protected java.util.TimeZone getJavaTimeZone(TimeZoneTransfer timeZone) {
-        return java.util.TimeZone.getTimeZone(timeZone.getJavaTimeZoneName());
+
+    protected ZoneId getJavaTimeZone(final TimeZoneTransfer timeZone) {
+        return ZoneId.of(timeZone.getJavaTimeZoneName());
+    }
+
+    protected String formatDateUsingShortDateFormat(final TimeZoneTransfer timeZone, final DateTimeFormatTransfer dateTimeFormat, final Instant instant) {
+        var dateTimeFormatter = java.time.format.DateTimeFormatter.ofPattern(dateTimeFormat.getJavaShortDateFormat());
+        var localDate = LocalDate.ofInstant(instant, getJavaTimeZone(timeZone));
+
+        return localDate.format(dateTimeFormatter);
     }
     
-    protected String formatDateUsingShortDateFormat(TimeZoneTransfer timeZone, DateTimeFormatTransfer dateTimeFormat, Date time) {
-        SimpleDateFormat sdfShortDateFormat = new SimpleDateFormat(dateTimeFormat.getJavaShortDateFormat());
-        sdfShortDateFormat.setTimeZone(getJavaTimeZone(timeZone));
-        
-        return sdfShortDateFormat.format(time);
+    protected String formatTimeUsingTimeFormatSeconds(final TimeZoneTransfer timeZone, final DateTimeFormatTransfer dateTimeFormat, final Instant instant) {
+        var dateTimeFormatter = java.time.format.DateTimeFormatter.ofPattern(dateTimeFormat.getJavaTimeFormatSeconds());
+        var localTime = LocalTime.ofInstant(instant, getJavaTimeZone(timeZone));
+
+        return localTime.format(dateTimeFormatter);
     }
     
-    protected String formatTimeUsingTimeFormatSeconds(TimeZoneTransfer timeZone, DateTimeFormatTransfer dateTimeFormat, Date time) {
-        SimpleDateFormat sdfTimeFormatSeconds = new SimpleDateFormat(dateTimeFormat.getJavaTimeFormatSeconds());
-        sdfTimeFormatSeconds.setTimeZone(getJavaTimeZone(timeZone));
-        
-        return sdfTimeFormatSeconds.format(time);
+    public String formatTypicalDateTime(final TimeZoneTransfer timeZone, final DateTimeFormatTransfer dateTimeFormat, final Instant instant) {
+        return instant == null || dateTimeFormat == null ? null : formatDateUsingShortDateFormat(timeZone, dateTimeFormat, instant) + ' ' + formatTimeUsingTimeFormatSeconds(timeZone, dateTimeFormat, instant);
     }
     
-    public String formatTypicalDateTime(TimeZoneTransfer timeZone, DateTimeFormatTransfer dateTimeFormat, Date time) {
-        return new StringBuilder(formatDateUsingShortDateFormat(timeZone, dateTimeFormat, time)).append(' ').append(formatTimeUsingTimeFormatSeconds(timeZone, dateTimeFormat, time)).toString();
-    }
-    
-    public String formatTypicalDateTime(TimeZoneTransfer timeZone, DateTimeFormatTransfer dateTimeFormat, Long time) {
-        return time == null? null: formatTypicalDateTime(timeZone, dateTimeFormat, new Date(time));
+    public String formatTypicalDateTime(final TimeZoneTransfer timeZone, final DateTimeFormatTransfer dateTimeFormat, final Long time) {
+        return time == null? null: formatTypicalDateTime(timeZone, dateTimeFormat, Instant.ofEpochMilli(time));
     }
     
     public DateFormatter getDateFormatter(DateTimeFormatTransfer dateTimeFormat, DateTimeFormatType dtft) {
-        String pattern = null;
-        
-        if(dtft.equals(DateTimeFormatType.SHORT_DATE)) {
-            pattern = dateTimeFormat.getJavaShortDateFormat();
-        } else if(dtft.equals(DateTimeFormatType.ABBREV_DATE)) {
-            pattern = dateTimeFormat.getJavaAbbrevDateFormat();
-        } else if(dtft.equals(DateTimeFormatType.ABBREV_DATE_WITH_WEEKDAY)) {
-            pattern = dateTimeFormat.getJavaAbbrevDateFormatWeekday();
-        } else if(dtft.equals(DateTimeFormatType.LONG_DATE)) {
-            pattern = dateTimeFormat.getJavaLongDateFormat();
-        } else if(dtft.equals(DateTimeFormatType.LONG_DATE_WITH_WEEKDAY)) {
-            pattern = dateTimeFormat.getJavaLongDateFormatWeekday();
+        String pattern;
+
+        switch(dtft) {
+            case SHORT_DATE -> pattern = dateTimeFormat.getJavaShortDateFormat();
+            case ABBREV_DATE -> pattern = dateTimeFormat.getJavaAbbrevDateFormat();
+            case ABBREV_DATE_WITH_WEEKDAY -> pattern = dateTimeFormat.getJavaAbbrevDateFormatWeekday();
+            case LONG_DATE -> pattern = dateTimeFormat.getJavaLongDateFormat();
+            case LONG_DATE_WITH_WEEKDAY -> pattern = dateTimeFormat.getJavaLongDateFormatWeekday();
+            default -> throw new IllegalArgumentException();
         }
-        
+
         return new DateFormatter(pattern);
     }
-    
-    public DateTimeFormatter getDateTimeFormatter(TimeZoneTransfer timeZone, DateTimeFormatTransfer dateTimeFormat, DateTimeFormatType dtft) {
-        String pattern = null;
-        
-        if(dtft.equals(DateTimeFormatType.SHORT_DATE)) {
-            pattern = dateTimeFormat.getJavaShortDateFormat();
-        } else if(dtft.equals(DateTimeFormatType.ABBREV_DATE)) {
-            pattern = dateTimeFormat.getJavaAbbrevDateFormat();
-        } else if(dtft.equals(DateTimeFormatType.ABBREV_DATE_WITH_WEEKDAY)) {
-            pattern = dateTimeFormat.getJavaAbbrevDateFormatWeekday();
-        } else if(dtft.equals(DateTimeFormatType.LONG_DATE)) {
-            pattern = dateTimeFormat.getJavaLongDateFormat();
-        } else if(dtft.equals(DateTimeFormatType.LONG_DATE_WITH_WEEKDAY)) {
-            pattern = dateTimeFormat.getJavaLongDateFormatWeekday();
-        } else if(dtft.equals(DateTimeFormatType.TIME)) {
-            pattern = dateTimeFormat.getJavaTimeFormat();
-        } else if(dtft.equals(DateTimeFormatType.TIME_WITH_SECONDS)) {
-            pattern = dateTimeFormat.getJavaTimeFormatSeconds();
+
+    public DateTimeFormatter getDateTimeFormatter(final TimeZoneTransfer timeZone, final DateTimeFormatTransfer dateTimeFormat, final DateTimeFormatType dtft) {
+        String pattern;
+
+        switch(dtft) {
+            case SHORT_DATE -> pattern = dateTimeFormat.getJavaShortDateFormat();
+            case ABBREV_DATE -> pattern = dateTimeFormat.getJavaAbbrevDateFormat();
+            case ABBREV_DATE_WITH_WEEKDAY -> pattern = dateTimeFormat.getJavaAbbrevDateFormatWeekday();
+            case LONG_DATE -> pattern = dateTimeFormat.getJavaLongDateFormat();
+            case LONG_DATE_WITH_WEEKDAY -> pattern = dateTimeFormat.getJavaLongDateFormatWeekday();
+            case TIME -> pattern = dateTimeFormat.getJavaTimeFormat();
+            case TIME_WITH_SECONDS -> pattern = dateTimeFormat.getJavaTimeFormatSeconds();
+            default -> throw new IllegalArgumentException();
         }
         
         return new DateTimeFormatter(timeZone.getJavaTimeZoneName(), pattern);

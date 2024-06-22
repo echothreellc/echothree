@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -67,7 +67,7 @@ public class GetColorCommand
         if(parameterCount == 1) {
             if(colorName == null) {
                 var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
-                        ComponentVendors.ECHOTHREE.name(), EntityTypes.Color.name());
+                        ComponentVendors.ECHO_THREE.name(), EntityTypes.Color.name());
 
                 if(!hasExecutionErrors()) {
                     color = coreControl.getColorByEntityInstance(entityInstance);
@@ -77,7 +77,7 @@ public class GetColorCommand
             }
 
             if(color != null) {
-                sendEventUsingNames(color.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                sendEvent(color.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
@@ -87,7 +87,7 @@ public class GetColorCommand
     }
     
     @Override
-    protected BaseResult getTransfer(Color color) {
+    protected BaseResult getResult(Color color) {
         var coreControl = getCoreControl();
         GetColorResult result = CoreResultFactory.getGetColorResult();
 

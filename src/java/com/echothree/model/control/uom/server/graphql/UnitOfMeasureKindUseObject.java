@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,11 +16,8 @@
 
 package com.echothree.model.control.uom.server.graphql;
 
-import com.echothree.control.user.uom.server.command.GetUnitOfMeasureKindCommand;
-import com.echothree.control.user.uom.server.command.GetUnitOfMeasureKindUseTypeCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindUse;
-import com.echothree.util.server.control.BaseSingleEntityCommand;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
@@ -29,7 +26,7 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("unit of measure kind use object")
 @GraphQLName("UnitOfMeasureKindUse")
 public class UnitOfMeasureKindUseObject
-        extends BaseGraphQl {
+        implements BaseGraphQl {
     
     private final UnitOfMeasureKindUse unitOfMeasureKindUse; // Always Present
     
@@ -37,44 +34,16 @@ public class UnitOfMeasureKindUseObject
         this.unitOfMeasureKindUse = unitOfMeasureKindUse;
     }
     
-    private Boolean hasUnitOfMeasureKindAccess;
-    
-    private boolean getHasUnitOfMeasureKindAccess(final DataFetchingEnvironment env) {
-        if(hasUnitOfMeasureKindAccess == null) {
-            var baseSingleEntityCommand = new GetUnitOfMeasureKindCommand(getUserVisitPK(env), null);
-            
-            baseSingleEntityCommand.security();
-            
-            hasUnitOfMeasureKindAccess = !baseSingleEntityCommand.hasSecurityMessages();
-        }
-        
-        return hasUnitOfMeasureKindAccess;
-    }
-    
-    private Boolean hasUnitOfMeasureKindUseTypeAccess;
-    
-    private boolean getHasUnitOfMeasureKindUseTypeAccess(final DataFetchingEnvironment env) {
-        if(hasUnitOfMeasureKindUseTypeAccess == null) {
-            var baseSingleEntityCommand = new GetUnitOfMeasureKindUseTypeCommand(getUserVisitPK(env), null);
-            
-            baseSingleEntityCommand.security();
-            
-            hasUnitOfMeasureKindUseTypeAccess = !baseSingleEntityCommand.hasSecurityMessages();
-        }
-        
-        return hasUnitOfMeasureKindUseTypeAccess;
-    }
-    
     @GraphQLField
     @GraphQLDescription("unit of measure kind use type")
     public UnitOfMeasureKindUseTypeObject getUnitOfMeasureKindUseType(final DataFetchingEnvironment env) {
-        return getHasUnitOfMeasureKindUseTypeAccess(env) ? new UnitOfMeasureKindUseTypeObject(unitOfMeasureKindUse.getUnitOfMeasureKindUseType()) : null;
+        return UomSecurityUtils.getHasUnitOfMeasureKindUseTypeAccess(env) ? new UnitOfMeasureKindUseTypeObject(unitOfMeasureKindUse.getUnitOfMeasureKindUseType()) : null;
     }
     
     @GraphQLField
     @GraphQLDescription("unit of measure kind")
     public UnitOfMeasureKindObject getUnitOfMeasureKind(final DataFetchingEnvironment env) {
-        return getHasUnitOfMeasureKindAccess(env) ? new UnitOfMeasureKindObject(unitOfMeasureKindUse.getUnitOfMeasureKind()) : null;
+        return UomSecurityUtils.getHasUnitOfMeasureKindAccess(env) ? new UnitOfMeasureKindObject(unitOfMeasureKindUse.getUnitOfMeasureKind()) : null;
     }
 
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -115,6 +115,8 @@
         <mkdir dir="${dir.home}/build/metadata/server" />
         <mkdir dir="${dir.home}/build/metadata/server/META-INF" />
         <mkdir dir="${dir.home}/generated" />
+        <mkdir dir="${dir.home}/generated/avro" />
+        <mkdir dir="${dir.home}/generated/avro/java" />
         <mkdir dir="${dir.home}/generated/data" />
         <mkdir dir="${dir.home}/generated/data/java" />
         <mkdir dir="${dir.home}/generated/form" />
@@ -169,20 +171,45 @@
         <touch file="${dir.home}/generated/form/java/.flagfile" />
     </target>
 
+    <target name="avro" unless="avro.uptodate" depends="prepare">
+        <java jar="${dir.build.lib}/avro-tools.jar" fork="true">
+            <arg line="compile schema"/>
+            <arg file="avro/core"/>
+            <arg file="${dir.home}/generated/avro/java"/>
+        </java>
+        <touch file="${dir.home}/generated/avro/java/.flagfile" />
+    </target>
+
+    <target name="avro_uptodate">
+        <uptodate
+                property="avro.uptodate"
+                targetfile="${dir.home}/generated/avro/java/.flagfile">
+            <srcfiles dir= "${dir.home}/src/avro" includes="**/*.avsc" />
+        </uptodate>
+    </target>
+
     <target name="generated_persistence" depends="persistence_uptodate,persistence" />
 
     <target name="generated_form" depends="form_uptodate,form" />
+
+    <target name="generated_avro" depends="avro_uptodate,avro" />
 
     <target name="generated" depends="prepare">
         <parallel>
             <ant target="generated_persistence"/>
             <ant target="generated_form"/>
+            <ant target="generated_avro"/>
         </parallel>
     </target>
 
     <target name="compile" depends="generated">
         <path id="processorpath.ref">
             <pathelement location="${dir.build.lib}/error_prone_core-with-dependencies.jar"/>
+            <pathelement location="${dir.build.lib}/error_prone_annotation.jar"/>
+            <pathelement location="${dir.build.lib}/error_prone_type_annotations.jar"/>
+            <pathelement location="${dir.build.lib}/error_prone_check_api.jar"/>
+            <pathelement location="${dir.build.lib}/java-diff-utils.jar"/>
+            <pathelement location="${dir.build.lib}/dataflow-errorprone.jar"/>
             <pathelement location="${dir.build.lib}/failureaccess.jar"/>
             <pathelement location="${dir.build.lib}/jFormatString.jar"/>
             <pathelement location="${dir.build.lib}/threeten-extra.jar"/>
@@ -190,13 +217,13 @@
         <javac
             fork="true"
             debug="on"
-            srcdir="${dir.home}/generated/data/java:${dir.home}/generated/form/java:java"
+            srcdir="${dir.home}/generated/avro/java:${dir.home}/generated/data/java:${dir.home}/generated/form/java:java"
             destdir="${dir.home}/build/classes"
             includeAntRuntime="false"
             classpath="${compile.task.classpath}"
             classpathref="shared.class.path"
             includes="${compile.task.include}" >
-            <compilerarg line="-XDcompilePolicy=simple"/>
+            <compilerarg value="-XDcompilePolicy=simple"/>
             <compilerarg value="-processorpath"/>
             <compilerarg pathref="processorpath.ref"/>
             <!-- Begin Error Prone -->
@@ -233,6 +260,7 @@
             <fileset dir="${dir.home}/build/classes">
                 <include name="com/echothree/control/user/*/common/**/*.class" />
                 <include name="com/echothree/model/control/*/common/**/*.class" />
+                <include name="com/echothree/model/avro/common/**/*.class" />
                 <include name="com/echothree/model/data/*/common/**/*.class" />
                 <include name="com/echothree/util/common/**/*.class" />
                 <include name="com/echothree/view/common/**/*.class" />
@@ -256,6 +284,7 @@
             <fileset dir="${dir.home}/build/classes">
                 <include name="com/echothree/control/user/*/common/**/*.class" />
                 <include name="com/echothree/model/control/*/common/**/*.class" />
+                <include name="com/echothree/model/avro/common/**/*.class" />
                 <include name="com/echothree/model/data/*/common/**/*.class" />
                 <include name="com/echothree/util/common/**/*.class" />
                 <include name="com/echothree/view/common/**/*.class" />
@@ -301,10 +330,14 @@
 
     <target name="ear" depends="jars">
         <ear earfile="${dir.home}/build/ears/echothree.ear" appxml="${dir.home}/build/metadata/server/META-INF/application.xml">
+            <metainf dir="${dir.home}/build/metadata/server/META-INF">
+                <include name="jboss-deployment-structure.xml" />
+            </metainf>
             <fileset dir="${dir.home}/build/jars">
                 <include name="echothree-server.jar" />
             </fileset>
             <fileset dir="${dir.home}/build/lib">
+                <include name="avro.jar" />
                 <include name="antlr4-runtime.jar" />
                 <include name="classgraph.jar" />
                 <include name="commons-codec.jar" />
@@ -319,10 +352,12 @@
                 <include name="icu4j.jar" />
                 <include name="itext.jar" />
                 <include name="java-dataloader.jar"/>
+                <include name="java-uuid-generator.jar"/>
                 <include name="jooq.jar"/>
                 <include name="juel-impl.jar"/>
                 <include name="lucene-analysis-common.jar" />
                 <include name="lucene-analysis-kuromoji.jar" />
+                <include name="lucene-backward-codecs.jar" />
                 <include name="lucene-core.jar" />
                 <include name="lucene-queryparser.jar" />
                 <include name="lucene-suggest.jar" />
@@ -330,7 +365,7 @@
                 <include name="r2dbc-spi.jar" />
                 <include name="reactive-streams.jar" />
                 <include name="slf4j-api.jar" />
-                <include name="slf4j-log4j12.jar" />
+                <include name="slf4j-reload4j.jar" />
                 <include name="validation-api.jar" />
                 <include name="xercesImpl.jar" />
                 <include name="xml-apis.jar" />

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,8 +20,8 @@ import com.echothree.control.user.search.common.SearchUtil;
 import com.echothree.control.user.search.common.form.GetItemResultsForm;
 import com.echothree.control.user.search.common.result.GetItemResultsResult;
 import com.echothree.model.control.core.common.CoreOptions;
-import com.echothree.model.control.search.common.SearchConstants;
 import com.echothree.model.control.search.common.SearchOptions;
+import com.echothree.model.control.search.common.SearchTypes;
 import com.echothree.model.data.search.common.SearchResultConstants;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -35,6 +35,7 @@ import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
+import static java.lang.Math.toIntExact;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -66,17 +67,18 @@ public class ResultAction
         GetItemResultsForm commandForm = SearchUtil.getHome().getGetItemResultsForm();
         String results = request.getParameter(ParameterConstants.RESULTS);
 
-        commandForm.setSearchTypeName(SearchConstants.SearchType_ITEM_MAINTENANCE);
+        commandForm.setSearchTypeName(SearchTypes.ITEM_MAINTENANCE.name());
 
         Set<String> options = new HashSet<>();
         options.add(SearchOptions.ItemResultIncludeItem);
         options.add(CoreOptions.EntityInstanceIncludeEntityAppearance);
+        options.add(CoreOptions.EntityInstanceIncludeEntityVisit);
         options.add(CoreOptions.AppearanceIncludeTextDecorations);
         options.add(CoreOptions.AppearanceIncludeTextTransformations);
         commandForm.setOptions(options);
 
         if(results == null) {
-            String offsetParameter = request.getParameter((new ParamEncoder("itemResult").encodeParameterName(TableTagParameters.PARAMETER_PAGE)));
+            String offsetParameter = request.getParameter(new ParamEncoder("itemResult").encodeParameterName(TableTagParameters.PARAMETER_PAGE));
             Integer offset = offsetParameter == null ? null : (Integer.parseInt(offsetParameter) - 1) * 20;
 
             Map<String, Limit> limits = new HashMap<>();
@@ -89,9 +91,9 @@ public class ResultAction
             ExecutionResult executionResult = commandResult.getExecutionResult();
             GetItemResultsResult result = (GetItemResultsResult)executionResult.getResult();
 
-            Integer itemResultCount = result.getItemResultCount();
+            var itemResultCount = result.getItemResultCount();
             if(itemResultCount != null) {
-                request.setAttribute(AttributeConstants.ITEM_RESULT_COUNT, itemResultCount);
+                request.setAttribute(AttributeConstants.ITEM_RESULT_COUNT, toIntExact(itemResultCount));
             }
 
             request.setAttribute(AttributeConstants.ITEM_RESULTS, new ListWrapper<>(result.getItemResults()));

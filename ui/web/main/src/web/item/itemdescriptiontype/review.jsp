@@ -1,7 +1,7 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" %>
 
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -55,41 +55,43 @@
             Use Parent If Missing:
             <c:choose>
                 <c:when test="${itemDescriptionType.useParentIfMissing}">
-                    Yes
+                    <fmt:message key="phrase.yes" />
                 </c:when>
                 <c:otherwise>
-                    No
+                    <fmt:message key="phrase.no" />
                 </c:otherwise>
             </c:choose>
             <br />
-            Mime Type Usage Type: ${itemDescriptionType.mimeTypeUsageType.description}<br />
+            <c:if test='${itemDescriptionType.mimeTypeUsageType != null}'>
+                Mime Type Usage Type: ${itemDescriptionType.mimeTypeUsageType.description}<br />
+            </c:if>
             Check Content Web Address:
             <c:choose>
                 <c:when test="${itemDescriptionType.checkContentWebAddress}">
-                    Yes
+                    <fmt:message key="phrase.yes" />
                 </c:when>
                 <c:otherwise>
-                    No
+                    <fmt:message key="phrase.no" />
                 </c:otherwise>
             </c:choose>
             <br />
             Include In Index:
             <c:choose>
                 <c:when test="${itemDescriptionType.includeInIndex}">
-                    Yes
+                    <fmt:message key="phrase.yes" />
                 </c:when>
                 <c:otherwise>
-                    No
+                    <fmt:message key="phrase.no" />
                 </c:otherwise>
             </c:choose>
             <br />
             Index Default:
             <c:choose>
                 <c:when test="${itemDescriptionType.indexDefault}">
-                    Yes
+                    <fmt:message key="phrase.yes" />
                 </c:when>
                 <c:otherwise>
-                    No
+                    <fmt:message key="phrase.no" />
                 </c:otherwise>
             </c:choose>
             <br />
@@ -99,7 +101,7 @@
                    Minimum Height:
                     <c:choose>
                         <c:when test='${itemDescriptionType.minimumHeight == null}'>
-                            <i>Not Set.</i>
+                            <i><fmt:message key="phrase.notSet" /></i>
                         </c:when>
                         <c:otherwise>
                             <c:out value="${itemDescriptionType.minimumHeight}" />
@@ -109,7 +111,7 @@
                    Minimum Width:
                     <c:choose>
                         <c:when test='${itemDescriptionType.minimumWidth == null}'>
-                            <i>Not Set.</i>
+                            <i><fmt:message key="phrase.notSet" /></i>
                         </c:when>
                         <c:otherwise>
                             <c:out value="${itemDescriptionType.minimumWidth}" />
@@ -119,7 +121,7 @@
                    Maximum Height:
                     <c:choose>
                         <c:when test='${itemDescriptionType.maximumHeight == null}'>
-                            <i>Not Set.</i>
+                            <i><fmt:message key="phrase.notSet" /></i>
                         </c:when>
                         <c:otherwise>
                             <c:out value="${itemDescriptionType.maximumHeight}" />
@@ -129,7 +131,7 @@
                    Maximum Width:
                     <c:choose>
                         <c:when test='${itemDescriptionType.maximumWidth == null}'>
-                            <i>Not Set.</i>
+                            <i><fmt:message key="phrase.notSet" /></i>
                         </c:when>
                         <c:otherwise>
                             <c:out value="${itemDescriptionType.maximumWidth}" />
@@ -139,7 +141,7 @@
                    Preferred Height:
                     <c:choose>
                         <c:when test='${itemDescriptionType.preferredHeight == null}'>
-                            <i>Not Set.</i>
+                            <i><fmt:message key="phrase.notSet" /></i>
                         </c:when>
                         <c:otherwise>
                             <c:out value="${itemDescriptionType.preferredHeight}" />
@@ -149,7 +151,7 @@
                    Preferred Width:
                     <c:choose>
                         <c:when test='${itemDescriptionType.preferredWidth == null}'>
-                            <i>Not Set.</i>
+                            <i><fmt:message key="phrase.notSet" /></i>
                         </c:when>
                         <c:otherwise>
                             <c:out value="${itemDescriptionType.preferredWidth}" />
@@ -159,7 +161,7 @@
                    Preferred Mime Type:
                     <c:choose>
                         <c:when test='${itemDescriptionType.preferredMimeType == null}'>
-                            <i>Not Set.</i>
+                            <i><fmt:message key="phrase.notSet" /></i>
                         </c:when>
                         <c:otherwise>
                             <c:url var="mimeTypeUrl" value="/action/Core/MimeType/Review">
@@ -172,7 +174,7 @@
                    Quality:
                     <c:choose>
                         <c:when test='${itemDescriptionType.quality == null}'>
-                            <i>Not Set.</i>
+                            <i><fmt:message key="phrase.notSet" /></i>
                         </c:when>
                         <c:otherwise>
                             <c:out value="${itemDescriptionType.quality}" />
@@ -182,10 +184,10 @@
                     Scale from Parent:
                     <c:choose>
                         <c:when test="${itemDescriptionType.scaleFromParent}">
-                            Yes
+                            <fmt:message key="phrase.yes" />
                         </c:when>
                         <c:otherwise>
-                            No
+                            <fmt:message key="phrase.no" />
                         </c:otherwise>
                     </c:choose>
                     <br />

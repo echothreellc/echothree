@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -64,7 +64,7 @@ public class UnitOfMeasureKindUseLogic
         UnitOfMeasureKindUseType unitOfMeasureKindUseType = null;
         
         var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
-                ComponentVendors.ECHOTHREE.name(), EntityTypes.UnitOfMeasureKindUseType.name());
+                ComponentVendors.ECHO_THREE.name(), EntityTypes.UnitOfMeasureKindUseType.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {
             var uomControl = Session.getModelController(UomControl.class);
@@ -113,7 +113,7 @@ public class UnitOfMeasureKindUseLogic
         UnitOfMeasureKindUse unitOfMeasureKindUse = null;
         
         var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
-                ComponentVendors.ECHOTHREE.name(), EntityTypes.UnitOfMeasureKindUse.name());
+                ComponentVendors.ECHO_THREE.name(), EntityTypes.UnitOfMeasureKindUse.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {
             var uomControl = Session.getModelController(UomControl.class);

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,13 +22,16 @@ import com.echothree.model.control.core.common.transfer.MimeTypeUsageTypeTransfe
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.MimeTypeUsage;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class MimeTypeUsageTransferCache
         extends BaseCoreTransferCache<MimeTypeUsage, MimeTypeUsageTransfer> {
-    
+
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+
     /** Creates a new instance of MimeTypeUsageTransferCache */
-    public MimeTypeUsageTransferCache(UserVisit userVisit, CoreControl coreControl) {
-        super(userVisit, coreControl);
+    public MimeTypeUsageTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
     
     public MimeTypeUsageTransfer getMimeTypeUsageTransfer(MimeTypeUsage mimeTypeUsage) {

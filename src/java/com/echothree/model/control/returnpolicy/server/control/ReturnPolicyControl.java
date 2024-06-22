@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -35,7 +35,6 @@ import com.echothree.model.control.returnpolicy.common.transfer.ReturnTypeDescri
 import com.echothree.model.control.returnpolicy.common.transfer.ReturnTypeShippingMethodTransfer;
 import com.echothree.model.control.returnpolicy.common.transfer.ReturnTypeTransfer;
 import com.echothree.model.control.returnpolicy.server.transfer.PartyReturnPolicyTransferCache;
-import com.echothree.model.control.returnpolicy.server.transfer.ReturnKindTransferCache;
 import com.echothree.model.control.returnpolicy.server.transfer.ReturnPolicyReasonTransferCache;
 import com.echothree.model.control.returnpolicy.server.transfer.ReturnPolicyTransferCache;
 import com.echothree.model.control.returnpolicy.server.transfer.ReturnPolicyTransferCaches;
@@ -45,6 +44,7 @@ import com.echothree.model.control.returnpolicy.server.transfer.ReturnReasonType
 import com.echothree.model.control.returnpolicy.server.transfer.ReturnTypeShippingMethodTransferCache;
 import com.echothree.model.control.returnpolicy.server.transfer.ReturnTypeTransferCache;
 import com.echothree.model.data.core.common.pk.MimeTypePK;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.party.common.pk.LanguagePK;
 import com.echothree.model.data.party.server.entity.Language;
@@ -112,6 +112,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -148,7 +149,7 @@ public class ReturnPolicyControl
     public PartyReturnPolicy createPartyReturnPolicy(Party party, ReturnPolicy returnPolicy, BasePK createdBy) {
         PartyReturnPolicy partyReturnPolicy = PartyReturnPolicyFactory.getInstance().create(party, returnPolicy, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), partyReturnPolicy.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyReturnPolicy.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return partyReturnPolicy;
     }
@@ -221,7 +222,8 @@ public class ReturnPolicyControl
                 "FROM partyreturnpolicies, returnpolicies, returnpolicydetails " +
                 "WHERE prtnplcy_rtnplcy_returnpolicyid = ? AND prtnplcy_thrutime = ? " +
                 "AND prtnplcy_rtnplcy_returnpolicyid = rtnplcy_returnpolicyid AND rtnplcy_lastdetailid = rtnplcydt_returnpolicydetailid " +
-                "ORDER BY rtnplcydt_sortorder, rtnplcydt_returnpolicyname");
+                "ORDER BY rtnplcydt_sortorder, rtnplcydt_returnpolicyname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM partyreturnpolicies " +
@@ -253,7 +255,8 @@ public class ReturnPolicyControl
                 "FROM partyreturnpolicies, parties, partydetails " +
                 "WHERE prtnplcy_par_partyid = ? AND prtnplcy_thrutime = ? " +
                 "AND prtnplcy_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid " +
-                "ORDER BY pardt_partyname");
+                "ORDER BY pardt_partyname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM partyreturnpolicies " +
@@ -279,7 +282,7 @@ public class ReturnPolicyControl
         return getReturnPolicyTransferCaches(userVisit).getPartyReturnPolicyTransferCache().getPartyReturnPolicyTransfer(partyReturnPolicy);
     }
 
-    public List<PartyReturnPolicyTransfer> getPartyReturnPolicyTransfers(UserVisit userVisit, List<PartyReturnPolicy> returnPolicies) {
+    public List<PartyReturnPolicyTransfer> getPartyReturnPolicyTransfers(UserVisit userVisit, Collection<PartyReturnPolicy> returnPolicies) {
         List<PartyReturnPolicyTransfer> returnPolicyTransfers = new ArrayList<>(returnPolicies.size());
         PartyReturnPolicyTransferCache returnPolicyTransferCache = getReturnPolicyTransferCaches(userVisit).getPartyReturnPolicyTransferCache();
 
@@ -306,7 +309,7 @@ public class ReturnPolicyControl
         // Performed manually, since sendEvent doesn't call it for relatedEntityInstances.
         coreControl.deleteEntityInstanceDependencies(coreControl.getEntityInstanceByBasePK(partyReturnPolicy.getPrimaryKey()), deletedBy);
 
-        sendEventUsingNames(partyReturnPolicy.getPartyPK(), EventTypes.MODIFY.name(), partyReturnPolicy.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(partyReturnPolicy.getPartyPK(), EventTypes.MODIFY, partyReturnPolicy.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 
     public void deletePartyReturnPoliciesByParty(List<PartyReturnPolicy> partyReturnPolicies, BasePK deletedBy) {
@@ -352,11 +355,33 @@ public class ReturnPolicyControl
         returnKind.setLastDetail(returnKindDetail);
         returnKind.store();
         
-        sendEventUsingNames(returnKind.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(returnKind.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return returnKind;
     }
-    
+
+    public long countReturnKinds() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM returnkinds, returnkinddetails " +
+                "WHERE rtnk_activedetailid = rtnkdt_returnkinddetailid");
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ReturnKind */
+    public ReturnKind getReturnKindByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ReturnKindPK(entityInstance.getEntityUniqueId());
+
+        return ReturnKindFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ReturnKind getReturnKindByEntityInstance(EntityInstance entityInstance) {
+        return getReturnKindByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ReturnKind getReturnKindByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getReturnKindByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     private static final Map<EntityPermission, String> getReturnKindByNameQueries;
 
     static {
@@ -374,7 +399,7 @@ public class ReturnPolicyControl
         getReturnKindByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private ReturnKind getReturnKindByName(String returnKindName, EntityPermission entityPermission) {
+    public ReturnKind getReturnKindByName(String returnKindName, EntityPermission entityPermission) {
         return ReturnKindFactory.getInstance().getEntityFromQuery(entityPermission, getReturnKindByNameQueries,
                 returnKindName);
     }
@@ -412,7 +437,7 @@ public class ReturnPolicyControl
         getDefaultReturnKindQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private ReturnKind getDefaultReturnKind(EntityPermission entityPermission) {
+    public ReturnKind getDefaultReturnKind(EntityPermission entityPermission) {
         return ReturnKindFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultReturnKindQueries);
     }
     
@@ -437,7 +462,8 @@ public class ReturnPolicyControl
                 "SELECT _ALL_ "
                 + "FROM returnkinds, returnkinddetails "
                 + "WHERE rtnk_activedetailid = rtnkdt_returnkinddetailid "
-                + "ORDER BY rtnkdt_sortorder, rtnkdt_returnkindname");
+                + "ORDER BY rtnkdt_sortorder, rtnkdt_returnkindname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM returnkinds, returnkinddetails "
@@ -495,19 +521,22 @@ public class ReturnPolicyControl
     public ReturnKindTransfer getReturnKindTransfer(UserVisit userVisit, ReturnKind returnKind) {
         return getReturnPolicyTransferCaches(userVisit).getReturnKindTransferCache().getReturnKindTransfer(returnKind);
     }
-    
-    public List<ReturnKindTransfer> getReturnKindTransfers(UserVisit userVisit) {
-        List<ReturnKind> returnKinds = getReturnKinds();
-        List<ReturnKindTransfer> returnKindTransfers = new ArrayList<>(returnKinds.size());
-        ReturnKindTransferCache returnKindTransferCache = getReturnPolicyTransferCaches(userVisit).getReturnKindTransferCache();
-        
+
+    public List<ReturnKindTransfer> getReturnKindTransfers(UserVisit userVisit, Collection<ReturnKind> returnKinds) {
+        var returnKindTransfers = new ArrayList<ReturnKindTransfer>(returnKinds.size());
+        var returnKindTransferCache = getReturnPolicyTransferCaches(userVisit).getReturnKindTransferCache();
+
         returnKinds.forEach((returnKind) ->
                 returnKindTransfers.add(returnKindTransferCache.getReturnKindTransfer(returnKind))
         );
-        
+
         return returnKindTransfers;
     }
-    
+
+    public List<ReturnKindTransfer> getReturnKindTransfers(UserVisit userVisit) {
+        return getReturnKindTransfers(userVisit, getReturnKinds());
+    }
+
     private void updateReturnKindFromValue(ReturnKindDetailValue returnKindDetailValue, boolean checkDefault, BasePK updatedBy) {
         ReturnKind returnKind = ReturnKindFactory.getInstance().getEntityFromPK(session,
                 EntityPermission.READ_WRITE, returnKindDetailValue.getReturnKindPK());
@@ -545,7 +574,7 @@ public class ReturnPolicyControl
         returnKind.setLastDetail(returnKindDetail);
         returnKind.store();
         
-        sendEventUsingNames(returnKindPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+        sendEvent(returnKindPK, EventTypes.MODIFY, null, null, updatedBy);
     }
     
     public void updateReturnKindFromValue(ReturnKindDetailValue returnKindDetailValue, BasePK updatedBy) {
@@ -577,7 +606,7 @@ public class ReturnPolicyControl
             }
         }
         
-        sendEventUsingNames(returnKind.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(returnKind.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -589,7 +618,7 @@ public class ReturnPolicyControl
         ReturnKindDescription returnKindDescription = ReturnKindDescriptionFactory.getInstance().create(returnKind,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(returnKind.getPrimaryKey(), EventTypes.MODIFY.name(), returnKindDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(returnKind.getPrimaryKey(), EventTypes.MODIFY, returnKindDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return returnKindDescription;
     }
@@ -641,7 +670,8 @@ public class ReturnPolicyControl
                 "SELECT _ALL_ "
                 + "FROM returnkinddescriptions, languages "
                 + "WHERE rtnkd_rtnk_returnkindid = ? AND rtnkd_thrutime = ? AND rtnkd_lang_languageid = lang_languageid "
-                + "ORDER BY lang_sortorder, lang_languageisoname");
+                + "ORDER BY lang_sortorder, lang_languageisoname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM returnkinddescriptions "
@@ -710,14 +740,14 @@ public class ReturnPolicyControl
             returnKindDescription = ReturnKindDescriptionFactory.getInstance().create(returnKind, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(returnKind.getPrimaryKey(), EventTypes.MODIFY.name(), returnKindDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(returnKind.getPrimaryKey(), EventTypes.MODIFY, returnKindDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteReturnKindDescription(ReturnKindDescription returnKindDescription, BasePK deletedBy) {
         returnKindDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(returnKindDescription.getReturnKindPK(), EventTypes.MODIFY.name(), returnKindDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(returnKindDescription.getReturnKindPK(), EventTypes.MODIFY, returnKindDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -759,11 +789,34 @@ public class ReturnPolicyControl
         returnPolicy.setLastDetail(returnPolicyDetail);
         returnPolicy.store();
         
-        sendEventUsingNames(returnPolicy.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(returnPolicy.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return returnPolicy;
     }
-    
+
+    public long countReturnPoliciesByReturnKind(ReturnKind returnKind) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM returnpolicies, returnpolicydetails " +
+                "WHERE rtnplcy_activedetailid = rtnplcydt_returnpolicydetailid AND rtnplcydt_rtnk_returnkindid = ?",
+                returnKind);
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ReturnPolicy */
+    public ReturnPolicy getReturnPolicyByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ReturnPolicyPK(entityInstance.getEntityUniqueId());
+
+        return ReturnPolicyFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ReturnPolicy getReturnPolicyByEntityInstance(EntityInstance entityInstance) {
+        return getReturnPolicyByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ReturnPolicy getReturnPolicyByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getReturnPolicyByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     private List<ReturnPolicy> getReturnPolicies(ReturnKind returnKind, EntityPermission entityPermission) {
         List<ReturnPolicy> returnPolicies;
         
@@ -774,7 +827,8 @@ public class ReturnPolicyControl
                 query = "SELECT _ALL_ " +
                         "FROM returnpolicies, returnpolicydetails " +
                         "WHERE rtnplcy_activedetailid = rtnplcydt_returnpolicydetailid AND rtnplcydt_rtnk_returnkindid = ? " +
-                        "ORDER BY rtnplcydt_sortorder, rtnplcydt_returnpolicyname";
+                        "ORDER BY rtnplcydt_sortorder, rtnplcydt_returnpolicyname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM returnpolicies, returnpolicydetails " +
@@ -802,7 +856,7 @@ public class ReturnPolicyControl
         return getReturnPolicies(returnKind, EntityPermission.READ_WRITE);
     }
     
-    private ReturnPolicy getDefaultReturnPolicy(ReturnKind returnKind, EntityPermission entityPermission) {
+    public ReturnPolicy getDefaultReturnPolicy(ReturnKind returnKind, EntityPermission entityPermission) {
         ReturnPolicy returnPolicy;
         
         try {
@@ -845,7 +899,7 @@ public class ReturnPolicyControl
         return getDefaultReturnPolicyForUpdate(returnKind).getLastDetailForUpdate().getReturnPolicyDetailValue().clone();
     }
     
-    private ReturnPolicy getReturnPolicyByName(ReturnKind returnKind, String returnPolicyName, EntityPermission entityPermission) {
+    public ReturnPolicy getReturnPolicyByName(ReturnKind returnKind, String returnPolicyName, EntityPermission entityPermission) {
         ReturnPolicy returnPolicy;
         
         try {
@@ -933,19 +987,22 @@ public class ReturnPolicyControl
     public ReturnPolicyTransfer getReturnPolicyTransfer(UserVisit userVisit, ReturnPolicy returnPolicy) {
         return getReturnPolicyTransferCaches(userVisit).getReturnPolicyTransferCache().getReturnPolicyTransfer(returnPolicy);
     }
-    
-    public List<ReturnPolicyTransfer> getReturnPolicyTransfersByReturnKind(UserVisit userVisit, ReturnKind returnKind) {
-        List<ReturnPolicy> returnPolicies = getReturnPolicies(returnKind);
+
+    public List<ReturnPolicyTransfer> getReturnPolicyTransfers(UserVisit userVisit, Collection<ReturnPolicy> returnPolicies ) {
         List<ReturnPolicyTransfer> returnPolicyTransfers = new ArrayList<>(returnPolicies.size());
         ReturnPolicyTransferCache returnPolicyTransferCache = getReturnPolicyTransferCaches(userVisit).getReturnPolicyTransferCache();
-        
+
         returnPolicies.forEach((returnPolicy) ->
                 returnPolicyTransfers.add(returnPolicyTransferCache.getReturnPolicyTransfer(returnPolicy))
         );
-        
+
         return returnPolicyTransfers;
     }
-    
+
+    public List<ReturnPolicyTransfer> getReturnPolicyTransfersByReturnKind(UserVisit userVisit, ReturnKind returnKind) {
+        return getReturnPolicyTransfers(userVisit, getReturnPolicies(returnKind));
+    }
+
     private void updateReturnPolicyFromValue(ReturnPolicyDetailValue returnPolicyDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(returnPolicyDetailValue.hasBeenModified()) {
@@ -985,7 +1042,7 @@ public class ReturnPolicyControl
             returnPolicy.setActiveDetail(returnPolicyDetail);
             returnPolicy.setLastDetail(returnPolicyDetail);
             
-            sendEventUsingNames(returnPolicyPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(returnPolicyPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -1021,7 +1078,7 @@ public class ReturnPolicyControl
             }
         }
         
-        sendEventUsingNames(returnPolicy.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(returnPolicy.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteReturnPoliciesByReturnKind(ReturnKind returnKind, BasePK deletedBy) {
@@ -1041,7 +1098,7 @@ public class ReturnPolicyControl
         ReturnPolicyTranslation returnPolicyTranslation = ReturnPolicyTranslationFactory.getInstance().create(returnPolicy,
                 language, description, overviewMimeType, overview, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(returnPolicy.getPrimaryKey(), EventTypes.MODIFY.name(), returnPolicyTranslation.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(returnPolicy.getPrimaryKey(), EventTypes.MODIFY, returnPolicyTranslation.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return returnPolicyTranslation;
     }
@@ -1159,14 +1216,14 @@ public class ReturnPolicyControl
             returnPolicyTranslation = ReturnPolicyTranslationFactory.getInstance().create(returnPolicyPK, languagePK, description,
                     policyMimeTypePK, policy, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(returnPolicyPK, EventTypes.MODIFY.name(), returnPolicyTranslation.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(returnPolicyPK, EventTypes.MODIFY, returnPolicyTranslation.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteReturnPolicyTranslation(ReturnPolicyTranslation returnPolicyTranslation, BasePK deletedBy) {
         returnPolicyTranslation.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(returnPolicyTranslation.getReturnPolicyPK(), EventTypes.MODIFY.name(), returnPolicyTranslation.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(returnPolicyTranslation.getReturnPolicyPK(), EventTypes.MODIFY, returnPolicyTranslation.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -1199,7 +1256,7 @@ public class ReturnPolicyControl
         ReturnPolicyReason returnPolicyReason = ReturnPolicyReasonFactory.getInstance().create(returnPolicy, returnReason,
                 isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(returnPolicy.getPrimaryKey(), EventTypes.MODIFY.name(), returnPolicyReason.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(returnPolicy.getPrimaryKey(), EventTypes.MODIFY, returnPolicyReason.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return returnPolicyReason;
     }
@@ -1304,7 +1361,8 @@ public class ReturnPolicyControl
                         "FROM returnpolicyreasons, returnreasons, returnreasondetails " +
                         "WHERE rtnplcyrsn_rtnplcy_returnpolicyid = ? AND rtnplcyrsn_thrutime = ? " +
                         "AND rtnplcyrsn_rtnrsn_returnreasonid = rtnrsn_returnreasonid AND rtnrsn_lastdetailid = rtnrsndt_returnreasondetailid " +
-                        "ORDER BY rtnrsndt_sortorder, rtnrsndt_returnreasonname";
+                        "ORDER BY rtnrsndt_sortorder, rtnrsndt_returnreasonname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM returnpolicyreasons " +
@@ -1344,7 +1402,8 @@ public class ReturnPolicyControl
                         "FROM returnpolicyreasons, returnpolicies, returnpolicydetails " +
                         "WHERE rtnplcyrsn_rtnrsn_returnreasonid = ? AND rtnplcyrsn_thrutime = ? " +
                         "AND rtnplcyrsn_rtnplcy_returnpolicyid = rtnplcy_returnpolicyid AND rtnplcy_lastdetailid = rtnplcydt_returnpolicydetailid " +
-                        "ORDER BY rtnplcydt_sortorder, rtnplcydt_returnpolicyname";
+                        "ORDER BY rtnplcydt_sortorder, rtnplcydt_returnpolicyname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM returnpolicyreasons " +
@@ -1373,7 +1432,7 @@ public class ReturnPolicyControl
         return getReturnPolicyReasonsByReturnReason(returnReason, EntityPermission.READ_WRITE);
     }
     
-    public List<ReturnPolicyReasonTransfer> getReturnPolicyReasonTransfers(UserVisit userVisit, List<ReturnPolicyReason> returnPolicyReasons) {
+    public List<ReturnPolicyReasonTransfer> getReturnPolicyReasonTransfers(UserVisit userVisit, Collection<ReturnPolicyReason> returnPolicyReasons) {
         List<ReturnPolicyReasonTransfer> returnPolicyReasonTransfers = new ArrayList<>(returnPolicyReasons.size());
         ReturnPolicyReasonTransferCache returnPolicyReasonTransferCache = getReturnPolicyTransferCaches(userVisit).getReturnPolicyReasonTransferCache();
         
@@ -1429,7 +1488,7 @@ public class ReturnPolicyControl
             returnPolicyReason = ReturnPolicyReasonFactory.getInstance().create(returnPolicyPK, returnReasonPK,
                     isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(returnPolicyPK, EventTypes.MODIFY.name(), returnPolicyReason.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(returnPolicyPK, EventTypes.MODIFY, returnPolicyReason.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -1459,7 +1518,7 @@ public class ReturnPolicyControl
             }
         }
         
-        sendEventUsingNames(returnPolicy.getPrimaryKey(), EventTypes.MODIFY.name(), returnPolicyReason.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(returnPolicy.getPrimaryKey(), EventTypes.MODIFY, returnPolicyReason.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteReturnPolicyReasons(List<ReturnPolicyReason> returnPolicyReasons, BasePK deletedBy) {
@@ -1506,7 +1565,7 @@ public class ReturnPolicyControl
         returnReason.setLastDetail(returnReasonDetail);
         returnReason.store();
         
-        sendEventUsingNames(returnReason.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(returnReason.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return returnReason;
     }
@@ -1521,7 +1580,8 @@ public class ReturnPolicyControl
                 query = "SELECT _ALL_ " +
                         "FROM returnreasons, returnreasondetails " +
                         "WHERE rtnrsn_activedetailid = rtnrsndt_returnreasondetailid AND rtnrsndt_rtnk_returnkindid = ? " +
-                        "ORDER BY rtnrsndt_sortorder, rtnrsndt_returnreasonname";
+                        "ORDER BY rtnrsndt_sortorder, rtnrsndt_returnreasonname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM returnreasons, returnreasondetails " +
@@ -1729,7 +1789,7 @@ public class ReturnPolicyControl
             returnReason.setActiveDetail(returnReasonDetail);
             returnReason.setLastDetail(returnReasonDetail);
             
-            sendEventUsingNames(returnReasonPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(returnReasonPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -1765,7 +1825,7 @@ public class ReturnPolicyControl
             }
         }
         
-        sendEventUsingNames(returnReason.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(returnReason.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteReturnReasonsByReturnKind(ReturnKind returnKind, BasePK deletedBy) {
@@ -1785,7 +1845,7 @@ public class ReturnPolicyControl
         ReturnReasonDescription returnReasonDescription = ReturnReasonDescriptionFactory.getInstance().create(returnReason,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(returnReason.getPrimaryKey(), EventTypes.MODIFY.name(), returnReasonDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(returnReason.getPrimaryKey(), EventTypes.MODIFY, returnReasonDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return returnReasonDescription;
     }
@@ -1847,7 +1907,8 @@ public class ReturnPolicyControl
                 query = "SELECT _ALL_ " +
                         "FROM returnreasondescriptions, languages " +
                         "WHERE rtnrsnd_rtnrsn_returnreasonid = ? AND rtnrsnd_thrutime = ? AND rtnrsnd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM returnreasondescriptions " +
@@ -1923,14 +1984,14 @@ public class ReturnPolicyControl
             returnReasonDescription = ReturnReasonDescriptionFactory.getInstance().create(returnReason, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(returnReason.getPrimaryKey(), EventTypes.MODIFY.name(), returnReasonDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(returnReason.getPrimaryKey(), EventTypes.MODIFY, returnReasonDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteReturnReasonDescription(ReturnReasonDescription returnReasonDescription, BasePK deletedBy) {
         returnReasonDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(returnReasonDescription.getReturnReasonPK(), EventTypes.MODIFY.name(), returnReasonDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(returnReasonDescription.getReturnReasonPK(), EventTypes.MODIFY, returnReasonDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -1963,7 +2024,7 @@ public class ReturnPolicyControl
         ReturnReasonType returnReasonType = ReturnReasonTypeFactory.getInstance().create(returnReason, returnType,
                 isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(returnReason.getPrimaryKey(), EventTypes.MODIFY.name(), returnReasonType.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(returnReason.getPrimaryKey(), EventTypes.MODIFY, returnReasonType.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return returnReasonType;
     }
@@ -2069,7 +2130,8 @@ public class ReturnPolicyControl
                         "WHERE rtnrsntyp_rtnrsn_returnreasonid = ? AND rtnrsntyp_thrutime = ? " +
                         "AND rtnrsntyp_rtntyp_returntypeid = rtntyp_returntypeid AND rtntyp_lastdetailid = rtntypdt_returntypedetailid " +
                         "AND rtntypdt_rtnk_returnkindid = rtnk_returnkindid AND rtnk_lastdetailid = rtnkdt_returnkinddetailid " +
-                        "ORDER BY rtntypdt_sortorder, rtntypdt_returntypename, rtnkdt_sortorder, rtnkdt_returnkindname";
+                        "ORDER BY rtntypdt_sortorder, rtntypdt_returntypename, rtnkdt_sortorder, rtnkdt_returnkindname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM returnreasontypes " +
@@ -2109,7 +2171,8 @@ public class ReturnPolicyControl
                         "FROM returnreasontypes, returnreasons, returnreasondetails " +
                         "WHERE rtnrsntyp_rtntyp_returntypeid = ? AND rtnrsntyp_thrutime = ? " +
                         "AND rtnrsntyp_rtnrsn_returnreasonid = rtnrsn_returnreasonid AND rtnrsn_lastdetailid = rtnrsndt_returnreasondetailid " +
-                        "ORDER BY rtnrsndt_sortorder, rtnrsndt_returnreasonname";
+                        "ORDER BY rtnrsndt_sortorder, rtnrsndt_returnreasonname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM returnreasontypes " +
@@ -2138,7 +2201,7 @@ public class ReturnPolicyControl
         return getReturnReasonTypesByReturnType(returnType, EntityPermission.READ_WRITE);
     }
     
-    public List<ReturnReasonTypeTransfer> getReturnReasonTypeTransfers(UserVisit userVisit, List<ReturnReasonType> returnReasonTypes) {
+    public List<ReturnReasonTypeTransfer> getReturnReasonTypeTransfers(UserVisit userVisit, Collection<ReturnReasonType> returnReasonTypes) {
         List<ReturnReasonTypeTransfer> returnReasonTypeTransfers = new ArrayList<>(returnReasonTypes.size());
         ReturnReasonTypeTransferCache returnReasonTypeTransferCache = getReturnPolicyTransferCaches(userVisit).getReturnReasonTypeTransferCache();
         
@@ -2194,7 +2257,7 @@ public class ReturnPolicyControl
             returnReasonType = ReturnReasonTypeFactory.getInstance().create(returnReasonPK, returnTypePK,
                     isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(returnReasonPK, EventTypes.MODIFY.name(), returnReasonType.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(returnReasonPK, EventTypes.MODIFY, returnReasonType.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -2224,7 +2287,7 @@ public class ReturnPolicyControl
             }
         }
         
-        sendEventUsingNames(returnReason.getPrimaryKey(), EventTypes.MODIFY.name(), returnReasonType.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(returnReason.getPrimaryKey(), EventTypes.MODIFY, returnReasonType.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteReturnReasonTypes(List<ReturnReasonType> returnReasonTypes, BasePK deletedBy) {
@@ -2271,7 +2334,7 @@ public class ReturnPolicyControl
         returnType.setLastDetail(returnTypeDetail);
         returnType.store();
         
-        sendEventUsingNames(returnType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(returnType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return returnType;
     }
@@ -2285,7 +2348,8 @@ public class ReturnPolicyControl
                 "SELECT _ALL_ "
                 + "FROM returntypes, returntypedetails "
                 + "WHERE rtntyp_activedetailid = rtntypdt_returntypedetailid AND rtntypdt_rtnk_returnkindid = ? "
-                + "ORDER BY rtntypdt_sortorder, rtntypdt_returntypename");
+                + "ORDER BY rtntypdt_sortorder, rtntypdt_returntypename " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM returntypes, returntypedetails "
@@ -2473,7 +2537,7 @@ public class ReturnPolicyControl
             returnType.setActiveDetail(returnTypeDetail);
             returnType.setLastDetail(returnTypeDetail);
             
-            sendEventUsingNames(returnTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(returnTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -2509,7 +2573,7 @@ public class ReturnPolicyControl
             }
         }
         
-        sendEventUsingNames(returnType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(returnType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteReturnTypesByReturnKind(ReturnKind returnKind, BasePK deletedBy) {
@@ -2529,7 +2593,7 @@ public class ReturnPolicyControl
         ReturnTypeDescription returnTypeDescription = ReturnTypeDescriptionFactory.getInstance().create(returnType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(returnType.getPrimaryKey(), EventTypes.MODIFY.name(), returnTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(returnType.getPrimaryKey(), EventTypes.MODIFY, returnTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return returnTypeDescription;
     }
@@ -2581,7 +2645,8 @@ public class ReturnPolicyControl
                 "SELECT _ALL_ "
                 + "FROM returntypedescriptions, languages "
                 + "WHERE rtntypd_rtntyp_returntypeid = ? AND rtntypd_thrutime = ? AND rtntypd_lang_languageid = lang_languageid "
-                + "ORDER BY lang_sortorder, lang_languageisoname");
+                + "ORDER BY lang_sortorder, lang_languageisoname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM returntypedescriptions "
@@ -2650,14 +2715,14 @@ public class ReturnPolicyControl
             returnTypeDescription = ReturnTypeDescriptionFactory.getInstance().create(returnType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(returnType.getPrimaryKey(), EventTypes.MODIFY.name(), returnTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(returnType.getPrimaryKey(), EventTypes.MODIFY, returnTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteReturnTypeDescription(ReturnTypeDescription returnTypeDescription, BasePK deletedBy) {
         returnTypeDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(returnTypeDescription.getReturnTypePK(), EventTypes.MODIFY.name(), returnTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(returnTypeDescription.getReturnTypePK(), EventTypes.MODIFY, returnTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -2690,7 +2755,7 @@ public class ReturnPolicyControl
         ReturnTypeShippingMethod returnTypeShippingMethod = ReturnTypeShippingMethodFactory.getInstance().create(returnType, shippingMethod,
                 isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(returnType.getPrimaryKey(), EventTypes.MODIFY.name(), returnTypeShippingMethod.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(returnType.getPrimaryKey(), EventTypes.MODIFY, returnTypeShippingMethod.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return returnTypeShippingMethod;
     }
@@ -2795,7 +2860,8 @@ public class ReturnPolicyControl
                         "FROM returntypeshippingmethods, shippingmethods, shippingmethoddetails " +
                         "WHERE rtntypshm_rtntyp_returntypeid = ? AND rtntypshm_thrutime = ? " +
                         "AND rtntypshm_shm_shippingmethodid = shm_shippingmethodid AND shm_lastdetailid = shmdt_shippingmethoddetailid " +
-                        "ORDER BY shmdt_sortorder, shmdt_shippingmethodname";
+                        "ORDER BY shmdt_sortorder, shmdt_shippingmethodname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM returntypeshippingmethods " +
@@ -2836,7 +2902,8 @@ public class ReturnPolicyControl
                         "WHERE rtntypshm_shm_shippingmethodid = ? AND rtntypshm_thrutime = ? " +
                         "AND rtntypshm_rtntyp_returntypeid = rtntyp_returntypeid AND rtntyp_lastdetailid = rtntypdt_returntypedetailid " +
                         "AND rtntypdt_rtnk_returnkindid = rtnk_returnkindid AND rtnk_lastdetailid = rtnkdt_returnkinddetailid " +
-                        "ORDER BY rtntypdt_sortorder, rtntypdt_returntypename, rtnkdt_sortorder, rtnkdt_returnkindname";
+                        "ORDER BY rtntypdt_sortorder, rtntypdt_returntypename, rtnkdt_sortorder, rtnkdt_returnkindname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM returntypeshippingmethods " +
@@ -2865,7 +2932,7 @@ public class ReturnPolicyControl
         return getReturnTypeShippingMethodsByShippingMethod(shippingMethod, EntityPermission.READ_WRITE);
     }
     
-    public List<ReturnTypeShippingMethodTransfer> getReturnTypeShippingMethodTransfers(UserVisit userVisit, List<ReturnTypeShippingMethod> returnTypeShippingMethods) {
+    public List<ReturnTypeShippingMethodTransfer> getReturnTypeShippingMethodTransfers(UserVisit userVisit, Collection<ReturnTypeShippingMethod> returnTypeShippingMethods) {
         List<ReturnTypeShippingMethodTransfer> returnTypeShippingMethodTransfers = new ArrayList<>(returnTypeShippingMethods.size());
         ReturnTypeShippingMethodTransferCache returnTypeShippingMethodTransferCache = getReturnPolicyTransferCaches(userVisit).getReturnTypeShippingMethodTransferCache();
         
@@ -2921,7 +2988,7 @@ public class ReturnPolicyControl
             returnTypeShippingMethod = ReturnTypeShippingMethodFactory.getInstance().create(returnTypePK, shippingMethodPK,
                     isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(returnTypePK, EventTypes.MODIFY.name(), returnTypeShippingMethod.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(returnTypePK, EventTypes.MODIFY, returnTypeShippingMethod.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -2951,7 +3018,7 @@ public class ReturnPolicyControl
             }
         }
         
-        sendEventUsingNames(returnType.getPrimaryKey(), EventTypes.MODIFY.name(), returnTypeShippingMethod.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(returnType.getPrimaryKey(), EventTypes.MODIFY, returnTypeShippingMethod.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteReturnTypeShippingMethods(List<ReturnTypeShippingMethod> returnTypeShippingMethods, BasePK deletedBy) {

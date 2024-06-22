@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -59,14 +59,14 @@ public class GetPaymentProcessorResultCodeCommand
         PaymentProcessorResultCode paymentProcessorResultCode = PaymentProcessorResultCodeLogic.getInstance().getPaymentProcessorResultCodeByUniversalSpec(this, form, true);
 
         if(paymentProcessorResultCode != null) {
-            sendEventUsingNames(paymentProcessorResultCode.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(paymentProcessorResultCode.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return paymentProcessorResultCode;
     }
     
     @Override
-    protected BaseResult getTransfer(PaymentProcessorResultCode paymentProcessorResultCode) {
+    protected BaseResult getResult(PaymentProcessorResultCode paymentProcessorResultCode) {
         var paymentProcessorResultCodeControl = Session.getModelController(PaymentProcessorResultCodeControl.class);
         GetPaymentProcessorResultCodeResult result = PaymentResultFactory.getGetPaymentProcessorResultCodeResult();
 

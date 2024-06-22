@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,14 +21,11 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.vendor.server.control.VendorControl;
-import com.echothree.model.data.party.server.entity.Party;
+import com.echothree.model.control.vendor.server.logic.VendorItemLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.vendor.server.entity.Vendor;
-import com.echothree.model.data.vendor.server.entity.VendorItem;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -53,8 +50,13 @@ public class DeleteVendorItemCommand
                 )));
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("VendorName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("VendorItemName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("VendorName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("VendorItemName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
                 ));
     }
     
@@ -66,23 +68,12 @@ public class DeleteVendorItemCommand
     @Override
     protected BaseResult execute() {
         var vendorControl = Session.getModelController(VendorControl.class);
-        String vendorName = form.getVendorName();
-        Vendor vendor = vendorControl.getVendorByName(vendorName);
-        
-        if(vendor != null) {
-            Party vendorParty = vendor.getParty();
-            String vendorItemName = form.getVendorItemName();
-            VendorItem vendorItem = vendorControl.getVendorItemByVendorPartyAndVendorItemNameForUpdate(vendorParty, vendorItemName);
+        var vendorItem = VendorItemLogic.getInstance().getVendorItemByUniversalSpecForUpdate(this, form);
             
-            if(vendorItem != null) {
-                vendorControl.deleteVendorItem(vendorItem, getPartyPK());
-            } else {
-                addExecutionError(ExecutionErrors.UnknownVendorItemName.name(), vendorItemName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownVendorName.name(), vendorName);
+        if(!hasExecutionErrors()) {
+            vendorControl.deleteVendorItem(vendorItem, getPartyPK());
         }
-        
+
         return null;
     }
     

@@ -4,7 +4,11 @@ Feature: Employee filter kind
   Background:
     Given the employee Test begins using the application
     And the user is not currently logged in
-    When the user logs in as an employee with the username "Test E" and password "password" and company "TEST_COMPANY"
+    When the user begins to log in as an employee
+    And the employee sets the username to "Test E"
+    And the employee sets the password to "password"
+    And the employee sets the company to "TEST_COMPANY"
+    And the employee logs in
     Then no error should occur
 
   Scenario: Existing employee adds a filter kind, edits it, and then deletes it
@@ -28,3 +32,12 @@ Feature: Employee filter kind
     And the user sets the filter kind's name to the last filter kind added
     And the user deletes the filter kind
     Then no error should occur
+
+  Scenario: Existing employee adds a filter kind with a duplicate name and receives an error
+    Given the employee Test begins using the application
+    When the user begins entering a new filter kind
+    And the user sets the filter kind's name to PRICE
+    And the user sets the filter kind's sort order to "1"
+    And the user sets the filter kind to be the default
+    And the user adds the new filter kind
+    Then the execution error DuplicateFilterKindName should occur

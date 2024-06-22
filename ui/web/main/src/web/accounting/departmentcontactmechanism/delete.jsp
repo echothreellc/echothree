@@ -1,7 +1,7 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" %>
 
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -27,18 +27,18 @@
     <body>
         <div id="Header">
             <h2>
-                <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
-                <a href="<c:url value="/action/Accounting/Main" />">Accounting</a> &gt;&gt;
-                <a href="<c:url value="/action/Accounting/Company/Main" />">Companies</a> &gt;&gt;
+                <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
+                <a href="<c:url value="/action/Accounting/Main" />"><fmt:message key="navigation.accounting" /></a> &gt;&gt;
+                <a href="<c:url value="/action/Accounting/Company/Main" />"><fmt:message key="navigation.companies" /></a> &gt;&gt;
                 <c:url var="divisionsUrl" value="/action/Accounting/Division/Main">
                     <c:param name="CompanyName" value="${department.division.company.companyName}" />
                 </c:url>
-                <a href="${divisionsUrl}">Divisions</a> &gt;&gt;
+                <a href="${divisionsUrl}"><fmt:message key="navigation.divisions" /></a> &gt;&gt;
                 <c:url var="departmentsUrl" value="/action/Accounting/Department/Main">
                     <c:param name="CompanyName" value="${department.division.company.companyName}" />
                     <c:param name="DivisionName" value="${department.division.divisionName}" />
                 </c:url>
-                <a href="${departmentsUrl}">Departments</a> &gt;&gt;
+                <a href="${departmentsUrl}"><fmt:message key="navigation.departments" /></a> &gt;&gt;
                 <c:url var="reviewUrl" value="/action/Accounting/Department/Review">
                     <c:param name="CompanyName" value="${department.division.company.companyName}" />
                     <c:param name="DivisionName" value="${department.division.divisionName}" />
@@ -62,10 +62,10 @@
                     </et:executionErrors>
                 </c:when>
                 <c:otherwise>
-                    <p>You are about to delete the <c:out value="${fn:toLowerCase(partyEntityType.entityType.description)}" />,
+                    <p>You are about to delete the <c:out value="${fn:toLowerCase(partyEntityType.entityType.description)}" />
                         <c:choose>
                             <c:when test="${partyContactMechanism.description == null}">
-                                <c:out value="${partyContactMechanism.contactMechanism.contactMechanismName}" />.
+                                &quot;<c:out value="${partyContactMechanism.contactMechanism.contactMechanismName}" />.&quot;
                             </c:when>
                             <c:otherwise>
                                 &quot;<c:out value="${partyContactMechanism.description}" />.&quot;

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,13 +22,13 @@ import com.echothree.control.user.search.common.form.SearchHarmonizedTariffSched
 import com.echothree.control.user.search.common.result.GetHarmonizedTariffScheduleCodeResultsResult;
 import com.echothree.control.user.search.common.result.SearchHarmonizedTariffScheduleCodesResult;
 import com.echothree.model.control.item.common.transfer.HarmonizedTariffScheduleCodeResultTransfer;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchTypes;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.string.StringUtils;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.ExecutionResult;
+import com.echothree.util.common.string.StringUtils;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -65,7 +65,7 @@ public class SearchAction
         GetHarmonizedTariffScheduleCodeResultsForm commandForm = SearchUtil.getHome().getGetHarmonizedTariffScheduleCodeResultsForm();
         String harmonizedTariffScheduleCodeName = null;
         
-        commandForm.setSearchTypeName(SearchConstants.SearchType_EMPLOYEE);
+        commandForm.setSearchTypeName(SearchTypes.EMPLOYEE.name());
         
         CommandResult commandResult = SearchUtil.getHome().getHarmonizedTariffScheduleCodeResults(getUserVisitPK(request), commandForm);
         ExecutionResult executionResult = commandResult.getExecutionResult();
@@ -90,7 +90,7 @@ public class SearchAction
             SearchHarmonizedTariffScheduleCodesForm commandForm = SearchUtil.getHome().getSearchHarmonizedTariffScheduleCodesForm();
             String q = StringUtils.getInstance().trimToNull(actionForm.getQ());
 
-            commandForm.setSearchTypeName(SearchConstants.SearchType_EMPLOYEE);
+            commandForm.setSearchTypeName(SearchTypes.EMPLOYEE.name());
             commandForm.setQ("countryGeoCodeName:" + countryName + (q == null ? "" : " AND " + q));
 
             CommandResult commandResult = SearchUtil.getHome().searchHarmonizedTariffScheduleCodes(getUserVisitPK(request), commandForm);
@@ -101,7 +101,7 @@ public class SearchAction
             } else {
                 ExecutionResult executionResult = commandResult.getExecutionResult();
                 SearchHarmonizedTariffScheduleCodesResult result = (SearchHarmonizedTariffScheduleCodesResult)executionResult.getResult();
-                int count = result.getCount();
+                var count = result.getCount();
 
                 if(count == 0 || count > 1) {
                     forwardKey = ForwardConstants.RESULT;

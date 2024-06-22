@@ -1,7 +1,7 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" %>
 
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -20,16 +20,20 @@
 
 <html:html xhtml="true">
     <head>
-        <title>Review (<c:out value="${employeeName}" />)</title>
+        <title>
+            <fmt:message key="pageTitle.employee">
+                <fmt:param value="${employee.employeeName}" />
+            </fmt:message>
+        </title>
         <html:base/>
         <%@ include file="../../include/environment.jsp" %>
     </head>
     <body>
         <div id="Header">
             <h2>
-                <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
-                <a href="<c:url value="/action/HumanResources/Main" />">Human Resources</a> &gt;&gt;
-                <a href="<c:url value="/action/HumanResources/Employee/Main" />">Employees</a> &gt;&gt;
+                <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
+                <a href="<c:url value="/action/HumanResources/Main" />"><fmt:message key="navigation.humanResources" /></a> &gt;&gt;
+                <a href="<c:url value="/action/HumanResources/Employee/Main" />"><fmt:message key="navigation.employees" /></a> &gt;&gt;
                 <et:countEmployeeResults searchTypeName="HUMAN_RESOURCES" countVar="employeeResultsCount" commandResultVar="countEmployeeResultsCommandResult" logErrors="false" />
                 <c:if test="${employeeResultsCount > 0}">
                     <a href="<c:url value="/action/HumanResources/Employee/Result" />"><fmt:message key="navigation.results" /></a> &gt;&gt;
@@ -59,8 +63,14 @@
             <c:if test='${employee.profile.icon != null}'>
                 Icon: ${employee.profile.icon.description}<br />
             </c:if>
+            <c:if test='${employee.profile.pronunciation != null}'>
+                Pronouns: ${employee.profile.pronunciation}<br />
+            </c:if>
             <c:if test='${employee.profile.gender != null}'>
                 Gender: ${employee.profile.gender.description}<br />
+            </c:if>
+            <c:if test='${employee.profile.pronouns != null}'>
+                Pronouns: ${employee.profile.pronouns}<br />
             </c:if>
             <c:if test='${employee.profile.birthday != null}'>
                 Birthday: ${employee.profile.birthday}<br />

@@ -1,7 +1,7 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" %>
 
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -27,7 +27,7 @@
     <body>
         <div id="Header">
             <h2>
-                <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
+                <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
                 <a href="<c:url value="/action/Configuration/Main" />">Configuration</a> &gt;&gt;
                 Workflows
             </h2>
@@ -44,9 +44,6 @@
                 </display:column>
                 <display:column titleKey="columnTitle.description">
                     <c:out value="${workflow.description}" />
-                </display:column>
-                <display:column titleKey="columnTitle.type">
-                    <c:out value="${workflow.workflowType.description}" />
                 </display:column>
                 <display:column property="sortOrder" titleKey="columnTitle.sortOrder" />
                 <display:column>

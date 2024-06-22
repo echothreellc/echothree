@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -27,19 +27,19 @@ public class WishlistLineTransfer
         extends OrderLineTransfer<WishlistTransfer> {
 
     private OfferUseTransfer offerUse;
-    private WishlistTypePriorityTransfer wishlistTypePriority;
+    private WishlistPriorityTransfer wishlistPriority;
     private AssociateReferralTransfer associateReferral;
     private String comment;
 
     /** Creates a new instance of WishlistLineTransfer */
     public WishlistLineTransfer(WishlistTransfer wishlist, Integer orderLineSequence, ItemTransfer item, InventoryConditionTransfer inventoryCondition,
             UnitOfMeasureTypeTransfer unitOfMeasureType, Long quantity, Long unformattedUnitAmount, String unitAmount, String description,
-            OfferUseTransfer offerUse, WishlistTypePriorityTransfer wishlistTypePriority, AssociateReferralTransfer associateReferral, String comment) {
+            OfferUseTransfer offerUse, WishlistPriorityTransfer wishlistPriority, AssociateReferralTransfer associateReferral, String comment) {
         super(wishlist, orderLineSequence, item, inventoryCondition, unitOfMeasureType, quantity, unformattedUnitAmount, unitAmount, description, null, null,
                 null);
 
         this.offerUse = offerUse;
-        this.wishlistTypePriority = wishlistTypePriority;
+        this.wishlistPriority = wishlistPriority;
         this.associateReferral = associateReferral;
         this.comment = comment;
     }
@@ -68,12 +68,12 @@ public class WishlistLineTransfer
         this.offerUse = offerUse;
     }
 
-    public WishlistTypePriorityTransfer getWishlistTypePriority() {
-        return wishlistTypePriority;
+    public WishlistPriorityTransfer getWishlistPriority() {
+        return wishlistPriority;
     }
 
-    public void setWishlistTypePriority(WishlistTypePriorityTransfer wishlistTypePriority) {
-        this.wishlistTypePriority = wishlistTypePriority;
+    public void setWishlistPriority(WishlistPriorityTransfer wishlistPriority) {
+        this.wishlistPriority = wishlistPriority;
     }
 
     public AssociateReferralTransfer getAssociateReferral() {

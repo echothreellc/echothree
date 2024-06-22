@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import com.echothree.model.control.accounting.server.graphql.AccountingSecurityU
 import com.echothree.model.control.accounting.server.graphql.CurrencyObject;
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.UnitPriceObject;
 import com.echothree.model.control.inventory.server.graphql.InventoryConditionObject;
 import com.echothree.model.control.inventory.server.graphql.InventorySecurityUtils;
 import com.echothree.model.control.item.common.ItemPriceTypes;
@@ -30,7 +31,6 @@ import com.echothree.model.control.uom.server.graphql.UomSecurityUtils;
 import com.echothree.model.data.content.server.entity.ContentCatalogItem;
 import com.echothree.model.data.content.server.entity.ContentCatalogItemFixedPrice;
 import com.echothree.model.data.content.server.entity.ContentCatalogItemVariablePrice;
-import com.echothree.util.server.string.AmountUtils;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -91,99 +91,67 @@ public class ContentCatalogItemObject
     @GraphQLField
     @GraphQLDescription("content catalog")
     public ContentCatalogObject getContentCatalog(final DataFetchingEnvironment env) {
-        return ContentSecurityUtils.getInstance().getHasContentCatalogAccess(env) ? new ContentCatalogObject(contentCatalogItem.getContentCatalog()) : null;
+        return ContentSecurityUtils.getHasContentCatalogAccess(env) ? new ContentCatalogObject(contentCatalogItem.getContentCatalog()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("item")
     public ItemObject getItem(final DataFetchingEnvironment env) {
-        return ItemSecurityUtils.getInstance().getHasItemAccess(env) ? new ItemObject(contentCatalogItem.getItem()) : null;
+        return ItemSecurityUtils.getHasItemAccess(env) ? new ItemObject(contentCatalogItem.getItem()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("inventory condition")
     public InventoryConditionObject getInventoryCondition(final DataFetchingEnvironment env) {
-        return InventorySecurityUtils.getInstance().getHasInventoryConditionAccess(env) ? new InventoryConditionObject(contentCatalogItem.getInventoryCondition()) : null;
+        return InventorySecurityUtils.getHasInventoryConditionAccess(env) ? new InventoryConditionObject(contentCatalogItem.getInventoryCondition()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("unit of measure type")
     public UnitOfMeasureTypeObject getUnitOfMeasureType(final DataFetchingEnvironment env) {
-        return UomSecurityUtils.getInstance().getHasUnitOfMeasureTypeAccess(env) ? new UnitOfMeasureTypeObject(contentCatalogItem.getUnitOfMeasureType()) : null;
+        return UomSecurityUtils.getHasUnitOfMeasureTypeAccess(env) ? new UnitOfMeasureTypeObject(contentCatalogItem.getUnitOfMeasureType()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("currency")
     public CurrencyObject getCurrency(final DataFetchingEnvironment env) {
-        return AccountingSecurityUtils.getInstance().getHasCurrencyAccess(env) ? new CurrencyObject(contentCatalogItem.getCurrency()) : null;
+        return AccountingSecurityUtils.getHasCurrencyAccess(env) ? new CurrencyObject(contentCatalogItem.getCurrency()) : null;
     }
 
     @GraphQLField
-    @GraphQLDescription("unformattedUnitPrice")
-    public Long getUnformattedUnitPrice(final DataFetchingEnvironment env) {
-        ContentCatalogItemFixedPrice contentCatalogItemFixedPrice = getContentCatalogItemFixedPrice();
-
-        return contentCatalogItemFixedPrice == null ? null : contentCatalogItemFixedPrice.getUnitPrice();
-    }
-
-    @GraphQLField
-    @GraphQLDescription("unitPrice")
-    public String getUnitPrice(final DataFetchingEnvironment env) {
-        ContentCatalogItemFixedPrice contentCatalogItemFixedPrice = getContentCatalogItemFixedPrice();
+    @GraphQLDescription("unit price")
+    public UnitPriceObject getUnitPrice(final DataFetchingEnvironment env) {
+        var contentCatalogItemFixedPrice = getContentCatalogItemFixedPrice();
 
         return contentCatalogItemFixedPrice == null ? null :
-                AmountUtils.getInstance().formatPriceUnit(contentCatalogItem.getCurrency(), contentCatalogItemFixedPrice.getUnitPrice());
+                new UnitPriceObject(contentCatalogItem.getCurrency(), contentCatalogItemFixedPrice.getUnitPrice());
     }
 
     @GraphQLField
-    @GraphQLDescription("unformattedMinimumUnitPrice")
-    public Long getUnformattedMinimumUnitPrice(final DataFetchingEnvironment env) {
-        ContentCatalogItemVariablePrice contentCatalogItemVariablePrice = getContentCatalogItemVariablePrice();
-
-        return contentCatalogItemVariablePrice == null ? null : contentCatalogItemVariablePrice.getMinimumUnitPrice();
-    }
-
-    @GraphQLField
-    @GraphQLDescription("minimumUnitPrice")
-    public String getMinimumUnitPrice(final DataFetchingEnvironment env) {
-        ContentCatalogItemVariablePrice contentCatalogItemVariablePrice = getContentCatalogItemVariablePrice();
+    @GraphQLDescription("minimum unit price")
+    public UnitPriceObject getMinimumUnitPrice(final DataFetchingEnvironment env) {
+        var contentCatalogItemVariablePrice = getContentCatalogItemVariablePrice();
 
         return contentCatalogItemVariablePrice == null ? null :
-                AmountUtils.getInstance().formatPriceUnit(contentCatalogItem.getCurrency(), contentCatalogItemVariablePrice.getMinimumUnitPrice());
+                new UnitPriceObject(contentCatalogItem.getCurrency(), contentCatalogItemVariablePrice.getMinimumUnitPrice());
     }
 
     @GraphQLField
-    @GraphQLDescription("unformattedMaximumUnitPrice")
-    public Long getUnformattedMaximumUnitPrice(final DataFetchingEnvironment env) {
-        ContentCatalogItemVariablePrice contentCatalogItemVariablePrice = getContentCatalogItemVariablePrice();
-
-        return contentCatalogItemVariablePrice == null ? null : contentCatalogItemVariablePrice.getMaximumUnitPrice();
-    }
-
-    @GraphQLField
-    @GraphQLDescription("maximumUnitPrice")
-    public String getMaximumUnitPrice(final DataFetchingEnvironment env) {
-        ContentCatalogItemVariablePrice contentCatalogItemVariablePrice = getContentCatalogItemVariablePrice();
+    @GraphQLDescription("maximum unit price")
+    public UnitPriceObject getMaximumUnitPrice(final DataFetchingEnvironment env) {
+        var contentCatalogItemVariablePrice = getContentCatalogItemVariablePrice();
 
         return contentCatalogItemVariablePrice == null ? null :
-                AmountUtils.getInstance().formatPriceUnit(contentCatalogItem.getCurrency(), contentCatalogItemVariablePrice.getMaximumUnitPrice());
+                new UnitPriceObject(contentCatalogItem.getCurrency(), contentCatalogItemVariablePrice.getMaximumUnitPrice());
     }
 
     @GraphQLField
-    @GraphQLDescription("unformattedUnitPriceIncrement")
-    public Long getUnformattedUnitPriceIncrement(final DataFetchingEnvironment env) {
-        ContentCatalogItemVariablePrice contentCatalogItemVariablePrice = getContentCatalogItemVariablePrice();
-
-        return contentCatalogItemVariablePrice == null ? null : contentCatalogItemVariablePrice.getUnitPriceIncrement();
-    }
-
-    @GraphQLField
-    @GraphQLDescription("unitPriceIncrement")
-    public String getUnitPriceIncrement(final DataFetchingEnvironment env) {
-        ContentCatalogItemVariablePrice contentCatalogItemVariablePrice = getContentCatalogItemVariablePrice();
+    @GraphQLDescription("unit price increment")
+    public UnitPriceObject getUnitPriceIncrement(final DataFetchingEnvironment env) {
+        var contentCatalogItemVariablePrice = getContentCatalogItemVariablePrice();
 
         return contentCatalogItemVariablePrice == null ? null :
-                AmountUtils.getInstance().formatPriceUnit(contentCatalogItem.getCurrency(), contentCatalogItemVariablePrice.getUnitPriceIncrement());
+                new UnitPriceObject(contentCatalogItem.getCurrency(), contentCatalogItemVariablePrice.getUnitPriceIncrement());
     }
 
 }

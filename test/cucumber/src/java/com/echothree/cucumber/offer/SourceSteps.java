@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@
 package com.echothree.cucumber.offer;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.result.CreateOfferResult;
 import com.echothree.control.user.offer.common.result.CreateSourceResult;
 import com.echothree.control.user.offer.common.result.EditSourceResult;
 import com.echothree.cucumber.util.command.LastCommandResult;
@@ -70,7 +69,7 @@ public class SourceSteps implements En {
 
                     assertThat(persona.createSourceForm).isNull();
                     assertThat(persona.deleteSourceForm).isNull();
-                    assertThat(persona.entityListItemSpec).isNull();
+                    assertThat(persona.entityListItemUniversalSpec).isNull();
 
                     persona.deleteSourceForm = OfferUtil.getHome().getDeleteSourceForm();
                 });
@@ -93,7 +92,7 @@ public class SourceSteps implements En {
 
                     assertThat(persona.createSourceForm).isNull();
                     assertThat(persona.deleteSourceForm).isNull();
-                    assertThat(persona.entityListItemSpec).isNull();
+                    assertThat(persona.entityListItemUniversalSpec).isNull();
 
                     persona.sourceSpec = OfferUtil.getHome().getSourceSpec();
                 });

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,7 +24,6 @@ import com.echothree.model.data.search.server.entity.UserVisitSearch;
 import com.echothree.model.data.search.server.factory.SearchResultFactory;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
-import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
@@ -32,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EntityTypeControl
-        extends BaseModelControl {
+        extends BaseCoreControl {
 
     /** Creates a new instance of EntityTypeControl */
     public EntityTypeControl() {

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 package com.echothree.model.control.selector.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.selector.server.entity.Selector;
@@ -54,7 +55,7 @@ public class SelectorObject
     @GraphQLField
     @GraphQLDescription("selector kind")
     public SelectorTypeObject getSelectorType(final DataFetchingEnvironment env) {
-        return SelectorSecurityUtils.getInstance().getHasSelectorTypeAccess(env) ? new SelectorTypeObject(getSelectorDetail().getSelectorType()) : null;
+        return SelectorSecurityUtils.getHasSelectorTypeAccess(env) ? new SelectorTypeObject(getSelectorDetail().getSelectorType()) : null;
     }
 
     @GraphQLField
@@ -85,7 +86,7 @@ public class SelectorObject
         var selectorControl = Session.getModelController(SelectorControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return selectorControl.getBestSelectorDescription(selector, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return selectorControl.getBestSelectorDescription(selector, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
     
 }

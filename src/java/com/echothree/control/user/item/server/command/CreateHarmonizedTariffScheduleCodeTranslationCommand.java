@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -62,7 +62,7 @@ public class CreateHarmonizedTariffScheduleCodeTranslationCommand
                 new FieldDefinition("CountryName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("HarmonizedTariffScheduleCodeName", FieldType.HARMONIZED_TARIFF_SCHEDULE_CODE, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("Description", FieldType.STRING, true, 1L, 80L),
+                new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L),
                 new FieldDefinition("OverviewMimeTypeName", FieldType.MIME_TYPE, false, null, null),
                 new FieldDefinition("Overview", FieldType.STRING, false, null, null)
                 ));

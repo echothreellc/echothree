@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -86,7 +86,7 @@ public class AppearanceLogic
             case 1:
                 if(appearanceName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.Appearance.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.Appearance.name());
 
                     if(!eea.hasExecutionErrors()) {
                         appearance = coreControl.getAppearanceByEntityInstance(entityInstance, entityPermission);

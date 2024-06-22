@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -111,7 +111,7 @@ public class FreeOnBoardLogic
             case 1:
                 if(freeOnBoardName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.FreeOnBoard.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.FreeOnBoard.name());
 
                     if(!eea.hasExecutionErrors()) {
                         freeOnBoard = freeOnBoardControl.getFreeOnBoardByEntityInstance(entityInstance, entityPermission);

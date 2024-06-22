@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,18 +24,15 @@ public class WorkflowTransfer
         extends BaseTransfer {
     
     private String workflowName;
-    private WorkflowTypeTransfer workflowType;
     private SelectorTypeTransfer selectorType;
     private SecurityRoleGroupTransfer securityRoleGroup;
     private Integer sortOrder;
     private String description;
     
     /** Creates a new instance of WorkflowTransfer */
-    public WorkflowTransfer(String workflowName, WorkflowTypeTransfer workflowType, SelectorTypeTransfer selectorType,
+    public WorkflowTransfer(String workflowName, SelectorTypeTransfer selectorType,
             SecurityRoleGroupTransfer securityRoleGroup, Integer sortOrder, String description) {
         this.workflowName = workflowName;
-        this.workflowType = workflowType;
-        this.selectorType = selectorType;
         this.securityRoleGroup = securityRoleGroup;
         this.sortOrder = sortOrder;
         this.description = description;
@@ -47,14 +44,6 @@ public class WorkflowTransfer
     
     public void setWorkflowName(String workflowName) {
         this.workflowName = workflowName;
-    }
-    
-    public WorkflowTypeTransfer getWorkflowType() {
-        return workflowType;
-    }
-    
-    public void setWorkflowType(WorkflowTypeTransfer workflowType) {
-        this.workflowType = workflowType;
     }
     
     public SelectorTypeTransfer getSelectorType() {

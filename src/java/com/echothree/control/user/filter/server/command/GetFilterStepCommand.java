@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -72,14 +72,14 @@ public class GetFilterStepCommand
         var filterStep = FilterStepLogic.getInstance().getFilterStepByUniversalSpec(this, form, true);
 
         if(filterStep != null) {
-            sendEventUsingNames(filterStep.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(filterStep.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return filterStep;
     }
 
     @Override
-    protected BaseResult getTransfer(FilterStep filterStep) {
+    protected BaseResult getResult(FilterStep filterStep) {
         var result = FilterResultFactory.getGetFilterStepResult();
 
         if(filterStep != null) {

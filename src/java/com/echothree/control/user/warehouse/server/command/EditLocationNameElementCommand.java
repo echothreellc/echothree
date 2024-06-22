@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,6 +22,9 @@ import com.echothree.control.user.warehouse.common.form.EditLocationNameElementF
 import com.echothree.control.user.warehouse.common.result.EditLocationNameElementResult;
 import com.echothree.control.user.warehouse.common.result.WarehouseResultFactory;
 import com.echothree.control.user.warehouse.common.spec.LocationNameElementSpec;
+import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -32,12 +35,15 @@ import com.echothree.model.data.warehouse.server.entity.LocationType;
 import com.echothree.model.data.warehouse.server.entity.Warehouse;
 import com.echothree.model.data.warehouse.server.value.LocationNameElementDescriptionValue;
 import com.echothree.model.data.warehouse.server.value.LocationNameElementDetailValue;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
@@ -45,14 +51,22 @@ import java.util.List;
 
 public class EditLocationNameElementCommand
         extends BaseEditCommand<LocationNameElementSpec, LocationNameElementEdit> {
-    
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
     
     static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.LocationNameElement.name(), SecurityRoles.Edit.name())
+                ))
+        ));
+
         SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
             new FieldDefinition("WarehouseName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("LocationType", FieldType.ENTITY_NAME, true, null, null),
+            new FieldDefinition("LocationTypeName", FieldType.ENTITY_NAME, true, null, null),
             new FieldDefinition("LocationNameElementName", FieldType.ENTITY_NAME, true, null, null)
         ));
         
@@ -61,13 +75,13 @@ public class EditLocationNameElementCommand
             new FieldDefinition("Offset", FieldType.UNSIGNED_INTEGER, true, null, null),
             new FieldDefinition("Length", FieldType.UNSIGNED_INTEGER, true, null, null),
             new FieldDefinition("ValidationPattern", FieldType.REGULAR_EXPRESSION, false, null, null),
-            new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+            new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         ));
     }
 
     /** Creates a new instance of EditLocationNameElementCommand */
     public EditLocationNameElementCommand(UserVisitPK userVisitPK, EditLocationNameElementForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

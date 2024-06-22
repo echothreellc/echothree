@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,20 +17,17 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.CreateInventoryLocationGroupForm;
+import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
+import com.echothree.model.control.inventory.common.workflow.InventoryLocationGroupStatusConstants;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
-import com.echothree.model.control.inventory.common.workflow.InventoryLocationGroupStatusConstants;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
-import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.inventory.server.entity.InventoryLocationGroup;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.warehouse.server.entity.Warehouse;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -48,7 +45,7 @@ public class CreateInventoryLocationGroupCommand
         new FieldDefinition("InventoryLocationGroupName", FieldType.ENTITY_NAME, true, null, null),
         new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
         new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
-        new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+        new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         ));
     }
     
@@ -59,29 +56,30 @@ public class CreateInventoryLocationGroupCommand
     
     @Override
     protected BaseResult execute() {
+        var result = InventoryResultFactory.getCreateInventoryLocationGroupResult();
         var warehouseControl = Session.getModelController(WarehouseControl.class);
         String warehouseName = form.getWarehouseName();
         Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
         if(warehouse != null) {
             var inventoryControl = Session.getModelController(InventoryControl.class);
-            Party warehouseParty = warehouse.getParty();
-            String inventoryLocationGroupName = form.getInventoryLocationGroupName();
-            InventoryLocationGroup inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouseParty,
+            var warehouseParty = warehouse.getParty();
+            var inventoryLocationGroupName = form.getInventoryLocationGroupName();
+            var inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouseParty,
                     inventoryLocationGroupName);
             
             if(inventoryLocationGroup == null) {
                 var coreControl = getCoreControl();
                 var workflowControl = Session.getModelController(WorkflowControl.class);
-                BasePK createdBy = getPartyPK();
+                var createdBy = getPartyPK();
                 var isDefault = Boolean.valueOf(form.getIsDefault());
                 var sortOrder = Integer.valueOf(form.getSortOrder());
                 var description = form.getDescription();
                 
                 inventoryLocationGroup = inventoryControl.createInventoryLocationGroup(warehouseParty, inventoryLocationGroupName,
                         isDefault, sortOrder, getPartyPK());
-                
-                EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(inventoryLocationGroup.getPrimaryKey());
+
+                var entityInstance = coreControl.getEntityInstanceByBasePK(inventoryLocationGroup.getPrimaryKey());
                 workflowControl.addEntityToWorkflowUsingNames(null, InventoryLocationGroupStatusConstants.Workflow_INVENTORY_LOCATION_GROUP_STATUS,
                         InventoryLocationGroupStatusConstants.WorkflowEntrance_NEW_INVENTORY_LOCATION_GROUP, entityInstance, null, null, createdBy);
                 
@@ -92,11 +90,17 @@ public class CreateInventoryLocationGroupCommand
             } else {
                 addExecutionError(ExecutionErrors.DuplicateInventoryLocationGroupName.name(), inventoryLocationGroupName);
             }
+
+            if(inventoryLocationGroup != null) {
+                result.setEntityRef(inventoryLocationGroup.getPrimaryKey().getEntityRef());
+                result.setWarehouseName(warehouse.getWarehouseName());
+                result.setInventoryLocationGroupName(inventoryLocationGroup.getLastDetail().getInventoryLocationGroupName());
+            }
         } else {
             addExecutionError(ExecutionErrors.UnknownWarehouseName.name(), warehouseName);
         }
         
-        return null;
+        return result;
     }
     
 }

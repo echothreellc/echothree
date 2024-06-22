@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ import com.echothree.model.control.uom.common.transfer.UnitOfMeasureTypeTransfer
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.wishlist.common.transfer.WishlistLineTransfer;
 import com.echothree.model.control.wishlist.common.transfer.WishlistTransfer;
-import com.echothree.model.control.wishlist.common.transfer.WishlistTypePriorityTransfer;
+import com.echothree.model.control.wishlist.common.transfer.WishlistPriorityTransfer;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.data.order.server.entity.Order;
 import com.echothree.model.data.order.server.entity.OrderLine;
@@ -69,12 +69,12 @@ public class WishlistLineTransferCache
             String unitAmount = AmountUtils.getInstance().formatPriceLine(order.getLastDetail().getCurrency(), unformattedUnitAmount);
             String description = orderLineDetail.getDescription();
             OfferUseTransfer offerUse = offerUseControl.getOfferUseTransfer(userVisit, wishlistLine.getOfferUse());
-            WishlistTypePriorityTransfer wishlistTypePriority = wishlistControl.getWishlistTypePriorityTransfer(userVisit, wishlistLine.getWishlistTypePriority());
+            WishlistPriorityTransfer wishlistPriority = wishlistControl.getWishlistPriorityTransfer(userVisit, wishlistLine.getWishlistPriority());
             AssociateReferralTransfer associateReferral = null; // TODO
             String comment = wishlistLine.getComment();
             
             wishlistLineTransfer = new WishlistLineTransfer(wishlist, orderLineSequence, item, inventoryCondition, unitOfMeasureType, quantity,
-                    unformattedUnitAmount, unitAmount, description, offerUse, wishlistTypePriority, associateReferral, comment);
+                    unformattedUnitAmount, unitAmount, description, offerUse, wishlistPriority, associateReferral, comment);
             put(orderLine, wishlistLineTransfer);
         }
         

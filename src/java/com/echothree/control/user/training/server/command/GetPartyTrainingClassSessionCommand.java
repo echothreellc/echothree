@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -79,7 +79,7 @@ public class GetPartyTrainingClassSessionCommand
             if(partyTrainingClassSession != null) {
                 result.setPartyTrainingClassSession(trainingControl.getPartyTrainingClassSessionTransfer(getUserVisit(), partyTrainingClassSession));
 
-                sendEventUsingNames(partyTrainingClassSession.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                sendEvent(partyTrainingClassSession.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownPartyTrainingClassSessionSequence.name(), partyTrainingClassName, form.getPartyTrainingClassSessionSequence());
             }

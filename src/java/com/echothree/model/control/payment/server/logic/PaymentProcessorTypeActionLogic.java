@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -181,7 +181,7 @@ public class PaymentProcessorTypeActionLogic
                     }
                 } else {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.PaymentProcessorTypeAction.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.PaymentProcessorTypeAction.name());
 
                     if(!eea.hasExecutionErrors()) {
                         paymentProcessorTypeAction = paymentProcessorTypeActionControl.getPaymentProcessorTypeActionByEntityInstance(entityInstance, entityPermission);

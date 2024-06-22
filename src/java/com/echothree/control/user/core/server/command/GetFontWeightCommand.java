@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -67,7 +67,7 @@ public class GetFontWeightCommand
         if(parameterCount == 1) {
             if(fontWeightName == null) {
                 var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
-                        ComponentVendors.ECHOTHREE.name(), EntityTypes.FontWeight.name());
+                        ComponentVendors.ECHO_THREE.name(), EntityTypes.FontWeight.name());
 
                 if(!hasExecutionErrors()) {
                     fontWeight = coreControl.getFontWeightByEntityInstance(entityInstance);
@@ -77,7 +77,7 @@ public class GetFontWeightCommand
             }
 
             if(fontWeight != null) {
-                sendEventUsingNames(fontWeight.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                sendEvent(fontWeight.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
@@ -87,7 +87,7 @@ public class GetFontWeightCommand
     }
     
     @Override
-    protected BaseResult getTransfer(FontWeight fontWeight) {
+    protected BaseResult getResult(FontWeight fontWeight) {
         var coreControl = getCoreControl();
         GetFontWeightResult result = CoreResultFactory.getGetFontWeightResult();
 

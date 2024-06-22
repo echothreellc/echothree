@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -76,6 +76,7 @@ import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -133,7 +134,7 @@ public class ScaleControl
         scaleType.setLastDetail(scaleTypeDetail);
         scaleType.store();
 
-        sendEventUsingNames(scaleType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(scaleType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return scaleType;
     }
@@ -247,7 +248,7 @@ public class ScaleControl
         return getScaleTransferCaches(userVisit).getScaleTypeTransferCache().getScaleTypeTransfer(scaleType);
     }
 
-    public List<ScaleTypeTransfer> getScaleTypeTransfers(UserVisit userVisit, List<ScaleType> scaleTypes) {
+    public List<ScaleTypeTransfer> getScaleTypeTransfers(UserVisit userVisit, Collection<ScaleType> scaleTypes) {
         List<ScaleTypeTransfer> scaleTypeTransfers = new ArrayList<>(scaleTypes.size());
         ScaleTypeTransferCache scaleTypeTransferCache = getScaleTransferCaches(userVisit).getScaleTypeTransferCache();
 
@@ -333,7 +334,7 @@ public class ScaleControl
             scaleType.setActiveDetail(scaleTypeDetail);
             scaleType.setLastDetail(scaleTypeDetail);
 
-            sendEventUsingNames(scaleTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(scaleTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -367,7 +368,7 @@ public class ScaleControl
             }
         }
 
-        sendEventUsingNames(scaleType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(scaleType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     // --------------------------------------------------------------------------------
@@ -379,7 +380,7 @@ public class ScaleControl
         ScaleTypeDescription scaleTypeDescription = ScaleTypeDescriptionFactory.getInstance().create(scaleType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(scaleType.getPrimaryKey(), EventTypes.MODIFY.name(), scaleTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(scaleType.getPrimaryKey(), EventTypes.MODIFY, scaleTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return scaleTypeDescription;
     }
@@ -504,14 +505,14 @@ public class ScaleControl
             scaleTypeDescription = ScaleTypeDescriptionFactory.getInstance().create(scaleType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(scaleType.getPrimaryKey(), EventTypes.MODIFY.name(), scaleTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(scaleType.getPrimaryKey(), EventTypes.MODIFY, scaleTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteScaleTypeDescription(ScaleTypeDescription scaleTypeDescription, BasePK deletedBy) {
         scaleTypeDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(scaleTypeDescription.getScaleTypePK(), EventTypes.MODIFY.name(), scaleTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(scaleTypeDescription.getScaleTypePK(), EventTypes.MODIFY, scaleTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -551,7 +552,7 @@ public class ScaleControl
         scale.setLastDetail(scaleDetail);
         scale.store();
 
-        sendEventUsingNames(scale.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(scale.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return scale;
     }
@@ -733,7 +734,7 @@ public class ScaleControl
         return getScaleTransferCaches(userVisit).getScaleTransferCache().getScaleTransfer(scale);
     }
 
-    public List<ScaleTransfer> getScaleTransfers(UserVisit userVisit, List<Scale> scales) {
+    public List<ScaleTransfer> getScaleTransfers(UserVisit userVisit, Collection<Scale> scales) {
         List<ScaleTransfer> scaleTransfers = new ArrayList<>(scales.size());
         ScaleTransferCache scaleTransferCache = getScaleTransferCaches(userVisit).getScaleTransferCache();
 
@@ -821,7 +822,7 @@ public class ScaleControl
             scale.setActiveDetail(scaleDetail);
             scale.setLastDetail(scaleDetail);
 
-            sendEventUsingNames(scalePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(scalePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -859,7 +860,7 @@ public class ScaleControl
             }
         }
 
-        sendEventUsingNames(scale.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(scale.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteScale(Scale itemDescriptionType, BasePK deletedBy) {
@@ -891,7 +892,7 @@ public class ScaleControl
         ScaleDescription scaleDescription = ScaleDescriptionFactory.getInstance().create(scale,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(scale.getPrimaryKey(), EventTypes.MODIFY.name(), scaleDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(scale.getPrimaryKey(), EventTypes.MODIFY, scaleDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return scaleDescription;
     }
@@ -1016,14 +1017,14 @@ public class ScaleControl
             scaleDescription = ScaleDescriptionFactory.getInstance().create(scale, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(scale.getPrimaryKey(), EventTypes.MODIFY.name(), scaleDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(scale.getPrimaryKey(), EventTypes.MODIFY, scaleDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteScaleDescription(ScaleDescription scaleDescription, BasePK deletedBy) {
         scaleDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(scaleDescription.getScalePK(), EventTypes.MODIFY.name(), scaleDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(scaleDescription.getScalePK(), EventTypes.MODIFY, scaleDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -1063,7 +1064,7 @@ public class ScaleControl
         scaleUseType.setLastDetail(scaleUseTypeDetail);
         scaleUseType.store();
 
-        sendEventUsingNames(scaleUseType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(scaleUseType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return scaleUseType;
     }
@@ -1177,7 +1178,7 @@ public class ScaleControl
         return getScaleTransferCaches(userVisit).getScaleUseTypeTransferCache().getScaleUseTypeTransfer(scaleUseType);
     }
 
-    public List<ScaleUseTypeTransfer> getScaleUseTypeTransfers(UserVisit userVisit, List<ScaleUseType> scaleUseTypes) {
+    public List<ScaleUseTypeTransfer> getScaleUseTypeTransfers(UserVisit userVisit, Collection<ScaleUseType> scaleUseTypes) {
         List<ScaleUseTypeTransfer> scaleUseTypeTransfers = new ArrayList<>(scaleUseTypes.size());
         ScaleUseTypeTransferCache scaleUseTypeTransferCache = getScaleTransferCaches(userVisit).getScaleUseTypeTransferCache();
 
@@ -1263,7 +1264,7 @@ public class ScaleControl
             scaleUseType.setActiveDetail(scaleUseTypeDetail);
             scaleUseType.setLastDetail(scaleUseTypeDetail);
 
-            sendEventUsingNames(scaleUseTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(scaleUseTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -1297,7 +1298,7 @@ public class ScaleControl
             }
         }
 
-        sendEventUsingNames(scaleUseType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(scaleUseType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     // --------------------------------------------------------------------------------
@@ -1309,7 +1310,7 @@ public class ScaleControl
         ScaleUseTypeDescription scaleUseTypeDescription = ScaleUseTypeDescriptionFactory.getInstance().create(scaleUseType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(scaleUseType.getPrimaryKey(), EventTypes.MODIFY.name(), scaleUseTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(scaleUseType.getPrimaryKey(), EventTypes.MODIFY, scaleUseTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return scaleUseTypeDescription;
     }
@@ -1434,14 +1435,14 @@ public class ScaleControl
             scaleUseTypeDescription = ScaleUseTypeDescriptionFactory.getInstance().create(scaleUseType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(scaleUseType.getPrimaryKey(), EventTypes.MODIFY.name(), scaleUseTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(scaleUseType.getPrimaryKey(), EventTypes.MODIFY, scaleUseTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteScaleUseTypeDescription(ScaleUseTypeDescription scaleUseTypeDescription, BasePK deletedBy) {
         scaleUseTypeDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(scaleUseTypeDescription.getScaleUseTypePK(), EventTypes.MODIFY.name(), scaleUseTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(scaleUseTypeDescription.getScaleUseTypePK(), EventTypes.MODIFY, scaleUseTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -1461,7 +1462,7 @@ public class ScaleControl
         PartyScaleUse partyScaleUse = PartyScaleUseFactory.getInstance().create(party, scaleUseType, scale,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), partyScaleUse.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyScaleUse.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return partyScaleUse;
     }
@@ -1621,7 +1622,7 @@ public class ScaleControl
         return getScaleTransferCaches(userVisit).getPartyScaleUseTransferCache().getPartyScaleUseTransfer(partyScaleUse);
     }
 
-    public List<PartyScaleUseTransfer> getPartyScaleUseTransfers(UserVisit userVisit, List<PartyScaleUse> partyScaleUses) {
+    public List<PartyScaleUseTransfer> getPartyScaleUseTransfers(UserVisit userVisit, Collection<PartyScaleUse> partyScaleUses) {
         List<PartyScaleUseTransfer> partyScaleUseTransfers = new ArrayList<>(partyScaleUses.size());
         PartyScaleUseTransferCache partyScaleUseTransferCache = getScaleTransferCaches(userVisit).getPartyScaleUseTransferCache();
 
@@ -1651,14 +1652,14 @@ public class ScaleControl
             partyScaleUse = PartyScaleUseFactory.getInstance().create(partyPK, scaleUseTypePK,
                     scalePK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(partyPK, EventTypes.MODIFY.name(), partyScaleUse.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(partyPK, EventTypes.MODIFY, partyScaleUse.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deletePartyScaleUse(PartyScaleUse partyScaleUse, BasePK deletedBy) {
         partyScaleUse.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(partyScaleUse.getPartyPK(), EventTypes.MODIFY.name(), partyScaleUse.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(partyScaleUse.getPartyPK(), EventTypes.MODIFY, partyScaleUse.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 
     public void deletePartyScaleUses(List<PartyScaleUse> partyScaleUses, BasePK deletedBy) {

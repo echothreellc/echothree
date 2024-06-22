@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,25 +16,22 @@
 
 package com.echothree.control.user.search.server.command;
 
+import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.control.user.search.common.form.GetSearchResultActionTypeForm;
-import com.echothree.control.user.search.common.result.GetSearchResultActionTypeResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
-import com.echothree.model.control.core.common.ComponentVendors;
-import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
-import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.search.server.control.SearchControl;
+import com.echothree.model.control.search.server.logic.SearchResultActionTypeLogic;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.search.server.entity.SearchResultActionType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -44,7 +41,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class GetSearchResultActionTypeCommand
-        extends BaseSimpleCommand<GetSearchResultActionTypeForm> {
+        extends BaseSingleEntityCommand<SearchResultActionType, GetSearchResultActionTypeForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -58,7 +55,7 @@ public class GetSearchResultActionTypeCommand
                 )));
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("SearchResultActionTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("SearchResultActionTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Key", FieldType.KEY, false, null, null),
                 new FieldDefinition("Guid", FieldType.GUID, false, null, null),
@@ -70,40 +67,27 @@ public class GetSearchResultActionTypeCommand
     public GetSearchResultActionTypeCommand(UserVisitPK userVisitPK, GetSearchResultActionTypeForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        GetSearchResultActionTypeResult result = SearchResultFactory.getGetSearchResultActionTypeResult();
-        String searchResultActionTypeName = form.getSearchResultActionTypeName();
-        var parameterCount = (searchResultActionTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+    protected SearchResultActionType getEntity() {
+        var searchResultActionType = SearchResultActionTypeLogic.getInstance().getSearchResultActionTypeByUniversalSpec(this, form, true);
 
-        if(parameterCount == 1) {
-            var searchControl = Session.getModelController(SearchControl.class);
-            SearchResultActionType searchResultActionType = null;
-
-            if(searchResultActionTypeName == null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHOTHREE.name(),
-                        EntityTypes.SearchResultActionType.name());
-                
-                if(!hasExecutionErrors()) {
-                    searchResultActionType = searchControl.getSearchResultActionTypeByEntityInstance(entityInstance);
-                }
-            } else {
-                searchResultActionType = searchControl.getSearchResultActionTypeByName(searchResultActionTypeName);
-
-                if(searchResultActionType == null) {
-                    addExecutionError(ExecutionErrors.UnknownSearchResultActionTypeName.name(), searchResultActionTypeName);
-                }
-            }
-
-            if(!hasExecutionErrors()) {
-                result.setSearchResultActionType(searchControl.getSearchResultActionTypeTransfer(getUserVisit(), searchResultActionType));
-                sendEventUsingNames(searchResultActionType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
-            }
-        } else {
-            addExecutionError(ExecutionErrors.InvalidParameterCount.name());
+        if(searchResultActionType != null) {
+            sendEvent(searchResultActionType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
-        
+
+        return searchResultActionType;
+    }
+
+    @Override
+    protected BaseResult getResult(SearchResultActionType searchResultActionType) {
+        var searchControl = Session.getModelController(SearchControl.class);
+        var result = SearchResultFactory.getGetSearchResultActionTypeResult();
+
+        if(searchResultActionType != null) {
+            result.setSearchResultActionType(searchControl.getSearchResultActionTypeTransfer(getUserVisit(), searchResultActionType));
+        }
+
         return result;
     }
     

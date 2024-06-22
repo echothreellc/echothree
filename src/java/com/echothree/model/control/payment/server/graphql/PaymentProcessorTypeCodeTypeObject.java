@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 package com.echothree.model.control.payment.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.payment.server.control.PaymentProcessorTypeCodeTypeControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCodeType;
@@ -54,7 +55,7 @@ public class PaymentProcessorTypeCodeTypeObject
     @GraphQLField
     @GraphQLDescription("payment processor type")
     public PaymentProcessorTypeObject getPaymentProcessorType(final DataFetchingEnvironment env) {
-        return PaymentSecurityUtils.getInstance().getHasPaymentProcessorTypeAccess(env) ? new PaymentProcessorTypeObject(getPaymentProcessorTypeCodeTypeDetail().getPaymentProcessorType()) : null;
+        return PaymentSecurityUtils.getHasPaymentProcessorTypeAccess(env) ? new PaymentProcessorTypeObject(getPaymentProcessorTypeCodeTypeDetail().getPaymentProcessorType()) : null;
     }
 
     @GraphQLField
@@ -85,7 +86,7 @@ public class PaymentProcessorTypeCodeTypeObject
         var paymentProcessorTypeCodeTypeControl = Session.getModelController(PaymentProcessorTypeCodeTypeControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return paymentProcessorTypeCodeTypeControl.getBestPaymentProcessorTypeCodeTypeDescription(paymentProcessorTypeCodeType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return paymentProcessorTypeCodeTypeControl.getBestPaymentProcessorTypeCodeTypeDescription(paymentProcessorTypeCodeType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
     
 }

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,14 +16,17 @@
 
 package com.echothree.model.control.customer.server.search;
 
+import com.echothree.model.control.customer.server.analysis.CustomerAnalyzer;
 import com.echothree.model.control.customer.server.control.CustomerControl;
-import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.IndexFields;
+import com.echothree.model.control.index.common.Indexes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.search.PartySearchEvaluator;
 import com.echothree.model.control.search.server.search.EntityInstancePKHolder;
 import com.echothree.model.data.core.server.factory.EntityInstanceFactory;
 import com.echothree.model.data.customer.server.entity.Customer;
 import com.echothree.model.data.customer.server.entity.CustomerType;
+import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.search.server.entity.SearchDefaultOperator;
 import com.echothree.model.data.search.server.entity.SearchSortDirection;
 import com.echothree.model.data.search.server.entity.SearchSortOrder;
@@ -31,6 +34,7 @@ import com.echothree.model.data.search.server.entity.SearchType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import org.apache.lucene.analysis.Analyzer;
 
 public class CustomerSearchEvaluator
         extends PartySearchEvaluator {
@@ -39,9 +43,10 @@ public class CustomerSearchEvaluator
     private String customerName;
     
     /** Creates a new instance of CustomerSearchEvaluator */
-    public CustomerSearchEvaluator(UserVisit userVisit, SearchType searchType, SearchDefaultOperator searchDefaultOperator, SearchSortOrder searchSortOrder,
-            SearchSortDirection searchSortDirection) {
-        super(userVisit, searchType, searchDefaultOperator, searchSortOrder, searchSortDirection, PartyTypes.CUSTOMER.name(), IndexConstants.Index_CUSTOMER);
+    public CustomerSearchEvaluator(UserVisit userVisit, SearchType searchType, SearchDefaultOperator searchDefaultOperator,
+            SearchSortOrder searchSortOrder, SearchSortDirection searchSortDirection) {
+        super(userVisit, searchType, searchDefaultOperator, searchSortOrder, searchSortDirection, PartyTypes.CUSTOMER.name(),
+                IndexFields.customerName.name(), Indexes.CUSTOMER.name());
     }
     
     public EntityInstancePKHolder getEntityInstancePKHolderByCustomerType(CustomerType customerType) {
@@ -70,7 +75,12 @@ public class CustomerSearchEvaluator
     public void setCustomerName(String customerName) {
         this.customerName = customerName;
     }
-    
+
+    @Override
+    public Analyzer getAnalyzer(final ExecutionErrorAccumulator eea, final Language language) {
+        return new CustomerAnalyzer(eea, language, entityType, partyType, entityNameIndexField);
+    }
+
     @Override
     protected EntityInstancePKHolder executeSearch(final ExecutionErrorAccumulator eea) {
         EntityInstancePKHolder resultSet = null;

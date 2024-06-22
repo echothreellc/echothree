@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -105,38 +105,38 @@ public class WishlistBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult createWishlistTypePriority(UserVisitPK userVisitPK, CreateWishlistTypePriorityForm form) {
-        return new CreateWishlistTypePriorityCommand(userVisitPK, form).run();
+    public CommandResult createWishlistPriority(UserVisitPK userVisitPK, CreateWishlistPriorityForm form) {
+        return new CreateWishlistPriorityCommand(userVisitPK, form).run();
     }
     
     @Override
-    public CommandResult getWishlistTypePriority(UserVisitPK userVisitPK, GetWishlistTypePriorityForm form) {
-        return new GetWishlistTypePriorityCommand(userVisitPK, form).run();
+    public CommandResult getWishlistPriority(UserVisitPK userVisitPK, GetWishlistPriorityForm form) {
+        return new GetWishlistPriorityCommand(userVisitPK, form).run();
     }
     
     @Override
-    public CommandResult getWishlistTypePriorities(UserVisitPK userVisitPK, GetWishlistTypePrioritiesForm form) {
-        return new GetWishlistTypePrioritiesCommand(userVisitPK, form).run();
+    public CommandResult getWishlistPriorities(UserVisitPK userVisitPK, GetWishlistPrioritiesForm form) {
+        return new GetWishlistPrioritiesCommand(userVisitPK, form).run();
     }
     
     @Override
-    public CommandResult getWishlistTypePriorityChoices(UserVisitPK userVisitPK, GetWishlistTypePriorityChoicesForm form) {
-        return new GetWishlistTypePriorityChoicesCommand(userVisitPK, form).run();
+    public CommandResult getWishlistPriorityChoices(UserVisitPK userVisitPK, GetWishlistPriorityChoicesForm form) {
+        return new GetWishlistPriorityChoicesCommand(userVisitPK, form).run();
     }
     
     @Override
-    public CommandResult setDefaultWishlistTypePriority(UserVisitPK userVisitPK, SetDefaultWishlistTypePriorityForm form) {
-        return new SetDefaultWishlistTypePriorityCommand(userVisitPK, form).run();
+    public CommandResult setDefaultWishlistPriority(UserVisitPK userVisitPK, SetDefaultWishlistPriorityForm form) {
+        return new SetDefaultWishlistPriorityCommand(userVisitPK, form).run();
     }
     
     @Override
-    public CommandResult editWishlistTypePriority(UserVisitPK userVisitPK, EditWishlistTypePriorityForm form) {
-        return new EditWishlistTypePriorityCommand(userVisitPK, form).run();
+    public CommandResult editWishlistPriority(UserVisitPK userVisitPK, EditWishlistPriorityForm form) {
+        return new EditWishlistPriorityCommand(userVisitPK, form).run();
     }
     
     @Override
-    public CommandResult deleteWishlistTypePriority(UserVisitPK userVisitPK, DeleteWishlistTypePriorityForm form) {
-        return new DeleteWishlistTypePriorityCommand(userVisitPK, form).run();
+    public CommandResult deleteWishlistPriority(UserVisitPK userVisitPK, DeleteWishlistPriorityForm form) {
+        return new DeleteWishlistPriorityCommand(userVisitPK, form).run();
     }
     
     // -------------------------------------------------------------------------
@@ -144,23 +144,23 @@ public class WishlistBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult createWishlistTypePriorityDescription(UserVisitPK userVisitPK, CreateWishlistTypePriorityDescriptionForm form) {
-        return new CreateWishlistTypePriorityDescriptionCommand(userVisitPK, form).run();
+    public CommandResult createWishlistPriorityDescription(UserVisitPK userVisitPK, CreateWishlistPriorityDescriptionForm form) {
+        return new CreateWishlistPriorityDescriptionCommand(userVisitPK, form).run();
     }
     
     @Override
-    public CommandResult getWishlistTypePriorityDescriptions(UserVisitPK userVisitPK, GetWishlistTypePriorityDescriptionsForm form) {
-        return new GetWishlistTypePriorityDescriptionsCommand(userVisitPK, form).run();
+    public CommandResult getWishlistPriorityDescriptions(UserVisitPK userVisitPK, GetWishlistPriorityDescriptionsForm form) {
+        return new GetWishlistPriorityDescriptionsCommand(userVisitPK, form).run();
     }
     
     @Override
-    public CommandResult editWishlistTypePriorityDescription(UserVisitPK userVisitPK, EditWishlistTypePriorityDescriptionForm form) {
-        return new EditWishlistTypePriorityDescriptionCommand(userVisitPK, form).run();
+    public CommandResult editWishlistPriorityDescription(UserVisitPK userVisitPK, EditWishlistPriorityDescriptionForm form) {
+        return new EditWishlistPriorityDescriptionCommand(userVisitPK, form).run();
     }
     
     @Override
-    public CommandResult deleteWishlistTypePriorityDescription(UserVisitPK userVisitPK, DeleteWishlistTypePriorityDescriptionForm form) {
-        return new DeleteWishlistTypePriorityDescriptionCommand(userVisitPK, form).run();
+    public CommandResult deleteWishlistPriorityDescription(UserVisitPK userVisitPK, DeleteWishlistPriorityDescriptionForm form) {
+        return new DeleteWishlistPriorityDescriptionCommand(userVisitPK, form).run();
     }
     
     // -------------------------------------------------------------------------

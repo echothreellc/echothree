@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -16,34 +16,34 @@
 <!--                                                                                  -->
 <initialData>
     <indexTypes>
-        <indexType indexTypeName="CONTACT_MECHANISM" componentVendorName="ECHOTHREE" entityTypeName="ContactMechanism" isDefault="false" sortOrder="1">
+        <indexType indexTypeName="CONTACT_MECHANISM" componentVendorName="ECHO_THREE" entityTypeName="ContactMechanism" isDefault="false" sortOrder="1">
             <indexTypeDescription languageIsoName="en" description="Contact Mechanism" />
         </indexType>
-        <indexType indexTypeName="CONTENT_CATEGORY" componentVendorName="ECHOTHREE" entityTypeName="ContentCategory" isDefault="false" sortOrder="1">
+        <indexType indexTypeName="CONTENT_CATEGORY" componentVendorName="ECHO_THREE" entityTypeName="ContentCategory" isDefault="false" sortOrder="1">
             <indexTypeDescription languageIsoName="en" description="Content Category" />
         </indexType>
-        <indexType indexTypeName="CUSTOMER" componentVendorName="ECHOTHREE" entityTypeName="Party" isDefault="false" sortOrder="1">
+        <indexType indexTypeName="CUSTOMER" componentVendorName="ECHO_THREE" entityTypeName="Party" isDefault="false" sortOrder="1">
             <indexTypeDescription languageIsoName="en" description="Customer" />
         </indexType>
-        <indexType indexTypeName="EMPLOYEE" componentVendorName="ECHOTHREE" entityTypeName="Party" isDefault="false" sortOrder="1">
+        <indexType indexTypeName="EMPLOYEE" componentVendorName="ECHO_THREE" entityTypeName="Party" isDefault="false" sortOrder="1">
             <indexTypeDescription languageIsoName="en" description="Employee" />
         </indexType>
-        <indexType indexTypeName="ENTITY_LIST_ITEM" componentVendorName="ECHOTHREE" entityTypeName="EntityListItem" isDefault="false" sortOrder="1">
+        <indexType indexTypeName="ENTITY_LIST_ITEM" componentVendorName="ECHO_THREE" entityTypeName="EntityListItem" isDefault="false" sortOrder="1">
             <indexTypeDescription languageIsoName="en" description="Entity List Item" />
             <indexField indexFieldName="description" languageIsoName="en" isDefault="true" sortOrder="1">
                 <indexFieldDescription languageIsoName="en" description="Description" />
             </indexField>
         </indexType>
-        <indexType indexTypeName="ENTITY_TYPE" componentVendorName="ECHOTHREE" entityTypeName="EntityType" isDefault="false" sortOrder="1">
+        <indexType indexTypeName="ENTITY_TYPE" componentVendorName="ECHO_THREE" entityTypeName="EntityType" isDefault="false" sortOrder="1">
             <indexTypeDescription languageIsoName="en" description="Entity Type" />
         </indexType>
-        <indexType indexTypeName="FORUM_MESSAGE" componentVendorName="ECHOTHREE" entityTypeName="ForumMessage" isDefault="false" sortOrder="1">
+        <indexType indexTypeName="FORUM_MESSAGE" componentVendorName="ECHO_THREE" entityTypeName="ForumMessage" isDefault="false" sortOrder="1">
             <indexTypeDescription languageIsoName="en" description="Forum Message" />
         </indexType>
-        <indexType indexTypeName="HARMONIZED_TARIFF_SCHEDULE_CODE" componentVendorName="ECHOTHREE" entityTypeName="HarmonizedTariffScheduleCode" isDefault="false" sortOrder="1">
+        <indexType indexTypeName="HARMONIZED_TARIFF_SCHEDULE_CODE" componentVendorName="ECHO_THREE" entityTypeName="HarmonizedTariffScheduleCode" isDefault="false" sortOrder="1">
             <indexTypeDescription languageIsoName="en" description="Harmonized Tariff Schedule Code" />
         </indexType>
-        <indexType indexTypeName="ITEM" componentVendorName="ECHOTHREE" entityTypeName="Item" isDefault="false" sortOrder="1">
+        <indexType indexTypeName="ITEM" componentVendorName="ECHO_THREE" entityTypeName="Item" isDefault="false" sortOrder="1">
             <indexTypeDescription languageIsoName="en" description="Item" />
             <indexField indexFieldName="itemNameAndAliases" languageIsoName="en" isDefault="true" sortOrder="1">
                 <indexFieldDescription languageIsoName="en" description="Item Name and Aliases" />
@@ -58,26 +58,29 @@
                 <indexFieldDescription languageIsoName="en" description="Additional Keywords" />
             </indexField>
         </indexType>
-        <indexType indexTypeName="SECURITY_ROLE" componentVendorName="ECHOTHREE" entityTypeName="SecurityRole" isDefault="false" sortOrder="1">
+        <indexType indexTypeName="SECURITY_ROLE" componentVendorName="ECHO_THREE" entityTypeName="SecurityRole" isDefault="false" sortOrder="1">
             <indexTypeDescription languageIsoName="en" description="Security Role" />
         </indexType>
-        <indexType indexTypeName="SECURITY_ROLE_GROUP" componentVendorName="ECHOTHREE" entityTypeName="SecurityRoleGroup" isDefault="false" sortOrder="1">
+        <indexType indexTypeName="SECURITY_ROLE_GROUP" componentVendorName="ECHO_THREE" entityTypeName="SecurityRoleGroup" isDefault="false" sortOrder="1">
             <indexTypeDescription languageIsoName="en" description="Security Role Group" />
         </indexType>
-        <indexType indexTypeName="VENDOR" componentVendorName="ECHOTHREE" entityTypeName="Party" isDefault="false" sortOrder="1">
+        <indexType indexTypeName="VENDOR" componentVendorName="ECHO_THREE" entityTypeName="Party" isDefault="false" sortOrder="1">
             <indexTypeDescription languageIsoName="en" description="Vendor" />
         </indexType>
-        <indexType indexTypeName="OFFER" componentVendorName="ECHOTHREE" entityTypeName="Offer" isDefault="false" sortOrder="1">
+        <indexType indexTypeName="OFFER" componentVendorName="ECHO_THREE" entityTypeName="Offer" isDefault="false" sortOrder="1">
             <indexTypeDescription languageIsoName="en" description="Offer" />
         </indexType>
-        <indexType indexTypeName="USE" componentVendorName="ECHOTHREE" entityTypeName="Use" isDefault="false" sortOrder="1">
+        <indexType indexTypeName="USE" componentVendorName="ECHO_THREE" entityTypeName="Use" isDefault="false" sortOrder="1">
             <indexTypeDescription languageIsoName="en" description="Use" />
         </indexType>
-        <indexType indexTypeName="USE_TYPE" componentVendorName="ECHOTHREE" entityTypeName="UseType" isDefault="false" sortOrder="1">
+        <indexType indexTypeName="USE_TYPE" componentVendorName="ECHO_THREE" entityTypeName="UseType" isDefault="false" sortOrder="1">
             <indexTypeDescription languageIsoName="en" description="Use Type" />
         </indexType>
-        <indexType indexTypeName="SOURCE" componentVendorName="ECHOTHREE" entityTypeName="Source" isDefault="false" sortOrder="1">
+        <indexType indexTypeName="SOURCE" componentVendorName="ECHO_THREE" entityTypeName="Source" isDefault="false" sortOrder="1">
             <indexTypeDescription languageIsoName="en" description="Source" />
+        </indexType>
+        <indexType indexTypeName="WAREHOUSE" componentVendorName="ECHO_THREE" entityTypeName="Party" isDefault="false" sortOrder="1">
+            <indexTypeDescription languageIsoName="en" description="Warehouse" />
         </indexType>
     </indexTypes>
     <indexes>
@@ -428,6 +431,10 @@
         <index indexName="USE_TYPE_ZH" indexTypeName="USE_TYPE" languageIsoName="zh" directory="/usr/local/jboss/share/indexes/useType/zh"
                isDefault="false" sortOrder="1">
             <indexDescription languageIsoName="en" description="Use Type (Chinese)" />
+        </index>
+        <index indexName="WAREHOUSE" indexTypeName="WAREHOUSE" directory="/usr/local/jboss/share/indexes/warehouse"
+               isDefault="false" sortOrder="1">
+            <indexDescription languageIsoName="en" description="Warehouse" />
         </index>
     </indexes>
 </initialData>

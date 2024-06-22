@@ -1,7 +1,7 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" %>
 
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -20,16 +20,24 @@
 
 <html:html xhtml="true">
     <head>
-        <title>Warehouse Printer Group Use (<c:out value="${partyPrinterGroupUse.printerGroupUseType.printerGroupUseTypeName}" />)</title>
+        <title>
+            <fmt:message key="pageTitle.warehousePrinterGroupUse">
+                <fmt:param value="${partyPrinterGroupUse.printerGroupUseType.printerGroupUseTypeName}" />
+            </fmt:message>
+        </title>
         <html:base/>
         <%@ include file="../../include/environment.jsp" %>
     </head>
     <body>
         <div id="Header">
             <h2>
-                <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
-                <a href="<c:url value="/action/Warehouse/Main" />">Warehouses</a> &gt;&gt;
-                <a href="<c:url value="/action/Warehouse/Warehouse/Main" />">Warehouses</a> &gt;&gt;
+                <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
+                <a href="<c:url value="/action/Warehouse/Main" />"><fmt:message key="navigation.warehouses" /></a> &gt;&gt;
+                <a href="<c:url value="/action/Warehouse/Warehouse/Main" />"><fmt:message key="navigation.warehouses" /></a> &gt;&gt;
+                <et:countWarehouseResults searchTypeName="EMPLOYEE" countVar="warehouseResultsCount" commandResultVar="countWarehouseResultsCommandResult" logErrors="false" />
+                <c:if test="${warehouseResultsCount > 0}">
+                    <a href="<c:url value="/action/Warehouse/Warehouse/Result" />"><fmt:message key="navigation.results" /></a> &gt;&gt;
+                </c:if>
                 <c:url var="reviewUrl" value="/action/Warehouse/Warehouse/Review">
                     <c:param name="WarehouseName" value="${warehouse.warehouseName}" />
                 </c:url>
@@ -37,7 +45,7 @@
                 <c:url var="warehousePrinterGroupUsesUrl" value="/action/Warehouse/WarehousePrinterGroupUse/Main">
                     <c:param name="WarehouseName" value="${warehouse.warehouseName}" />
                 </c:url>
-                <a href="${warehousePrinterGroupUsesUrl}">Printer Group Uses</a> &gt;&gt;
+                <a href="${warehousePrinterGroupUsesUrl}"><fmt:message key="navigation.warehousePrinterGroupUses" /></a> &gt;&gt;
                 Delete <c:out value="${partyPrinterGroupUse.printerGroupUseType.description}" />
             </h2>
         </div>
@@ -49,7 +57,7 @@
                     </et:executionErrors>
                 </c:when>
                 <c:otherwise>
-                    <p>You are about to delete the <c:out value="${fn:toLowerCase(partyEntityType.entityType.description)}" />,
+                    <p>You are about to delete the <c:out value="${fn:toLowerCase(partyEntityType.entityType.description)}" />
                     &quot;<c:out value="${partyPrinterGroupUse.printerGroupUseType.description}" />.&quot;
                     </p>
                     <html:form action="/Warehouse/WarehousePrinterGroupUse/Delete" method="POST">

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -35,14 +35,7 @@ public class CreateEventTypeCommand
     
     static {
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("EventTypeName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("UpdateCreatedTime", FieldType.BOOLEAN, true, null, null),
-                new FieldDefinition("UpdateModifiedTime", FieldType.BOOLEAN, true, null, null),
-                new FieldDefinition("UpdateDeletedTime", FieldType.BOOLEAN, true, null, null),
-                new FieldDefinition("UpdateVisitedTime", FieldType.BOOLEAN, true, null, null),
-                new FieldDefinition("QueueToSubscribers", FieldType.BOOLEAN, true, null, null),
-                new FieldDefinition("KeepHistory", FieldType.BOOLEAN, true, null, null),
-                new FieldDefinition("MaximumHistory", FieldType.UNSIGNED_INTEGER, false, null, null)
+                new FieldDefinition("EventTypeName", FieldType.ENTITY_NAME, true, null, null)
                 ));
     }
     
@@ -58,17 +51,7 @@ public class CreateEventTypeCommand
         EventType eventType = coreControl.getEventTypeByName(eventTypeName);
         
         if(eventType == null) {
-            Boolean updateCreatedTime = Boolean.valueOf(form.getUpdateCreatedTime());
-            Boolean updateModifiedTime = Boolean.valueOf(form.getUpdateModifiedTime());
-            Boolean updateDeletedTime = Boolean.valueOf(form.getUpdateDeletedTime());
-            Boolean updateVisitedTime = Boolean.valueOf(form.getUpdateVisitedTime());
-            Boolean queueToSubscribers = Boolean.valueOf(form.getQueueToSubscribers());
-            Boolean keepHistory = Boolean.valueOf(form.getKeepHistory());
-            String maximumHistoryString = form.getMaximumHistory();
-            Integer maximumHistory = maximumHistoryString == null? null: Integer.valueOf(maximumHistoryString);
-            
-            coreControl.createEventType(eventTypeName, updateCreatedTime, updateModifiedTime, updateDeletedTime, updateVisitedTime, queueToSubscribers,
-                    keepHistory, maximumHistory);
+            coreControl.createEventType(eventTypeName);
         } else {
             addExecutionError(ExecutionErrors.DuplicateEventTypeName.name(), eventTypeName);
         }

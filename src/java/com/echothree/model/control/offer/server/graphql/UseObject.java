@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package com.echothree.model.control.offer.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.offer.server.control.UseControl;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.offer.server.entity.Use;
 import com.echothree.model.data.offer.server.entity.UseDetail;
@@ -61,7 +62,7 @@ public class UseObject
     @GraphQLField
     @GraphQLDescription("use type")
     public UseTypeObject getUseType(final DataFetchingEnvironment env) {
-        return OfferSecurityUtils.getInstance().getHasUseTypeAccess(env) ? new UseTypeObject(getUseDetail().getUseType()) : null;
+        return OfferSecurityUtils.getHasUseTypeAccess(env) ? new UseTypeObject(getUseDetail().getUseType()) : null;
     }
 
     @GraphQLField
@@ -85,7 +86,7 @@ public class UseObject
         var useControl = Session.getModelController(UseControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return useControl.getBestUseDescription(use, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return useControl.getBestUseDescription(use, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
     
 }

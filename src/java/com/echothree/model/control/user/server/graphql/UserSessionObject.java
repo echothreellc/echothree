@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,10 +16,12 @@
 
 package com.echothree.model.control.user.server.graphql;
 
+import com.echothree.model.control.graphql.server.graphql.TimeObject;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.party.server.graphql.PartyObject;
+import com.echothree.model.control.party.server.graphql.PartyRelationshipObject;
+import com.echothree.model.control.party.server.graphql.PartySecurityUtils;
 import com.echothree.model.data.user.server.entity.UserSession;
-import com.echothree.util.server.string.DateUtils;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
@@ -29,7 +31,7 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("user session object")
 @GraphQLName("UserSession")
 public class UserSessionObject
-        extends BaseGraphQl {
+        implements BaseGraphQl {
     
     private final UserSession userSession; // Always Present
     
@@ -51,26 +53,18 @@ public class UserSessionObject
         return new PartyObject(userSession.getParty());
     }
 
-//    @GraphQLField
-//    @GraphQLDescription("party relationship")
-//    public PartyRelationshipObject getPartyRelationship() {
-//        return new PartyRelationshipObject(userSession.getPartyRelationship());
-//    }
-
     @GraphQLField
-    @GraphQLDescription("unformatted password verified time")
-    public Long getUnformattedPasswordVerifiedTime() {
-        Long passwordVerifiedTime = userSession.getPasswordVerifiedTime();
-        
-        return passwordVerifiedTime == null ? null : passwordVerifiedTime;
+    @GraphQLDescription("party relationship")
+    public PartyRelationshipObject getPartyRelationship(final DataFetchingEnvironment env) {
+        return PartySecurityUtils.getHasPartyRelationshipAccess(env) ? new PartyRelationshipObject(userSession.getPartyRelationship()) : null;
     }
-    
+
     @GraphQLField
     @GraphQLDescription("password verified time")
-    public String getPasswordVerifiedTime(final DataFetchingEnvironment env) {
-        Long passwordVerifiedTime = userSession.getPasswordVerifiedTime();
+    public TimeObject getIdentityVerifiedTime(final DataFetchingEnvironment env) {
+        var identityVerifiedTime = userSession.getIdentityVerifiedTime();
 
-        return passwordVerifiedTime == null ? null : DateUtils.getInstance().formatTypicalDateTime(getUserVisit(env), passwordVerifiedTime);
+        return identityVerifiedTime == null ? null : new TimeObject(identityVerifiedTime);
     }
     
 }

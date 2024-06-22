@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 package com.echothree.model.control.payment.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.payment.server.control.PaymentProcessorTypeCodeControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCode;
@@ -54,7 +55,7 @@ public class PaymentProcessorTypeCodeObject
     @GraphQLField
     @GraphQLDescription("payment processor type code type")
     public PaymentProcessorTypeCodeTypeObject getPaymentProcessorTypeCodeType(final DataFetchingEnvironment env) {
-        return PaymentSecurityUtils.getInstance().getHasPaymentProcessorTypeCodeTypeAccess(env) ? new PaymentProcessorTypeCodeTypeObject(getPaymentProcessorTypeCodeDetail().getPaymentProcessorTypeCodeType()) : null;
+        return PaymentSecurityUtils.getHasPaymentProcessorTypeCodeTypeAccess(env) ? new PaymentProcessorTypeCodeTypeObject(getPaymentProcessorTypeCodeDetail().getPaymentProcessorTypeCodeType()) : null;
     }
 
     @GraphQLField
@@ -85,7 +86,7 @@ public class PaymentProcessorTypeCodeObject
         var paymentProcessorTypeCodeControl = Session.getModelController(PaymentProcessorTypeCodeControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return paymentProcessorTypeCodeControl.getBestPaymentProcessorTypeCodeDescription(paymentProcessorTypeCode, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return paymentProcessorTypeCodeControl.getBestPaymentProcessorTypeCodeDescription(paymentProcessorTypeCode, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
     
 }

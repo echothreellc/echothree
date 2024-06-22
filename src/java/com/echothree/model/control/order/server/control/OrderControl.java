@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -92,7 +92,7 @@ public class OrderControl
         order.setLastDetail(orderDetail);
         order.store();
         
-        sendEventUsingNames(order.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(order.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         createOrderStatus(order);
         
@@ -103,7 +103,7 @@ public class OrderControl
         return OrderFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, orderPK);
     }
     
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.Order */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Order */
     public Order getOrderByEntityInstance(EntityInstance entityInstance) {
         OrderPK pk = new OrderPK(entityInstance.getEntityUniqueId());
         Order order = OrderFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
@@ -114,7 +114,7 @@ public class OrderControl
     private Order convertEntityInstanceToOrder(final EntityInstance entityInstance, final EntityPermission entityPermission) {
         Order order = null;
 
-        if(getCoreControl().verifyEntityInstance(entityInstance, ComponentVendors.ECHOTHREE.name(), EntityTypes.Order.name())) {
+        if(getCoreControl().verifyEntityInstance(entityInstance, ComponentVendors.ECHO_THREE.name(), EntityTypes.Order.name())) {
             order = OrderFactory.getInstance().getEntityFromPK(entityPermission, new OrderPK(entityInstance.getEntityUniqueId()));
         }
 
@@ -262,7 +262,7 @@ public class OrderControl
             order.setActiveDetail(orderDetail);
             order.setLastDetail(orderDetail);
             
-            sendEventUsingNames(orderPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(orderPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -291,7 +291,7 @@ public class OrderControl
         order.setActiveDetail(null);
         order.store();
         
-        sendEventUsingNames(order.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(order.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteOrders(List<Order> orders, BasePK deletedBy) {

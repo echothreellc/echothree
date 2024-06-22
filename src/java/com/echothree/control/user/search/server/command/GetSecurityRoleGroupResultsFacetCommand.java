@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,7 +19,9 @@ package com.echothree.control.user.search.server.command;
 import com.echothree.control.user.search.common.form.GetSecurityRoleGroupResultsFacetForm;
 import com.echothree.control.user.search.common.result.GetSecurityRoleGroupResultsFacetResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 
@@ -33,7 +35,8 @@ public class GetSecurityRoleGroupResultsFacetCommand
 
     @Override
     protected BaseResult execute() {
-        return execute(SearchConstants.SearchKind_SECURITY_ROLE_GROUP, SearchResultFactory.getGetSecurityRoleGroupResultsFacetResult());
+        return execute(ComponentVendors.ECHO_THREE.name(), EntityTypes.SecurityRoleGroup.name(), SearchKinds.SECURITY_ROLE_GROUP.name(),
+                SearchResultFactory.getGetSecurityRoleGroupResultsFacetResult());
     }
 
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -18,27 +18,27 @@
     <tagScopes>
         <tagScope tagScopeName="CUSTOMER_ITEM" isDefault="false" sortOrder="1">
             <tagScopeDescription languageIsoName="en" description="Customer Item" />
-            <tagScopeEntityType componentVendorName="ECHOTHREE" entityTypeName="Item" />
+            <tagScopeEntityType componentVendorName="ECHO_THREE" entityTypeName="Item" />
         </tagScope>
         <tagScope tagScopeName="EMPLOYEE_GENERAL" isDefault="true" sortOrder="1">
             <tagScopeDescription languageIsoName="en" description="Employee General" />
-            <tagScopeEntityType componentVendorName="ECHOTHREE" entityTypeName="Invoice" />
-            <tagScopeEntityType componentVendorName="ECHOTHREE" entityTypeName="Item" />
-            <tagScopeEntityType componentVendorName="ECHOTHREE" entityTypeName="ItemDescription" />
-            <tagScopeEntityType componentVendorName="ECHOTHREE" entityTypeName="Order" />
-            <tagScopeEntityType componentVendorName="ECHOTHREE" entityTypeName="Party" />
-            <tagScopeEntityType componentVendorName="ECHOTHREE" entityTypeName="Shipment" />
-            <tagScopeEntityType componentVendorName="ECHOTHREE" entityTypeName="VendorItem" />
-            <tagScopeEntityType componentVendorName="ECHOTHREE" entityTypeName="ForumGroup" />
-            <tagScopeEntityType componentVendorName="ECHOTHREE" entityTypeName="Forum" />
-            <tagScopeEntityType componentVendorName="ECHOTHREE" entityTypeName="ForumThread" />
-            <tagScopeEntityType componentVendorName="ECHOTHREE" entityTypeName="ForumMessage" />
+            <tagScopeEntityType componentVendorName="ECHO_THREE" entityTypeName="Invoice" />
+            <tagScopeEntityType componentVendorName="ECHO_THREE" entityTypeName="Item" />
+            <tagScopeEntityType componentVendorName="ECHO_THREE" entityTypeName="ItemDescription" />
+            <tagScopeEntityType componentVendorName="ECHO_THREE" entityTypeName="Order" />
+            <tagScopeEntityType componentVendorName="ECHO_THREE" entityTypeName="Party" />
+            <tagScopeEntityType componentVendorName="ECHO_THREE" entityTypeName="Shipment" />
+            <tagScopeEntityType componentVendorName="ECHO_THREE" entityTypeName="VendorItem" />
+            <tagScopeEntityType componentVendorName="ECHO_THREE" entityTypeName="ForumGroup" />
+            <tagScopeEntityType componentVendorName="ECHO_THREE" entityTypeName="Forum" />
+            <tagScopeEntityType componentVendorName="ECHO_THREE" entityTypeName="ForumThread" />
+            <tagScopeEntityType componentVendorName="ECHO_THREE" entityTypeName="ForumMessage" />
             <tag tagName="test tag" />
         </tagScope>
         <tagScope tagScopeName="EMPLOYEE_ITEM" isDefault="false" sortOrder="1">
             <tagScopeDescription languageIsoName="en" description="Employee Item" />
-            <tagScopeEntityType componentVendorName="ECHOTHREE" entityTypeName="Item" />
-            <tagScopeEntityType componentVendorName="ECHOTHREE" entityTypeName="ItemDescription" />
+            <tagScopeEntityType componentVendorName="ECHO_THREE" entityTypeName="Item" />
+            <tagScopeEntityType componentVendorName="ECHO_THREE" entityTypeName="ItemDescription" />
         </tagScope>
     </tagScopes>
 </initialData>

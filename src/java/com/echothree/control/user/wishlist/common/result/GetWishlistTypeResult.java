@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.wishlist.common.result;
 
-import com.echothree.model.control.wishlist.common.transfer.WishlistTypePriorityTransfer;
+import com.echothree.model.control.wishlist.common.transfer.WishlistPriorityTransfer;
 import com.echothree.model.control.wishlist.common.transfer.WishlistTypeTransfer;
 import com.echothree.util.common.command.BaseResult;
 import java.util.List;
@@ -27,7 +27,7 @@ public interface GetWishlistTypeResult
     WishlistTypeTransfer getWishlistType();
     void setWishlistType(WishlistTypeTransfer wishlistType);
     
-    List<WishlistTypePriorityTransfer> getWishlistTypePriorities();
-    void setWishlistTypePriorities(List<WishlistTypePriorityTransfer> wishlistTypePriorities);
+    List<WishlistPriorityTransfer> getWishlistPriorities();
+    void setWishlistPriorities(List<WishlistPriorityTransfer> wishlistPriorities);
     
 }

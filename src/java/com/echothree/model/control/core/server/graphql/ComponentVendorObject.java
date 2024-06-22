@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,9 +16,14 @@
 
 package com.echothree.model.control.core.server.graphql;
 
-import com.echothree.control.user.core.server.command.GetEntityTypesCommand;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.data.core.common.EntityTypeConstants;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.ComponentVendorDetail;
 import com.echothree.util.server.persistence.Session;
@@ -26,9 +31,9 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @GraphQLDescription("component vendor object")
@@ -54,20 +59,6 @@ public class ComponentVendorObject
         return componentVendorDetail;
     }
 
-    private Boolean hasEntityTypesAccess;
-
-    private boolean getHasEntityTypesAccess(final DataFetchingEnvironment env) {
-        if(hasEntityTypesAccess == null) {
-            var baseMultipleEntitiesCommand = new GetEntityTypesCommand(getUserVisitPK(env), null);
-
-            baseMultipleEntitiesCommand.security();
-
-            hasEntityTypesAccess = !baseMultipleEntitiesCommand.hasSecurityMessages();
-        }
-
-        return hasEntityTypesAccess;
-    }
-    
     @GraphQLField
     @GraphQLDescription("component vendor name")
     @GraphQLNonNull
@@ -84,28 +75,22 @@ public class ComponentVendorObject
 
     @GraphQLField
     @GraphQLDescription("entity types")
-    public List<EntityTypeObject> getEntityTypes(final DataFetchingEnvironment env) {
-        if(getHasEntityTypesAccess(env)) {
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<EntityTypeObject> getEntityTypes(final DataFetchingEnvironment env) {
+        if(CoreSecurityUtils.getHasEntityTypesAccess(env)) {
             var coreControl = Session.getModelController(CoreControl.class);
-            var entities = coreControl.getEntityTypesByComponentVendor(componentVendor);
-            var entityTypes = entities.stream().map(EntityTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+            var totalCount = coreControl.countEntityTypesByComponentVendor(componentVendor);
 
-            return entityTypes;
+            try(var objectLimiter = new ObjectLimiter(env, EntityTypeConstants.COMPONENT_VENDOR_NAME, EntityTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = coreControl.getEntityTypesByComponentVendor(componentVendor);
+                var entityTypes = entities.stream().map(EntityTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, entityTypes);
+            }
         } else {
-            return null;
+            return Connections.emptyConnection();
         }
     }
 
-    @GraphQLField
-    @GraphQLDescription("entity type count")
-    public Long getEntityTypeCount(final DataFetchingEnvironment env) {
-        if(getHasEntityTypesAccess(env)) {
-            var coreControl = Session.getModelController(CoreControl.class);
-
-            return coreControl.countEntityTypesByComponentVendor(componentVendor);
-        } else {
-            return null;
-        }
-    }
-    
 }

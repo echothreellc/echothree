@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,11 +16,10 @@
 
 package com.echothree.model.control.workflow.common.choice;
 
-import com.echothree.view.common.BaseChoicesBean;
 import java.util.List;
 
 public class WorkflowStepTypeChoicesBean
-        extends BaseChoicesBean {
+        extends BaseWorkflowChoicesBean {
     
     /** Creates a new instance of WorkflowStepTypeChoicesBean */
     public WorkflowStepTypeChoicesBean(List<String> labels, List<String> values, String defaultValue) {

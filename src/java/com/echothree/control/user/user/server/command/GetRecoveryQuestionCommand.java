@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -94,7 +94,7 @@ public class GetRecoveryQuestionCommand
             if(nameOrEntitySpecsCount == 1) {
                 if(recoveryQuestionName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.RecoveryQuestion.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.RecoveryQuestion.name());
 
                     if(!hasExecutionErrors()) {
                         recoveryQuestion = userControl.getRecoveryQuestionByEntityInstance(entityInstance);
@@ -104,7 +104,7 @@ public class GetRecoveryQuestionCommand
                 }
 
                 if(recoveryQuestion != null) {
-                    sendEventUsingNames(recoveryQuestion.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                    sendEvent(recoveryQuestion.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
                 }
             } else {
                 Party party = null;
@@ -177,7 +177,7 @@ public class GetRecoveryQuestionCommand
     }
     
     @Override
-    protected BaseResult getTransfer(RecoveryQuestion recoveryQuestion) {
+    protected BaseResult getResult(RecoveryQuestion recoveryQuestion) {
         UserControl userControl = getUserControl();
         GetRecoveryQuestionResult result = UserResultFactory.getGetRecoveryQuestionResult();
 
@@ -187,7 +187,7 @@ public class GetRecoveryQuestionCommand
             result.setRecoveryQuestion(userControl.getRecoveryQuestionTransfer(getUserVisit(), recoveryQuestion));
                 
             if(self != null) {
-                sendEventUsingNames(recoveryQuestion.getPrimaryKey(), EventTypes.READ.name(), null, null, self.getPrimaryKey());
+                sendEvent(recoveryQuestion.getPrimaryKey(), EventTypes.READ, null, null, self.getPrimaryKey());
             }
         }
 

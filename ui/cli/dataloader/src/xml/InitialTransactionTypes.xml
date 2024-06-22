@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -24,7 +24,7 @@
             <transactionGlAccountCategory transactionGlAccountCategoryName="TEST_ACCOUNT_B" glAccountCategoryName="BALANCE_ACCOUNT" sortOrder="1" glAccountName="10020">
                 <transactionGlAccountCategoryDescription languageIsoName="en" description="Test Transaction, Account B" />
             </transactionGlAccountCategory>
-            <transactionEntityRoleType transactionEntityRoleTypeName="TEST_ENTITY_INSTANCE_ROLE_TYPE" componentVendorName="ECHOTHREE" entityTypeName="Party" sortOrder="1">
+            <transactionEntityRoleType transactionEntityRoleTypeName="TEST_ENTITY_INSTANCE_ROLE_TYPE" componentVendorName="ECHO_THREE" entityTypeName="Party" sortOrder="1">
                 <transactionEntityRoleTypeDescription languageIsoName="en" description="Test Transaction, Customer" />
             </transactionEntityRoleType>
         </transactionType>

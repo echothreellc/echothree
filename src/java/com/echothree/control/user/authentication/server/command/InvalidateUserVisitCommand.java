@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ public class InvalidateUserVisitCommand
         super(userVisitPK, null, false);
 
         // Prevent the possible creation of an extra UserSession when we're just going to be deleting it anyway.
-        setCheckPasswordVerifiedTime(false);
+        setCheckIdentityVerifiedTime(false);
 
         // This isn't really the user executing a command, don't bother with this. Also, UserVisit may have been
         // delete or removed at the point this is done.

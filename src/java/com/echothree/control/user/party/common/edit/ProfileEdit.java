@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -27,7 +27,13 @@ public interface ProfileEdit
     
     String getNickname();
     void setNickname(String nickname);
-    
+
+    String getPronunciation();
+    void setPronunciation(String pronunciation);
+
+    String getPronouns();
+    void setPronouns(String pronouns);
+
     String getBirthday();
     void setBirthday(String birthday);
     

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -78,12 +78,12 @@ public class PaymentMethodTypePartyTypeControl
         paymentMethodTypePartyType.setLastDetail(paymentMethodTypePartyTypeDetail);
         paymentMethodTypePartyType.store();
 
-        sendEventUsingNames(paymentMethodType.getPrimaryKey(), EventTypes.MODIFY.name(), paymentMethodTypePartyType.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(paymentMethodType.getPrimaryKey(), EventTypes.MODIFY, paymentMethodTypePartyType.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return paymentMethodTypePartyType;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.PaymentMethodTypePartyType */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.PaymentMethodTypePartyType */
     public PaymentMethodTypePartyType getPaymentMethodTypePartyTypeByEntityInstance(final EntityInstance entityInstance,
             final EntityPermission entityPermission) {
         var pk = new PaymentMethodTypePartyTypePK(entityInstance.getEntityUniqueId());
@@ -329,7 +329,7 @@ public class PaymentMethodTypePartyTypeControl
             paymentMethodTypePartyType.setActiveDetail(paymentMethodTypePartyTypeDetail);
             paymentMethodTypePartyType.setLastDetail(paymentMethodTypePartyTypeDetail);
 
-            sendEventUsingNames(paymentMethodTypePK, EventTypes.MODIFY.name(), paymentMethodTypePartyType.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(paymentMethodTypePK, EventTypes.MODIFY, paymentMethodTypePartyType.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
@@ -362,7 +362,7 @@ public class PaymentMethodTypePartyTypeControl
             }
         }
 
-        sendEventUsingNames(paymentMethodType.getPrimaryKey(), EventTypes.MODIFY.name(), paymentMethodTypePartyType.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(paymentMethodType.getPrimaryKey(), EventTypes.MODIFY, paymentMethodTypePartyType.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 
     public void deletePaymentMethodTypePartyTypes(final Collection<PaymentMethodTypePartyType> paymentMethodTypePartyTypes, final BasePK deletedBy) {

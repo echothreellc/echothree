@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -346,6 +346,11 @@ public class CoreBean
     // -------------------------------------------------------------------------
 
     @Override
+    public CommandResult createEntityInstance(UserVisitPK userVisitPK, CreateEntityInstanceForm form) {
+        return new CreateEntityInstanceCommand(userVisitPK, form).run();
+    }
+
+    @Override
     public CommandResult getEntityInstance(UserVisitPK userVisitPK, GetEntityInstanceForm form) {
         return new GetEntityInstanceCommand(userVisitPK, form).run();
     }
@@ -353,6 +358,16 @@ public class CoreBean
     @Override
     public CommandResult getEntityInstances(UserVisitPK userVisitPK, GetEntityInstancesForm form) {
         return new GetEntityInstancesCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult deleteEntityInstance(UserVisitPK userVisitPK, DeleteEntityInstanceForm form) {
+        return new DeleteEntityInstanceCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult removeEntityInstance(UserVisitPK userVisitPK, RemoveEntityInstanceForm form) {
+        return new RemoveEntityInstanceCommand(userVisitPK, form).run();
     }
 
     @Override
@@ -415,12 +430,17 @@ public class CoreBean
     // -------------------------------------------------------------------------
     //   Events
     // -------------------------------------------------------------------------
-    
+
+    @Override
+    public CommandResult sendEvent(UserVisitPK userVisitPK, SendEventForm form) {
+        return new SendEventCommand(userVisitPK, form).run();
+    }
+
     @Override
     public CommandResult getEvents(UserVisitPK userVisitPK, GetEventsForm form) {
         return new GetEventsCommand(userVisitPK, form).run();
     }
-    
+
     // -------------------------------------------------------------------------
     //   Queued Events
     // -------------------------------------------------------------------------
@@ -456,7 +476,104 @@ public class CoreBean
     public CommandResult createComponentVersion(UserVisitPK userVisitPK, CreateComponentVersionForm form) {
         return new CreateComponentVersionCommand(userVisitPK, form).run();
     }
-    
+
+    // -------------------------------------------------------------------------
+    //   Entity Alias Types
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult createEntityAliasType(UserVisitPK userVisitPK, CreateEntityAliasTypeForm form) {
+        return new CreateEntityAliasTypeCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getEntityAliasType(UserVisitPK userVisitPK, GetEntityAliasTypeForm form) {
+        return new GetEntityAliasTypeCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getEntityAliasTypes(UserVisitPK userVisitPK, GetEntityAliasTypesForm form) {
+        return new GetEntityAliasTypesCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getEntityAliasTypeChoices(UserVisitPK userVisitPK, GetEntityAliasTypeChoicesForm form) {
+        return new GetEntityAliasTypeChoicesCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult setDefaultEntityAliasType(UserVisitPK userVisitPK, SetDefaultEntityAliasTypeForm form) {
+        return new SetDefaultEntityAliasTypeCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult editEntityAliasType(UserVisitPK userVisitPK, EditEntityAliasTypeForm form) {
+        return new EditEntityAliasTypeCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult deleteEntityAliasType(UserVisitPK userVisitPK, DeleteEntityAliasTypeForm form) {
+        return new DeleteEntityAliasTypeCommand(userVisitPK, form).run();
+    }
+
+    // -------------------------------------------------------------------------
+    //   Entity Alias Type Descriptions
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult createEntityAliasTypeDescription(UserVisitPK userVisitPK, CreateEntityAliasTypeDescriptionForm form) {
+        return new CreateEntityAliasTypeDescriptionCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getEntityAliasTypeDescription(UserVisitPK userVisitPK, GetEntityAliasTypeDescriptionForm form) {
+        return new GetEntityAliasTypeDescriptionCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getEntityAliasTypeDescriptions(UserVisitPK userVisitPK, GetEntityAliasTypeDescriptionsForm form) {
+        return new GetEntityAliasTypeDescriptionsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult editEntityAliasTypeDescription(UserVisitPK userVisitPK, EditEntityAliasTypeDescriptionForm form) {
+        return new EditEntityAliasTypeDescriptionCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult deleteEntityAliasTypeDescription(UserVisitPK userVisitPK, DeleteEntityAliasTypeDescriptionForm form) {
+        return new DeleteEntityAliasTypeDescriptionCommand(userVisitPK, form).run();
+    }
+
+    // --------------------------------------------------------------------------------
+    //   Entity Aliases
+    // --------------------------------------------------------------------------------
+
+    @Override
+    public CommandResult createEntityAlias(UserVisitPK userVisitPK, CreateEntityAliasForm form) {
+        return new CreateEntityAliasCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getEntityAlias(UserVisitPK userVisitPK, GetEntityAliasForm form) {
+        return new GetEntityAliasCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getEntityAliases(UserVisitPK userVisitPK, GetEntityAliasesForm form) {
+        return new GetEntityAliasesCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult editEntityAlias(UserVisitPK userVisitPK, EditEntityAliasForm form) {
+        return new EditEntityAliasCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult deleteEntityAlias(UserVisitPK userVisitPK, DeleteEntityAliasForm form) {
+        return new DeleteEntityAliasCommand(userVisitPK, form).run();
+    }
+
     // -------------------------------------------------------------------------
     //   Entity Attribute Group Descriptions
     // -------------------------------------------------------------------------

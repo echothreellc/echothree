@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,9 +16,11 @@
 
 package com.echothree.util.server.string;
 
-import java.util.UUID;
+import com.echothree.model.data.core.server.entity.EntityInstance;
+import com.fasterxml.uuid.Generators;
 
-public class GuidUtils {
+public class GuidUtils
+        extends BaseIdUtils {
     
     private GuidUtils() {
         super();
@@ -31,9 +33,9 @@ public class GuidUtils {
     public static GuidUtils getInstance() {
         return GuidUtilsHolder.instance;
     }
-    
-    public String generateGuid() {
-        return UUID.randomUUID().toString();
+
+    public String generateGuid(EntityInstance entityInstance) {
+        return Generators.timeBasedEpochGenerator().construct(getEntityInstanceCreatedTime(entityInstance)).toString();
     }
-    
+
 }

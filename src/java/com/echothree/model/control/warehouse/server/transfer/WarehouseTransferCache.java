@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -32,6 +32,7 @@ import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.scale.server.control.ScaleControl;
 import com.echothree.model.control.warehouse.common.WarehouseOptions;
 import com.echothree.model.control.warehouse.common.transfer.WarehouseTransfer;
+import com.echothree.model.control.warehouse.common.transfer.WarehouseTypeTransfer;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;
@@ -45,7 +46,6 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.warehouse.server.entity.Warehouse;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class WarehouseTransferCache
         extends BaseWarehouseTransferCache<Party, WarehouseTransfer> {
@@ -56,6 +56,10 @@ public class WarehouseTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     PrinterControl printerControl = Session.getModelController(PrinterControl.class);
     ScaleControl scaleControl = Session.getModelController(ScaleControl.class);
+
+    boolean includeLocationsCount;
+    boolean includeLocations;
+    boolean includePartyAliases;
     boolean includePartyContactMechanisms;
     boolean includePartyDocuments;
     boolean includePartyPrinterGroupUses;
@@ -67,8 +71,11 @@ public class WarehouseTransferCache
         
         var options = session.getOptions();
         if(options != null) {
+            includeLocationsCount = options.contains(WarehouseOptions.WarehouseIncludeLocationsCount);
+            includeLocations = options.contains(WarehouseOptions.WarehouseIncludeLocations);
             setIncludeKey(options.contains(PartyOptions.PartyIncludeKey) || options.contains(WarehouseOptions.WarehouseIncludeKey));
             setIncludeGuid(options.contains(PartyOptions.PartyIncludeGuid) || options.contains(WarehouseOptions.WarehouseIncludeGuid));
+            includePartyAliases = options.contains(PartyOptions.PartyIncludePartyAliases);
             includePartyContactMechanisms = options.contains(PartyOptions.PartyIncludePartyContactMechanisms);
             includePartyDocuments = options.contains(PartyOptions.PartyIncludePartyDocuments);
             includePartyPrinterGroupUses = options.contains(PartyOptions.PartyIncludePartyPrinterGroupUses);
@@ -105,13 +112,27 @@ public class WarehouseTransferCache
             PartyGroupTransfer partyGroupTransfer = partyGroup == null ? null : partyControl.getPartyGroupTransfer(userVisit, partyGroup);
             Warehouse warehouse = warehouseControl.getWarehouse(party);
             String warehouseName = warehouse.getWarehouseName();
+            WarehouseTypeTransfer warehouseTypeTransfer = warehouseControl.getWarehouseTypeTransfer(userVisit, warehouse.getWarehouseType());
             Boolean isDefault = warehouse.getIsDefault();
             Integer sortOrder = warehouse.getSortOrder();
             
-            warehouseTransfer = new WarehouseTransfer(partyName, partyTypeTransfer, preferredLanguageTransfer, preferredCurrencyTransfer, preferredTimeZoneTransfer, preferredDateTimeFormatTransfer,
-                    personTransfer, partyGroupTransfer, warehouseName, isDefault, sortOrder);
+            warehouseTransfer = new WarehouseTransfer(partyName, partyTypeTransfer, preferredLanguageTransfer, preferredCurrencyTransfer,
+                    preferredTimeZoneTransfer, preferredDateTimeFormatTransfer, personTransfer, partyGroupTransfer, warehouseName,
+                    warehouseTypeTransfer, isDefault, sortOrder);
             put(party, warehouseTransfer);
-            
+
+            if(includeLocationsCount) {
+                warehouseTransfer.setLocationsCount(warehouseControl.countLocationsByWarehouseParty(party));
+            }
+
+            if(includeLocations) {
+                warehouseTransfer.setLocations(new ListWrapper<>(warehouseControl.getLocationTransfersByWarehouseParty(userVisit, party)));
+            }
+
+            if(includePartyAliases) {
+                warehouseTransfer.setPartyAliases(new ListWrapper<>(partyControl.getPartyAliasTransfersByParty(userVisit, party)));
+            }
+
             if(includePartyContactMechanisms) {
                 warehouseTransfer.setPartyContactMechanisms(new ListWrapper<>(contactControl.getPartyContactMechanismTransfersByParty(userVisit, party)));
             }

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,8 +23,8 @@ import com.echothree.model.control.employee.server.logic.LeaveLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.logic.CompanyLogic;
 import com.echothree.model.control.party.server.logic.PartyLogic;
-import com.echothree.model.control.search.common.SearchConstants;
 import com.echothree.model.control.employee.server.search.LeaveSearchEvaluator;
+import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -90,7 +90,7 @@ public class SearchLeavesCommand
     protected BaseResult execute() {
         SearchLogic searchLogic = SearchLogic.getInstance();
         SearchLeavesResult result = SearchResultFactory.getSearchLeavesResult();
-        SearchKind searchKind = searchLogic.getSearchKindByName(null, SearchConstants.SearchKind_LEAVE);
+        SearchKind searchKind = searchLogic.getSearchKindByName(null, SearchKinds.LEAVE.name());
 
         if(!hasExecutionErrors()) {
             String searchTypeName = form.getSearchTypeName();

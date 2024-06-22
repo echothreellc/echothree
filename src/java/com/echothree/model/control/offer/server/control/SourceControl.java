@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -77,8 +77,8 @@ public class SourceControl
         source.setLastDetail(sourceDetail);
         source.store();
 
-        sendEventUsingNames(offerUse.getLastDetail().getOfferPK(), EventTypes.MODIFY.name(), source.getPrimaryKey(),
-                EventTypes.CREATE.name(), createdBy);
+        sendEvent(offerUse.getLastDetail().getOfferPK(), EventTypes.MODIFY, source.getPrimaryKey(),
+                EventTypes.CREATE, createdBy);
 
         return source;
     }
@@ -91,7 +91,7 @@ public class SourceControl
                 offerUse);
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.Source */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Source */
     public Source getSourceByEntityInstance(EntityInstance entityInstance) {
         SourcePK pk = new SourcePK(entityInstance.getEntityUniqueId());
         Source source = SourceFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
@@ -343,8 +343,8 @@ public class SourceControl
             source.setActiveDetail(sourceDetail);
             source.setLastDetail(sourceDetail);
 
-            sendEventUsingNames(offerUse.getLastDetail().getOfferPK(), EventTypes.MODIFY.name(), source.getPrimaryKey(),
-                    EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(offerUse.getLastDetail().getOfferPK(), EventTypes.MODIFY, source.getPrimaryKey(),
+                    EventTypes.MODIFY, updatedBy);
         }
     }
 
@@ -375,8 +375,8 @@ public class SourceControl
             }
         }
 
-        sendEventUsingNames(source.getLastDetail().getOfferUse().getLastDetail().getOfferPK(),
-                EventTypes.MODIFY.name(), source.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(source.getLastDetail().getOfferUse().getLastDetail().getOfferPK(),
+                EventTypes.MODIFY, source.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 
     public void deleteSources(List<Source> sources, BasePK deletedBy) {

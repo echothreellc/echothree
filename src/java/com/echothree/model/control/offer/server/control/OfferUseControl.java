@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -65,7 +65,7 @@ public class OfferUseControl
         offerUse.setLastDetail(offerUseDetail);
         offerUse.store();
 
-        sendEventUsingNames(offerUse.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(offerUse.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return offerUse;
     }
@@ -318,7 +318,7 @@ public class OfferUseControl
             offerUse.setActiveDetail(offerUseDetail);
             offerUse.setLastDetail(offerUseDetail);
 
-            sendEventUsingNames(offerUsePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(offerUsePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -332,7 +332,7 @@ public class OfferUseControl
         offerUse.setActiveDetail(null);
         offerUse.store();
 
-        sendEventUsingNames(offerUse.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(offerUse.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteOfferUses(List<OfferUse> offerUses, BasePK deletedBy) {

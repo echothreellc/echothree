@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import com.echothree.control.user.party.common.PartyUtil;
 import com.echothree.control.user.party.common.edit.PartyAliasTypeEdit;
 import com.echothree.control.user.party.common.form.EditPartyAliasTypeForm;
 import com.echothree.control.user.party.common.result.EditPartyAliasTypeResult;
-import com.echothree.control.user.party.common.spec.PartyAliasTypeSpec;
+import com.echothree.control.user.party.common.spec.PartyAliasTypeUniversalSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -46,12 +46,12 @@ import javax.servlet.http.HttpServletRequest;
     }
 )
 public class EditAction
-        extends MainBaseEditAction<EditActionForm, PartyAliasTypeSpec, PartyAliasTypeEdit, EditPartyAliasTypeForm, EditPartyAliasTypeResult> {
+        extends MainBaseEditAction<EditActionForm, PartyAliasTypeUniversalSpec, PartyAliasTypeEdit, EditPartyAliasTypeForm, EditPartyAliasTypeResult> {
     
     @Override
-    protected PartyAliasTypeSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
+    protected PartyAliasTypeUniversalSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        PartyAliasTypeSpec spec = PartyUtil.getHome().getPartyAliasTypeSpec();
+        var spec = PartyUtil.getHome().getPartyAliasTypeUniversalSpec();
         
         spec.setPartyTypeName(findParameter(request, ParameterConstants.PARTY_TYPE_NAME, actionForm.getPartyTypeName()));
         spec.setPartyAliasTypeName(findParameter(request, ParameterConstants.ORIGINAL_PARTY_ALIAS_TYPE_NAME, actionForm.getOriginalPartyAliasTypeName()));
@@ -80,7 +80,7 @@ public class EditAction
     }
     
     @Override
-    protected void setupActionForm(HttpServletRequest request, EditActionForm actionForm, EditPartyAliasTypeResult result, PartyAliasTypeSpec spec, PartyAliasTypeEdit edit) {
+    protected void setupActionForm(HttpServletRequest request, EditActionForm actionForm, EditPartyAliasTypeResult result, PartyAliasTypeUniversalSpec spec, PartyAliasTypeEdit edit) {
         actionForm.setPartyTypeName(spec.getPartyTypeName());
         actionForm.setOriginalPartyAliasTypeName(spec.getPartyAliasTypeName());
         actionForm.setPartyAliasTypeName(edit.getPartyAliasTypeName());

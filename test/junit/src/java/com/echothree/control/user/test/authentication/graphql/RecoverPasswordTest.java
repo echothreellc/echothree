@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,12 +29,14 @@ public class RecoverPasswordTest
         var body = executeUsingPost("""
                 mutation {
                     recoverPassword(input: { username: "TestC@echothree.com", answer: "Not Chrome", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
 
-        assertThat(getBoolean(body, "data.recoverPassword.hasErrors")).isTrue();
+        assertThat(getBoolean(body, "data.recoverPassword.commandResult.hasErrors")).isTrue();
     }
 
     @Test
@@ -43,12 +45,14 @@ public class RecoverPasswordTest
         var body = executeUsingPost("""
                 mutation {
                     recoverPassword(input: { username: "TestC@echothree.com", answer: "Chrome", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
 
-        assertThat(getBoolean(body, "data.recoverPassword.hasErrors")).isFalse();
+        assertThat(getBoolean(body, "data.recoverPassword.commandResult.hasErrors")).isFalse();
     }
     
 }

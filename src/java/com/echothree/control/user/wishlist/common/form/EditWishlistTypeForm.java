@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,11 +17,11 @@
 package com.echothree.control.user.wishlist.common.form;
 
 import com.echothree.control.user.wishlist.common.edit.WishlistTypeEdit;
-import com.echothree.control.user.wishlist.common.spec.WishlistTypeSpec;
+import com.echothree.control.user.wishlist.common.spec.WishlistTypeUniversalSpec;
 import com.echothree.util.common.form.BaseEditForm;
 
 public interface EditWishlistTypeForm
-        extends BaseEditForm<WishlistTypeSpec, WishlistTypeEdit> {
+        extends BaseEditForm<WishlistTypeUniversalSpec, WishlistTypeEdit> {
     
     // Nothing additional beyond BaseEditForm
     

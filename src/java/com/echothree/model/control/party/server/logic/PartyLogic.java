@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,8 +16,10 @@
 
 package com.echothree.model.control.party.server.logic;
 
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.exception.InvalidPartyTypeException;
 import com.echothree.model.control.party.common.exception.UnknownPartyNameException;
@@ -49,7 +51,7 @@ public class PartyLogic
         return PartyLogicHolder.instance;
     }
     
-    /** Assume that the entityInstance passed to this function is an ECHOTHREE.Party. */
+    /** Assume that the entityInstance passed to this function is an ECHO_THREE.Party. */
     public Party getPartyFromEntityInstance(final EntityInstance entityInstance) {
         PartyPK pk = new PartyPK(entityInstance.getEntityUniqueId());
         
@@ -125,7 +127,7 @@ public class PartyLogic
         Party party = null;
         
         var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
-                ComponentVendors.ECHOTHREE.name(), EntityTypes.Party.name());
+                ComponentVendors.ECHO_THREE.name(), EntityTypes.Party.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {
             var partyControl = Session.getModelController(PartyControl.class);
@@ -153,5 +155,35 @@ public class PartyLogic
 
         return party;
     }
-    
+
+    public Party getPartyByName(final ExecutionErrorAccumulator eea, final String partyName,
+            final UniversalEntitySpec universalEntitySpec) {
+        var parameterCount = (partyName == null ? 0 : 1) +
+                EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalEntitySpec);
+        Party party = null;
+
+        if(parameterCount == 1) {
+            var partyControl = Session.getModelController(PartyControl.class);
+
+            if(partyName != null) {
+                party = partyControl.getPartyByName(partyName);
+
+                if(party == null) {
+                    handleExecutionError(UnknownPartyNameException.class, eea, ExecutionErrors.UnknownPartyName.name(), partyName);
+                }
+            } else if(universalEntitySpec != null) {
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalEntitySpec,
+                        ComponentVendors.ECHO_THREE.name(), EntityTypes.Party.name());
+
+                if(!eea.hasExecutionErrors()) {
+                    party = partyControl.getPartyByEntityInstance(entityInstance);
+                }
+            }
+        } else {
+            handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+        }
+
+        return party;
+    }
+
 }

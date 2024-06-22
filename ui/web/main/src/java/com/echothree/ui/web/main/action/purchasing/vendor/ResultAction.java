@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,8 +19,8 @@ package com.echothree.ui.web.main.action.purchasing.vendor;
 import com.echothree.control.user.search.common.SearchUtil;
 import com.echothree.control.user.search.common.form.GetVendorResultsForm;
 import com.echothree.control.user.search.common.result.GetVendorResultsResult;
-import com.echothree.model.control.search.common.SearchConstants;
 import com.echothree.model.control.search.common.SearchOptions;
+import com.echothree.model.control.search.common.SearchTypes;
 import com.echothree.model.data.search.common.SearchResultConstants;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -34,6 +34,7 @@ import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
+import static java.lang.Math.toIntExact;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -65,14 +66,14 @@ public class ResultAction
         GetVendorResultsForm commandForm = SearchUtil.getHome().getGetVendorResultsForm();
         String results = request.getParameter(ParameterConstants.RESULTS);
 
-        commandForm.setSearchTypeName(SearchConstants.SearchType_VENDOR_REVIEW);
+        commandForm.setSearchTypeName(SearchTypes.VENDOR_REVIEW.name());
 
         Set<String> options = new HashSet<>();
         options.add(SearchOptions.VendorResultIncludeVendor);
         commandForm.setOptions(options);
 
         if(results == null) {
-            String offsetParameter = request.getParameter((new ParamEncoder("vendorResult").encodeParameterName(TableTagParameters.PARAMETER_PAGE)));
+            String offsetParameter = request.getParameter(new ParamEncoder("vendorResult").encodeParameterName(TableTagParameters.PARAMETER_PAGE));
             Integer offset = offsetParameter == null ? null : (Integer.parseInt(offsetParameter) - 1) * 20;
 
             Map<String, Limit> limits = new HashMap<>();
@@ -85,9 +86,9 @@ public class ResultAction
             ExecutionResult executionResult = commandResult.getExecutionResult();
             GetVendorResultsResult result = (GetVendorResultsResult)executionResult.getResult();
 
-            Integer vendorResultCount = result.getVendorResultCount();
+            var vendorResultCount = result.getVendorResultCount();
             if(vendorResultCount != null) {
-                request.setAttribute(AttributeConstants.VENDOR_RESULT_COUNT, vendorResultCount);
+                request.setAttribute(AttributeConstants.VENDOR_RESULT_COUNT, toIntExact(vendorResultCount));
             }
 
             request.setAttribute(AttributeConstants.VENDOR_RESULTS, new ListWrapper<>(result.getVendorResults()));

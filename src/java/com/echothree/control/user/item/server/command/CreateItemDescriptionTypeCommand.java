@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,21 +17,20 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.CreateItemDescriptionTypeForm;
+import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.MimeType;
-import com.echothree.model.data.core.server.entity.MimeTypeUsage;
 import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
 import com.echothree.model.data.item.server.entity.ItemDescriptionType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.form.ValidationResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.form.ValidationResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -67,7 +66,7 @@ public class CreateItemDescriptionTypeCommand
                 new FieldDefinition("IndexDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
-                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 ));
 
         imageFieldDefinitions = Collections.unmodifiableList(Arrays.asList(
@@ -108,12 +107,13 @@ public class CreateItemDescriptionTypeCommand
     
     @Override
     protected BaseResult execute() {
+        var result = ItemResultFactory.getCreateItemDescriptionTypeResult();
         var itemControl = Session.getModelController(ItemControl.class);
-        String itemDescriptionTypeName = form.getItemDescriptionTypeName();
-        ItemDescriptionType itemDescriptionType = itemControl.getItemDescriptionTypeByName(itemDescriptionTypeName);
+        var itemDescriptionTypeName = form.getItemDescriptionTypeName();
+        var itemDescriptionType = itemControl.getItemDescriptionTypeByName(itemDescriptionTypeName);
         
         if(itemDescriptionType == null) {
-            String parentItemDescriptionTypeName = form.getParentItemDescriptionTypeName();
+            var parentItemDescriptionTypeName = form.getParentItemDescriptionTypeName();
             ItemDescriptionType parentItemDescriptionType = null;
             
             if(parentItemDescriptionTypeName != null) {
@@ -122,7 +122,7 @@ public class CreateItemDescriptionTypeCommand
             
             if(parentItemDescriptionTypeName == null || parentItemDescriptionType != null) {
                 MimeTypeUsageType mimeTypeUsageType = null;
-                String mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
+                var mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
 
                 if(mimeTypeUsageTypeName != null) {
                     var coreControl = getCoreControl();
@@ -132,8 +132,8 @@ public class CreateItemDescriptionTypeCommand
 
                 if(mimeTypeUsageTypeName == null || mimeTypeUsageType != null) {
                     if(parentItemDescriptionType != null) {
-                        MimeTypeUsageType parentMimeTypeUsageType = parentItemDescriptionType.getLastDetail().getMimeTypeUsageType();
-                        boolean invalidMimeTypeUsageType = false;
+                        var parentMimeTypeUsageType = parentItemDescriptionType.getLastDetail().getMimeTypeUsageType();
+                        var invalidMimeTypeUsageType = false;
 
                         // Either the parent's and the new type's MimeTypeUsageTypes must match, or both must be null.
                         if(parentMimeTypeUsageType != null) {
@@ -151,12 +151,12 @@ public class CreateItemDescriptionTypeCommand
                     
                     if(!hasExecutionErrors()) {
                         var coreControl = getCoreControl();
-                        String preferredMimeTypeName = form.getPreferredMimeTypeName();
-                        MimeType preferredMimeType = preferredMimeTypeName == null ? null : coreControl.getMimeTypeByName(preferredMimeTypeName);
+                        var preferredMimeTypeName = form.getPreferredMimeTypeName();
+                        var preferredMimeType = preferredMimeTypeName == null ? null : coreControl.getMimeTypeByName(preferredMimeTypeName);
 
                         if(preferredMimeTypeName == null || preferredMimeType != null) {
                             if(preferredMimeType != null && mimeTypeUsageType != null) {
-                                MimeTypeUsage mimeTypeUsage = coreControl.getMimeTypeUsage(preferredMimeType, mimeTypeUsageType);
+                                var mimeTypeUsage = coreControl.getMimeTypeUsage(preferredMimeType, mimeTypeUsageType);
 
                                 if(mimeTypeUsage == null) {
                                     addExecutionError(ExecutionErrors.UnknownMimeTypeUsage.name());
@@ -165,10 +165,10 @@ public class CreateItemDescriptionTypeCommand
 
                             if(!hasExecutionErrors()) {
                                 var partyPK = getPartyPK();
-                                Boolean useParentIfMissing = Boolean.valueOf(form.getUseParentIfMissing());
-                                Boolean includeInIndex = Boolean.valueOf(form.getIncludeInIndex());
-                                Boolean checkContentWebAddress = Boolean.valueOf(form.getCheckContentWebAddress());
-                                Boolean indexDefault = Boolean.valueOf(form.getIndexDefault());
+                                var useParentIfMissing = Boolean.valueOf(form.getUseParentIfMissing());
+                                var includeInIndex = Boolean.valueOf(form.getIncludeInIndex());
+                                var checkContentWebAddress = Boolean.valueOf(form.getCheckContentWebAddress());
+                                var indexDefault = Boolean.valueOf(form.getIndexDefault());
                                 var isDefault = Boolean.valueOf(form.getIsDefault());
                                 var sortOrder = Integer.valueOf(form.getSortOrder());
                                 var description = form.getDescription();
@@ -185,21 +185,21 @@ public class CreateItemDescriptionTypeCommand
                                     mimeTypeUsageTypeName = mimeTypeUsageType.getMimeTypeUsageTypeName();
 
                                     if(mimeTypeUsageTypeName.equals(MimeTypeUsageTypes.IMAGE.name())) {
-                                        String strMinimumHeight = form.getMinimumHeight();
-                                        Integer minimumHeight = strMinimumHeight == null ? null : Integer.valueOf(strMinimumHeight);
-                                        String strMinimumWidth = form.getMinimumWidth();
-                                        Integer minimumWidth = strMinimumWidth == null ? null : Integer.valueOf(strMinimumWidth);
-                                        String strMaximumHeight = form.getMaximumHeight();
-                                        Integer maximumHeight = strMaximumHeight == null ? null : Integer.valueOf(strMaximumHeight);
-                                        String strMaximumWidth = form.getMaximumWidth();
-                                        Integer maximumWidth = strMaximumWidth == null ? null : Integer.valueOf(strMaximumWidth);
-                                        String strPreferredHeight = form.getPreferredHeight();
-                                        Integer preferredHeight = strPreferredHeight == null ? null : Integer.valueOf(strPreferredHeight);
-                                        String strPreferredWidth = form.getPreferredWidth();
-                                        Integer preferredWidth = strPreferredWidth == null ? null : Integer.valueOf(strPreferredWidth);
-                                        String strQuality = form.getQuality();
-                                        Integer quality = strQuality == null ? null : Integer.valueOf(strQuality);
-                                        Boolean scaleFromParent = Boolean.valueOf(form.getScaleFromParent());
+                                        var strMinimumHeight = form.getMinimumHeight();
+                                        var minimumHeight = strMinimumHeight == null ? null : Integer.valueOf(strMinimumHeight);
+                                        var strMinimumWidth = form.getMinimumWidth();
+                                        var minimumWidth = strMinimumWidth == null ? null : Integer.valueOf(strMinimumWidth);
+                                        var strMaximumHeight = form.getMaximumHeight();
+                                        var maximumHeight = strMaximumHeight == null ? null : Integer.valueOf(strMaximumHeight);
+                                        var strMaximumWidth = form.getMaximumWidth();
+                                        var maximumWidth = strMaximumWidth == null ? null : Integer.valueOf(strMaximumWidth);
+                                        var strPreferredHeight = form.getPreferredHeight();
+                                        var preferredHeight = strPreferredHeight == null ? null : Integer.valueOf(strPreferredHeight);
+                                        var strPreferredWidth = form.getPreferredWidth();
+                                        var preferredWidth = strPreferredWidth == null ? null : Integer.valueOf(strPreferredWidth);
+                                        var strQuality = form.getQuality();
+                                        var quality = strQuality == null ? null : Integer.valueOf(strQuality);
+                                        var scaleFromParent = Boolean.valueOf(form.getScaleFromParent());
 
                                         itemControl.createItemImageDescriptionType(itemDescriptionType, minimumHeight, minimumWidth, maximumHeight, maximumWidth,
                                                 preferredHeight, preferredWidth, preferredMimeType, quality, scaleFromParent, partyPK);
@@ -219,8 +219,13 @@ public class CreateItemDescriptionTypeCommand
         } else {
             addExecutionError(ExecutionErrors.DuplicateItemDescriptionTypeName.name(), itemDescriptionTypeName);
         }
-        
-        return null;
+
+        if(itemDescriptionType != null) {
+            result.setItemDescriptionTypeName(itemDescriptionType.getLastDetail().getItemDescriptionTypeName());
+            result.setEntityRef(itemDescriptionType.getPrimaryKey().getEntityRef());
+        }
+
+        return result;
     }
     
 }

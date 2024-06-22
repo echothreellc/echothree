@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,11 +17,12 @@
 package com.echothree.control.user.core.common.form;
 
 import com.echothree.control.user.core.common.edit.EntityListItemEdit;
+import com.echothree.control.user.core.common.spec.EntityAttributeUniversalSpec;
 import com.echothree.control.user.core.common.spec.EntityListItemSpec;
 
 public interface CreateEntityListItemForm
-        extends EntityListItemSpec, EntityListItemEdit {
+        extends EntityAttributeUniversalSpec, EntityListItemSpec, EntityListItemEdit {
     
-    // Nothing additional beyond EntityListItemSpec, EntityListItemEdit
+    // Nothing additional beyond EntityAttributeUniversalSpec, EntityListItemSpec, EntityListItemEdit
     
 }

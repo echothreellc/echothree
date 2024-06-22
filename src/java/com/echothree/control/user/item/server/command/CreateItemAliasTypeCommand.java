@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,23 +17,21 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.CreateItemAliasTypeForm;
-import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.control.user.item.common.result.ItemResultFactory;
+import com.echothree.model.control.item.server.logic.ItemAliasChecksumTypeLogic;
+import com.echothree.model.control.item.server.logic.ItemAliasTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.item.server.entity.ItemAliasChecksumType;
 import com.echothree.model.data.item.server.entity.ItemAliasType;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -59,7 +57,7 @@ public class CreateItemAliasTypeCommand
                 new FieldDefinition("AllowMultiple", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
-                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 ));
     }
     
@@ -70,36 +68,31 @@ public class CreateItemAliasTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = Session.getModelController(ItemControl.class);
-        String itemAliasTypeName = form.getItemAliasTypeName();
-        ItemAliasType itemAliasType = itemControl.getItemAliasTypeByName(itemAliasTypeName);
+        var result = ItemResultFactory.getCreateItemAliasTypeResult();
+        var itemAliasChecksumTypeName = form.getItemAliasChecksumTypeName();
+        var itemAliasChecksumType = ItemAliasChecksumTypeLogic.getInstance().getItemAliasChecksumTypeByName(this, itemAliasChecksumTypeName);
+        ItemAliasType itemAliasType = null;
 
-        if(itemAliasType == null) {
-            String itemAliasChecksumTypeName = form.getItemAliasChecksumTypeName();
-            ItemAliasChecksumType itemAliasChecksumType = itemControl.getItemAliasChecksumTypeByName(itemAliasChecksumTypeName);
+        if(!hasExecutionErrors()) {
+            var itemAliasTypeName = form.getItemAliasTypeName();
+            var validationPattern = form.getValidationPattern();
+            var allowMultiple = Boolean.valueOf(form.getAllowMultiple());
+            var isDefault = Boolean.valueOf(form.getIsDefault());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
+            var description = form.getDescription();
 
-            if(itemAliasChecksumType != null) {
-                PartyPK createdBy = getPartyPK();
-                String validationPattern = form.getValidationPattern();
-                Boolean allowMultiple = Boolean.valueOf(form.getAllowMultiple());
-                var isDefault = Boolean.valueOf(form.getIsDefault());
-                var sortOrder = Integer.valueOf(form.getSortOrder());
-                var description = form.getDescription();
+            itemAliasType = ItemAliasTypeLogic.getInstance().createItemAliasType(this, itemAliasTypeName, validationPattern,
+                    itemAliasChecksumType, allowMultiple, isDefault, sortOrder, getPreferredLanguage(), description,
+                    getPartyPK());
 
-                itemAliasType = itemControl.createItemAliasType(itemAliasTypeName, validationPattern, itemAliasChecksumType, allowMultiple, isDefault, sortOrder,
-                        createdBy);
-
-                if(description != null) {
-                    itemControl.createItemAliasTypeDescription(itemAliasType, getPreferredLanguage(), description, createdBy);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownItemAliasChecksumTypeName.name(), itemAliasChecksumTypeName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.DuplicateItemAliasTypeName.name(), itemAliasTypeName);
         }
 
-        return null;
+        if(itemAliasType != null) {
+            result.setItemAliasTypeName(itemAliasType.getLastDetail().getItemAliasTypeName());
+            result.setEntityRef(itemAliasType.getPrimaryKey().getEntityRef());
+        }
+
+        return result;
     }
     
 }

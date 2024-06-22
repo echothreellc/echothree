@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,6 +17,8 @@
 package com.echothree.control.user.tag.server.command;
 
 import com.echothree.control.user.tag.common.form.CreateTagForm;
+import com.echothree.control.user.tag.common.result.CreateTagScopeResult;
+import com.echothree.control.user.tag.common.result.TagResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -64,24 +66,31 @@ public class CreateTagCommand
     
     @Override
     protected BaseResult execute() {
+        var result = TagResultFactory.getCreateTagResult();
         var tagControl = Session.getModelController(TagControl.class);
         String tagScopeName = form.getTagScopeName();
         TagScope tagScope = tagControl.getTagScopeByName(tagScopeName);
+        Tag tag = null;
         
         if(tagScope != null) {
             String tagName = form.getTagName();
-            Tag tag = tagControl.getTagByName(tagScope, tagName);
+            tag = tagControl.getTagByName(tagScope, tagName);
             
             if(tag == null) {
-                tagControl.createTag(tagScope, tagName, getPartyPK());
+                tag = tagControl.createTag(tagScope, tagName, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.DuplicateTagName.name(), tagScopeName, tagName);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownTagScopeName.name(), tagScopeName);
         }
+
+        if(tag != null) {
+            result.setTagName(tag.getLastDetail().getTagName());
+            result.setEntityRef(tag.getPrimaryKey().getEntityRef());
+        }
         
-        return null;
+        return result;
     }
     
 }

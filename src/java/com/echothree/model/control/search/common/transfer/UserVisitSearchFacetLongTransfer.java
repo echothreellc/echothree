@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,10 +23,10 @@ public class UserVisitSearchFacetLongTransfer
         extends BaseTransfer {
     
     private EntityLongRangeTransfer entityLongRange;
-    private Integer count;
+    private Long count;
     
     /** Creates a new instance of UserVisitSearchFacetListItemTransfer */
-    public UserVisitSearchFacetLongTransfer(EntityLongRangeTransfer entityLongRange, Integer count) {
+    public UserVisitSearchFacetLongTransfer(EntityLongRangeTransfer entityLongRange, Long count) {
         this.entityLongRange = entityLongRange;
         this.count = count;
     }
@@ -51,7 +51,7 @@ public class UserVisitSearchFacetLongTransfer
      * Returns the count.
      * @return the count
      */
-    public Integer getCount() {
+    public Long getCount() {
         return count;
     }
 
@@ -59,7 +59,7 @@ public class UserVisitSearchFacetLongTransfer
      * Sets the count.
      * @param count the count to set
      */
-    public void setCount(Integer count) {
+    public void setCount(Long count) {
         this.count = count;
     }
 

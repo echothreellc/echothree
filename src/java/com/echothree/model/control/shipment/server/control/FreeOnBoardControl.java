@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -76,12 +76,12 @@ public class FreeOnBoardControl
         freeOnBoard.setLastDetail(freeOnBoardDetail);
         freeOnBoard.store();
 
-        sendEventUsingNames(freeOnBoard.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(freeOnBoard.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return freeOnBoard;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.FreeOnBoard */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.FreeOnBoard */
     public FreeOnBoard getFreeOnBoardByEntityInstance(final EntityInstance entityInstance,
             final EntityPermission entityPermission) {
         var pk = new FreeOnBoardPK(entityInstance.getEntityUniqueId());
@@ -272,7 +272,7 @@ public class FreeOnBoardControl
             freeOnBoard.setActiveDetail(freeOnBoardDetail);
             freeOnBoard.setLastDetail(freeOnBoardDetail);
 
-            sendEventUsingNames(freeOnBoardPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(freeOnBoardPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -309,7 +309,7 @@ public class FreeOnBoardControl
             }
         }
 
-        sendEventUsingNames(freeOnBoard.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(freeOnBoard.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     // --------------------------------------------------------------------------------
@@ -321,7 +321,7 @@ public class FreeOnBoardControl
         var freeOnBoardDescription = FreeOnBoardDescriptionFactory.getInstance().create(freeOnBoard,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(freeOnBoard.getPrimaryKey(), EventTypes.MODIFY.name(), freeOnBoardDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(freeOnBoard.getPrimaryKey(), EventTypes.MODIFY, freeOnBoardDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return freeOnBoardDescription;
     }
@@ -439,14 +439,14 @@ public class FreeOnBoardControl
             freeOnBoardDescription = FreeOnBoardDescriptionFactory.getInstance().create(freeOnBoard, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(freeOnBoard.getPrimaryKey(), EventTypes.MODIFY.name(), freeOnBoardDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(freeOnBoard.getPrimaryKey(), EventTypes.MODIFY, freeOnBoardDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteFreeOnBoardDescription(final FreeOnBoardDescription freeOnBoardDescription, final BasePK deletedBy) {
         freeOnBoardDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(freeOnBoardDescription.getFreeOnBoardPK(), EventTypes.MODIFY.name(), freeOnBoardDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(freeOnBoardDescription.getFreeOnBoardPK(), EventTypes.MODIFY, freeOnBoardDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 

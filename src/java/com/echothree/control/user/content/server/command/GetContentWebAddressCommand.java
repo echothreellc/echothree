@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -56,7 +56,7 @@ public class GetContentWebAddressCommand
         ContentWebAddress contentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
         
         if(contentWebAddress != null) {
-            sendEventUsingNames(contentWebAddress.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(contentWebAddress.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownContentWebAddressName.name(), contentWebAddressName);
         }
@@ -65,7 +65,7 @@ public class GetContentWebAddressCommand
     }
     
     @Override
-    protected BaseResult getTransfer(ContentWebAddress contentWebAddress) {
+    protected BaseResult getResult(ContentWebAddress contentWebAddress) {
         GetContentWebAddressResult result = ContentResultFactory.getGetContentWebAddressResult();
         
         if(contentWebAddress != null) {

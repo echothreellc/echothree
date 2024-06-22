@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ import com.echothree.model.control.core.server.database.EntityInstancesByPartyTy
 import com.echothree.model.control.index.common.exception.UnknownIndexNameException;
 import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.party.server.logic.PartyLogic;
-import com.echothree.model.control.queue.common.QueueConstants;
+import com.echothree.model.control.queue.common.QueueTypes;
 import com.echothree.model.control.queue.server.control.QueueControl;
 import com.echothree.model.control.queue.server.logic.QueueTypeLogic;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
@@ -93,7 +93,7 @@ public class IndexLogic
         String entityTypeName = entityTypeDetail.getEntityTypeName();
         
         if(entityTypeName.equals(EntityTypes.Party.name())
-                && componentVendor.getLastDetail().getComponentVendorName().equals(ComponentVendors.ECHOTHREE.name())) {
+                && componentVendor.getLastDetail().getComponentVendorName().equals(ComponentVendors.ECHO_THREE.name())) {
             // The Party indexes aren't by Language, so we're not worried about de-dupping them.
             PartyType partyType = PartyLogic.getInstance().getPartyTypeByName(eea, indexTypeDetail.getIndexTypeName());
 
@@ -115,7 +115,7 @@ public class IndexLogic
      * @param entityType the EntityType that should be reindexed. If null, all indexes will be reindexed (Optional)
      */
     public void reindex(final Session session, final ExecutionErrorAccumulator eea, final EntityType entityType) {
-        QueueType queueType = QueueTypeLogic.getInstance().getQueueTypeByName(eea, QueueConstants.QueueType_INDEXING);
+        QueueType queueType = QueueTypeLogic.getInstance().getQueueTypeByName(eea, QueueTypes.INDEXING.name());
         
         if(eea == null || !eea.hasExecutionErrors()) {
             var indexControl = Session.getModelController(IndexControl.class);

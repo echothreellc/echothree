@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -21,9 +21,14 @@
         </entityAttributeGroup>
     </entityAttributeGroups>
     <componentVendors>
-        <componentVendor componentVendorName="ECHOTHREE" commandAction="none">
-            <entityType entityTypeName="Item" keepAllHistory="false" sortOrder="1">
+        <componentVendor componentVendorName="ECHO_THREE" commandAction="none">
+            <entityType entityTypeName="Item" keepAllHistory="false" isExtensible="true" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Item" />
+                <!--
+                <entityAliasType entityAliasTypeName="TEST_ENTITY_ALIAS_TYPE" validationPattern="^[0-9][0-9][0-9][0-9]$" isDefault="true" sortOrder="1">
+                    <entityAliasTypeDescription languageIsoName="en" description="Test Entity Alias Type" />
+                </entityAliasType>
+                -->
                 <!--
                 <entityAttribute entityAttributeName="EXAMPLE_NAME" entityAttributeTypeName="NAME" trackRevisions="true"
                                  checkContentWebAddress="false" sortOrder="1">
@@ -64,13 +69,13 @@
                                  checkContentWebAddress="false" sortOrder="1">
                     <entityAttributeDescription languageIsoName="en" description="Example Entity" />
                     <entityAttributeEntityAttributeGroup entityAttributeGroupName="DEFAULT" sortOrder="1" />
-                    <entityAttributeEntityType allowedComponentVendorName="ECHOTHREE" allowedEntityTypeName="Forum" />
+                    <entityAttributeEntityType allowedComponentVendorName="ECHO_THREE" allowedEntityTypeName="Forum" />
                 </entityAttribute>
                 <entityAttribute entityAttributeName="EXAMPLE_COLLECTION" entityAttributeTypeName="COLLECTION" trackRevisions="true"
                                  checkContentWebAddress="false" sortOrder="1">
                     <entityAttributeDescription languageIsoName="en" description="Example Collection" />
                     <entityAttributeEntityAttributeGroup entityAttributeGroupName="DEFAULT" sortOrder="1" />
-                    <entityAttributeEntityType allowedComponentVendorName="ECHOTHREE" allowedEntityTypeName="Forum" />
+                    <entityAttributeEntityType allowedComponentVendorName="ECHO_THREE" allowedEntityTypeName="Forum" />
                 </entityAttribute>
                 <entityAttribute entityAttributeName="EXAMPLE_DATE" entityAttributeTypeName="DATE" trackRevisions="true"
                                  checkContentWebAddress="false" sortOrder="1">

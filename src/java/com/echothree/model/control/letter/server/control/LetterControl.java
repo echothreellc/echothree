@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -81,6 +81,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -140,7 +141,7 @@ public class LetterControl
         letterSource.setLastDetail(letterSourceDetail);
         letterSource.store();
         
-        sendEventUsingNames(letterSource.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(letterSource.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return letterSource;
     }
@@ -456,7 +457,7 @@ public class LetterControl
             letterSource.setActiveDetail(letterSourceDetail);
             letterSource.setLastDetail(letterSourceDetail);
             
-            sendEventUsingNames(letterSourcePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(letterSourcePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -490,7 +491,7 @@ public class LetterControl
             }
         }
         
-        sendEventUsingNames(letterSource.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(letterSource.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteLetterSources(List<LetterSource> letterSources, BasePK deletedBy) {
@@ -525,7 +526,7 @@ public class LetterControl
         LetterSourceDescription letterSourceDescription = LetterSourceDescriptionFactory.getInstance().create(letterSource, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(letterSource.getPrimaryKey(), EventTypes.MODIFY.name(), letterSourceDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(letterSource.getPrimaryKey(), EventTypes.MODIFY, letterSourceDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return letterSourceDescription;
     }
@@ -671,14 +672,14 @@ public class LetterControl
             letterSourceDescription = LetterSourceDescriptionFactory.getInstance().create(letterSource,
                     language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(letterSource.getPrimaryKey(), EventTypes.MODIFY.name(), letterSourceDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(letterSource.getPrimaryKey(), EventTypes.MODIFY, letterSourceDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteLetterSourceDescription(LetterSourceDescription letterSourceDescription, BasePK deletedBy) {
         letterSourceDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(letterSourceDescription.getLetterSourcePK(), EventTypes.MODIFY.name(), letterSourceDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(letterSourceDescription.getLetterSourcePK(), EventTypes.MODIFY, letterSourceDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteLetterSourceDescriptionsByLetterSource(LetterSource letterSource, BasePK deletedBy) {
@@ -717,7 +718,7 @@ public class LetterControl
         letter.setLastDetail(letterDetail);
         letter.store();
         
-        sendEventUsingNames(letter.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(letter.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return letter;
     }
@@ -927,7 +928,7 @@ public class LetterControl
         return getLetterTransferCaches(userVisit).getLetterTransferCache().getLetterTransfer(letter);
     }
     
-    public List<LetterTransfer> getLetterTransfers(UserVisit userVisit, List<Letter> letters) {
+    public List<LetterTransfer> getLetterTransfers(UserVisit userVisit, Collection<Letter> letters) {
         List<LetterTransfer> letterTransfers = new ArrayList<>(letters.size());
         LetterTransferCache letterTransferCache = getLetterTransferCaches(userVisit).getLetterTransferCache();
         
@@ -1019,7 +1020,7 @@ public class LetterControl
             letter.setActiveDetail(letterDetail);
             letter.setLastDetail(letterDetail);
             
-            sendEventUsingNames(letterPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(letterPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -1054,7 +1055,7 @@ public class LetterControl
             }
         }
         
-        sendEventUsingNames(letter.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(letter.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteLetters(List<Letter> letters, BasePK deletedBy) {
@@ -1079,7 +1080,7 @@ public class LetterControl
         LetterDescription letterDescription = LetterDescriptionFactory.getInstance().create(letter, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(letter.getPrimaryKey(), EventTypes.MODIFY.name(), letterDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(letter.getPrimaryKey(), EventTypes.MODIFY, letterDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return letterDescription;
     }
@@ -1225,14 +1226,14 @@ public class LetterControl
             letterDescription = LetterDescriptionFactory.getInstance().create(letter,
                     language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(letter.getPrimaryKey(), EventTypes.MODIFY.name(), letterDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(letter.getPrimaryKey(), EventTypes.MODIFY, letterDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteLetterDescription(LetterDescription letterDescription, BasePK deletedBy) {
         letterDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(letterDescription.getLetterPK(), EventTypes.MODIFY.name(), letterDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(letterDescription.getLetterPK(), EventTypes.MODIFY, letterDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteLetterDescriptionsByLetter(Letter letter, BasePK deletedBy) {
@@ -1261,7 +1262,7 @@ public class LetterControl
         letterContactMechanismPurpose.setLastDetail(letterContactMechanismPurposeDetail);
         letterContactMechanismPurpose.store();
         
-        sendEventUsingNames(letter.getPrimaryKey(), EventTypes.MODIFY.name(), letterContactMechanismPurpose.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(letter.getPrimaryKey(), EventTypes.MODIFY, letterContactMechanismPurpose.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return letterContactMechanismPurpose;
     }
@@ -1393,7 +1394,7 @@ public class LetterControl
             letterContactMechanismPurpose.setActiveDetail(letterContactMechanismPurposeDetail);
             letterContactMechanismPurpose.setLastDetail(letterContactMechanismPurposeDetail);
             
-            sendEventUsingNames(letterPK, EventTypes.MODIFY.name(), letterContactMechanismPurposePK, EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(letterPK, EventTypes.MODIFY, letterContactMechanismPurposePK, EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -1403,7 +1404,7 @@ public class LetterControl
         letterContactMechanismPurpose.setActiveDetail(null);
         letterContactMechanismPurpose.store();
         
-        sendEventUsingNames(letterContactMechanismPurposeDetail.getLetterPK(), EventTypes.MODIFY.name(), letterContactMechanismPurpose.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(letterContactMechanismPurposeDetail.getLetterPK(), EventTypes.MODIFY, letterContactMechanismPurpose.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteLetterContactMechanismPurposesByLetter(Letter letter, BasePK deletedBy) {
@@ -1433,7 +1434,7 @@ public class LetterControl
     }
 
     public boolean isChainInstanceUsedByQueuedLetters(ChainInstance chainInstance) {
-        return session.queryForInteger(
+        return session.queryForLong(
                 "SELECT COUNT(*) " +
                 "FROM queuedletters " +
                 "WHERE qlttr_chni_chaininstanceid = ?",
@@ -1441,7 +1442,7 @@ public class LetterControl
     }
 
     public boolean isChainInstanceUsedByQueuedLetters(Letter letter) {
-        return session.queryForInteger(
+        return session.queryForLong(
                 "SELECT COUNT(*) " +
                 "FROM queuedletters " +
                 "WHERE qlttr_lttr_letterid = ?",
@@ -1583,7 +1584,7 @@ public class LetterControl
         return getLetterTransferCaches(userVisit).getQueuedLetterTransferCache().getQueuedLetterTransfer(queuedLetter);
     }
     
-    public List<QueuedLetterTransfer> getQueuedLetterTransfers(UserVisit userVisit, List<QueuedLetter> queuedLetters) {
+    public List<QueuedLetterTransfer> getQueuedLetterTransfers(UserVisit userVisit, Collection<QueuedLetter> queuedLetters) {
         List<QueuedLetterTransfer> queuedLetterTransfers = new ArrayList<>(queuedLetters.size());
         QueuedLetterTransferCache queuedLetterTransferCache = getLetterTransferCaches(userVisit).getQueuedLetterTransferCache();
 

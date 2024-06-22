@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,8 +18,8 @@ package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.model.control.core.common.transfer.EntityLockTransfer;
-import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.CoreDebugFlags;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.common.pk.EntityInstancePK;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.factory.EntityInstanceFactory;
@@ -29,19 +29,21 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.DslContextFactory;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.PersistenceUtils;
+import com.echothree.util.server.persistence.Session;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 import javax.sql.DataSource;
 
 public class EntityLockTransferCache
         extends BaseCoreTransferCache {
-    
+
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+
     /** Creates a new instance of EntityLockTransferCache */
-    public EntityLockTransferCache(UserVisit userVisit, CoreControl coreControl) {
-        super(userVisit, coreControl);
+    public EntityLockTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
     
     DataSource ds = null;
@@ -102,8 +104,8 @@ public class EntityLockTransferCache
             if(lockedByEntityInstanceId != 0) {
                 EntityInstancePK lockedByEntityInstancePK = new EntityInstancePK(lockedByEntityInstanceId);
                 EntityInstance lockedByEntityInstance = EntityInstanceFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, lockedByEntityInstancePK);
-                EntityInstanceTransfer lockTargetEntityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, lockTargetEntityInstance, false, false, false, false, false);
-                EntityInstanceTransfer lockedByEntityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, lockedByEntityInstance, false, false, false, false, false);
+                EntityInstanceTransfer lockTargetEntityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, lockTargetEntityInstance, false, false, false, false, false, false);
+                EntityInstanceTransfer lockedByEntityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, lockedByEntityInstance, false, false, false, false, false, false);
 
                 if(CoreDebugFlags.LogEntityLocks) {
                     getLog().info("--- lockedByEntityInstancePK=" + lockedByEntityInstancePK);
@@ -112,10 +114,8 @@ public class EntityLockTransferCache
                     getLog().info("--- lockTargetEntityInstanceTransfer=" + lockTargetEntityInstanceTransfer);
                 }
 
-                Date time = new Date(lockedTime);
-                String lockedTimeString = formatTypicalDateTime(time);
-                time.setTime(expirationTime);
-                String expirationTimeString = formatTypicalDateTime(time);
+                var lockedTimeString = formatTypicalDateTime(lockedTime);
+                var expirationTimeString = formatTypicalDateTime(expirationTime);
 
                 entityLockTransfer = new EntityLockTransfer(lockTargetEntityInstanceTransfer, lockedByEntityInstanceTransfer, lockedTime, lockedTimeString, expirationTime, expirationTimeString);
             }

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -87,7 +87,7 @@ public class GetLetterCommand
                 if(letter != null) {
                     result.setLetter(letterControl.getLetterTransfer(getUserVisit(), letter));
                     
-                    sendEventUsingNames(letter.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                    sendEvent(letter.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownLetterName.name(), letterName);
                 }

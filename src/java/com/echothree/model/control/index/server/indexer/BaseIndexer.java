@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,11 +19,14 @@ package com.echothree.model.control.index.server.indexer;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.IndexFields;
+import com.echothree.model.control.index.common.IndexSubfields;
 import com.echothree.model.control.index.common.exception.IndexIOErrorException;
-import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.index.server.analysis.BasicAnalyzer;
+import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.tag.server.control.TagControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
+import com.echothree.model.data.core.server.entity.EntityAliasType;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityAttributeDetail;
 import com.echothree.model.data.core.server.entity.EntityClobAttribute;
@@ -45,8 +48,8 @@ import com.echothree.model.data.index.server.entity.IndexStatus;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.tag.server.entity.EntityTag;
 import com.echothree.model.data.tag.server.entity.TagScope;
-import com.echothree.model.data.workflow.server.entity.WorkflowEntityStatus;
 import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.BaseEntity;
@@ -86,6 +89,7 @@ public abstract class BaseIndexer<BE extends BaseEntity>
     protected Language language;
     protected EntityType entityType;
     protected IndexStatus indexStatus;
+    protected List<EntityAliasType> entityAliasTypes;
     protected List<EntityAttribute> entityAttributes;
     protected List<TagScope> tagScopes;
     
@@ -107,6 +111,7 @@ public abstract class BaseIndexer<BE extends BaseEntity>
             this.language = indexDetail.getLanguage();
             this.entityType = indexDetail.getIndexType().getLastDetail().getEntityType();
             this.indexStatus = indexControl.getIndexStatusForUpdate(index);
+            this.entityAliasTypes = coreControl.getEntityAliasTypesByEntityType(entityType);
             this.entityAttributes = coreControl.getEntityAttributesByEntityType(entityType);
             this.tagScopes = tagControl.getTagScopesByEntityType(entityType);
 
@@ -125,17 +130,14 @@ public abstract class BaseIndexer<BE extends BaseEntity>
         }
     }
     
-    protected void indexWorkflowEntityStatus(final Document document, final WorkflowEntityStatus workflowEntityStatus) {
-        document.add(new Field(workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflow().getLastDetail().getWorkflowName(),
-                workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName(), FieldTypes.NOT_STORED_NOT_TOKENIZED));
-    }
-
     /** Index an EntityInstance in all of its Workflows. */
-    protected void indexWorkflowEntityStatuses(final Document document, final EntityInstance entityInstance) {
+    private void indexWorkflowEntityStatuses(final Document document, final EntityInstance entityInstance) {
         workflowControl.getWorkflowsByEntityType(entityInstance.getEntityType()).stream().forEach((workflow) -> {
-            List<WorkflowEntityStatus> workflowEntityStatuses = workflowControl.getWorkflowEntityStatusesByEntityInstance(workflow, entityInstance);
+            var workflowEntityStatuses = workflowControl.getWorkflowEntityStatusesByEntityInstance(workflow, entityInstance);
+
             if (!workflowEntityStatuses.isEmpty()) {
-                StringBuilder workflowStepNamesBuilder = new StringBuilder();
+                var workflowStepNamesBuilder = new StringBuilder();
+
                 workflowEntityStatuses.forEach((workflowEntityStatus) -> {
                     if(workflowStepNamesBuilder.length() != 0) {
                         workflowStepNamesBuilder.append(' ');
@@ -143,12 +145,13 @@ public abstract class BaseIndexer<BE extends BaseEntity>
 
                     workflowStepNamesBuilder.append(workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName());
                 });
+
                 document.add(new Field(workflow.getLastDetail().getWorkflowName(), workflowStepNamesBuilder.toString(), FieldTypes.NOT_STORED_TOKENIZED));
             }
         });
     }
 
-    protected void indexEntityTimes(final Document document, final EntityInstance entityInstance) {
+    private void indexEntityTimes(final Document document, final EntityInstance entityInstance) {
         EntityTime entityTime = coreControl.getEntityTime(entityInstance);
 
         if(entityTime != null) {
@@ -157,27 +160,50 @@ public abstract class BaseIndexer<BE extends BaseEntity>
             Long deletedTime = entityTime.getDeletedTime();
 
             if(createdTime != null) {
-                document.add(new LongPoint(IndexConstants.IndexField_CreatedTime, createdTime));
+                document.add(new LongPoint(IndexFields.createdTime.name(), createdTime));
             }
 
             if(modifiedTime != null) {
-                document.add(new LongPoint(IndexConstants.IndexField_ModifiedTime, modifiedTime));
+                document.add(new LongPoint(IndexFields.modifiedTime.name(), modifiedTime));
             }
 
             if(deletedTime != null) {
-                document.add(new LongPoint(IndexConstants.IndexField_DeletedTime, deletedTime));
+                document.add(new LongPoint(IndexFields.deletedTime.name(), deletedTime));
             }
         }
     }
 
-    protected void indexEntityAttributes(final Document document, final EntityInstance entityInstance) {
+    private void indexEntityAliases(final Document document, final EntityInstance entityInstance) {
+        var entityAliases = coreControl.getEntityAliasesByEntityInstance(entityInstance);
+
+        for(var entityAlias : entityAliases) {
+            var fieldName = entityAlias.getEntityAliasType().getLastDetail().getEntityAliasTypeName();
+            var alias = entityAlias.getAlias();
+
+            document.add(new Field(fieldName, alias, FieldTypes.NOT_STORED_NOT_TOKENIZED));
+        }
+
+    }
+
+    private void indexEntityAttributes(final Document document, final EntityInstance entityInstance) {
         entityAttributes.forEach((entityAttribute) -> {
             EntityAttributeDetail entityAttributeDetail = entityAttribute.getLastDetail();
             String fieldName = entityAttributeDetail.getEntityAttributeName();
             String entityAttributeTypeName = entityAttributeDetail.getEntityAttributeType().getEntityAttributeTypeName();
-            if (entityAttributeTypeName.equals(EntityAttributeTypes.NAME.name())) {
+
+            if (entityAttributeTypeName.equals(EntityAttributeTypes.BOOLEAN.name())) {
+                var entityBooleanAttribute = coreControl.getEntityBooleanAttribute(entityAttribute, entityInstance);
+
+                if(entityBooleanAttribute != null) {
+                    var booleanAttribute = entityBooleanAttribute.getBooleanAttribute();
+                    if(IndexerDebugFlags.LogBaseIndexing) {
+                        log.info("--- fieldName =\"" + fieldName + ", \"booleanAttribute = \"" + booleanAttribute + "\"");
+                    }
+                    document.add(new Field(fieldName, booleanAttribute.toString(), FieldTypes.NOT_STORED_NOT_TOKENIZED));
+                }
+            } else if (entityAttributeTypeName.equals(EntityAttributeTypes.NAME.name())) {
                 EntityNameAttribute entityNameAttribute = coreControl.getEntityNameAttribute(entityAttribute, entityInstance);
-                
+
                 if(entityNameAttribute != null) {
                     String nameAttribute = entityNameAttribute.getNameAttribute();
                     if(IndexerDebugFlags.LogBaseIndexing) {
@@ -228,15 +254,15 @@ public abstract class BaseIndexer<BE extends BaseEntity>
                         log.info("--- fieldName = \"" + fieldName + ",\" latitude = \"" + latitude + ",\" longitude = \"" + longitude + ",\" elevation = \"" + elevation + ",\" altitude = \"" + altitude + "\"");
                     }
                     
-                    document.add(new IntPoint(fieldName + IndexConstants.IndexSubfieldSeparator + IndexConstants.IndexSubfieldLatitude, latitude));
-                    document.add(new IntPoint(fieldName + IndexConstants.IndexSubfieldSeparator + IndexConstants.IndexSubfieldLongitude, longitude));
+                    document.add(new IntPoint(fieldName + IndexConstants.INDEX_SUBFIELD_SEPARATOR + IndexSubfields.latitude.name(), latitude));
+                    document.add(new IntPoint(fieldName + IndexConstants.INDEX_SUBFIELD_SEPARATOR + IndexSubfields.longitude.name(), longitude));
                     
                     if(elevation != null) {
-                        document.add(new LongPoint(fieldName + IndexConstants.IndexSubfieldSeparator + IndexConstants.IndexSubfieldElevation, elevation));
+                        document.add(new LongPoint(fieldName + IndexConstants.INDEX_SUBFIELD_SEPARATOR + IndexSubfields.elevation.name(), elevation));
                     }
                     
                     if(altitude != null) {
-                        document.add(new LongPoint(fieldName + IndexConstants.IndexSubfieldSeparator + IndexConstants.IndexSubfieldAltitude, altitude));
+                        document.add(new LongPoint(fieldName + IndexConstants.INDEX_SUBFIELD_SEPARATOR + IndexSubfields.altitude.name(), altitude));
                     }
                 }
             } else if (language != null && entityAttributeTypeName.equals(EntityAttributeTypes.CLOB.name())) {
@@ -300,8 +326,8 @@ public abstract class BaseIndexer<BE extends BaseEntity>
             }
         });
     }
-    
-    public void indexEntityTags(final Document document, final EntityInstance entityInstance) {
+
+    private void indexEntityTags(final Document document, final EntityInstance entityInstance) {
         List<EntityTag> entityTags = tagControl.getEntityTagsByTaggedEntityInstance(entityInstance);
 
         entityTags.stream().map((entityTag) -> entityTag.getTag().getLastDetail()).forEach((tagDetail) -> {
@@ -310,6 +336,32 @@ public abstract class BaseIndexer<BE extends BaseEntity>
 
             document.add(new Field(tagScopeName, tagName, FieldTypes.NOT_STORED_TOKENIZED));
         });
+    }
+
+    private void indexEntityAppearance(final Document document, final EntityInstance entityInstance) {
+        var entityAppearance = coreControl.getEntityAppearance(entityInstance);
+
+        if(entityAppearance != null) {
+            var entityAppearanceName = entityAppearance.getAppearance().getLastDetail().getAppearanceName();
+
+            document.add(new Field(IndexFields.appearance.name(), entityAppearanceName, FieldTypes.NOT_STORED_TOKENIZED));
+        }
+    }
+
+    protected Document newDocumentWithEntityInstanceFields(final EntityInstance entityInstance, final BasePK basePK) {
+        var document = new Document();
+
+        document.add(new Field(IndexFields.entityRef.name(), basePK.getEntityRef(), FieldTypes.STORED_NOT_TOKENIZED));
+        document.add(new Field(IndexFields.entityInstanceId.name(), entityInstance.getPrimaryKey().getEntityId().toString(), FieldTypes.STORED_NOT_TOKENIZED));
+
+        indexWorkflowEntityStatuses(document, entityInstance);
+        indexEntityTimes(document, entityInstance);
+        indexEntityAliases(document, entityInstance);
+        indexEntityAttributes(document, entityInstance);
+        indexEntityTags(document, entityInstance);
+        indexEntityAppearance(document, entityInstance);
+
+        return document;
     }
 
     /**
@@ -451,7 +503,7 @@ public abstract class BaseIndexer<BE extends BaseEntity>
     }
     
     protected Analyzer getAnalyzer() {
-        return new BasicAnalyzer(eea, language, entityType, entityAttributes, tagScopes);
+        return new BasicAnalyzer(eea, language, entityType, entityAliasTypes, entityAttributes, tagScopes);
     }
 
     protected abstract BE getEntity(final EntityInstance entityInstance);
@@ -469,7 +521,7 @@ public abstract class BaseIndexer<BE extends BaseEntity>
     
     protected void removeEntityFromIndex(final BE baseEntity)
         throws IOException {
-        indexWriter.deleteDocuments(new Term(IndexConstants.IndexField_EntityRef, baseEntity.getPrimaryKey().getEntityRef()));
+        indexWriter.deleteDocuments(new Term(IndexFields.entityRef.name(), baseEntity.getPrimaryKey().getEntityRef()));
     }
 
     public void updateIndex(final EntityInstance entityInstance) {

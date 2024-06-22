@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,7 +22,6 @@ import com.echothree.model.control.search.common.exception.UnknownCachedExecuted
 import com.echothree.model.control.search.common.exception.UnknownDefaultSearchDefaultOperatorException;
 import com.echothree.model.control.search.common.exception.UnknownDefaultSearchSortDirectionException;
 import com.echothree.model.control.search.common.exception.UnknownDefaultSearchSortOrderException;
-import com.echothree.model.control.search.common.exception.UnknownSearchCheckSpellingActionTypeNameException;
 import com.echothree.model.control.search.common.exception.UnknownSearchDefaultOperatorNameException;
 import com.echothree.model.control.search.common.exception.UnknownSearchKindNameException;
 import com.echothree.model.control.search.common.exception.UnknownSearchResultActionTypeNameException;
@@ -32,16 +31,13 @@ import com.echothree.model.control.search.common.exception.UnknownSearchSortOrde
 import com.echothree.model.control.search.common.exception.UnknownSearchTypeNameException;
 import com.echothree.model.control.search.common.exception.UnknownSearchUseTypeNameException;
 import com.echothree.model.control.search.common.exception.UnknownUserVisitSearchException;
-import com.echothree.model.control.search.common.transfer.SearchCheckSpellingActionTypeTransfer;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.search.server.database.CachedSearchToInvalidateQuery;
 import com.echothree.model.control.search.server.database.CachedSearchToInvalidateResult;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.index.server.entity.Index;
 import com.echothree.model.data.search.server.entity.CachedExecutedSearch;
 import com.echothree.model.data.search.server.entity.CachedSearch;
 import com.echothree.model.data.search.server.entity.Search;
-import com.echothree.model.data.search.server.entity.SearchCheckSpellingActionType;
 import com.echothree.model.data.search.server.entity.SearchDefaultOperator;
 import com.echothree.model.data.search.server.entity.SearchKind;
 import com.echothree.model.data.search.server.entity.SearchResultAction;
@@ -234,10 +230,10 @@ public class SearchLogic
         }
     }
     
-    public Integer countSearchResults(final Search search) {
+    public Long countSearchResults(final Search search) {
         var searchControl = Session.getModelController(SearchControl.class);
         CachedSearch cachedSearch = search.getCachedSearch();
-        int count;
+        long count;
         
         if(cachedSearch == null) {
             count = searchControl.countSearchResults(search);
@@ -250,10 +246,10 @@ public class SearchLogic
         return count;
     }
     
-    public Integer countUserVisitSearchResults(final ExecutionErrorAccumulator eea, final UserVisit userVisit, final String searchKindName,
+    public Long countUserVisitSearchResults(final ExecutionErrorAccumulator eea, final UserVisit userVisit, final String searchKindName,
             final String searchTypeName) {
         UserVisitSearch userVisitSearch = getUserVisitSearchByName(eea, userVisit, searchKindName, searchTypeName);
-        Integer count = hasExecutionErrors(eea) ? null : countSearchResults(userVisitSearch.getSearch());
+        Long count = hasExecutionErrors(eea) ? null : countSearchResults(userVisitSearch.getSearch());
 
         return count;
     }
@@ -261,30 +257,30 @@ public class SearchLogic
     public SearchResultAction createSearchResultAction(final ExecutionErrorAccumulator eea, final UserVisit userVisit, final String searchKindName,
             final String searchTypeName, final String searchResultActionTypeName, final BaseEntity baseEntity, final BasePK createdBy) {
         SearchResultAction itemSearchResultAction = null;
-        UserVisitSearch userVisitSearch = getUserVisitSearchByName(eea, userVisit, searchKindName, searchTypeName);
+        var userVisitSearch = getUserVisitSearchByName(eea, userVisit, searchKindName, searchTypeName);
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            SearchResultActionType searchResultActionType = getSearchResultActionTypeByName(eea, searchResultActionTypeName);
+            var searchResultActionType = getSearchResultActionTypeByName(eea, searchResultActionTypeName);
             
             if(eea == null || !eea.hasExecutionErrors()) {
                 var coreControl = Session.getModelController(CoreControl.class);
                 var searchControl = Session.getModelController(SearchControl.class);
-                Search search = userVisitSearch.getSearch();
-                CachedSearch cachedSearch = search.getCachedSearch();
-                BasePK basePK = baseEntity.getPrimaryKey();
-                EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(basePK);
+                var search = userVisitSearch.getSearch();
+                var cachedSearch = search.getCachedSearch();
+                var basePK = baseEntity.getPrimaryKey();
+                var entityInstance = coreControl.getEntityInstanceByBasePK(basePK);
 
                 if(cachedSearch == null) {
                     if(!searchControl.searchResultExists(search, entityInstance)) {
-                        handleExecutionError(UnknownSearchResultException.class, eea,
-                                ExecutionErrors.UnknownSearchResult.name(), searchKindName, searchTypeName, basePK.getEntityRef());
+                        handleExecutionError(UnknownSearchResultException.class, eea, ExecutionErrors.UnknownSearchResult.name(),
+                                searchKindName, searchTypeName, basePK.getEntityRef());
                     }
                 } else {
-                    CachedExecutedSearch cachedExecutedSearch = searchControl.getCachedExecutedSearch(cachedSearch);
+                    var cachedExecutedSearch = searchControl.getCachedExecutedSearch(cachedSearch);
 
                     if(!searchControl.cachedExecutedSearchResultExists(cachedExecutedSearch, entityInstance)) {
-                        handleExecutionError(UnknownCachedExecutedSearchResultException.class, eea,
-                                ExecutionErrors.UnknownCachedExecutedSearchResult.name(), searchKindName, searchTypeName, basePK.getEntityRef());
+                        handleExecutionError(UnknownCachedExecutedSearchResultException.class, eea, ExecutionErrors.UnknownCachedExecutedSearchResult.name(),
+                                searchKindName, searchTypeName, basePK.getEntityRef());
                     }
                 }
 

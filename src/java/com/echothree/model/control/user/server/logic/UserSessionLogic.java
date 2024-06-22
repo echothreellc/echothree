@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -47,7 +47,7 @@ public class UserSessionLogic {
      * @return An invalid UserSession (may be the same as the userSession parameter).
      */
     public UserSession invalidateUserSession(UserSession userSession) {
-        if(userSession.getPasswordVerifiedTime() != null) {
+        if(userSession.getIdentityVerifiedTime() != null) {
             var userControl = Session.getModelController(UserControl.class);
 
             if(!userSession.getEntityPermission().equals(EntityPermission.READ_WRITE)) {

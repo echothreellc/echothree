@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package com.echothree.model.control.content.server.transfer;
 
 import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
+import com.echothree.model.control.content.common.ContentOptions;
 import com.echothree.model.control.content.common.ContentProperties;
 import com.echothree.model.control.content.common.transfer.ContentCatalogItemTransfer;
 import com.echothree.model.control.content.common.transfer.ContentCatalogTransfer;
@@ -29,6 +30,7 @@ import com.echothree.model.control.item.common.transfer.ItemTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.uom.common.transfer.UnitOfMeasureTypeTransfer;
 import com.echothree.model.control.uom.server.control.UomControl;
+import com.echothree.model.control.vendor.common.VendorOptions;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.content.server.entity.ContentCatalogItem;
 import com.echothree.model.data.content.server.entity.ContentCatalogItemFixedPrice;
@@ -68,10 +70,16 @@ public class ContentCatalogItemTransferCache
     /** Creates a new instance of ContentCatalogItemTransferCache */
     public ContentCatalogItemTransferCache(UserVisit userVisit, ContentControl contentControl) {
         super(userVisit, contentControl);
-        
+
+        var options = session.getOptions();
+        if(options != null) {
+            setIncludeEntityAttributeGroups(options.contains(ContentOptions.ContentCatalogItemIncludeEntityAttributeGroups));
+            setIncludeTagScopes(options.contains(ContentOptions.ContentCatalogItemIncludeTagScopes));
+        }
+
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
-            Set<String> properties = transferProperties.getProperties(ContentCatalogItemTransfer.class);
+            var properties = transferProperties.getProperties(ContentCatalogItemTransfer.class);
             
             if(properties != null) {
                 filterContentCatalog = !properties.contains(ContentProperties.CONTENT_CATALOG);

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -51,7 +51,7 @@ public class VendorEditAction
     @Override
     protected VendorSpec getSpec(HttpServletRequest request, VendorEditActionForm actionForm)
             throws NamingException {
-        var spec = VendorUtil.getHome().getVendorSpec();
+        var spec = VendorUtil.getHome().getVendorUniversalSpec();
 
         spec.setVendorName(findParameter(request, ParameterConstants.ORIGINAL_VENDOR_NAME, actionForm.getOriginalVendorName()));
 

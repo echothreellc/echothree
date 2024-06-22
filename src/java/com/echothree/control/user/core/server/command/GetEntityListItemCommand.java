@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -44,18 +44,11 @@ import java.util.List;
 
 public class GetEntityListItemCommand
         extends BaseSingleEntityCommand<EntityListItem, GetEntityListItemForm> {
-    
-    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
+
+    // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
-                        new SecurityRoleDefinition(SecurityRoleGroups.EntityListItem.name(), SecurityRoles.Review.name())
-                        )))
-                )));
-        
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
@@ -66,7 +59,7 @@ public class GetEntityListItemCommand
     
     /** Creates a new instance of GetEntityListItemCommand */
     public GetEntityListItemCommand(UserVisitPK userVisitPK, GetEntityListItemForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
@@ -109,7 +102,7 @@ public class GetEntityListItemCommand
     }
     
     @Override
-    protected BaseResult getTransfer(EntityListItem entityListItem) {
+    protected BaseResult getResult(EntityListItem entityListItem) {
         GetEntityListItemResult result = CoreResultFactory.getGetEntityListItemResult();
 
         if(entityListItem != null) {

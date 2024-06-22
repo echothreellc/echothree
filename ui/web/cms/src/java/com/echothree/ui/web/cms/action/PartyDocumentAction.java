@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -39,6 +39,7 @@ import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
 import com.google.common.base.Charsets;
 import java.io.ByteArrayInputStream;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 import javax.enterprise.inject.spi.Unmanaged;
 import javax.naming.NamingException;
@@ -109,7 +110,7 @@ public class PartyDocumentAction
         // it will prune the last component's contents, and that portion of the fqn off the tree. The first two components will
         // continue to exist.
         return new StringBuilder(fqnCms).append('/')
-                .append(partyDocumentNames.documentName.toLowerCase()).toString();
+                .append(partyDocumentNames.documentName.toLowerCase(Locale.getDefault())).toString();
     }
 
     private PartyDocumentTransfer getCachedPartyDocument(Cache<String, Object> cache, String fqn) {

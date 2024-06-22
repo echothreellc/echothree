@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package com.echothree.ui.cli.database.util;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Splitter;
+import java.util.Locale;
 
 public class Column {
     
@@ -154,9 +155,9 @@ public class Column {
     public String getEntityVariableName() {
         if(entityVariableName == null) {
             if(type == ColumnType.columnForeignKey || type == ColumnType.columnEID)
-                entityVariableName = name.substring(0, 1).toLowerCase() + name.substring(1, name.length() - 2);
+                entityVariableName = name.substring(0, 1).toLowerCase(Locale.getDefault()) + name.substring(1, name.length() - 2);
             else
-                entityVariableName = name.substring(0, 1).toLowerCase() + name.substring(1, name.length());
+                entityVariableName = name.substring(0, 1).toLowerCase(Locale.getDefault()) + name.substring(1, name.length());
         }
         return entityVariableName;
     }
@@ -166,9 +167,9 @@ public class Column {
     public String getVariableName() {
         if(variableName == null) {
             if(type == ColumnType.columnForeignKey || type == ColumnType.columnEID)
-                variableName = name.substring(0, 1).toLowerCase() + name.substring(1, name.length() - 2) + "PK";
+                variableName = name.substring(0, 1).toLowerCase(Locale.getDefault()) + name.substring(1, name.length() - 2) + "PK";
             else
-                variableName = name.substring(0, 1).toLowerCase() + name.substring(1, name.length());
+                variableName = name.substring(0, 1).toLowerCase(Locale.getDefault()) + name.substring(1, name.length());
         }
         return variableName;
     }
@@ -228,7 +229,7 @@ public class Column {
     }
     
     public String getNameLowerCase() {
-        return getName().toLowerCase();
+        return getName().toLowerCase(Locale.getDefault());
     }
     
     public int getType() {
@@ -295,7 +296,7 @@ public class Column {
                     javaSqlType = "VARCHAR";
                     break;
                 case ColumnType.columnBoolean:
-                    javaSqlType = "INTEGER";
+                    javaSqlType = "BIT";
                     break;
                 case ColumnType.columnDate:
                     javaSqlType = "INTEGER";
@@ -378,9 +379,9 @@ public class Column {
             boolean referencesSelf = fkTable.getNamePlural().equals(table.getNamePlural());
             boolean columnNameNotPk = !fkTable.getEID().getName().equals(name);
 
-            result = columnPrefixLowerCase + "_" + (referencesSelf || columnNameNotPk? "": fkTable.getColumnPrefixLowerCase() + "_") + name.toLowerCase();
+            result = columnPrefixLowerCase + "_" + (referencesSelf || columnNameNotPk? "": fkTable.getColumnPrefixLowerCase() + "_") + name.toLowerCase(Locale.getDefault());
         } else {
-            result = columnPrefixLowerCase + "_" + name.toLowerCase();
+            result = columnPrefixLowerCase + "_" + name.toLowerCase(Locale.getDefault());
         }
         
         return result;

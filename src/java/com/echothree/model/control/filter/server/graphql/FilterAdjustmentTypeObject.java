@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("filter adjustment type object")
 @GraphQLName("FilterAdjustmentType")
 public class FilterAdjustmentTypeObject
-        extends BaseGraphQl {
+        implements BaseGraphQl {
 
     private final FilterAdjustmentType filterAdjustmentType; // Always Present
 
@@ -66,7 +66,7 @@ public class FilterAdjustmentTypeObject
         var filterControl = Session.getModelController(FilterControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return filterControl.getBestFilterAdjustmentTypeDescription(filterAdjustmentType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return filterControl.getBestFilterAdjustmentTypeDescription(filterAdjustmentType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
     
 }

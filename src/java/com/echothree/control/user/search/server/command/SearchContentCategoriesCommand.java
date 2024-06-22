@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import com.echothree.control.user.search.common.form.SearchContentCategoriesForm
 import com.echothree.control.user.search.common.result.SearchContentCategoriesResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.party.server.logic.LanguageLogic;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.content.server.search.ContentCategorySearchEvaluator;
 import com.echothree.model.control.search.server.logic.SearchLogic;
@@ -75,7 +75,7 @@ public class SearchContentCategoriesCommand
     protected BaseResult execute() {
         SearchContentCategoriesResult result = SearchResultFactory.getSearchContentCategoriesResult();
         SearchLogic searchLogic = SearchLogic.getInstance();
-        SearchKind searchKind = searchLogic.getSearchKindByName(null, SearchConstants.SearchKind_CONTENT_CATEGORY);
+        SearchKind searchKind = searchLogic.getSearchKindByName(null, SearchKinds.CONTENT_CATEGORY.name());
 
         if(!hasExecutionErrors()) {
             String searchTypeName = form.getSearchTypeName();

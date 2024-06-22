@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -42,12 +42,12 @@ public class CreateEntityListItemAttributeCommand
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), null)
-                )));
-        
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        ));
+
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Key", FieldType.KEY, false, null, null),
                 new FieldDefinition("Guid", FieldType.GUID, false, null, null),
@@ -56,7 +56,7 @@ public class CreateEntityListItemAttributeCommand
                 new FieldDefinition("EntityAttributeUlid", FieldType.ULID, false, null, null),
                 new FieldDefinition("EntityListItemName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityListItemUlid", FieldType.ULID, false, null, null)
-                ));
+        );
     }
     
     /** Creates a new instance of CreateEntityListItemAttributeCommand */
@@ -69,11 +69,11 @@ public class CreateEntityListItemAttributeCommand
         var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
 
         if(!hasExecutionErrors()) {
-            EntityAttribute entityAttribute = EntityAttributeLogic.getInstance().getEntityAttribute(this, entityInstance, form, form,
+            var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttribute(this, entityInstance, form, form,
                     EntityAttributeTypes.LISTITEM);
 
             if(!hasExecutionErrors()) {
-                EntityListItem entityListItem = EntityAttributeLogic.getInstance().getEntityListItem(this, entityAttribute, form, form);
+                var entityListItem = EntityAttributeLogic.getInstance().getEntityListItem(this, entityAttribute, form);
                 
                 if(!hasExecutionErrors()) {
                     EntityAttributeLogic.getInstance().createEntityListItemAttribute(this, entityAttribute, entityInstance,

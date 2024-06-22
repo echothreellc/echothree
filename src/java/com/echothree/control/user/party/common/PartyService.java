@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -304,9 +304,11 @@ public interface PartyService
     // --------------------------------------------------------------------------------
     //   Party Relationships
     // --------------------------------------------------------------------------------
-    
+
     CommandResult getPartyRelationships(UserVisitPK userVisitPK, GetPartyRelationshipsForm form);
-    
+
+    CommandResult getPartyRelationship(UserVisitPK userVisitPK, GetPartyRelationshipForm form);
+
     // --------------------------------------------------------------------------------
     //   Role Types
     // --------------------------------------------------------------------------------
@@ -480,5 +482,7 @@ public interface PartyService
     // -------------------------------------------------------------------------
 
     CommandResult getParty(UserVisitPK userVisitPK, GetPartyForm form);
+
+    CommandResult getParties(UserVisitPK userVisitPK, GetPartiesForm form);
 
 }

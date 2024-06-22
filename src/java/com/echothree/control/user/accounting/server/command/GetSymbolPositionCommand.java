@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -73,7 +73,7 @@ public class GetSymbolPositionCommand
             case 1:
                 if(symbolPositionName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.SymbolPosition.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.SymbolPosition.name());
                     
                     if(!hasExecutionErrors()) {
                         symbolPosition = accountingControl.getSymbolPositionByEntityInstance(entityInstance);
@@ -88,14 +88,14 @@ public class GetSymbolPositionCommand
         }
         
         if(symbolPosition != null) {
-            sendEventUsingNames(symbolPosition.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(symbolPosition.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return symbolPosition;
     }
     
     @Override
-    protected BaseResult getTransfer(SymbolPosition symbolPosition) {
+    protected BaseResult getResult(SymbolPosition symbolPosition) {
         var accountingControl = Session.getModelController(AccountingControl.class);
         GetSymbolPositionResult result = AccountingResultFactory.getGetSymbolPositionResult();
 

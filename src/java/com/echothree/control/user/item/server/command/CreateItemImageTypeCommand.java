@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,22 +17,21 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.CreateItemImageTypeForm;
-import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.control.user.item.common.result.ItemResultFactory;
+import com.echothree.model.control.item.server.logic.ItemImageTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.item.server.entity.ItemImageType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -51,14 +50,14 @@ public class CreateItemImageTypeCommand
                         )))
                 )));
         
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ItemImageTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("PreferredMimeTypeName", FieldType.MIME_TYPE, false, null, null),
                 new FieldDefinition("Quality", FieldType.UNSIGNED_INTEGER, false, null, 100L),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
-                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
-                ));
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
+        );
     }
     
     /** Creates a new instance of CreateItemImageTypeCommand */
@@ -68,36 +67,32 @@ public class CreateItemImageTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = Session.getModelController(ItemControl.class);
-        String itemImageTypeName = form.getItemImageTypeName();
-        ItemImageType itemImageType = itemControl.getItemImageTypeByName(itemImageTypeName);
+        var result = ItemResultFactory.getCreateItemImageTypeResult();
+        var coreControl = getCoreControl();
+        var preferredMimeTypeName = form.getPreferredMimeTypeName();
+        var preferredMimeType = preferredMimeTypeName == null ? null : coreControl.getMimeTypeByName(preferredMimeTypeName);
+        ItemImageType itemImageType = null;
 
-        if(itemImageType == null) {
-            var coreControl = getCoreControl();
-            String preferredMimeTypeName = form.getPreferredMimeTypeName();
-            MimeType preferredMimeType = preferredMimeTypeName == null ? null : coreControl.getMimeTypeByName(preferredMimeTypeName);
+        if(preferredMimeTypeName == null || preferredMimeType != null) {
+            var itemImageTypeName = form.getItemImageTypeName();
+            var strQuality = form.getQuality();
+            var quality = strQuality == null ? null : Integer.valueOf(strQuality);
+            var isDefault = Boolean.valueOf(form.getIsDefault());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
+            var description = form.getDescription();
 
-            if(preferredMimeTypeName == null || preferredMimeType != null) {
-                var partyPK = getPartyPK();
-                String strQuality = form.getQuality();
-                Integer quality = strQuality == null ? null : Integer.valueOf(strQuality);
-                var isDefault = Boolean.valueOf(form.getIsDefault());
-                var sortOrder = Integer.valueOf(form.getSortOrder());
-                var description = form.getDescription();
-
-                itemImageType = itemControl.createItemImageType(itemImageTypeName, preferredMimeType, quality, isDefault, sortOrder, getPartyPK());
-
-                if(description != null) {
-                    itemControl.createItemImageTypeDescription(itemImageType, getPreferredLanguage(), description, partyPK);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownPreferredMimeTypeName.name(), preferredMimeTypeName);
-            }
+            itemImageType = ItemImageTypeLogic.getInstance().createItemImageType(this, itemImageTypeName, preferredMimeType,
+                    quality, isDefault, sortOrder, getPreferredLanguage(), description, getPartyPK());
         } else {
-            addExecutionError(ExecutionErrors.DuplicateItemImageTypeName.name(), itemImageTypeName);
+            addExecutionError(ExecutionErrors.UnknownPreferredMimeTypeName.name(), preferredMimeTypeName);
         }
-        
-        return null;
+
+        if(itemImageType != null) {
+            result.setItemImageTypeName(itemImageType.getLastDetail().getItemImageTypeName());
+            result.setEntityRef(itemImageType.getPrimaryKey().getEntityRef());
+        }
+
+        return result;
     }
     
 }

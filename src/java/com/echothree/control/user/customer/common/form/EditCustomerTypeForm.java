@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,11 +17,11 @@
 package com.echothree.control.user.customer.common.form;
 
 import com.echothree.control.user.customer.common.edit.CustomerTypeEdit;
-import com.echothree.control.user.customer.common.spec.CustomerTypeSpec;
+import com.echothree.control.user.customer.common.spec.CustomerTypeUniversalSpec;
 import com.echothree.util.common.form.BaseEditForm;
 
 public interface EditCustomerTypeForm
-        extends BaseEditForm<CustomerTypeSpec, CustomerTypeEdit> {
+        extends BaseEditForm<CustomerTypeUniversalSpec, CustomerTypeEdit> {
     
     // Nothing additional beyond BaseEditForm
     

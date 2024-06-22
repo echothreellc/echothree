@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -129,7 +129,7 @@ public interface IndexService
     //   Utilities
     // -------------------------------------------------------------------------
     
-    CommandResult updateIndexes(UserVisitPK userVisitPK);
+    CommandResult updateIndexes(UserVisitPK userVisitPK, UpdateIndexesForm form);
     
     CommandResult forceReindex(UserVisitPK userVisitPK, ForceReindexForm form);
     

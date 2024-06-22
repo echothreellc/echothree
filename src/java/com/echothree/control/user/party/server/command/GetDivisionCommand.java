@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -74,14 +74,14 @@ public class GetDivisionCommand
         var partyDivision = DivisionLogic.getInstance().getPartyDivisionByName(this, companyName, divisionName, partyName, form, true);
 
         if(partyDivision != null) {
-            sendEventUsingNames(partyDivision.getPartyPK(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(partyDivision.getPartyPK(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return partyDivision;
     }
 
     @Override
-    protected BaseResult getTransfer(PartyDivision partyDivision) {
+    protected BaseResult getResult(PartyDivision partyDivision) {
         var result = PartyResultFactory.getGetDivisionResult();
 
         if(partyDivision != null) {

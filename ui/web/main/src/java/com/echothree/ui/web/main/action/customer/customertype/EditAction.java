@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@ import com.echothree.control.user.customer.common.CustomerUtil;
 import com.echothree.control.user.customer.common.edit.CustomerTypeEdit;
 import com.echothree.control.user.customer.common.form.EditCustomerTypeForm;
 import com.echothree.control.user.customer.common.result.EditCustomerTypeResult;
-import com.echothree.control.user.customer.common.spec.CustomerTypeSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -64,7 +63,7 @@ public class EditAction
             if(forwardKey == null) {
                 EditActionForm actionForm = (EditActionForm)form;
                 EditCustomerTypeForm commandForm = CustomerUtil.getHome().getEditCustomerTypeForm();
-                CustomerTypeSpec spec = CustomerUtil.getHome().getCustomerTypeSpec();
+                var spec = CustomerUtil.getHome().getCustomerTypeUniversalSpec();
                 
                 if(originalTypeCustomerName == null)
                     originalTypeCustomerName = actionForm.getOriginalCustomerTypeName();

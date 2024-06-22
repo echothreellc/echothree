@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,12 +17,13 @@
 package com.echothree.model.control.queue.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.graphql.server.graphql.TimeObject;
 import com.echothree.model.control.queue.server.control.QueueControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.queue.server.entity.QueueType;
 import com.echothree.model.data.queue.server.entity.QueueTypeDetail;
 import com.echothree.util.server.persistence.Session;
-import com.echothree.util.server.string.DateUtils;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
@@ -80,7 +81,7 @@ public class QueueTypeObject
         var queueControl = Session.getModelController(QueueControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return queueControl.getBestQueueTypeDescription(queueType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return queueControl.getBestQueueTypeDescription(queueType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
     @GraphQLField
@@ -93,37 +94,21 @@ public class QueueTypeObject
     }
 
     @GraphQLField
-    @GraphQLDescription("unformatted oldest queued entity")
-    public Long getUnformattedOldestQueuedEntityTime() {
+    @GraphQLDescription("oldest queued entity time")
+    public TimeObject getOldestQueuedEntityTime(final DataFetchingEnvironment env) {
         var queueControl = Session.getModelController(QueueControl.class);
+        var oldestQueuedEntityTime = queueControl.oldestQueuedEntityTimeByQueueType(queueType);
 
-        return queueControl.oldestQueuedEntityTimeByQueueType(queueType);
+        return oldestQueuedEntityTime == null ? null : new TimeObject(oldestQueuedEntityTime);
     }
 
     @GraphQLField
-    @GraphQLDescription("oldest queued entity")
-    public String getOldestQueuedEntityTime(final DataFetchingEnvironment env) {
+    @GraphQLDescription("latest queued entity time")
+    public TimeObject getLatestQueuedEntityTime(final DataFetchingEnvironment env) {
         var queueControl = Session.getModelController(QueueControl.class);
-        Long oldestQueuedEntityTime = queueControl.oldestQueuedEntityTimeByQueueType(queueType);
+        var latestQueuedEntityTime = queueControl.latestQueuedEntityTimeByQueueType(queueType);
 
-        return oldestQueuedEntityTime == null ? null : DateUtils.getInstance().formatTypicalDateTime(getUserVisit(env), oldestQueuedEntityTime);
-    }
-
-    @GraphQLField
-    @GraphQLDescription("unformatted latest queued entity")
-    public Long getUnformattedLatestQueuedEntityTime() {
-        var queueControl = Session.getModelController(QueueControl.class);
-
-        return queueControl.latestQueuedEntityTimeByQueueType(queueType);
-    }
-
-    @GraphQLField
-    @GraphQLDescription("latest queued entity")
-    public String getLatestQueuedEntityTime(final DataFetchingEnvironment env) {
-        var queueControl = Session.getModelController(QueueControl.class);
-        Long latestQueuedEntityTime = queueControl.latestQueuedEntityTimeByQueueType(queueType);
-
-        return latestQueuedEntityTime == null ? null : DateUtils.getInstance().formatTypicalDateTime(getUserVisit(env), latestQueuedEntityTime);
+        return latestQueuedEntityTime == null ? null : new TimeObject(latestQueuedEntityTime);
     }
 
 }

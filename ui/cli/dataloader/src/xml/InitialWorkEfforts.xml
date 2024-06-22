@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <initialData>
     <workEffortTypes>
-        <workEffortType workEffortTypeName="RECEIVE_CUSTOMER_EMAIL" componentVendorName="EchoThree" entityTypeName="CommunicationEvent"
+        <workEffortType workEffortTypeName="RECEIVE_CUSTOMER_EMAIL" componentVendorName="ECHO_THREE" entityTypeName="CommunicationEvent"
             scheduledTimeUnitOfMeasureTypeName="DAY" scheduledTime="2" estimatedTimeAllowedUnitOfMeasureTypeName="MINUTE" estimatedTimeAllowed="5"
             maximumTimeAllowedUnitOfMeasureTypeName="MINUTE" maximumTimeAllowed="20" sortOrder="1">
             <workEffortTypeDescription languageIsoName="en" description="Receive Customer Email" />
@@ -30,7 +30,7 @@
                 <workEffortScopeDescription languageIsoName="en" description="Support Email" />
             </workEffortScope>
         </workEffortType>
-        <workEffortType workEffortTypeName="SEND_CUSTOMER_EMAIL" componentVendorName="EchoThree" entityTypeName="CommunicationEvent"
+        <workEffortType workEffortTypeName="SEND_CUSTOMER_EMAIL" componentVendorName="ECHO_THREE" entityTypeName="CommunicationEvent"
             scheduledTimeUnitOfMeasureTypeName="DAY" scheduledTime="2" estimatedTimeAllowedUnitOfMeasureTypeName="MINUTE" estimatedTimeAllowed="5"
             maximumTimeAllowedUnitOfMeasureTypeName="MINUTE" maximumTimeAllowed="5" sortOrder="1">
             <workEffortTypeDescription languageIsoName="en" description="Send Customer Email" />

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -115,6 +115,7 @@ import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -318,7 +319,7 @@ public class FinancialControl
         financialAccountType.setLastDetail(financialAccountTypeDetail);
         financialAccountType.store();
         
-        sendEventUsingNames(financialAccountType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(financialAccountType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return financialAccountType;
     }
@@ -578,7 +579,7 @@ public class FinancialControl
             financialAccountType.setActiveDetail(financialAccountTypeDetail);
             financialAccountType.setLastDetail(financialAccountTypeDetail);
             
-            sendEventUsingNames(financialAccountTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(financialAccountTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -618,7 +619,7 @@ public class FinancialControl
             }
         }
 
-        sendEventUsingNames(financialAccountType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(financialAccountType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteFinancialAccountType(FinancialAccountType financialAccountType, BasePK deletedBy) {
@@ -645,7 +646,7 @@ public class FinancialControl
         FinancialAccountTypeDescription financialAccountTypeDescription = FinancialAccountTypeDescriptionFactory.getInstance().create(financialAccountType, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(financialAccountType.getPrimaryKey(), EventTypes.MODIFY.name(), financialAccountTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(financialAccountType.getPrimaryKey(), EventTypes.MODIFY, financialAccountTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return financialAccountTypeDescription;
     }
@@ -767,14 +768,14 @@ public class FinancialControl
             financialAccountTypeDescription = FinancialAccountTypeDescriptionFactory.getInstance().create(financialAccountType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(financialAccountType.getPrimaryKey(), EventTypes.MODIFY.name(), financialAccountTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(financialAccountType.getPrimaryKey(), EventTypes.MODIFY, financialAccountTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteFinancialAccountTypeDescription(FinancialAccountTypeDescription financialAccountTypeDescription, BasePK deletedBy) {
         financialAccountTypeDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(financialAccountTypeDescription.getFinancialAccountTypePK(), EventTypes.MODIFY.name(), financialAccountTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(financialAccountTypeDescription.getFinancialAccountTypePK(), EventTypes.MODIFY, financialAccountTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -817,7 +818,7 @@ public class FinancialControl
         financialAccountTransactionType.setLastDetail(financialAccountTransactionTypeDetail);
         financialAccountTransactionType.store();
         
-        sendEventUsingNames(financialAccountTransactionType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(financialAccountTransactionType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return financialAccountTransactionType;
     }
@@ -1088,7 +1089,7 @@ public class FinancialControl
             financialAccountTransactionType.setActiveDetail(financialAccountTransactionTypeDetail);
             financialAccountTransactionType.setLastDetail(financialAccountTransactionTypeDetail);
             
-            sendEventUsingNames(financialAccountTransactionTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(financialAccountTransactionTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -1129,7 +1130,7 @@ public class FinancialControl
             }
         }
 
-        sendEventUsingNames(financialAccountTransactionType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(financialAccountTransactionType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteFinancialAccountTransactionType(FinancialAccountTransactionType financialAccountTransactionType, BasePK deletedBy) {
@@ -1157,7 +1158,7 @@ public class FinancialControl
         FinancialAccountTransactionTypeDescription financialAccountTransactionTypeDescription = FinancialAccountTransactionTypeDescriptionFactory.getInstance().create(session,
                 financialAccountTransactionType, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(financialAccountTransactionType.getPrimaryKey(), EventTypes.MODIFY.name(), financialAccountTransactionTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(financialAccountTransactionType.getPrimaryKey(), EventTypes.MODIFY, financialAccountTransactionTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return financialAccountTransactionTypeDescription;
     }
@@ -1287,14 +1288,14 @@ public class FinancialControl
             financialAccountTransactionTypeDescription = FinancialAccountTransactionTypeDescriptionFactory.getInstance().create(session,
                     financialAccountTransactionType, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(financialAccountTransactionType.getPrimaryKey(), EventTypes.MODIFY.name(), financialAccountTransactionTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(financialAccountTransactionType.getPrimaryKey(), EventTypes.MODIFY, financialAccountTransactionTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteFinancialAccountTransactionTypeDescription(FinancialAccountTransactionTypeDescription financialAccountTransactionTypeDescription, BasePK deletedBy) {
         financialAccountTransactionTypeDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(financialAccountTransactionTypeDescription.getFinancialAccountTransactionTypePK(), EventTypes.MODIFY.name(), financialAccountTransactionTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(financialAccountTransactionTypeDescription.getFinancialAccountTransactionTypePK(), EventTypes.MODIFY, financialAccountTransactionTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteFinancialAccountTransactionTypeDescriptionsByFinancialAccountTransactionType(FinancialAccountTransactionType financialAccountTransactionType, BasePK deletedBy) {
@@ -1334,7 +1335,7 @@ public class FinancialControl
         financialAccountAliasType.setLastDetail(financialAccountAliasTypeDetail);
         financialAccountAliasType.store();
         
-        sendEventUsingNames(financialAccountAliasType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(financialAccountAliasType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return financialAccountAliasType;
     }
@@ -1538,7 +1539,7 @@ public class FinancialControl
             financialAccountAliasType.setActiveDetail(financialAccountAliasTypeDetail);
             financialAccountAliasType.setLastDetail(financialAccountAliasTypeDetail);
             
-            sendEventUsingNames(financialAccountAliasTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(financialAccountAliasTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -1573,7 +1574,7 @@ public class FinancialControl
             }
         }
         
-        sendEventUsingNames(financialAccountAliasType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(financialAccountAliasType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteFinancialAccountAliasTypes(List<FinancialAccountAliasType> financialAccountAliasTypes, BasePK deletedBy) {
@@ -1595,7 +1596,7 @@ public class FinancialControl
         FinancialAccountAliasTypeDescription financialAccountAliasTypeDescription = FinancialAccountAliasTypeDescriptionFactory.getInstance().create(session,
                 financialAccountAliasType, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(financialAccountAliasType.getPrimaryKey(), EventTypes.MODIFY.name(), financialAccountAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(financialAccountAliasType.getPrimaryKey(), EventTypes.MODIFY, financialAccountAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return financialAccountAliasTypeDescription;
     }
@@ -1724,14 +1725,14 @@ public class FinancialControl
             financialAccountAliasTypeDescription = FinancialAccountAliasTypeDescriptionFactory.getInstance().create(financialAccountAliasType,
                     language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(financialAccountAliasType.getPrimaryKey(), EventTypes.MODIFY.name(), financialAccountAliasTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(financialAccountAliasType.getPrimaryKey(), EventTypes.MODIFY, financialAccountAliasTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteFinancialAccountAliasTypeDescription(FinancialAccountAliasTypeDescription financialAccountAliasTypeDescription, BasePK deletedBy) {
         financialAccountAliasTypeDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(financialAccountAliasTypeDescription.getFinancialAccountAliasTypePK(), EventTypes.MODIFY.name(), financialAccountAliasTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(financialAccountAliasTypeDescription.getFinancialAccountAliasTypePK(), EventTypes.MODIFY, financialAccountAliasTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -1759,7 +1760,7 @@ public class FinancialControl
         FinancialAccountRole financialAccountRole = FinancialAccountRoleFactory.getInstance().create(financialAccount, party, financialAccountRoleType,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(financialAccount.getPrimaryKey(), EventTypes.MODIFY.name(), financialAccountRole.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(financialAccount.getPrimaryKey(), EventTypes.MODIFY, financialAccountRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return financialAccountRole;
     }
@@ -1843,7 +1844,7 @@ public class FinancialControl
         return getFinancialAccountRolesByFinancialAccount(financialAccount, EntityPermission.READ_WRITE);
     }
     
-    public List<FinancialAccountRoleTransfer> getFinancialAccountRoleTransfers(UserVisit userVisit, List<FinancialAccountRole> financialAccountRoles) {
+    public List<FinancialAccountRoleTransfer> getFinancialAccountRoleTransfers(UserVisit userVisit, Collection<FinancialAccountRole> financialAccountRoles) {
         List<FinancialAccountRoleTransfer> financialAccountRoleTransfers = new ArrayList<>(financialAccountRoles.size());
         FinancialAccountRoleTransferCache financialAccountRoleTransferCache = getFinancialTransferCaches(userVisit).getFinancialAccountRoleTransferCache();
         
@@ -1873,14 +1874,14 @@ public class FinancialControl
             financialAccountRole = FinancialAccountRoleFactory.getInstance().create(financialAccountPK, partyPK, financialAccountRoleTypePK,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(financialAccountPK, EventTypes.MODIFY.name(), financialAccountRole.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(financialAccountPK, EventTypes.MODIFY, financialAccountRole.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteFinancialAccountRole(FinancialAccountRole financialAccountRole, BasePK deletedBy) {
         financialAccountRole.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(financialAccountRole.getFinancialAccountPK(), EventTypes.MODIFY.name(), financialAccountRole.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(financialAccountRole.getFinancialAccountPK(), EventTypes.MODIFY, financialAccountRole.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteFinancialAccountRolesByFinancialAccount(FinancialAccount financialAccount, BasePK deletedBy) {
@@ -1905,7 +1906,7 @@ public class FinancialControl
         financialAccount.setLastDetail(financialAccountDetail);
         financialAccount.store();
         
-        sendEventUsingNames(financialAccount.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(financialAccount.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         createFinancialAccountStatus(financialAccount);
         
@@ -2057,7 +2058,7 @@ public class FinancialControl
             financialAccount.setActiveDetail(financialAccountDetail);
             financialAccount.setLastDetail(financialAccountDetail);
             
-            sendEventUsingNames(financialAccountPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(financialAccountPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -2072,7 +2073,7 @@ public class FinancialControl
         financialAccount.setActiveDetail(null);
         financialAccount.store();
         
-        sendEventUsingNames(financialAccount.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(financialAccount.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteFinancialAccounts(List<FinancialAccount> financialAccounts, BasePK deletedBy) {
@@ -2144,7 +2145,7 @@ public class FinancialControl
         FinancialAccountAlias financialAccountAlias = FinancialAccountAliasFactory.getInstance().create(financialAccount, financialAccountAliasType,
                 alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(financialAccount.getPrimaryKey(), EventTypes.MODIFY.name(), financialAccountAlias.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(financialAccount.getPrimaryKey(), EventTypes.MODIFY, financialAccountAlias.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return financialAccountAlias;
     }
@@ -2285,14 +2286,14 @@ public class FinancialControl
             financialAccountAlias = FinancialAccountAliasFactory.getInstance().create(financialAccountPK, financialAccountAliasTypePK, alias,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(financialAccountPK, EventTypes.MODIFY.name(), financialAccountAlias.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(financialAccountPK, EventTypes.MODIFY, financialAccountAlias.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteFinancialAccountAlias(FinancialAccountAlias financialAccountAlias, BasePK deletedBy) {
         financialAccountAlias.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(financialAccountAlias.getFinancialAccountPK(), EventTypes.MODIFY.name(), financialAccountAlias.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(financialAccountAlias.getFinancialAccountPK(), EventTypes.MODIFY, financialAccountAlias.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -2329,7 +2330,7 @@ public class FinancialControl
         financialAccountTransaction.setLastDetail(financialAccountTransactionDetail);
         financialAccountTransaction.store();
         
-        sendEventUsingNames(financialAccountTransaction.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(financialAccountTransaction.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return financialAccountTransaction;
     }
@@ -2473,7 +2474,7 @@ public class FinancialControl
             financialAccountTransaction.setActiveDetail(financialAccountTransactionDetail);
             financialAccountTransaction.setLastDetail(financialAccountTransactionDetail);
             
-            sendEventUsingNames(financialAccountTransactionPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(financialAccountTransactionPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -2483,7 +2484,7 @@ public class FinancialControl
         financialAccountTransaction.setActiveDetail(null);
         financialAccountTransaction.store();
         
-        sendEventUsingNames(financialAccountTransaction.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(financialAccountTransaction.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteFinancialAccountTransactions(List<FinancialAccountTransaction> financialAccountTransactions, BasePK deletedBy) {

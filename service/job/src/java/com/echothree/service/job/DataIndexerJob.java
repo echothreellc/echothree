@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,8 +21,6 @@ import com.echothree.control.user.index.common.result.UpdateIndexesResult;
 import com.echothree.control.user.selector.common.SelectorUtil;
 import com.echothree.model.control.job.common.Jobs;
 import com.echothree.util.common.service.job.BaseScheduledJob;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.naming.NamingException;
@@ -46,16 +44,19 @@ public class DataIndexerJob
     @Override
     public void execute()
             throws NamingException {
-        CommandResult commandResult = IndexUtil.getHome().updateIndexes(userVisitPK);
+        var updateIndexesCommandForm = IndexUtil.getHome().getUpdateIndexesForm();
+        var commandResult = IndexUtil.getHome().updateIndexes(userVisitPK, updateIndexesCommandForm);
         
         if(commandResult.hasErrors()) {
             getLog().error(commandResult.toString());
         } else {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            UpdateIndexesResult updateIndexesResult = (UpdateIndexesResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var updateIndexesResult = (UpdateIndexesResult)executionResult.getResult();
 
             if(updateIndexesResult.getIndexingComplete()) {
-                SelectorUtil.getHome().evaluateSelectors(userVisitPK);
+                var evaluateSelectorsCommandForm = SelectorUtil.getHome().getEvaluateSelectorsForm();
+
+                SelectorUtil.getHome().evaluateSelectors(userVisitPK, evaluateSelectorsCommandForm);
             }
         }
     }

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -167,6 +167,7 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import static java.lang.Math.toIntExact;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -227,12 +228,12 @@ public class SearchControl
         searchUseType.setLastDetail(searchUseTypeDetail);
         searchUseType.store();
 
-        sendEventUsingNames(searchUseType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(searchUseType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return searchUseType;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.SearchUseType */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.SearchUseType */
     public SearchUseType getSearchUseTypeByEntityInstance(EntityInstance entityInstance) {
         SearchUseTypePK pk = new SearchUseTypePK(entityInstance.getEntityUniqueId());
         SearchUseType searchUseType = SearchUseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
@@ -431,7 +432,7 @@ public class SearchControl
             searchUseType.setActiveDetail(searchUseTypeDetail);
             searchUseType.setLastDetail(searchUseTypeDetail);
 
-            sendEventUsingNames(searchUseTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(searchUseTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -469,7 +470,7 @@ public class SearchControl
             }
         }
 
-        sendEventUsingNames(searchUseType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(searchUseType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteSearchUseType(SearchUseType searchUseType, BasePK deletedBy) {
@@ -492,7 +493,7 @@ public class SearchControl
         SearchUseTypeDescription searchUseTypeDescription = SearchUseTypeDescriptionFactory.getInstance().create(searchUseType, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(searchUseType.getPrimaryKey(), EventTypes.MODIFY.name(), searchUseTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(searchUseType.getPrimaryKey(), EventTypes.MODIFY, searchUseTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return searchUseTypeDescription;
     }
@@ -544,7 +545,8 @@ public class SearchControl
                 "SELECT _ALL_ " +
                 "FROM searchusetypedescriptions, languages " +
                 "WHERE srchutypd_srchutyp_searchusetypeid = ? AND srchutypd_thrutime = ? AND srchutypd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
+                "ORDER BY lang_sortorder, lang_languageisoname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM searchusetypedescriptions " +
@@ -614,14 +616,14 @@ public class SearchControl
             searchUseTypeDescription = SearchUseTypeDescriptionFactory.getInstance().create(searchUseType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(searchUseType.getPrimaryKey(), EventTypes.MODIFY.name(), searchUseTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(searchUseType.getPrimaryKey(), EventTypes.MODIFY, searchUseTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteSearchUseTypeDescription(SearchUseTypeDescription searchUseTypeDescription, BasePK deletedBy) {
         searchUseTypeDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(searchUseTypeDescription.getSearchUseTypePK(), EventTypes.MODIFY.name(), searchUseTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(searchUseTypeDescription.getSearchUseTypePK(), EventTypes.MODIFY, searchUseTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -660,19 +662,38 @@ public class SearchControl
         searchResultActionType.setLastDetail(searchResultActionTypeDetail);
         searchResultActionType.store();
 
-        sendEventUsingNames(searchResultActionType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(searchResultActionType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return searchResultActionType;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.SearchResultActionType */
-    public SearchResultActionType getSearchResultActionTypeByEntityInstance(EntityInstance entityInstance) {
-        SearchResultActionTypePK pk = new SearchResultActionTypePK(entityInstance.getEntityUniqueId());
-        SearchResultActionType searchResultActionType = SearchResultActionTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.SearchResultActionType */
+    public SearchResultActionType getSearchResultActionTypeByEntityInstance(final EntityInstance entityInstance,
+            final EntityPermission entityPermission) {
+        var pk = new SearchResultActionTypePK(entityInstance.getEntityUniqueId());
 
-        return searchResultActionType;
+        return SearchResultActionTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
+    public SearchResultActionType getSearchResultActionTypeByEntityInstance(final EntityInstance entityInstance) {
+        return getSearchResultActionTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public SearchResultActionType getSearchResultActionTypeByEntityInstanceForUpdate(final EntityInstance entityInstance) {
+        return getSearchResultActionTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public SearchResultActionType getSearchResultActionTypeByPK(SearchResultActionTypePK pk) {
+        return SearchResultActionTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+    }
+
+    public long countSearchResultActionTypes() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM searchresultactiontypes, searchresultactiontypedetails " +
+                "WHERE srchracttyp_activedetailid = srchracttypdt_searchresultactiontypedetailid");
+    }
+    
     private static final Map<EntityPermission, String> getSearchResultActionTypeByNameQueries;
 
     static {
@@ -692,7 +713,7 @@ public class SearchControl
         getSearchResultActionTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private SearchResultActionType getSearchResultActionTypeByName(String searchResultActionTypeName, EntityPermission entityPermission) {
+    public SearchResultActionType getSearchResultActionTypeByName(String searchResultActionTypeName, EntityPermission entityPermission) {
         return SearchResultActionTypeFactory.getInstance().getEntityFromQuery(entityPermission, getSearchResultActionTypeByNameQueries, searchResultActionTypeName);
     }
 
@@ -731,7 +752,7 @@ public class SearchControl
         getDefaultSearchResultActionTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private SearchResultActionType getDefaultSearchResultActionType(EntityPermission entityPermission) {
+    public SearchResultActionType getDefaultSearchResultActionType(EntityPermission entityPermission) {
         return SearchResultActionTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultSearchResultActionTypeQueries);
     }
 
@@ -782,8 +803,7 @@ public class SearchControl
         return getSearchTransferCaches(userVisit).getSearchResultActionTypeTransferCache().getSearchResultActionTypeTransfer(searchResultActionType);
     }
 
-    public List<SearchResultActionTypeTransfer> getSearchResultActionTypeTransfers(UserVisit userVisit) {
-        List<SearchResultActionType> searchResultActionTypes = getSearchResultActionTypes();
+    public List<SearchResultActionTypeTransfer> getSearchResultActionTypeTransfers(UserVisit userVisit, Collection<SearchResultActionType> searchResultActionTypes) {
         List<SearchResultActionTypeTransfer> searchResultActionTypeTransfers = new ArrayList<>(searchResultActionTypes.size());
         SearchResultActionTypeTransferCache searchResultActionTypeTransferCache = getSearchTransferCaches(userVisit).getSearchResultActionTypeTransferCache();
 
@@ -792,6 +812,10 @@ public class SearchControl
         );
 
         return searchResultActionTypeTransfers;
+    }
+
+    public List<SearchResultActionTypeTransfer> getSearchResultActionTypeTransfers(UserVisit userVisit) {
+        return getSearchResultActionTypeTransfers(userVisit, getSearchResultActionTypes());
     }
 
     public SearchResultActionTypeChoicesBean getSearchResultActionTypeChoices(String defaultSearchResultActionTypeChoice, Language language, boolean allowNullChoice) {
@@ -864,7 +888,7 @@ public class SearchControl
             searchResultActionType.setActiveDetail(searchResultActionTypeDetail);
             searchResultActionType.setLastDetail(searchResultActionTypeDetail);
 
-            sendEventUsingNames(searchResultActionTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(searchResultActionTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -902,7 +926,7 @@ public class SearchControl
             }
         }
 
-        sendEventUsingNames(searchResultActionType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(searchResultActionType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteSearchResultActionType(SearchResultActionType searchResultActionType, BasePK deletedBy) {
@@ -925,7 +949,7 @@ public class SearchControl
         SearchResultActionTypeDescription searchResultActionTypeDescription = SearchResultActionTypeDescriptionFactory.getInstance().create(searchResultActionType, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(searchResultActionType.getPrimaryKey(), EventTypes.MODIFY.name(), searchResultActionTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(searchResultActionType.getPrimaryKey(), EventTypes.MODIFY, searchResultActionTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return searchResultActionTypeDescription;
     }
@@ -977,7 +1001,8 @@ public class SearchControl
                 "SELECT _ALL_ " +
                 "FROM searchresultactiontypedescriptions, languages " +
                 "WHERE srchracttypd_srchracttyp_searchresultactiontypeid = ? AND srchracttypd_thrutime = ? AND srchracttypd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
+                "ORDER BY lang_sortorder, lang_languageisoname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM searchresultactiontypedescriptions " +
@@ -1047,14 +1072,14 @@ public class SearchControl
             searchResultActionTypeDescription = SearchResultActionTypeDescriptionFactory.getInstance().create(searchResultActionType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(searchResultActionType.getPrimaryKey(), EventTypes.MODIFY.name(), searchResultActionTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(searchResultActionType.getPrimaryKey(), EventTypes.MODIFY, searchResultActionTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteSearchResultActionTypeDescription(SearchResultActionTypeDescription searchResultActionTypeDescription, BasePK deletedBy) {
         searchResultActionTypeDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(searchResultActionTypeDescription.getSearchResultActionTypePK(), EventTypes.MODIFY.name(), searchResultActionTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(searchResultActionTypeDescription.getSearchResultActionTypePK(), EventTypes.MODIFY, searchResultActionTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -1093,7 +1118,7 @@ public class SearchControl
         searchCheckSpellingActionType.setLastDetail(searchCheckSpellingActionTypeDetail);
         searchCheckSpellingActionType.store();
 
-        sendEventUsingNames(searchCheckSpellingActionType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(searchCheckSpellingActionType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return searchCheckSpellingActionType;
     }
@@ -1106,7 +1131,7 @@ public class SearchControl
                 """);
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.SearchCheckSpellingActionType */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.SearchCheckSpellingActionType */
     public SearchCheckSpellingActionType getSearchCheckSpellingActionTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new SearchCheckSpellingActionTypePK(entityInstance.getEntityUniqueId());
 
@@ -1136,7 +1161,7 @@ public class SearchControl
                 FROM searchcheckspellingactiontypes, searchcheckspellingactiontypedetails
                 WHERE srchcksacttyp_activedetailid = srchcksacttypdt_searchcheckspellingactiontypedetailid
                 AND srchcksacttypdt_searchcheckspellingactiontypename = ?
-                FOR UPDATE"
+                FOR UPDATE
                 """);
     }
 
@@ -1315,7 +1340,7 @@ public class SearchControl
             searchCheckSpellingActionType.setActiveDetail(searchCheckSpellingActionTypeDetail);
             searchCheckSpellingActionType.setLastDetail(searchCheckSpellingActionTypeDetail);
 
-            sendEventUsingNames(searchCheckSpellingActionTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(searchCheckSpellingActionTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -1352,7 +1377,7 @@ public class SearchControl
             }
         }
 
-        sendEventUsingNames(searchCheckSpellingActionType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(searchCheckSpellingActionType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteSearchCheckSpellingActionType(SearchCheckSpellingActionType searchCheckSpellingActionType, BasePK deletedBy) {
@@ -1375,7 +1400,7 @@ public class SearchControl
         SearchCheckSpellingActionTypeDescription searchCheckSpellingActionTypeDescription = SearchCheckSpellingActionTypeDescriptionFactory.getInstance().create(searchCheckSpellingActionType, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(searchCheckSpellingActionType.getPrimaryKey(), EventTypes.MODIFY.name(), searchCheckSpellingActionTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(searchCheckSpellingActionType.getPrimaryKey(), EventTypes.MODIFY, searchCheckSpellingActionTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return searchCheckSpellingActionTypeDescription;
     }
@@ -1427,7 +1452,8 @@ public class SearchControl
                 "SELECT _ALL_ " +
                 "FROM searchcheckspellingactiontypedescriptions, languages " +
                 "WHERE srchcksacttypd_srchcksacttyp_searchcheckspellingactiontypeid = ? AND srchcksacttypd_thrutime = ? AND srchcksacttypd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
+                "ORDER BY lang_sortorder, lang_languageisoname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM searchcheckspellingactiontypedescriptions " +
@@ -1497,14 +1523,14 @@ public class SearchControl
             searchCheckSpellingActionTypeDescription = SearchCheckSpellingActionTypeDescriptionFactory.getInstance().create(searchCheckSpellingActionType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(searchCheckSpellingActionType.getPrimaryKey(), EventTypes.MODIFY.name(), searchCheckSpellingActionTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(searchCheckSpellingActionType.getPrimaryKey(), EventTypes.MODIFY, searchCheckSpellingActionTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteSearchCheckSpellingActionTypeDescription(SearchCheckSpellingActionTypeDescription searchCheckSpellingActionTypeDescription, BasePK deletedBy) {
         searchCheckSpellingActionTypeDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(searchCheckSpellingActionTypeDescription.getSearchCheckSpellingActionTypePK(), EventTypes.MODIFY.name(), searchCheckSpellingActionTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(searchCheckSpellingActionTypeDescription.getSearchCheckSpellingActionTypePK(), EventTypes.MODIFY, searchCheckSpellingActionTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -1543,12 +1569,12 @@ public class SearchControl
         searchDefaultOperator.setLastDetail(searchDefaultOperatorDetail);
         searchDefaultOperator.store();
 
-        sendEventUsingNames(searchDefaultOperator.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(searchDefaultOperator.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return searchDefaultOperator;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.SearchDefaultOperator */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.SearchDefaultOperator */
     public SearchDefaultOperator getSearchDefaultOperatorByEntityInstance(EntityInstance entityInstance) {
         SearchDefaultOperatorPK pk = new SearchDefaultOperatorPK(entityInstance.getEntityUniqueId());
         SearchDefaultOperator searchDefaultOperator = SearchDefaultOperatorFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
@@ -1747,7 +1773,7 @@ public class SearchControl
             searchDefaultOperator.setActiveDetail(searchDefaultOperatorDetail);
             searchDefaultOperator.setLastDetail(searchDefaultOperatorDetail);
 
-            sendEventUsingNames(searchDefaultOperatorPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(searchDefaultOperatorPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -1786,7 +1812,7 @@ public class SearchControl
             }
         }
 
-        sendEventUsingNames(searchDefaultOperator.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(searchDefaultOperator.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteSearchDefaultOperator(SearchDefaultOperator searchDefaultOperator, BasePK deletedBy) {
@@ -1809,7 +1835,7 @@ public class SearchControl
         SearchDefaultOperatorDescription searchDefaultOperatorDescription = SearchDefaultOperatorDescriptionFactory.getInstance().create(searchDefaultOperator, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(searchDefaultOperator.getPrimaryKey(), EventTypes.MODIFY.name(), searchDefaultOperatorDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(searchDefaultOperator.getPrimaryKey(), EventTypes.MODIFY, searchDefaultOperatorDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return searchDefaultOperatorDescription;
     }
@@ -1861,7 +1887,8 @@ public class SearchControl
                 "SELECT _ALL_ " +
                 "FROM searchdefaultoperatordescriptions, languages " +
                 "WHERE srchdefopd_srchdefop_searchdefaultoperatorid = ? AND srchdefopd_thrutime = ? AND srchdefopd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
+                "ORDER BY lang_sortorder, lang_languageisoname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM searchdefaultoperatordescriptions " +
@@ -1931,14 +1958,14 @@ public class SearchControl
             searchDefaultOperatorDescription = SearchDefaultOperatorDescriptionFactory.getInstance().create(searchDefaultOperator, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(searchDefaultOperator.getPrimaryKey(), EventTypes.MODIFY.name(), searchDefaultOperatorDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(searchDefaultOperator.getPrimaryKey(), EventTypes.MODIFY, searchDefaultOperatorDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteSearchDefaultOperatorDescription(SearchDefaultOperatorDescription searchDefaultOperatorDescription, BasePK deletedBy) {
         searchDefaultOperatorDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(searchDefaultOperatorDescription.getSearchDefaultOperatorPK(), EventTypes.MODIFY.name(), searchDefaultOperatorDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(searchDefaultOperatorDescription.getSearchDefaultOperatorPK(), EventTypes.MODIFY, searchDefaultOperatorDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -1977,12 +2004,12 @@ public class SearchControl
         searchSortDirection.setLastDetail(searchSortDirectionDetail);
         searchSortDirection.store();
 
-        sendEventUsingNames(searchSortDirection.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(searchSortDirection.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return searchSortDirection;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.SearchSortDirection */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.SearchSortDirection */
     public SearchSortDirection getSearchSortDirectionByEntityInstance(EntityInstance entityInstance) {
         SearchSortDirectionPK pk = new SearchSortDirectionPK(entityInstance.getEntityUniqueId());
         SearchSortDirection searchSortDirection = SearchSortDirectionFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
@@ -2181,7 +2208,7 @@ public class SearchControl
             searchSortDirection.setActiveDetail(searchSortDirectionDetail);
             searchSortDirection.setLastDetail(searchSortDirectionDetail);
 
-            sendEventUsingNames(searchSortDirectionPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(searchSortDirectionPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -2220,7 +2247,7 @@ public class SearchControl
             }
         }
 
-        sendEventUsingNames(searchSortDirection.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(searchSortDirection.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteSearchSortDirection(SearchSortDirection searchSortDirection, BasePK deletedBy) {
@@ -2243,7 +2270,7 @@ public class SearchControl
         SearchSortDirectionDescription searchSortDirectionDescription = SearchSortDirectionDescriptionFactory.getInstance().create(searchSortDirection, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(searchSortDirection.getPrimaryKey(), EventTypes.MODIFY.name(), searchSortDirectionDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(searchSortDirection.getPrimaryKey(), EventTypes.MODIFY, searchSortDirectionDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return searchSortDirectionDescription;
     }
@@ -2295,7 +2322,8 @@ public class SearchControl
                 "SELECT _ALL_ " +
                 "FROM searchsortdirectiondescriptions, languages " +
                 "WHERE srchsrtdird_srchsrtdir_searchsortdirectionid = ? AND srchsrtdird_thrutime = ? AND srchsrtdird_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
+                "ORDER BY lang_sortorder, lang_languageisoname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM searchsortdirectiondescriptions " +
@@ -2365,14 +2393,14 @@ public class SearchControl
             searchSortDirectionDescription = SearchSortDirectionDescriptionFactory.getInstance().create(searchSortDirection, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(searchSortDirection.getPrimaryKey(), EventTypes.MODIFY.name(), searchSortDirectionDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(searchSortDirection.getPrimaryKey(), EventTypes.MODIFY, searchSortDirectionDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteSearchSortDirectionDescription(SearchSortDirectionDescription searchSortDirectionDescription, BasePK deletedBy) {
         searchSortDirectionDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(searchSortDirectionDescription.getSearchSortDirectionPK(), EventTypes.MODIFY.name(), searchSortDirectionDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(searchSortDirectionDescription.getSearchSortDirectionPK(), EventTypes.MODIFY, searchSortDirectionDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -2412,7 +2440,7 @@ public class SearchControl
         searchKind.setLastDetail(searchKindDetail);
         searchKind.store();
 
-        sendEventUsingNames(searchKind.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(searchKind.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return searchKind;
     }
@@ -2497,7 +2525,8 @@ public class SearchControl
                 "SELECT _ALL_ "
                 + "FROM searchkinds, searchkinddetails "
                 + "WHERE srchk_activedetailid = srchkdt_searchkinddetailid "
-                + "ORDER BY srchkdt_sortorder, srchkdt_searchkindname");
+                + "ORDER BY srchkdt_sortorder, srchkdt_searchkindname "
+                + "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM searchkinds, searchkinddetails "
@@ -2604,7 +2633,7 @@ public class SearchControl
         searchKind.setLastDetail(searchKindDetail);
         searchKind.store();
 
-        sendEventUsingNames(searchKindPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+        sendEvent(searchKindPK, EventTypes.MODIFY, null, null, updatedBy);
     }
 
     public void updateSearchKindFromValue(SearchKindDetailValue searchKindDetailValue, BasePK updatedBy) {
@@ -2640,7 +2669,7 @@ public class SearchControl
             }
         }
 
-        sendEventUsingNames(searchKind.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(searchKind.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteSearchKind(SearchKind searchKind, BasePK deletedBy) {
@@ -2664,7 +2693,7 @@ public class SearchControl
         SearchKindDescription searchKindDescription = SearchKindDescriptionFactory.getInstance().create(searchKind,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(searchKind.getPrimaryKey(), EventTypes.MODIFY.name(), searchKindDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(searchKind.getPrimaryKey(), EventTypes.MODIFY, searchKindDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return searchKindDescription;
     }
@@ -2716,7 +2745,8 @@ public class SearchControl
                 "SELECT _ALL_ "
                 + "FROM searchkinddescriptions, languages "
                 + "WHERE srchkd_srchk_searchkindid = ? AND srchkd_thrutime = ? AND srchkd_lang_languageid = lang_languageid "
-                + "ORDER BY lang_sortorder, lang_languageisoname");
+                + "ORDER BY lang_sortorder, lang_languageisoname "
+                + "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM searchkinddescriptions "
@@ -2785,14 +2815,14 @@ public class SearchControl
             searchKindDescription = SearchKindDescriptionFactory.getInstance().create(searchKind, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(searchKind.getPrimaryKey(), EventTypes.MODIFY.name(), searchKindDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(searchKind.getPrimaryKey(), EventTypes.MODIFY, searchKindDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteSearchKindDescription(SearchKindDescription searchKindDescription, BasePK deletedBy) {
         searchKindDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(searchKindDescription.getSearchKindPK(), EventTypes.MODIFY.name(), searchKindDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(searchKindDescription.getSearchKindPK(), EventTypes.MODIFY, searchKindDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -2832,7 +2862,7 @@ public class SearchControl
         searchType.setLastDetail(searchTypeDetail);
         searchType.store();
 
-        sendEventUsingNames(searchType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(searchType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return searchType;
     }
@@ -2846,7 +2876,8 @@ public class SearchControl
                 "SELECT _ALL_ "
                 + "FROM searchtypes, searchtypedetails "
                 + "WHERE srchtyp_activedetailid = srchtypdt_searchtypedetailid AND srchtypdt_srchk_searchkindid = ? "
-                + "ORDER BY srchtypdt_sortorder, srchtypdt_searchtypename");
+                + "ORDER BY srchtypdt_sortorder, srchtypdt_searchtypename "
+                + "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM searchtypes, searchtypedetails "
@@ -3033,7 +3064,7 @@ public class SearchControl
             searchType.setActiveDetail(searchTypeDetail);
             searchType.setLastDetail(searchTypeDetail);
 
-            sendEventUsingNames(searchTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(searchTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -3071,7 +3102,7 @@ public class SearchControl
             }
         }
 
-        sendEventUsingNames(searchType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(searchType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteSearchTypesBySearchKind(SearchKind searchKind, BasePK deletedBy) {
@@ -3091,7 +3122,7 @@ public class SearchControl
         SearchTypeDescription searchTypeDescription = SearchTypeDescriptionFactory.getInstance().create(searchType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(searchType.getPrimaryKey(), EventTypes.MODIFY.name(), searchTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(searchType.getPrimaryKey(), EventTypes.MODIFY, searchTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return searchTypeDescription;
     }
@@ -3143,7 +3174,8 @@ public class SearchControl
                 "SELECT _ALL_ "
                 + "FROM searchtypedescriptions, languages "
                 + "WHERE srchtypd_srchtyp_searchtypeid = ? AND srchtypd_thrutime = ? AND srchtypd_lang_languageid = lang_languageid "
-                + "ORDER BY lang_sortorder, lang_languageisoname");
+                + "ORDER BY lang_sortorder, lang_languageisoname "
+                + "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM searchtypedescriptions "
@@ -3212,14 +3244,14 @@ public class SearchControl
             searchTypeDescription = SearchTypeDescriptionFactory.getInstance().create(searchType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(searchType.getPrimaryKey(), EventTypes.MODIFY.name(), searchTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(searchType.getPrimaryKey(), EventTypes.MODIFY, searchTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteSearchTypeDescription(SearchTypeDescription searchTypeDescription, BasePK deletedBy) {
         searchTypeDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(searchTypeDescription.getSearchTypePK(), EventTypes.MODIFY.name(), searchTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(searchTypeDescription.getSearchTypePK(), EventTypes.MODIFY, searchTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -3259,7 +3291,7 @@ public class SearchControl
         searchSortOrder.setLastDetail(searchSortOrderDetail);
         searchSortOrder.store();
 
-        sendEventUsingNames(searchSortOrder.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(searchSortOrder.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return searchSortOrder;
     }
@@ -3273,7 +3305,8 @@ public class SearchControl
                 "SELECT _ALL_ "
                 + "FROM searchsortorders, searchsortorderdetails "
                 + "WHERE srchsrtord_activedetailid = srchsrtorddt_searchsortorderdetailid AND srchsrtorddt_srchk_searchkindid = ? "
-                + "ORDER BY srchsrtorddt_sortorder, srchsrtorddt_searchsortordername");
+                + "ORDER BY srchsrtorddt_sortorder, srchsrtorddt_searchsortordername "
+                + "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM searchsortorders, searchsortorderdetails "
@@ -3460,7 +3493,7 @@ public class SearchControl
             searchSortOrder.setActiveDetail(searchSortOrderDetail);
             searchSortOrder.setLastDetail(searchSortOrderDetail);
 
-            sendEventUsingNames(searchSortOrderPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(searchSortOrderPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -3496,7 +3529,7 @@ public class SearchControl
             }
         }
 
-        sendEventUsingNames(searchSortOrder.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(searchSortOrder.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteSearchSortOrdersBySearchKind(SearchKind searchKind, BasePK deletedBy) {
@@ -3516,7 +3549,7 @@ public class SearchControl
         SearchSortOrderDescription searchSortOrderDescription = SearchSortOrderDescriptionFactory.getInstance().create(searchSortOrder,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(searchSortOrder.getPrimaryKey(), EventTypes.MODIFY.name(), searchSortOrderDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(searchSortOrder.getPrimaryKey(), EventTypes.MODIFY, searchSortOrderDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return searchSortOrderDescription;
     }
@@ -3568,7 +3601,8 @@ public class SearchControl
                 "SELECT _ALL_ "
                 + "FROM searchsortorderdescriptions, languages "
                 + "WHERE srchsrtordd_srchsrtord_searchsortorderid = ? AND srchsrtordd_thrutime = ? AND srchsrtordd_lang_languageid = lang_languageid "
-                + "ORDER BY lang_sortorder, lang_languageisoname");
+                + "ORDER BY lang_sortorder, lang_languageisoname "
+                + "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM searchsortorderdescriptions "
@@ -3637,14 +3671,14 @@ public class SearchControl
             searchSortOrderDescription = SearchSortOrderDescriptionFactory.getInstance().create(searchSortOrder, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(searchSortOrder.getPrimaryKey(), EventTypes.MODIFY.name(), searchSortOrderDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(searchSortOrder.getPrimaryKey(), EventTypes.MODIFY, searchSortOrderDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteSearchSortOrderDescription(SearchSortOrderDescription searchSortOrderDescription, BasePK deletedBy) {
         searchSortOrderDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(searchSortOrderDescription.getSearchSortOrderPK(), EventTypes.MODIFY.name(), searchSortOrderDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(searchSortOrderDescription.getSearchSortOrderPK(), EventTypes.MODIFY, searchSortOrderDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -3665,7 +3699,7 @@ public class SearchControl
         Search search = SearchFactory.getInstance().create(party, partyVerified, searchType, executedTime, searchUseType, cachedSearch,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(search.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(search.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return search;
     }
@@ -3677,19 +3711,20 @@ public class SearchControl
 
         queryMap.put(EntityPermission.READ_ONLY,
                 "SELECT _ALL_ "
-                + "FROM searchresults "
-                + "WHERE srch_par_partyid = ?"); // TODO: ORDER BY needed.
+                + "FROM searches "
+                + "WHERE srch_par_partyid = ? AND srch_thrutime = ? "
+                + "_LIMIT_"); // TODO: ORDER BY needed.
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
-                + "FROM searchresults "
-                + "WHERE srch_par_partyid = ? "
+                + "FROM searches "
+                + "WHERE srch_par_partyid = ? AND srch_thrutime = ? "
                 + "FOR UPDATE");
         getSearchesByPartyQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<Search> getSearchesByParty(Party party, EntityPermission entityPermission) {
         return SearchFactory.getInstance().getEntitiesFromQuery(entityPermission, getSearchesByPartyQueries,
-                party);
+                party, Session.MAX_TIME);
     }
 
     public List<Search> getSearchesByParty(Party party) {
@@ -3707,19 +3742,20 @@ public class SearchControl
 
         queryMap.put(EntityPermission.READ_ONLY,
                 "SELECT _ALL_ "
-                + "FROM searchresults "
-                + "WHERE srch_srchtyp_searchtypeid = ?"); // TODO: ORDER BY needed.
+                + "FROM searches "
+                + "WHERE srch_srchtyp_searchtypeid = ? AND srch_thrutime = ? "
+                + "_LIMIT_"); // TODO: ORDER BY needed.
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
-                + "FROM searchresults "
-                + "WHERE srch_srchtyp_searchtypeid = ? "
+                + "FROM searches "
+                + "WHERE srch_srchtyp_searchtypeid = ? AND srch_thrutime = ? "
                 + "FOR UPDATE");
         getSearchesBySearchTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<Search> getSearchesBySearchType(SearchType searchType, EntityPermission entityPermission) {
         return SearchFactory.getInstance().getEntitiesFromQuery(entityPermission, getSearchesBySearchTypeQueries,
-                searchType);
+                searchType, Session.MAX_TIME);
     }
 
     public List<Search> getSearchesBySearchType(SearchType searchType) {
@@ -3737,19 +3773,20 @@ public class SearchControl
 
         queryMap.put(EntityPermission.READ_ONLY,
                 "SELECT _ALL_ "
-                + "FROM searchresults "
-                + "WHERE srch_srchutyp_searchusetypeid = ?"); // TODO: ORDER BY needed.
+                + "FROM searches "
+                + "WHERE srch_srchutyp_searchusetypeid = ? AND srch_thrutime = ? "
+                + "_LIMIT_"); // TODO: ORDER BY needed.
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
-                + "FROM searchresults "
-                + "WHERE srch_srchutyp_searchusetypeid = ? "
+                + "FROM searches "
+                + "WHERE srch_srchutyp_searchusetypeid = ? AND srch_thrutime = ? "
                 + "FOR UPDATE");
         getSearchesBySearchUseTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<Search> getSearchesBySearchUseType(SearchUseType searchUseType, EntityPermission entityPermission) {
         return SearchFactory.getInstance().getEntitiesFromQuery(entityPermission, getSearchesBySearchUseTypeQueries,
-                searchUseType);
+                searchUseType, Session.MAX_TIME);
     }
 
     public List<Search> getSearchesBySearchUseType(SearchUseType searchUseType) {
@@ -3767,19 +3804,20 @@ public class SearchControl
 
         queryMap.put(EntityPermission.READ_ONLY,
                 "SELECT _ALL_ "
-                + "FROM searchresults "
-                + "WHERE srch_csrch_cachedsearchid = ?"); // TODO: ORDER BY needed.
+                + "FROM searches "
+                + "WHERE srch_csrch_cachedsearchid = ? AND srch_thrutime = ? "
+                + "_LIMIT_"); // TODO: ORDER BY needed.
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
-                + "FROM searchresults "
-                + "WHERE srch_csrch_cachedsearchid = ? "
+                + "FROM searches "
+                + "WHERE srch_csrch_cachedsearchid = ? AND srch_thrutime = ? "
                 + "FOR UPDATE");
         getSearchesByCachedSearchQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<Search> getSearchesByCachedSearch(CachedSearch cachedSearch, EntityPermission entityPermission) {
         return SearchFactory.getInstance().getEntitiesFromQuery(entityPermission, getSearchesByCachedSearchQueries,
-                cachedSearch);
+                cachedSearch, Session.MAX_TIME);
     }
 
     public List<Search> getSearchesByCachedSearch(CachedSearch cachedSearch) {
@@ -3800,7 +3838,7 @@ public class SearchControl
         search.setThruTime(session.START_TIME_LONG);
         search.store();
         
-        sendEventUsingNames(search.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(search.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteSearches(List<Search> searches, BasePK deletedBy) {
@@ -3810,7 +3848,7 @@ public class SearchControl
     }
 
     public void deleteSearchesByParty(Party party, BasePK deletedBy) {
-        deleteSearches(getSearchesByParty(party), deletedBy);
+        deleteSearches(getSearchesByPartyForUpdate(party), deletedBy);
     }
 
     public void deleteSearchesBySearchType(SearchType searchType, BasePK deletedBy) {
@@ -3839,7 +3877,7 @@ public class SearchControl
     }
     
     public boolean searchResultExists(Search search, EntityInstance entityInstance) {
-        return session.queryForInteger(
+        return session.queryForLong(
                 "SELECT COUNT(*) " +
                 "FROM searchresults " +
                 "WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = ?",
@@ -3855,7 +3893,8 @@ public class SearchControl
                 "SELECT _ALL_ "
                 + "FROM searchresults "
                 + "WHERE srchr_srch_searchid = ? "
-                + "ORDER BY srchr_sortorder");
+                + "ORDER BY srchr_sortorder "
+                + "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM searchresults "
@@ -3877,8 +3916,8 @@ public class SearchControl
         return getSearchResultsBySearch(search, EntityPermission.READ_WRITE);
     }
     
-    public int countSearchResults(Search search) {
-        return session.queryForInteger(
+    public long countSearchResults(Search search) {
+        return session.queryForLong(
                 "SELECT COUNT(*) " +
                 "FROM searchresults " +
                 "WHERE srchr_srch_searchid = ?",
@@ -3908,7 +3947,7 @@ public class SearchControl
         CachedSearch cachedSearch = CachedSearchFactory.getInstance().create(index, querySha1Hash, query, parsedQuerySha1Hash, parsedQuery,
                 searchDefaultOperator, searchSortOrder, searchSortDirection, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(cachedSearch.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(cachedSearch.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return cachedSearch;
     }
@@ -4053,7 +4092,7 @@ public class SearchControl
         cachedSearch.setThruTime(session.START_TIME_LONG);
         cachedSearch.store();
 
-        sendEventUsingNames(cachedSearch.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(cachedSearch.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deletedCachedSearches(List<CachedSearch> cachedSearches, BasePK deletedBy) {
@@ -4129,7 +4168,7 @@ public class SearchControl
         CachedSearchIndexField cachedSearchIndexField = CachedSearchIndexFieldFactory.getInstance().create(cachedSearch, indexField, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(cachedSearch.getPrimaryKey(), EventTypes.MODIFY.name(), cachedSearchIndexField.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(cachedSearch.getPrimaryKey(), EventTypes.MODIFY, cachedSearchIndexField.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return cachedSearchIndexField;
     }
@@ -4204,7 +4243,7 @@ public class SearchControl
         cachedSearchIndexField.setThruTime(session.START_TIME_LONG);
         cachedSearchIndexField.store();
 
-        sendEventUsingNames(cachedSearchIndexField.getCachedSearchPK(), EventTypes.MODIFY.name(), cachedSearchIndexField.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(cachedSearchIndexField.getCachedSearchPK(), EventTypes.MODIFY, cachedSearchIndexField.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteCachedSearchIndexFields(List<CachedSearchIndexField> cachedSearchIndexFields, BasePK deletedBy) {
@@ -4229,7 +4268,7 @@ public class SearchControl
         CachedExecutedSearch cachedExecutedSearch = CachedExecutedSearchFactory.getInstance().create(cachedSearch, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(cachedSearch.getPrimaryKey(), EventTypes.MODIFY.name(), cachedExecutedSearch.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(cachedSearch.getPrimaryKey(), EventTypes.MODIFY, cachedExecutedSearch.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return cachedExecutedSearch;
     }
@@ -4270,7 +4309,7 @@ public class SearchControl
         cachedExecutedSearch.setThruTime(session.START_TIME_LONG);
         cachedExecutedSearch.store();
 
-        sendEventUsingNames(cachedExecutedSearch.getCachedSearchPK(), EventTypes.MODIFY.name(), cachedExecutedSearch.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(cachedExecutedSearch.getCachedSearchPK(), EventTypes.MODIFY, cachedExecutedSearch.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 
     // --------------------------------------------------------------------------------
@@ -4282,7 +4321,7 @@ public class SearchControl
     }
     
     public boolean cachedExecutedSearchResultExists(CachedExecutedSearch cachedExecutedSearch, EntityInstance entityInstance) {
-        return session.queryForInteger(
+        return session.queryForLong(
                 "SELECT COUNT(*) " +
                 "FROM cachedexecutedsearchresults " +
                 "WHERE cxsrchr_cxsrch_cachedexecutedsearchid = ? AND cxsrchr_eni_entityinstanceid = ?",
@@ -4298,7 +4337,8 @@ public class SearchControl
                 "SELECT _ALL_ "
                 + "FROM cachedexecutedsearchresults "
                 + "WHERE cxsrchr_cxsrch_cachedexecutedsearchid = ? "
-                + "ORDER BY cxsrchr_sortorder");
+                + "ORDER BY cxsrchr_sortorder "
+                + "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM cachedexecutedsearchresults "
@@ -4320,8 +4360,8 @@ public class SearchControl
         return getCachedExecutedSearchResultsByCachedExecutedSearch(cachedExecutedSearch, EntityPermission.READ_WRITE);
     }
     
-    public int countCachedExecutedSearchResults(CachedExecutedSearch cachedExecutedSearch) {
-        return session.queryForInteger(
+    public long countCachedExecutedSearchResults(CachedExecutedSearch cachedExecutedSearch) {
+        return session.queryForLong(
                 "SELECT COUNT(*) "
                 + "FROM cachedexecutedsearchresults "
                 + "WHERE cxsrchr_cxsrch_cachedexecutedsearchid = ?",
@@ -4388,7 +4428,8 @@ public class SearchControl
         queryMap.put(EntityPermission.READ_ONLY,
                 "SELECT _ALL_ "
                 + "FROM uservisitsearches "
-                + "WHERE uvissrch_uvis_uservisitid = ?");
+                + "WHERE uvissrch_uvis_uservisitid = ? "
+                + "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM uservisitsearches "
@@ -4418,7 +4459,8 @@ public class SearchControl
         queryMap.put(EntityPermission.READ_ONLY,
                 "SELECT _ALL_ "
                 + "FROM uservisitsearches "
-                + "WHERE uvissrch_srchtyp_searchtypeid = ?");
+                + "WHERE uvissrch_srchtyp_searchtypeid = ? "
+                + "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM uservisitsearches "
@@ -4448,7 +4490,8 @@ public class SearchControl
         queryMap.put(EntityPermission.READ_ONLY,
                 "SELECT _ALL_ "
                 + "FROM uservisitsearches "
-                + "WHERE uvissrch_srch_searchid = ?");
+                + "WHERE uvissrch_srch_searchid = ? "
+                + "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM uservisitsearches "
@@ -4515,12 +4558,12 @@ public class SearchControl
         partySearchTypePreference.setLastDetail(partySearchTypePreferenceDetail);
         partySearchTypePreference.store();
 
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), partySearchTypePreference.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partySearchTypePreference.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return partySearchTypePreference;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.PartySearchTypePreference */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.PartySearchTypePreference */
     public PartySearchTypePreference getPartySearchTypePreferenceByEntityInstance(EntityInstance entityInstance) {
         PartySearchTypePreferencePK pk = new PartySearchTypePreferencePK(entityInstance.getEntityUniqueId());
         PartySearchTypePreference partySearchTypePreference = PartySearchTypePreferenceFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
@@ -4684,7 +4727,7 @@ public class SearchControl
             partySearchTypePreference.setActiveDetail(partySearchTypePreferenceDetail);
             partySearchTypePreference.setLastDetail(partySearchTypePreferenceDetail);
 
-            sendEventUsingNames(partyPK, EventTypes.MODIFY.name(), partySearchTypePreferencePK, EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(partyPK, EventTypes.MODIFY, partySearchTypePreferencePK, EventTypes.MODIFY, updatedBy);
         }
     }
 
@@ -4695,7 +4738,7 @@ public class SearchControl
         partySearchTypePreference.setActiveDetail(null);
         partySearchTypePreference.store();
 
-        sendEventUsingNames(partySearchTypePreferenceDetail.getPartyPK(), EventTypes.MODIFY.name(), partySearchTypePreference.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(partySearchTypePreferenceDetail.getPartyPK(), EventTypes.MODIFY, partySearchTypePreference.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 
     public void deletePartySearchTypePreferences(List<PartySearchTypePreference> partySearchTypePreferences, BasePK deletedBy) {
@@ -4733,13 +4776,13 @@ public class SearchControl
         SearchResultAction searchResultAction = SearchResultActionFactory.getInstance().create(search, searchResultActionType, actionTime, entityInstance,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(search.getPrimaryKey(), EventTypes.MODIFY.name(), searchResultAction.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(search.getPrimaryKey(), EventTypes.MODIFY, searchResultAction.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return searchResultAction;
     }
     
     public boolean searchResultActionExists(Search search, SearchResultActionType searchResultActionType, EntityInstance entityInstance) {
-        return session.queryForInteger(
+        return session.queryForLong(
                 "SELECT COUNT(*) "
                 + "FROM searchresultactions "
                 + "WHERE srchract_srch_searchid = ? AND srchract_srchracttyp_searchresultactiontypeid = ? AND srchract_eni_entityinstanceid = ? "
@@ -4817,7 +4860,7 @@ public class SearchControl
         searchResultAction.setThruTime(session.START_TIME_LONG);
         searchResultAction.store();
         
-        sendEventUsingNames(searchResultAction.getSearch().getPrimaryKey(), EventTypes.DELETE.name(), null, EventTypes.DELETE.name(), deletedBy);
+        sendEvent(searchResultAction.getSearch().getPrimaryKey(), EventTypes.DELETE, null, EventTypes.DELETE, deletedBy);
     }
     
     public void deleteSearchResultActions(List<SearchResultAction> searchResultActions, BasePK deletedBy) {
@@ -4886,10 +4929,10 @@ public class SearchControl
     }
 
     // Takes into account if it's a Search or CachedSearch.
-    public int countSearchResults(final UserVisitSearch userVisitSearch) {
+    public long countSearchResults(final UserVisitSearch userVisitSearch) {
         var search = userVisitSearch.getSearch();
         var cachedSearch = search.getCachedSearch();
-        int count;
+        long count;
 
         if(cachedSearch == null) {
             count = countSearchResults(search);
@@ -4903,7 +4946,7 @@ public class SearchControl
     }
 
     public List<EntityInstance> getUserVisitSearchEntityInstances(final UserVisitSearch userVisitSearch) {
-        var entityInstances = new ArrayList<EntityInstance>(countSearchResults(userVisitSearch));
+        var entityInstances = new ArrayList<EntityInstance>(toIntExact(countSearchResults(userVisitSearch)));
 
         // If this is a CachedSearch, then the Limits supplied by the user need to be copied
         // from SearchResults to CachedExecutedSearchResults.

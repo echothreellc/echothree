@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,7 +16,10 @@
 
 package com.echothree.model.control.core.common.transfer;
 
+import com.echothree.model.control.comment.common.transfer.CommentTypeTransfer;
 import com.echothree.model.control.index.common.transfer.IndexTypeTransfer;
+import com.echothree.model.control.message.common.transfer.MessageTypeTransfer;
+import com.echothree.model.control.rating.common.transfer.RatingTypeTransfer;
 import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.util.common.transfer.ListWrapper;
 import java.util.Objects;
@@ -29,26 +32,34 @@ public final class EntityTypeTransfer
     private Boolean keepAllHistory;
     private Long unformattedLockTimeout;
     private String lockTimeout;
+    private Boolean isExtensible;
     private Integer sortOrder;
     private String description;
     
     private Long indexTypesCount;
     private ListWrapper<IndexTypeTransfer> indexTypes;
+    private ListWrapper<EntityAttributeTransfer> entityAttributes;
+    private ListWrapper<CommentTypeTransfer> commentTypes;
+    private ListWrapper<RatingTypeTransfer> ratingTypes;
+    private ListWrapper<MessageTypeTransfer> messageTypes;
+    private Long entityInstancesCount;
+    private ListWrapper<EntityInstanceTransfer> entityInstances;
 
     /**
      * Creates a new instance of EntityTypeTransfer */
     public EntityTypeTransfer() {
-        this(null, null, null, null, null, null, null);
+        this(null, null, null, null, null, null, null, null);
     }
     
     /** Creates a new instance of EntityTypeTransfer */
     public EntityTypeTransfer(ComponentVendorTransfer componentVendor, String entityTypeName, Boolean keepAllHistory, Long unformattedLockTimeout,
-            String lockTimeout, Integer sortOrder, String description) {
+            String lockTimeout, Boolean isExtensible, Integer sortOrder, String description) {
         this.componentVendor = componentVendor;
         this.entityTypeName = entityTypeName;
         this.keepAllHistory = keepAllHistory;
         this.unformattedLockTimeout = unformattedLockTimeout;
         this.lockTimeout = lockTimeout;
+        this.isExtensible = isExtensible;
         this.sortOrder = sortOrder;
         this.description = description;
     }
@@ -120,11 +131,19 @@ public final class EntityTypeTransfer
     public Integer getSortOrder() {
         return sortOrder;
     }
-    
+
     public void setSortOrder(Integer sortOrder) {
         this.sortOrder = sortOrder;
     }
-    
+
+    public Boolean getIsExtensible() {
+        return isExtensible;
+    }
+
+    public void setIsExtensible(Boolean isExtensible) {
+        this.isExtensible = isExtensible;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -163,6 +182,54 @@ public final class EntityTypeTransfer
      */
     public void setIndexTypes(ListWrapper<IndexTypeTransfer> indexTypes) {
         this.indexTypes = indexTypes;
+    }
+
+    public ListWrapper<EntityAttributeTransfer> getEntityAttributes() {
+        return entityAttributes;
+    }
+
+    public void setEntityAttributes(final ListWrapper<EntityAttributeTransfer> entityAttributes) {
+        this.entityAttributes = entityAttributes;
+    }
+
+    public ListWrapper<CommentTypeTransfer> getCommentTypes() {
+        return commentTypes;
+    }
+
+    public void setCommentTypes(final ListWrapper<CommentTypeTransfer> commentTypes) {
+        this.commentTypes = commentTypes;
+    }
+
+    public ListWrapper<RatingTypeTransfer> getRatingTypes() {
+        return ratingTypes;
+    }
+
+    public void setRatingTypes(final ListWrapper<RatingTypeTransfer> ratingTypes) {
+        this.ratingTypes = ratingTypes;
+    }
+
+    public ListWrapper<MessageTypeTransfer> getMessageTypes() {
+        return messageTypes;
+    }
+
+    public void setMessageTypes(final ListWrapper<MessageTypeTransfer> messageTypes) {
+        this.messageTypes = messageTypes;
+    }
+
+    public Long getEntityInstancesCount() {
+        return entityInstancesCount;
+    }
+
+    public void setEntityInstancesCount(final Long entityInstancesCount) {
+        this.entityInstancesCount = entityInstancesCount;
+    }
+
+    public ListWrapper<EntityInstanceTransfer> getEntityInstances() {
+        return entityInstances;
+    }
+
+    public void setEntityInstances(final ListWrapper<EntityInstanceTransfer> entityInstances) {
+        this.entityInstances = entityInstances;
     }
 
     /** componentVendor and entityTypeName must be present.

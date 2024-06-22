@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -76,12 +76,12 @@ public class PaymentProcessorTypeControl
         paymentProcessorType.setLastDetail(paymentProcessorTypeDetail);
         paymentProcessorType.store();
 
-        sendEventUsingNames(paymentProcessorType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(paymentProcessorType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return paymentProcessorType;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.PaymentProcessorType */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.PaymentProcessorType */
     public PaymentProcessorType getPaymentProcessorTypeByEntityInstance(final EntityInstance entityInstance,
             final EntityPermission entityPermission) {
         var pk = new PaymentProcessorTypePK(entityInstance.getEntityUniqueId());
@@ -272,7 +272,7 @@ public class PaymentProcessorTypeControl
             paymentProcessorType.setActiveDetail(paymentProcessorTypeDetail);
             paymentProcessorType.setLastDetail(paymentProcessorTypeDetail);
 
-            sendEventUsingNames(paymentProcessorTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(paymentProcessorTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -311,7 +311,7 @@ public class PaymentProcessorTypeControl
             }
         }
 
-        sendEventUsingNames(paymentProcessorType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(paymentProcessorType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     // --------------------------------------------------------------------------------
@@ -323,7 +323,7 @@ public class PaymentProcessorTypeControl
         var paymentProcessorTypeDescription = PaymentProcessorTypeDescriptionFactory.getInstance().create(paymentProcessorType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(paymentProcessorType.getPrimaryKey(), EventTypes.MODIFY.name(), paymentProcessorTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(paymentProcessorType.getPrimaryKey(), EventTypes.MODIFY, paymentProcessorTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return paymentProcessorTypeDescription;
     }
@@ -441,14 +441,14 @@ public class PaymentProcessorTypeControl
             paymentProcessorTypeDescription = PaymentProcessorTypeDescriptionFactory.getInstance().create(paymentProcessorType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(paymentProcessorType.getPrimaryKey(), EventTypes.MODIFY.name(), paymentProcessorTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(paymentProcessorType.getPrimaryKey(), EventTypes.MODIFY, paymentProcessorTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deletePaymentProcessorTypeDescription(final PaymentProcessorTypeDescription paymentProcessorTypeDescription, final BasePK deletedBy) {
         paymentProcessorTypeDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(paymentProcessorTypeDescription.getPaymentProcessorTypePK(), EventTypes.MODIFY.name(), paymentProcessorTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(paymentProcessorTypeDescription.getPaymentProcessorTypePK(), EventTypes.MODIFY, paymentProcessorTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 

@@ -28,7 +28,7 @@
             </tr>
             <c:forEach items="${entityAttributeGroup.entityAttributes.list}" var="entityAttribute">
                 <tr>
-                    <td align="right">
+                    <td style="text-align: right; vertical-align: top">
                         <c:choose>
                             <c:when test="${includeEntityAttributeReviewUrl}">
                                 <c:url var="entityAttributeUrl" value="/action/Core/EntityAttribute/Review">
@@ -43,13 +43,13 @@
                             </c:otherwise>
                         </c:choose>
                     </td>
-                    <td>
+                    <td style="vertical-align: top">
                         <c:set var="entityAttributeTypeName" value="${entityAttribute.entityAttributeType.entityAttributeTypeName}" />
                         <c:choose>
                             <c:when test="${entityAttributeTypeName == 'BOOLEAN'}">
                                 <c:choose>
                                     <c:when test="${entityAttribute.entityBooleanAttribute == null}">
-                                        <i>Not Set.</i>
+                                        <i><fmt:message key="phrase.notSet" /></i>
                                         <c:url var="addUrl" value="/action/Core/EntityBooleanAttribute/Add">
                                             <c:param name="EntityRef" value="${entityInstance.entityRef}" />
                                             <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
@@ -84,7 +84,7 @@
                             <c:when test="${entityAttributeTypeName == 'LISTITEM'}">
                                 <c:choose>
                                     <c:when test="${entityAttribute.entityListItemAttribute == null}">
-                                        <i>Not Set.</i>
+                                        <i><fmt:message key="phrase.notSet" /></i>
                                         <c:url var="addUrl" value="/action/Core/EntityListItemAttribute/Add">
                                             <c:param name="EntityRef" value="${entityInstance.entityRef}" />
                                             <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
@@ -123,54 +123,60 @@
                                 </c:choose>
                             </c:when>
                             <c:when test="${entityAttributeTypeName == 'MULTIPLELISTITEM'}">
-                                <c:choose>
-                                    <c:when test="${entityAttribute.entityMultipleListItemAttributes == null}">
-                                        <i>Not Set.</i>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <c:choose>
-                                            <c:when test='${entityAttribute.entityMultipleListItemAttributes.size != 0}'>
-                                                <c:forEach items="${entityAttribute.entityMultipleListItemAttributes.list}" var="entityMultipleListItemAttribute">
-                                                    <c:choose>
-                                                        <c:when test="${includeEntityAttributeReviewUrl}">
-                                                            <c:url var="entityListItemUrl" value="/action/Core/EntityListItem/Review">
-                                                                <c:param name="ComponentVendorName" value="${entityAttribute.entityType.componentVendor.componentVendorName}" />
-                                                                <c:param name="EntityTypeName" value="${entityAttribute.entityType.entityTypeName}" />
-                                                                <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
-                                                                <c:param name="EntityListItemName" value="${entityMultipleListItemAttribute.entityListItem.entityListItemName}" />
-                                                            </c:url>
-                                                            <a href="${entityListItemUrl}"><c:out value="${entityMultipleListItemAttribute.entityListItem.description}" /></a>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <c:out value="${entityMultipleListItemAttribute.entityListItem.description}" />
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                    <c:url var="deleteUrl" value="/action/Core/EntityMultipleListItemAttribute/Delete">
-                                                        <c:param name="EntityRef" value="${entityInstance.entityRef}" />
-                                                        <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
-                                                        <c:param name="EntityListItemName" value="${entityMultipleListItemAttribute.entityListItem.entityListItemName}" />
-                                                        <c:param name="ReturnUrl" value="${returnUrl}" />
-                                                    </c:url>
-                                                    [<a href="${deleteUrl}">Delete</a>],
-                                                </c:forEach>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <i>Not Set.</i>
-                                            </c:otherwise>
-                                        </c:choose>
-                                        <c:url var="addUrl" value="/action/Core/EntityMultipleListItemAttribute/Add">
-                                            <c:param name="EntityRef" value="${entityInstance.entityRef}" />
-                                            <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
-                                            <c:param name="ReturnUrl" value="${returnUrl}" />
-                                        </c:url>
-                                        [<a href="${addUrl}">Add</a>]
-                                    </c:otherwise>
-                                </c:choose>
+                                <table style="padding: 0px; border-spacing: 0px">
+                                    <c:url var="addUrl" value="/action/Core/EntityMultipleListItemAttribute/Add">
+                                        <c:param name="EntityRef" value="${entityInstance.entityRef}" />
+                                        <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
+                                        <c:param name="ReturnUrl" value="${returnUrl}" />
+                                    </c:url>
+                                    <c:choose>
+                                        <c:when test="${entityAttribute.entityMultipleListItemAttributes == null}">
+                                            <i><fmt:message key="phrase.notSet" /></i>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <c:choose>
+                                                <c:when test='${entityAttribute.entityMultipleListItemAttributes.size != 0}'>
+                                                    <c:forEach items="${entityAttribute.entityMultipleListItemAttributes.list}" var="entityMultipleListItemAttribute">
+                                                        <tr>
+                                                            <td>
+                                                                <c:choose>
+                                                                    <c:when test="${includeEntityAttributeReviewUrl}">
+                                                                        <c:url var="entityListItemUrl" value="/action/Core/EntityListItem/Review">
+                                                                            <c:param name="ComponentVendorName" value="${entityAttribute.entityType.componentVendor.componentVendorName}" />
+                                                                            <c:param name="EntityTypeName" value="${entityAttribute.entityType.entityTypeName}" />
+                                                                            <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
+                                                                            <c:param name="EntityListItemName" value="${entityMultipleListItemAttribute.entityListItem.entityListItemName}" />
+                                                                        </c:url>
+                                                                        <a href="${entityListItemUrl}"><c:out value="${entityMultipleListItemAttribute.entityListItem.description}" /></a>
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <c:out value="${entityMultipleListItemAttribute.entityListItem.description}" />
+                                                                    </c:otherwise>
+                                                                </c:choose>
+                                                                <c:url var="deleteUrl" value="/action/Core/EntityMultipleListItemAttribute/Delete">
+                                                                    <c:param name="EntityRef" value="${entityInstance.entityRef}" />
+                                                                    <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
+                                                                    <c:param name="EntityListItemName" value="${entityMultipleListItemAttribute.entityListItem.entityListItemName}" />
+                                                                    <c:param name="ReturnUrl" value="${returnUrl}" />
+                                                                </c:url>
+                                                                [<a href="${deleteUrl}">Delete</a>]
+                                                            </td>
+                                                        </tr>
+                                                    </c:forEach>
+                                                    <tr><td>[<a href="${addUrl}">Add</a>]</td></tr>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <tr><td><i><fmt:message key="phrase.notSet" /></i> [<a href="${addUrl}">Add</a>]</td></tr>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </table>
                             </c:when>
                             <c:when test="${entityAttributeTypeName == 'INTEGER'}">
                                 <c:choose>
                                     <c:when test="${entityAttribute.entityIntegerAttribute == null}">
-                                        <i>Not Set.</i>
+                                        <i><fmt:message key="phrase.notSet" /></i>
                                         <c:url var="addUrl" value="/action/Core/EntityIntegerAttribute/Add">
                                             <c:param name="EntityRef" value="${entityInstance.entityRef}" />
                                             <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
@@ -198,7 +204,7 @@
                             <c:when test="${entityAttributeTypeName == 'LONG'}">
                                 <c:choose>
                                     <c:when test="${entityAttribute.entityLongAttribute == null}">
-                                        <i>Not Set.</i>
+                                        <i><fmt:message key="phrase.notSet" /></i>
                                         <c:url var="addUrl" value="/action/Core/EntityLongAttribute/Add">
                                             <c:param name="EntityRef" value="${entityInstance.entityRef}" />
                                             <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
@@ -226,7 +232,7 @@
                             <c:when test="${entityAttributeTypeName == 'NAME'}">
                                 <c:choose>
                                     <c:when test="${entityAttribute.entityNameAttribute == null}">
-                                        <i>Not Set.</i>
+                                        <i><fmt:message key="phrase.notSet" /></i>
                                         <c:url var="addUrl" value="/action/Core/EntityNameAttribute/Add">
                                             <c:param name="EntityRef" value="${entityInstance.entityRef}" />
                                             <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
@@ -254,7 +260,7 @@
                             <c:when test="${entityAttributeTypeName == 'STRING'}">
                                 <c:choose>
                                     <c:when test="${entityAttribute.entityStringAttribute == null}">
-                                        <i>Not Set.</i>
+                                        <i><fmt:message key="phrase.notSet" /></i>
                                         <c:url var="addUrl" value="/action/Core/EntityStringAttribute/Add">
                                             <c:param name="EntityRef" value="${entityInstance.entityRef}" />
                                             <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
@@ -284,7 +290,7 @@
                             <c:when test="${entityAttributeTypeName == 'GEOPOINT'}">
                                 <c:choose>
                                     <c:when test="${entityAttribute.entityGeoPointAttribute == null}">
-                                        <i>Not Set.</i>
+                                        <i><fmt:message key="phrase.notSet" /></i>
                                         <c:url var="addUrl" value="/action/Core/EntityGeoPointAttribute/Add">
                                             <c:param name="EntityRef" value="${entityInstance.entityRef}" />
                                             <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
@@ -333,7 +339,7 @@
                             <c:when test="${entityAttributeTypeName == 'DATE'}">
                                 <c:choose>
                                     <c:when test="${entityAttribute.entityDateAttribute == null}">
-                                        <i>Not Set.</i>
+                                        <i><fmt:message key="phrase.notSet" /></i>
                                         <c:url var="addUrl" value="/action/Core/EntityDateAttribute/Add">
                                             <c:param name="EntityRef" value="${entityInstance.entityRef}" />
                                             <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
@@ -361,7 +367,7 @@
                             <c:when test="${entityAttributeTypeName == 'TIME'}">
                                 <c:choose>
                                     <c:when test="${entityAttribute.entityTimeAttribute == null}">
-                                        <i>Not Set.</i>
+                                        <i><fmt:message key="phrase.notSet" /></i>
                                         <c:url var="addUrl" value="/action/Core/EntityTimeAttribute/Add">
                                             <c:param name="EntityRef" value="${entityInstance.entityRef}" />
                                             <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
@@ -389,7 +395,7 @@
                             <c:when test="${entityAttributeTypeName == 'BLOB'}">
                                 <c:choose>
                                     <c:when test="${entityAttribute.entityBlobAttribute == null}">
-                                        <i>Not Set.</i>
+                                        <i><fmt:message key="phrase.notSet" /></i>
                                         <c:url var="addUrl" value="/action/Core/EntityBlobAttribute/Add">
                                             <c:param name="EntityRef" value="${entityInstance.entityRef}" />
                                             <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
@@ -425,7 +431,7 @@
                             <c:when test="${entityAttributeTypeName == 'CLOB'}">
                                 <c:choose>
                                     <c:when test="${entityAttribute.entityClobAttribute == null}">
-                                        <i>Not Set.</i>
+                                        <i><fmt:message key="phrase.notSet" /></i>
                                         <c:url var="addUrl" value="/action/Core/EntityClobAttribute/Add">
                                             <c:param name="EntityRef" value="${entityInstance.entityRef}" />
                                             <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
@@ -461,7 +467,7 @@
                             <c:when test="${entityAttributeTypeName == 'ENTITY'}">
                                 <c:choose>
                                     <c:when test="${entityAttribute.entityEntityAttribute == null}">
-                                        <i>Not Set.</i>
+                                        <i><fmt:message key="phrase.notSet" /></i>
                                         <c:url var="addUrl" value="/action/Core/EntityEntityAttribute/Add">
                                             <c:param name="EntityRef" value="${entityInstance.entityRef}" />
                                             <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
@@ -492,7 +498,7 @@
                             <c:when test="${entityAttributeTypeName == 'COLLECTION'}">
                                 <c:choose>
                                     <c:when test="${entityAttribute.entityCollectionAttributes == null}">
-                                        <i>Not Set.</i>
+                                        <i><fmt:message key="phrase.notSet" /></i>
                                     </c:when>
                                     <c:otherwise>
                                         <c:choose>
@@ -512,7 +518,7 @@
                                                 </c:forEach>
                                             </c:when>
                                             <c:otherwise>
-                                                <i>Not Set.</i>
+                                                <i><fmt:message key="phrase.notSet" /></i>
                                             </c:otherwise>
                                         </c:choose>
                                         <c:url var="addUrl" value="/action/Core/EntityCollectionAttribute/Add">

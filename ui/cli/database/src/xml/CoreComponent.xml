@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
 <!--                                                                                  -->
-<!-- Copyright 2002-2022 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -337,6 +337,7 @@
                         <column name="EntityTypeName" type="EntityTypeName" nullAllowed="false" />
                         <column name="KeepAllHistory" type="Boolean" nullAllowed="false" />
                         <column name="LockTimeout" type="Time" nullAllowed="true" />
+                        <column name="IsExtensible" type="Boolean" nullAllowed="false" />
                         <column name="SortOrder" type="Integer" nullAllowed="false" />
                         <column name="FromTime" type="Time" nullAllowed="false" />
                         <column name="ThruTime" type="Time" nullAllowed="false" />
@@ -351,6 +352,10 @@
                         </index>
                         <index type="Unique" name="Index2">
                             <indexColumn name="ComponentVendorId" />
+                            <indexColumn name="EntityTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
                             <indexColumn name="EntityTypeName" />
                             <indexColumn name="ThruTime" />
                         </index>
@@ -646,6 +651,116 @@
                         </index>
                         <index type="Unique">
                             <indexColumn name="Ulid" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="EntityAliasTypes" nameSingular="EntityAliasType" columnPrefix="eniat">
+                    <columns>
+                        <column name="EntityAliasTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="EntityAliasTypeDetails" destinationColumn="EntityAliasTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="EntityAliasTypeDetails" destinationColumn="EntityAliasTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="EntityAliasTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="EntityAliasTypeDetails" nameSingular="EntityAliasTypeDetail" columnPrefix="eniatdt">
+                    <columns>
+                        <column name="EntityAliasTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="EntityAliasTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityAliasTypes" destinationColumn="EntityAliasTypeId" />
+                        <column name="EntityTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityTypes" destinationColumn="EntityTypeId" />
+                        <column name="EntityAliasTypeName" type="Name" nullAllowed="false" />
+                        <column name="ValidationPattern" type="RegExp" nullAllowed="true" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="EntityAliasTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="EntityAliasTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="EntityTypeId" />
+                            <indexColumn name="EntityAliasTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="EntityTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="EntityAliasTypeDescriptions" nameSingular="EntityAliasTypeDescription" columnPrefix="eniatd">
+                    <columns>
+                        <column name="EntityAliasTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="EntityAliasTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityAliasTypes" destinationColumn="EntityAliasTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="EntityAliasTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="EntityAliasTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="EntityAliasTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="EntityAliases" nameSingular="EntityAlias" columnPrefix="enial">
+                    <columns>
+                        <column name="EntityAliasId" type="EID" nullAllowed="false" />
+                        <column name="EntityInstanceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityInstances" destinationColumn="EntityInstanceId" />
+                        <column name="EntityAliasTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityAliasTypes" destinationColumn="EntityAliasTypeId" />
+                        <column name="Alias" type="EntityAlias" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="EntityAliasId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="EntityInstanceId" />
+                            <indexColumn name="EntityAliasTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="EntityAliasTypeId" />
+                            <indexColumn name="Alias" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="EntityAliasTypeId" />
+                            <indexColumn name="ThruTime" />
                         </index>
                     </indexes>
                 </table>
@@ -1770,13 +1885,6 @@
                     <columns>
                         <column name="EventTypeId" type="EID" nullAllowed="false" />
                         <column name="EventTypeName" type="Name" nullAllowed="false" />
-                        <column name="UpdateCreatedTime" type="Boolean" nullAllowed="false" />
-                        <column name="UpdateModifiedTime" type="Boolean" nullAllowed="false" />
-                        <column name="UpdateDeletedTime" type="Boolean" nullAllowed="false" />
-                        <column name="UpdateVisitedTime" type="Boolean" nullAllowed="false" />
-                        <column name="QueueToSubscribers" type="Boolean" nullAllowed="false" />
-                        <column name="KeepHistory" type="Boolean" nullAllowed="false" />
-                        <column name="MaximumHistory" type="Integer" nullAllowed="true" />
                     </columns>
                     <indexes>
                         <index type="PrimaryKey">

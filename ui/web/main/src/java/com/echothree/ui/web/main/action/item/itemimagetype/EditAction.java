@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import com.echothree.control.user.item.common.ItemUtil;
 import com.echothree.control.user.item.common.edit.ItemImageTypeEdit;
 import com.echothree.control.user.item.common.form.EditItemImageTypeForm;
 import com.echothree.control.user.item.common.result.EditItemImageTypeResult;
-import com.echothree.control.user.item.common.spec.ItemImageTypeSpec;
+import com.echothree.control.user.item.common.spec.ItemImageTypeUniversalSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -45,12 +45,12 @@ import javax.servlet.http.HttpServletRequest;
     }
 )
 public class EditAction
-        extends MainBaseEditAction<EditActionForm, ItemImageTypeSpec, ItemImageTypeEdit, EditItemImageTypeForm, EditItemImageTypeResult> {
+        extends MainBaseEditAction<EditActionForm, ItemImageTypeUniversalSpec, ItemImageTypeEdit, EditItemImageTypeForm, EditItemImageTypeResult> {
     
     @Override
-    protected ItemImageTypeSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
+    protected ItemImageTypeUniversalSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ItemImageTypeSpec spec = ItemUtil.getHome().getItemImageTypeSpec();
+        var spec = ItemUtil.getHome().getItemImageTypeUniversalSpec();
         
         spec.setItemImageTypeName(findParameter(request, ParameterConstants.ORIGINAL_ITEM_IMAGE_TYPE_NAME, actionForm.getOriginalItemImageTypeName()));
         
@@ -79,7 +79,7 @@ public class EditAction
     }
     
     @Override
-    protected void setupActionForm(HttpServletRequest request, EditActionForm actionForm, EditItemImageTypeResult result, ItemImageTypeSpec spec, ItemImageTypeEdit edit) {
+    protected void setupActionForm(HttpServletRequest request, EditActionForm actionForm, EditItemImageTypeResult result, ItemImageTypeUniversalSpec spec, ItemImageTypeEdit edit) {
         actionForm.setOriginalItemImageTypeName(spec.getItemImageTypeName());
         actionForm.setItemImageTypeName(edit.getItemImageTypeName());
         actionForm.setPreferredMimeTypeChoice(edit.getPreferredMimeTypeName());

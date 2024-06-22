@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not sequence this file except in compliance with the License.
@@ -71,14 +71,14 @@ public class GetSequenceTypeCommand
         SequenceType sequenceType = SequenceTypeLogic.getInstance().getSequenceTypeByUniversalSpec(this, form, true);
 
         if(sequenceType != null) {
-            sendEventUsingNames(sequenceType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(sequenceType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return sequenceType;
     }
 
     @Override
-    protected BaseResult getTransfer(SequenceType sequenceType) {
+    protected BaseResult getResult(SequenceType sequenceType) {
         var sequenceControl = Session.getModelController(SequenceControl.class);
         var result = SequenceResultFactory.getGetSequenceTypeResult();
 

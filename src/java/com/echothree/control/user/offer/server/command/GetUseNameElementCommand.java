@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2022 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -72,14 +72,14 @@ public class GetUseNameElementCommand
         UseNameElement useNameElement = UseNameElementLogic.getInstance().getUseNameElementByUniversalSpec(this, form);
 
         if(useNameElement != null) {
-            sendEventUsingNames(useNameElement.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(useNameElement.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return useNameElement;
     }
     
     @Override
-    protected BaseResult getTransfer(UseNameElement useNameElement) {
+    protected BaseResult getResult(UseNameElement useNameElement) {
         var useNameElementControl = Session.getModelController(UseNameElementControl.class);
         GetUseNameElementResult result = OfferResultFactory.getGetUseNameElementResult();
 
