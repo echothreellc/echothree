@@ -14,7 +14,7 @@
 <!-- See the License for the specific language governing permissions and              -->
 <!-- limitations under the License.                                                   -->
 <!--                                                                                  -->
-<configuration xmlns="http://www.jooq.org/xsd/jooq-codegen-3.15.0.xsd">
+<configuration xmlns="http://www.jooq.org/xsd/jooq-codegen-3.19.0.xsd">
     <!-- Configure the database connection here -->
     <generator>
         <!-- A programmatic naming strategy implementation, referenced by class name. -->

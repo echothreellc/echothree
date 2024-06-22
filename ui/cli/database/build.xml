@@ -41,7 +41,7 @@
             <file file="${build.lib.dir}/jooq.jar"/>
             <file file="${build.lib.dir}/jooq-codegen.jar"/>
             <file file="${build.lib.dir}/jooq-meta.jar"/>
-            <file file="${build.lib.dir}/jaxb-api.jar"/>
+            <file file="${build.lib.dir}/jakarta.xml.bind-api.jar"/>
             <file file="${build.lib.dir}/r2dbc-spi.jar"/>
             <file file="${build.lib.dir}/reactive-streams.jar"/>
             <file file="${build.lib.dir}/mysql-connector-j.jar"/>
