@@ -331,6 +331,7 @@ public enum SecurityRoleGroups {
     TagScope,
     TagScopeEntityType,
     TaxClassification,
+    TerminationType,
     TextDecoration,
     TextTransformation,
     TimeZone,

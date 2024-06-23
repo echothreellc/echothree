@@ -23,6 +23,9 @@ import com.echothree.control.user.employee.common.result.EditTerminationTypeResu
 import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
 import com.echothree.control.user.employee.common.spec.TerminationTypeSpec;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
+import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.employee.server.entity.TerminationType;
 import com.echothree.model.data.employee.server.entity.TerminationTypeDescription;
 import com.echothree.model.data.employee.server.entity.TerminationTypeDetail;
@@ -35,6 +38,9 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,11 +48,19 @@ import java.util.List;
 
 public class EditTerminationTypeCommand
         extends BaseEditCommand<TerminationTypeSpec, TerminationTypeEdit> {
-    
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
     
     static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.TerminationType.name(), SecurityRoles.Edit.name())
+                ))
+        ));
+
         List<FieldDefinition> temp = new ArrayList<>(1);
         temp.add(new FieldDefinition("TerminationTypeName", FieldType.ENTITY_NAME, true, null, null));
         SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(temp);
@@ -61,7 +75,7 @@ public class EditTerminationTypeCommand
     
     /** Creates a new instance of EditTerminationTypeCommand */
     public EditTerminationTypeCommand(UserVisitPK userVisitPK, EditTerminationTypeForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override
