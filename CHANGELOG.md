@@ -1,5 +1,20 @@
 # Changelog
 
+## 2024-06-23-01
+
+* Add Security to LeaveReason UCs [1099](https://gitlab.echothree.com/echothree/echothree/-/issues/1099)
+* Add Security to LeaveType UCs [1100](https://gitlab.echothree.com/echothree/echothree/-/issues/1100)
+* Add Security to TerminationReason UCs [1101](https://gitlab.echothree.com/echothree/echothree/-/issues/1101)
+* Add Security to TerminationType UCs [1102](https://gitlab.echothree.com/echothree/echothree/-/issues/1102)
+* Add Security to EntityAttributeType UCs [1290](https://gitlab.echothree.com/echothree/echothree/-/issues/1290)
+* jOOQ 3.19.9 Upgrade [1295](https://gitlab.echothree.com/echothree/echothree/-/issues/1295)
+* jOOQ 3.19.10 Upgrade [1296](https://gitlab.echothree.com/echothree/echothree/-/issues/1296)
+* GraphQL History Prototype for Entity Boolean Attributes [1297](https://gitlab.echothree.com/echothree/echothree/-/issues/1297)
+* GraphQL History for Entity String Attributes [1298](https://gitlab.echothree.com/echothree/echothree/-/issues/1298)
+* NPE Thrown With Null Related Entity Instance in Event Object [1299](https://gitlab.echothree.com/echothree/echothree/-/issues/1299)
+* Error Prone 2.28.0 Upgrade [1300](https://gitlab.echothree.com/echothree/echothree/-/issues/1300)
+* Leave Type and Reason Not Marked As Required [1301](https://gitlab.echothree.com/echothree/echothree/-/issues/1301)
+
 ## 2024-06-09-01
 
 * GraphQL Pagination Prototype [197](https://gitlab.echothree.com/echothree/echothree/-/issues/197)
