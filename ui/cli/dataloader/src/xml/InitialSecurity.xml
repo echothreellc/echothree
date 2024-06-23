@@ -3222,8 +3222,26 @@
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="TerminationType" parentSecurityRoleGroupName="EmployeeComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Termination Type" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Termination Type Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Termination Type Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Termination Type Delete" />
+            </securityRole>
             <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Termination Type List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Termination Type Review" />
+            </securityRole>
+            <securityRole securityRoleName="Choices" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Termination Type Choices" />
+            </securityRole>
+            <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Termination Type Description" />
             </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="CancellationPolicyComponent" parentSecurityRoleGroupName="ROOT" isDefault="false" sortOrder="1">
@@ -8383,7 +8401,13 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="LeaveStatus" securityRoleName="Approved" />
             <partySecurityRoleTemplateRole securityRoleGroupName="LeaveStatus" securityRoleName="Denied" />
             <partySecurityRoleTemplateRole securityRoleGroupName="LeaveStatus" securityRoleName="Revised" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="TerminationReason" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="TerminationReason" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="TerminationReason" securityRoleName="Delete" />
             <partySecurityRoleTemplateRole securityRoleGroupName="TerminationReason" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="TerminationReason" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="TerminationReason" securityRoleName="Choices" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="TerminationReason" securityRoleName="Description" />
             <partySecurityRoleTemplateRole securityRoleGroupName="TerminationType" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="TerminationType" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="TerminationType" securityRoleName="Delete" />
