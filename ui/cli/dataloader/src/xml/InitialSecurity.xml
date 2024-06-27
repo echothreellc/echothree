@@ -2551,6 +2551,21 @@
                 <securityRoleDescription languageIsoName="en" description="Wishlist Type Description" />
             </securityRole>
         </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="WishlistPriority" parentSecurityRoleGroupName="WishlistComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Wishlist Priority" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Wishlist Priority Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Wishlist Priority Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Wishlist Priority Delete" />
+            </securityRole>
+            <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Wishlist Priority Description" />
+            </securityRole>
+        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="Wishlist" parentSecurityRoleGroupName="WishlistComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Wishlist" />
             <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
@@ -8582,6 +8597,10 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="WishlistType" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WishlistType" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WishlistType" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="WishlistPriority" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="WishlistPriority" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="WishlistPriority" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="WishlistPriority" securityRoleName="Description" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Wishlist" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Wishlist" securityRoleName="Search" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Workflow" securityRoleName="Create" />

@@ -34,7 +34,8 @@ import java.util.List;
 
 public class GetWishlistPriorityChoicesCommand
         extends BaseSimpleCommand<GetWishlistPriorityChoicesForm> {
-    
+
+    // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
