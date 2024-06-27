@@ -367,6 +367,7 @@ public enum SecurityRoleGroups {
     WarehouseAlias,
     WarehouseType,
     Wishlist,
+    WishlistPriority,
     WishlistType,
     WorkEffortType,
     WorkEffortScope,
