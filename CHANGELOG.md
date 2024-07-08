@@ -1,5 +1,12 @@
 # Changelog
 
+## 2024-07-07-01
+
+* Add Security to WishlistPriority UCs [1303](https://gitlab.echothree.com/echothree/echothree/-/issues/1303)
+* Apache Lucene 9.11.1 Upgrade [1304](https://gitlab.echothree.com/echothree/echothree/-/issues/1304)
+* Gson 2.11.0 Upgrade [1305](https://gitlab.echothree.com/echothree/echothree/-/issues/1305)
+* Apache Avro 1.11.3 Upgrade [1306](https://gitlab.echothree.com/echothree/echothree/-/issues/1306)
+
 ## 2024-06-23-01
 
 * Add Security to LeaveReason UCs [1099](https://gitlab.echothree.com/echothree/echothree/-/issues/1099)
