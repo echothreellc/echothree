@@ -23,6 +23,8 @@ import com.echothree.control.user.accounting.server.command.GetGlAccountCommand;
 import com.echothree.control.user.accounting.server.command.GetGlAccountsCommand;
 import com.echothree.control.user.accounting.server.command.GetItemAccountingCategoriesCommand;
 import com.echothree.control.user.accounting.server.command.GetItemAccountingCategoryCommand;
+import com.echothree.control.user.accounting.server.command.GetSymbolPositionCommand;
+import com.echothree.control.user.accounting.server.command.GetSymbolPositionsCommand;
 import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyUtil;
 import com.echothree.control.user.cancellationpolicy.server.command.GetCancellationKindCommand;
 import com.echothree.control.user.cancellationpolicy.server.command.GetCancellationKindsCommand;
@@ -361,6 +363,7 @@ import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.accounting.server.graphql.CurrencyObject;
 import com.echothree.model.control.accounting.server.graphql.GlAccountObject;
 import com.echothree.model.control.accounting.server.graphql.ItemAccountingCategoryObject;
+import com.echothree.model.control.accounting.server.graphql.SymbolPositionObject;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationKindObject;
 import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationPolicyObject;
@@ -549,9 +552,11 @@ import com.echothree.model.control.workflow.server.graphql.WorkflowStepObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowStepTypeObject;
 import com.echothree.model.data.accounting.common.CurrencyConstants;
 import com.echothree.model.data.accounting.common.ItemAccountingCategoryConstants;
+import com.echothree.model.data.accounting.common.SymbolPositionConstants;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.accounting.server.entity.GlAccount;
 import com.echothree.model.data.accounting.server.entity.ItemAccountingCategory;
+import com.echothree.model.data.accounting.server.entity.SymbolPosition;
 import com.echothree.model.data.cancellationpolicy.common.CancellationKindConstants;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
@@ -5745,6 +5750,59 @@ public interface GraphQlQueries {
         var userVisit = BaseGraphQl.getUserVisit(env);
 
         return userVisit == null ? null : new UserVisitObject(userVisit);
+    }
+
+    @GraphQLField
+    @GraphQLName("symbolPosition")
+    static SymbolPositionObject symbolPosition(final DataFetchingEnvironment env,
+            @GraphQLName("symbolPositionName") final String symbolPositionName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        SymbolPosition symbolPosition;
+
+        try {
+            var commandForm = AccountingUtil.getHome().getGetSymbolPositionForm();
+
+            commandForm.setSymbolPositionName(symbolPositionName);
+            commandForm.setUlid(id);
+
+            symbolPosition = new GetSymbolPositionCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return symbolPosition == null ? null : new SymbolPositionObject(symbolPosition);
+    }
+
+    @GraphQLField
+    @GraphQLName("symbolPositions")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<SymbolPositionObject> symbolPositions(final DataFetchingEnvironment env) {
+        CountingPaginatedData<SymbolPositionObject> data;
+
+        try {
+            var commandForm = AccountingUtil.getHome().getGetSymbolPositionsForm();
+            var command = new GetSymbolPositionsCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
+
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, SymbolPositionConstants.COMPONENT_VENDOR_NAME, SymbolPositionConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var symbolPositions = entities.stream()
+                            .map(SymbolPositionObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, symbolPositions);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
     }
 
     @GraphQLField

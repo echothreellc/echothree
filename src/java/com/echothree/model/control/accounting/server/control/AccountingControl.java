@@ -5406,7 +5406,14 @@ public class AccountingControl
     public SymbolPosition getSymbolPositionByEntityInstanceForUpdate(EntityInstance entityInstance) {
         return getSymbolPositionByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
-    
+
+    public long countSymbolPositions() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM symbolpositions, symbolpositiondetails " +
+                        "WHERE sympos_activedetailid = symposdt_symbolpositiondetailid");
+    }
+
     private SymbolPosition getSymbolPositionByName(String symbolPositionName, EntityPermission entityPermission) {
         SymbolPosition symbolPosition;
         
@@ -5504,7 +5511,8 @@ public class AccountingControl
                 query = "SELECT _ALL_ " +
                         "FROM symbolpositions, symbolpositiondetails " +
                         "WHERE sympos_symbolpositionid = symposdt_sympos_symbolpositionid AND symposdt_thrutime = ? " +
-                        "ORDER BY symposdt_sortorder, symposdt_symbolpositionname";
+                        "ORDER BY symposdt_sortorder, symposdt_symbolpositionname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM symbolpositions, symbolpositiondetails " +
