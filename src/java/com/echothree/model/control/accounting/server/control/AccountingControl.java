@@ -5406,7 +5406,14 @@ public class AccountingControl
     public SymbolPosition getSymbolPositionByEntityInstanceForUpdate(EntityInstance entityInstance) {
         return getSymbolPositionByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
-    
+
+    public long countSymbolPositions() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM symbolpositions, symbolpositiondetails " +
+                        "WHERE sympos_activedetailid = symposdt_symbolpositiondetailid");
+    }
+
     private SymbolPosition getSymbolPositionByName(String symbolPositionName, EntityPermission entityPermission) {
         SymbolPosition symbolPosition;
         
