@@ -5511,7 +5511,8 @@ public class AccountingControl
                 query = "SELECT _ALL_ " +
                         "FROM symbolpositions, symbolpositiondetails " +
                         "WHERE sympos_symbolpositionid = symposdt_sympos_symbolpositionid AND symposdt_thrutime = ? " +
-                        "ORDER BY symposdt_sortorder, symposdt_symbolpositionname";
+                        "ORDER BY symposdt_sortorder, symposdt_symbolpositionname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM symbolpositions, symbolpositiondetails " +
