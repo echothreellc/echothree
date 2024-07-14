@@ -551,6 +551,7 @@ import com.echothree.model.control.workflow.server.graphql.WorkflowSelectorKindO
 import com.echothree.model.control.workflow.server.graphql.WorkflowStepObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowStepTypeObject;
 import com.echothree.model.data.accounting.common.CurrencyConstants;
+import com.echothree.model.data.accounting.common.GlAccountConstants;
 import com.echothree.model.data.accounting.common.ItemAccountingCategoryConstants;
 import com.echothree.model.data.accounting.common.SymbolPositionConstants;
 import com.echothree.model.data.accounting.server.entity.Currency;
@@ -7833,32 +7834,38 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("glAccounts")
-    static Collection<GlAccountObject> glAccounts(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<GlAccountObject> glAccounts(final DataFetchingEnvironment env,
             @GraphQLName("glAccountCategoryName") final String glAccountCategoryName) {
-        Collection<GlAccount> glAccounts;
-        Collection<GlAccountObject> glAccountObjects;
+        CountingPaginatedData<GlAccountObject> data;
 
         try {
             var commandForm = AccountingUtil.getHome().getGetGlAccountsForm();
+            var command = new GetGlAccountsCommand(getUserVisitPK(env), commandForm);
 
             commandForm.setGlAccountCategoryName(glAccountCategoryName);
 
-            glAccounts = new GetGlAccountsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            var totalEntities = command.getTotalEntitiesForGraphQl();
+
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, GlAccountConstants.COMPONENT_VENDOR_NAME, GlAccountConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var glAccounts = entities.stream()
+                            .map(GlAccountObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, glAccounts);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(glAccounts == null) {
-            glAccountObjects = emptyList();
-        } else {
-            glAccountObjects = new ArrayList<>(glAccounts.size());
-
-            glAccounts.stream()
-                    .map(GlAccountObject::new)
-                    .forEachOrdered(glAccountObjects::add);
-        }
-
-        return glAccountObjects;
+        return data;
     }
 
     @GraphQLField
