@@ -29,7 +29,7 @@ import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -38,8 +38,8 @@ import java.util.Collection;
 import java.util.List;
 
 public class GetGlAccountsCommand
-        extends BaseMultipleEntitiesCommand<GlAccount, GetGlAccountsForm> {
-    
+        extends BasePaginatedMultipleEntitiesCommand<GlAccount, GetGlAccountsForm> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -64,14 +64,27 @@ public class GetGlAccountsCommand
     GlAccountCategory glAccountCategory = null;
 
     @Override
-    protected Collection<GlAccount> getEntities() {
+    protected void handleForm() {
         var glAccountCategoryName = form.getGlAccountCategoryName();
-        Collection<GlAccount> glAccounts = null;
 
-        // Optionally allow the list of GlAccounts to be narrowed by the GlAccountCategory.
         if(glAccountCategoryName != null) {
             glAccountCategory = GlAccountCategoryLogic.getInstance().getGlAccountCategoryByName(this, glAccountCategoryName);
         }
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        var accountingControl = Session.getModelController(AccountingControl.class);
+
+        return hasExecutionErrors() ? null :
+                glAccountCategory == null ?
+                        accountingControl.countGlAccounts() :
+                        accountingControl.countGlAccountsByGlAccountCategory(glAccountCategory);
+    }
+
+    @Override
+    protected Collection<GlAccount> getEntities() {
+        Collection<GlAccount> glAccounts = null;
 
         if(!hasExecutionErrors()) {
             var accountingControl = Session.getModelController(AccountingControl.class);
