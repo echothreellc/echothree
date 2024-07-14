@@ -53,14 +53,14 @@ public class GlAccountObject
     }
     
     @GraphQLField
-    @GraphQLDescription("item accounting category name")
+    @GraphQLDescription("gl account name")
     @GraphQLNonNull
     public String getGlAccountName() {
         return getGlAccountDetail().getGlAccountName();
     }
 
     @GraphQLField
-    @GraphQLDescription("parent item accounting category")
+    @GraphQLDescription("parent gl account")
     public GlAccountObject getParentGlAccount() {
         GlAccount parentGlAccount = getGlAccountDetail().getParentGlAccount();
         
