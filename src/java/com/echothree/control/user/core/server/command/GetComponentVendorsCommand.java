@@ -33,8 +33,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class GetComponentVendorsCommand
-        extends BasePaginatedMultipleEntitiesCommand<ComponentVendor, GetComponentVendorsForm>
-    {
+        extends BasePaginatedMultipleEntitiesCommand<ComponentVendor, GetComponentVendorsForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;

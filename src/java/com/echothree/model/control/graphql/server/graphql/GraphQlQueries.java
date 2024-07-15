@@ -7791,17 +7791,19 @@ public interface GraphQlQueries {
         CountingPaginatedData<ItemAccountingCategoryObject> data;
 
         try {
-            var accountingControl = Session.getModelController(AccountingControl.class);
-            var totalCount = accountingControl.countItemAccountingCategories();
+            var commandForm = AccountingUtil.getHome().getGetItemAccountingCategoriesForm();
+            var command = new GetItemAccountingCategoriesCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
 
-            try(var objectLimiter = new ObjectLimiter(env, ItemAccountingCategoryConstants.COMPONENT_VENDOR_NAME, ItemAccountingCategoryConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = AccountingUtil.getHome().getGetItemAccountingCategoriesForm();
-                var entities = new GetItemAccountingCategoriesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ItemAccountingCategoryConstants.COMPONENT_VENDOR_NAME, ItemAccountingCategoryConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
-                    var itemAccountingCategories = entities.stream().map(ItemAccountingCategoryObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var itemAccountingCategories = entities.stream()
+                            .map(ItemAccountingCategoryObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, itemAccountingCategories);
                 }
