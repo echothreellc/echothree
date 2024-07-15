@@ -82,6 +82,30 @@
                 <securityRoleDescription languageIsoName="en" description="Gl Account Description" />
             </securityRole>
         </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="GlAccountType" parentSecurityRoleGroupName="AccountingComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Gl Account Type" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Gl Account Type Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Gl Account Type Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Gl Account Type Delete" />
+            </securityRole>
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Gl Account Type List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Gl Account Type Review" />
+            </securityRole>
+            <securityRole securityRoleName="Choices" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Gl Account Type Choices" />
+            </securityRole>
+            <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Gl Account Type Description" />
+            </securityRole>
+        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="GlAccountCategory" parentSecurityRoleGroupName="AccountingComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Gl Account Category" />
             <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
@@ -7719,6 +7743,13 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="GlAccount" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="GlAccount" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="GlAccount" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="GlAccountType" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="GlAccountType" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="GlAccountType" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="GlAccountType" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="GlAccountType" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="GlAccountType" securityRoleName="Choices" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="GlAccountType" securityRoleName="Description" />
             <partySecurityRoleTemplateRole securityRoleGroupName="GlAccountCategory" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="GlAccountCategory" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="GlAccountCategory" securityRoleName="Delete" />
