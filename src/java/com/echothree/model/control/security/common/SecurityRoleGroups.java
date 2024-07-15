@@ -188,6 +188,7 @@ public enum SecurityRoleGroups {
     GlAccount,
     GlAccountClass,
     GlAccountCategory,
+    GlAccountType,
     GlResourceType,
     Language,
     Leave,
