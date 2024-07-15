@@ -5835,17 +5835,19 @@ public interface GraphQlQueries {
         CountingPaginatedData<CurrencyObject> data;
 
         try {
-            var partyControl = Session.getModelController(AccountingControl.class);
-            var totalCount = partyControl.countCurrencies();
+            var commandForm = AccountingUtil.getHome().getGetCurrenciesForm();
+            var command = new GetCurrenciesCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
 
-            try(var objectLimiter = new ObjectLimiter(env, CurrencyConstants.COMPONENT_VENDOR_NAME, CurrencyConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = AccountingUtil.getHome().getGetCurrenciesForm();
-                var entities = new GetCurrenciesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, CurrencyConstants.COMPONENT_VENDOR_NAME, CurrencyConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
-                    var currencies = entities.stream().map(CurrencyObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var currencies = entities.stream()
+                            .map(CurrencyObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, currencies);
                 }
