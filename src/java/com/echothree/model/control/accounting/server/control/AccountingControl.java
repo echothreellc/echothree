@@ -1240,7 +1240,30 @@ public class AccountingControl
         
         return glAccountClass;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.GlAccountClass */
+    public GlAccountClass getGlAccountClassByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new GlAccountClassPK(entityInstance.getEntityUniqueId());
+
+        return GlAccountClassFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public GlAccountClass getGlAccountClassByEntityInstance(EntityInstance entityInstance) {
+        return getGlAccountClassByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public GlAccountClass getGlAccountClassByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getGlAccountClassByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countGlAccountClasses() {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM glaccountclasses, glaccountclassdetails
+                WHERE glacls_activedetailid = glaclsdt_glaccountclassdetailid
+                """);
+    }
+
     private static final Map<EntityPermission, String> getGlAccountClassByNameQueries;
 
     static {
@@ -1382,19 +1405,22 @@ public class AccountingControl
     public GlAccountClassTransfer getGlAccountClassTransfer(UserVisit userVisit, GlAccountClass glAccountClass) {
         return getAccountingTransferCaches(userVisit).getGlAccountClassTransferCache().getTransfer(glAccountClass);
     }
-    
-    public List<GlAccountClassTransfer> getGlAccountClassTransfers(UserVisit userVisit) {
-        List<GlAccountClass> glAccountClasses = getGlAccountClasses();
+
+    public List<GlAccountClassTransfer> getGlAccountClassTransfers(UserVisit userVisit, Collection<GlAccountClass> glAccountClasses) {
         List<GlAccountClassTransfer> glAccountClassTransfers = new ArrayList<>(glAccountClasses.size());
         GlAccountClassTransferCache glAccountClassTransferCache = getAccountingTransferCaches(userVisit).getGlAccountClassTransferCache();
-        
+
         glAccountClasses.forEach((glAccountClass) ->
                 glAccountClassTransfers.add(glAccountClassTransferCache.getTransfer(glAccountClass))
         );
-        
+
         return glAccountClassTransfers;
     }
-    
+
+    public List<GlAccountClassTransfer> getGlAccountClassTransfers(UserVisit userVisit) {
+        return getGlAccountClassTransfers(userVisit, getGlAccountClasses());
+    }
+
     public GlAccountClassChoicesBean getGlAccountClassChoices(String defaultGlAccountClassChoice, Language language,
             boolean allowNullChoice) {
         List<GlAccountClass> glAccountClasses = getGlAccountClasses();
