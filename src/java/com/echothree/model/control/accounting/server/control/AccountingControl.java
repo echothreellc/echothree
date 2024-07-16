@@ -1086,7 +1086,29 @@ public class AccountingControl
     public GlAccountType createGlAccountType(String glAccountTypeName, Boolean isDefault, Integer sortOrder) {
         return GlAccountTypeFactory.getInstance().create(glAccountTypeName, isDefault, sortOrder);
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.GlAccountType */
+    public GlAccountType getGlAccountTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new GlAccountTypePK(entityInstance.getEntityUniqueId());
+
+        return GlAccountTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public GlAccountType getGlAccountTypeByEntityInstance(EntityInstance entityInstance) {
+        return getGlAccountTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public GlAccountType getGlAccountTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getGlAccountTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countGlAccountTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM glaccounttypes
+                        """);
+    }
+
     public GlAccountType getGlAccountTypeByName(String glAccountTypeName) {
         GlAccountType glAccountType;
         
@@ -1149,19 +1171,22 @@ public class AccountingControl
     public GlAccountTypeTransfer getGlAccountTypeTransfer(UserVisit userVisit, GlAccountType glAccountType) {
         return getAccountingTransferCaches(userVisit).getGlAccountTypeTransferCache().getTransfer(glAccountType);
     }
-    
-    public List<GlAccountTypeTransfer> getGlAccountTypeTransfers(UserVisit userVisit) {
-        List<GlAccountType> glAccountTypes = getGlAccountTypes();
+
+    public List<GlAccountTypeTransfer> getGlAccountTypeTransfers(UserVisit userVisit, Collection<GlAccountType> glAccountTypes) {
         List<GlAccountTypeTransfer> glAccountTypeTransfers = new ArrayList<>(glAccountTypes.size());
         GlAccountTypeTransferCache glAccountTypeTransferCache = getAccountingTransferCaches(userVisit).getGlAccountTypeTransferCache();
-        
+
         glAccountTypes.forEach((glAccountType) ->
                 glAccountTypeTransfers.add(glAccountTypeTransferCache.getTransfer(glAccountType))
         );
-        
+
         return glAccountTypeTransfers;
     }
-    
+
+    public List<GlAccountTypeTransfer> getGlAccountTypeTransfers(UserVisit userVisit) {
+        return getGlAccountTypeTransfers(userVisit, getGlAccountTypes());
+    }
+
     // --------------------------------------------------------------------------------
     //   Gl Account Type Descriptions
     // --------------------------------------------------------------------------------
