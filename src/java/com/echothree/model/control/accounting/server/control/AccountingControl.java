@@ -2324,7 +2324,30 @@ public class AccountingControl
         
         return glResourceType;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.GlResourceType */
+    public GlResourceType getGlResourceTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new GlResourceTypePK(entityInstance.getEntityUniqueId());
+
+        return GlResourceTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public GlResourceType getGlResourceTypeByEntityInstance(EntityInstance entityInstance) {
+        return getGlResourceTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public GlResourceType getGlResourceTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getGlResourceTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countGlResourceTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM glresourcetypes, glresourcetypedetails
+                        WHERE glrtyp_activedetailid = glrtypdt_glresourcetypedetailid
+                        """);
+    }
+
     private GlResourceType getGlResourceTypeByName(String glResourceTypeName, EntityPermission entityPermission) {
         GlResourceType glResourceType;
         
@@ -2453,19 +2476,22 @@ public class AccountingControl
     public GlResourceTypeTransfer getGlResourceTypeTransfer(UserVisit userVisit, GlResourceType glResourceType) {
         return getAccountingTransferCaches(userVisit).getGlResourceTypeTransferCache().getTransfer(glResourceType);
     }
-    
-    public List<GlResourceTypeTransfer> getGlResourceTypeTransfers(UserVisit userVisit) {
-        List<GlResourceType> glResourceTypes = getGlResourceTypes();
+
+    public List<GlResourceTypeTransfer> getGlResourceTypeTransfers(UserVisit userVisit, Collection<GlResourceType> glResourceTypes) {
         List<GlResourceTypeTransfer> glResourceTypeTransfers = new ArrayList<>(glResourceTypes.size());
         GlResourceTypeTransferCache glResourceTypeTransferCache = getAccountingTransferCaches(userVisit).getGlResourceTypeTransferCache();
-        
+
         glResourceTypes.forEach((glResourceType) ->
                 glResourceTypeTransfers.add(glResourceTypeTransferCache.getTransfer(glResourceType))
         );
-        
+
         return glResourceTypeTransfers;
     }
-    
+
+    public List<GlResourceTypeTransfer> getGlResourceTypeTransfers(UserVisit userVisit) {
+        return getGlResourceTypeTransfers(userVisit, getGlResourceTypes());
+    }
+
     public GlResourceTypeChoicesBean getGlResourceTypeChoices(String defaultGlResourceTypeChoice, Language language,
             boolean allowNullChoice) {
         List<GlResourceType> glResourceTypes = getGlResourceTypes();
