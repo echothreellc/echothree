@@ -1962,19 +1962,22 @@ public class AccountingControl
     public GlAccountCategoryTransfer getGlAccountCategoryTransfer(UserVisit userVisit, GlAccountCategory glAccountCategory) {
         return getAccountingTransferCaches(userVisit).getGlAccountCategoryTransferCache().getTransfer(glAccountCategory);
     }
-    
-    public List<GlAccountCategoryTransfer> getGlAccountCategoryTransfers(UserVisit userVisit) {
-        List<GlAccountCategory> glAccountCategories = getGlAccountCategories();
+
+    public List<GlAccountCategoryTransfer> getGlAccountCategoryTransfers(UserVisit userVisit, Collection<GlAccountCategory> glAccountCategories) {
         List<GlAccountCategoryTransfer> glAccountCategoryTransfers = new ArrayList<>(glAccountCategories.size());
         GlAccountCategoryTransferCache glAccountCategoryTransferCache = getAccountingTransferCaches(userVisit).getGlAccountCategoryTransferCache();
-        
+
         glAccountCategories.forEach((glAccountCategory) ->
                 glAccountCategoryTransfers.add(glAccountCategoryTransferCache.getTransfer(glAccountCategory))
         );
-        
+
         return glAccountCategoryTransfers;
     }
-    
+
+    public List<GlAccountCategoryTransfer> getGlAccountCategoryTransfers(UserVisit userVisit) {
+        return getGlAccountCategoryTransfers(userVisit, getGlAccountCategories());
+    }
+
     public GlAccountCategoryChoicesBean getGlAccountCategoryChoices(String defaultGlAccountCategoryChoice, Language language,
             boolean allowNullChoice) {
         List<GlAccountCategory> glAccountCategories = getGlAccountCategories();
