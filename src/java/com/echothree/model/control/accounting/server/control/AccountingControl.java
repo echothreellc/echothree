@@ -1111,28 +1111,38 @@ public class AccountingControl
 
     public GlAccountType getGlAccountTypeByName(String glAccountTypeName) {
         GlAccountType glAccountType;
-        
+
         try {
-            PreparedStatement ps = GlAccountTypeFactory.getInstance().prepareStatement(
+            var ps = GlAccountTypeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM glaccounttypes " +
                     "WHERE glatyp_glaccounttypename = ?");
-            
+
             ps.setString(1, glAccountTypeName);
-            
+
             glAccountType = GlAccountTypeFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
-        
+
         return glAccountType;
     }
-    
-    public List<GlAccountType> getGlAccountTypes() {
-        PreparedStatement ps = GlAccountTypeFactory.getInstance().prepareStatement(
+
+    public GlAccountType getDefaultGlAccountType() {
+        var ps = GlAccountTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM glaccounttypes " +
-                "ORDER BY glatyp_sortorder, glatyp_glaccounttypename");
+                "WHERE glatyp_isdefault = 1");
+
+        return GlAccountTypeFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+    }
+
+    public List<GlAccountType> getGlAccountTypes() {
+        var ps = GlAccountTypeFactory.getInstance().prepareStatement(
+                "SELECT _ALL_ " +
+                "FROM glaccounttypes " +
+                "ORDER BY glatyp_sortorder, glatyp_glaccounttypename " +
+                "_LIMIT_");
         
         return GlAccountTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -2832,6 +2842,14 @@ public class AccountingControl
                 """);
     }
 
+    public long countGlAccountsByGlAccountType(GlAccountType glAccountType) {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM glaccounts, glaccountdetails
+                WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glatyp_glaccounttypeid = ?
+                """, glAccountType);
+    }
+
     public long countGlAccountsByGlAccountCategory(GlAccountCategory glAccountCategory) {
         return session.queryForLong("""
                 SELECT COUNT(*)
@@ -2970,13 +2988,52 @@ public class AccountingControl
     public List<GlAccount> getGlAccountsForUpdate() {
         return getGlAccounts(EntityPermission.READ_WRITE);
     }
-    
-    private List<GlAccount> getGlAccountsByGlAccountClass(GlAccountClass glAccountClass, EntityPermission entityPermission) {
+
+    private List<GlAccount> getGlAccountsByGlAccountType(GlAccountType glAccountType, EntityPermission entityPermission) {
         List<GlAccount> glAccounts;
-        
+
         try {
             String query = null;
-            
+
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM glaccounts, glaccountdetails " +
+                        "WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glatyp_glaccounttypeid = ? " +
+                        "ORDER BY gladt_glaccountname " +
+                        "_LIMIT_";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM glaccounts, glaccountdetails " +
+                        "WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glatyp_glaccounttypeid = ? " +
+                        "FOR UPDATE";
+            }
+
+            PreparedStatement ps = GlAccountFactory.getInstance().prepareStatement(query);
+
+            ps.setLong(1, glAccountType.getPrimaryKey().getEntityId());
+
+            glAccounts = GlAccountFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return glAccounts;
+    }
+
+    public List<GlAccount> getGlAccountsByGlAccountType(GlAccountType glAccountType) {
+        return getGlAccountsByGlAccountType(glAccountType, EntityPermission.READ_ONLY);
+    }
+
+    public List<GlAccount> getGlAccountsByGlAccountTypeForUpdate(GlAccountType glAccountType) {
+        return getGlAccountsByGlAccountType(glAccountType, EntityPermission.READ_WRITE);
+    }
+
+    private List<GlAccount> getGlAccountsByGlAccountClass(GlAccountClass glAccountClass, EntityPermission entityPermission) {
+        List<GlAccount> glAccounts;
+
+        try {
+            String query = null;
+
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 query = "SELECT _ALL_ " +
                         "FROM glaccounts, glaccountdetails " +
@@ -2989,27 +3046,27 @@ public class AccountingControl
                         "WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glacls_glaccountclassid = ? " +
                         "FOR UPDATE";
             }
-            
+
             PreparedStatement ps = GlAccountFactory.getInstance().prepareStatement(query);
-            
+
             ps.setLong(1, glAccountClass.getPrimaryKey().getEntityId());
-            
+
             glAccounts = GlAccountFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
-        
+
         return glAccounts;
     }
-    
+
     public List<GlAccount> getGlAccountsByGlAccountClass(GlAccountClass glAccountClass) {
         return getGlAccountsByGlAccountClass(glAccountClass, EntityPermission.READ_ONLY);
     }
-    
+
     public List<GlAccount> getGlAccountsByGlAccountClassForUpdate(GlAccountClass glAccountClass) {
         return getGlAccountsByGlAccountClass(glAccountClass, EntityPermission.READ_WRITE);
     }
-    
+
     private List<GlAccount> getGlAccountsByGlAccountCategory(GlAccountCategoryPK glAccountCategoryPK, EntityPermission entityPermission) {
         List<GlAccount> glAccounts;
         
