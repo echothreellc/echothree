@@ -2290,5 +2290,6 @@ public enum ExecutionErrors {
     DuplicateEntityAlias,
     UnknownEntityAlias,
     DuplicateEntityAliasTypeAlias,
+    UnknownDefaultGlAccountType,
 
 }

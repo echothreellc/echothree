@@ -18,15 +18,14 @@ package com.echothree.control.user.accounting.server.command;
 
 import com.echothree.control.user.accounting.common.form.CreateGlAccountTypeForm;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
+import com.echothree.model.control.accounting.server.logic.GlAccountTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.accounting.server.entity.GlAccountType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -64,19 +63,12 @@ public class CreateGlAccountTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var accountingControl = Session.getModelController(AccountingControl.class);
         var glAccountTypeName = form.getGlAccountTypeName();
-        var glAccountType = accountingControl.getGlAccountTypeByName(glAccountTypeName);
-        
-        if(glAccountType == null) {
-            var isDefault = Boolean.valueOf(form.getIsDefault());
-            var sortOrder = Integer.valueOf(form.getSortOrder());
-            
-            accountingControl.createGlAccountType(glAccountTypeName, isDefault, sortOrder);
-        } else {
-            addExecutionError(ExecutionErrors.DuplicateGlAccountTypeName.name(), glAccountTypeName);
-        }
-        
+        var isDefault = Boolean.valueOf(form.getIsDefault());
+        var sortOrder = Integer.valueOf(form.getSortOrder());
+
+        GlAccountTypeLogic.getInstance().createGlAccountType(this, glAccountTypeName, isDefault, sortOrder, null, null);
+
         return null;
     }
     

@@ -19,6 +19,8 @@ package com.echothree.model.control.accounting.server.graphql;
 import com.echothree.control.user.accounting.server.command.GetCurrenciesCommand;
 import com.echothree.control.user.accounting.server.command.GetCurrencyCommand;
 import com.echothree.control.user.accounting.server.command.GetGlAccountCommand;
+import com.echothree.control.user.accounting.server.command.GetGlAccountTypeCommand;
+import com.echothree.control.user.accounting.server.command.GetGlAccountTypesCommand;
 import com.echothree.control.user.accounting.server.command.GetGlAccountsCommand;
 import com.echothree.control.user.accounting.server.command.GetItemAccountingCategoriesCommand;
 import com.echothree.control.user.accounting.server.command.GetItemAccountingCategoryCommand;
@@ -59,6 +61,14 @@ public interface AccountingSecurityUtils {
 
     static boolean getHasGlAccountsAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetGlAccountsCommand.class);
+    }
+
+    static boolean getHasGlAccountTypeAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetGlAccountTypeCommand.class);
+    }
+
+    static boolean getHasGlAccountTypesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetGlAccountTypesCommand.class);
     }
 
 }

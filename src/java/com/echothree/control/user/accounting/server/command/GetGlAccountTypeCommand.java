@@ -18,65 +18,73 @@ package com.echothree.control.user.accounting.server.command;
 
 import com.echothree.control.user.accounting.common.form.GetGlAccountTypeForm;
 import com.echothree.control.user.accounting.common.result.AccountingResultFactory;
-import com.echothree.control.user.accounting.common.result.GetGlAccountTypeResult;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
+import com.echothree.model.control.accounting.server.logic.GlAccountTypeLogic;
+import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.accounting.server.entity.GlAccountType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class GetGlAccountTypeCommand
-        extends BaseSimpleCommand<GetGlAccountTypeForm> {
+        extends BaseSingleEntityCommand<GlAccountType, GetGlAccountTypeForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.GlAccountType.name(), SecurityRoles.Review.name())
-                )))
-        )));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("GlAccountTypeName", FieldType.ENTITY_NAME, false, null, null)
+                new FieldDefinition("GlAccountTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
         );
     }
-    
+
     /** Creates a new instance of GetGlAccountTypeCommand */
     public GetGlAccountTypeCommand(UserVisitPK userVisitPK, GetGlAccountTypeForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
+    protected GlAccountType getEntity() {
+        var glAccountType = GlAccountTypeLogic.getInstance().getGlAccountTypeByUniversalSpec(this, form, true);
+
+        if(glAccountType != null) {
+            sendEvent(glAccountType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+        }
+
+        return glAccountType;
+    }
+
+    @Override
+    protected BaseResult getResult(GlAccountType entity) {
         var accountingControl = Session.getModelController(AccountingControl.class);
         var result = AccountingResultFactory.getGetGlAccountTypeResult();
-        var glAccountTypeName = form.getGlAccountTypeName();
-        var glAccountType = accountingControl.getGlAccountTypeByName(glAccountTypeName);
-        
-        if(glAccountType != null) {
-            result.setGlAccountType(accountingControl.getGlAccountTypeTransfer(getUserVisit(), glAccountType));
-        } else {
-            addExecutionError(ExecutionErrors.UnknownGlAccountTypeName.name(), glAccountTypeName);
+
+        if(entity != null) {
+            result.setGlAccountType(accountingControl.getGlAccountTypeTransfer(getUserVisit(), entity));
         }
-        
-        
+
         return result;
     }
-    
+
 }
