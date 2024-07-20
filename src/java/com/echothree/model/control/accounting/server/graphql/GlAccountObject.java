@@ -76,8 +76,16 @@ public class GlAccountObject
                 new GlAccountTypeObject(glAccountType) : null;
     }
 
+    @GraphQLField
+    @GraphQLDescription("GL account class")
+    public GlAccountClassObject getGlAccountClass(final DataFetchingEnvironment env) {
+        var glAccountClass = getGlAccountDetail().getGlAccountClass();
+
+        return glAccountClass == null ? null : AccountingSecurityUtils.getHasGlAccountClassAccess(env) ?
+                new GlAccountClassObject(glAccountClass) : null;
+    }
+
     // TODO:
-    //| gladt_glacls_glaccountclassid  | bigint      | NO   | MUL | NULL    |       |
     //| gladt_glac_glaccountcategoryid | bigint      | YES  | MUL | NULL    |       |
     //| gladt_glrtyp_glresourcetypeid  | bigint      | NO   | MUL | NULL    |       |
 
