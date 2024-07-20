@@ -14,13 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.accounting.common.form;
+package com.echothree.control.user.accounting.common.spec;
 
-import com.echothree.control.user.accounting.common.spec.GlResourceTypeUniversalSpec;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
-public interface GetGlResourceTypeForm
-        extends GlResourceTypeUniversalSpec {
+public interface GlResourceTypeUniversalSpec
+        extends GlResourceTypeSpec, UniversalEntitySpec {
     
-    // Nothing additional beyond GlResourceTypeUniversalSpec
+    // Nothing additional beyond GlResourceTypeSpec, UniversalEntitySpec
     
 }

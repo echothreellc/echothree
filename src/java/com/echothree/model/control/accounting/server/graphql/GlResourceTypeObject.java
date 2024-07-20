@@ -24,13 +24,10 @@ import com.echothree.model.control.graphql.server.graphql.count.CountingDataConn
 import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
-import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.control.item.server.graphql.ItemObject;
-import com.echothree.model.control.item.server.graphql.ItemSecurityUtils;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.accounting.common.GlAccountConstants;
-import com.echothree.model.data.accounting.server.entity.GlAccountType;
-import com.echothree.model.data.item.common.ItemConstants;
+import com.echothree.model.data.accounting.server.entity.GlResourceType;
+import com.echothree.model.data.accounting.server.entity.GlResourceTypeDetail;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -41,38 +38,48 @@ import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-@GraphQLDescription("GL account type object")
-@GraphQLName("GlAccountType")
-public class GlAccountTypeObject
+@GraphQLDescription("GL resource type object")
+@GraphQLName("GlResourceType")
+public class GlResourceTypeObject
         extends BaseEntityInstanceObject {
     
-    private final GlAccountType glAccountType; // Always Present
+    private final GlResourceType glResourceType; // Always Present
     
-    public GlAccountTypeObject(GlAccountType glAccountType) {
-        super(glAccountType.getPrimaryKey());
+    public GlResourceTypeObject(GlResourceType glResourceType) {
+        super(glResourceType.getPrimaryKey());
         
-        this.glAccountType = glAccountType;
+        this.glResourceType = glResourceType;
     }
 
+    private GlResourceTypeDetail glResourceTypeDetail; // Optional, use getGlResourceTypeDetail()
+    
+    private GlResourceTypeDetail getGlResourceTypeDetail() {
+        if(glResourceTypeDetail == null) {
+            glResourceTypeDetail = glResourceType.getLastDetail();
+        }
+        
+        return glResourceTypeDetail;
+    }
+    
     @GraphQLField
-    @GraphQLDescription("GL account type name")
+    @GraphQLDescription("GL resource type name")
     @GraphQLNonNull
-    public String getGlAccountTypeName() {
-        return glAccountType.getGlAccountTypeName();
+    public String getGlResourceTypeName() {
+        return getGlResourceTypeDetail().getGlResourceTypeName();
     }
 
     @GraphQLField
     @GraphQLDescription("is default")
     @GraphQLNonNull
     public boolean getIsDefault() {
-        return glAccountType.getIsDefault();
+        return getGlResourceTypeDetail().getIsDefault();
     }
     
     @GraphQLField
     @GraphQLDescription("sort order")
     @GraphQLNonNull
     public int getSortOrder() {
-        return glAccountType.getSortOrder();
+        return getGlResourceTypeDetail().getSortOrder();
     }
     
     @GraphQLField
@@ -82,7 +89,7 @@ public class GlAccountTypeObject
         var accountingControl = Session.getModelController(AccountingControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return accountingControl.getBestGlAccountTypeDescription(glAccountType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
+        return accountingControl.getBestGlResourceTypeDescription(glResourceType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
     @GraphQLField
@@ -92,10 +99,10 @@ public class GlAccountTypeObject
     public CountingPaginatedData<GlAccountObject> getGlAccounts(final DataFetchingEnvironment env) {
         if(AccountingSecurityUtils.getHasGlAccountsAccess(env)) {
             var accountingControl = Session.getModelController(AccountingControl.class);
-            var totalCount = accountingControl.countGlAccountsByGlAccountType(glAccountType);
+            var totalCount = accountingControl.countGlAccountsByGlResourceType(glResourceType);
 
             try(var objectLimiter = new ObjectLimiter(env, GlAccountConstants.COMPONENT_VENDOR_NAME, GlAccountConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var entities = accountingControl.getGlAccountsByGlAccountType(glAccountType);
+                var entities = accountingControl.getGlAccountsByGlResourceType(glResourceType);
                 var glAccounts = entities.stream().map(GlAccountObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, glAccounts);
@@ -104,5 +111,5 @@ public class GlAccountTypeObject
             return Connections.emptyConnection();
         }
     }
-
+    
 }
