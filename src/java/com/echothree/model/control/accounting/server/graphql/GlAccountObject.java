@@ -86,7 +86,7 @@ public class GlAccountObject
     }
 
     @GraphQLField
-    @GraphQLDescription("GL account class")
+    @GraphQLDescription("GL account category")
     public GlAccountCategoryObject getGlAccountCategory(final DataFetchingEnvironment env) {
         var glAccountCategory = getGlAccountDetail().getGlAccountCategory();
 
@@ -94,8 +94,14 @@ public class GlAccountObject
                 new GlAccountCategoryObject(glAccountCategory) : null;
     }
 
-    // TODO:
-    //| gladt_glrtyp_glresourcetypeid  | bigint      | NO   | MUL | NULL    |       |
+    @GraphQLField
+    @GraphQLDescription("GL account type")
+    public GlResourceTypeObject getGlResourceType(final DataFetchingEnvironment env) {
+        var glResourceType = getGlAccountDetail().getGlResourceType();
+
+        return glResourceType == null ? null : AccountingSecurityUtils.getHasGlResourceTypeAccess(env) ?
+                new GlResourceTypeObject(glResourceType) : null;
+    }
 
     @GraphQLField
     @GraphQLDescription("currency")

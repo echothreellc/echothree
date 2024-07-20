@@ -2361,7 +2361,7 @@ public class AccountingControl
                         """);
     }
 
-    private GlResourceType getGlResourceTypeByName(String glResourceTypeName, EntityPermission entityPermission) {
+    public GlResourceType getGlResourceTypeByName(String glResourceTypeName, EntityPermission entityPermission) {
         GlResourceType glResourceType;
         
         try {
@@ -2407,7 +2407,7 @@ public class AccountingControl
         return getGlResourceTypeDetailValueForUpdate(getGlResourceTypeByNameForUpdate(glResourceTypeName));
     }
     
-    private GlResourceType getDefaultGlResourceType(EntityPermission entityPermission) {
+    public GlResourceType getDefaultGlResourceType(EntityPermission entityPermission) {
         GlResourceType glResourceType;
         
         try {
@@ -2864,6 +2864,14 @@ public class AccountingControl
                 FROM glaccounts, glaccountdetails
                 WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glac_glaccountcategoryid = ?
                 """, glAccountCategory);
+    }
+
+    public long countGlAccountsByGlResourceType(GlResourceType glResourceType) {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM glaccounts, glaccountdetails
+                WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glrtyp_glresourcetypeid = ?
+                """, glResourceType);
     }
 
     public GlAccount getGlAccountByName(String glAccountName, EntityPermission entityPermission) {

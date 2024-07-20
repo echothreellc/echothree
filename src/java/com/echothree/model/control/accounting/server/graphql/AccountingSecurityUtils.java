@@ -26,6 +26,8 @@ import com.echothree.control.user.accounting.server.command.GetGlAccountCommand;
 import com.echothree.control.user.accounting.server.command.GetGlAccountTypeCommand;
 import com.echothree.control.user.accounting.server.command.GetGlAccountTypesCommand;
 import com.echothree.control.user.accounting.server.command.GetGlAccountsCommand;
+import com.echothree.control.user.accounting.server.command.GetGlResourceTypeCommand;
+import com.echothree.control.user.accounting.server.command.GetGlResourceTypesCommand;
 import com.echothree.control.user.accounting.server.command.GetItemAccountingCategoriesCommand;
 import com.echothree.control.user.accounting.server.command.GetItemAccountingCategoryCommand;
 import com.echothree.control.user.accounting.server.command.GetSymbolPositionCommand;
@@ -89,6 +91,14 @@ public interface AccountingSecurityUtils {
 
     static boolean getHasGlAccountCategoriesAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetGlAccountCategoriesCommand.class);
+    }
+
+    static boolean getHasGlResourceTypeAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetGlResourceTypeCommand.class);
+    }
+
+    static boolean getHasGlResourceTypesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetGlResourceTypesCommand.class);
     }
 
 }
