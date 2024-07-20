@@ -19,6 +19,8 @@ package com.echothree.model.control.graphql.server.graphql;
 import com.echothree.control.user.accounting.common.AccountingUtil;
 import com.echothree.control.user.accounting.server.command.GetCurrenciesCommand;
 import com.echothree.control.user.accounting.server.command.GetCurrencyCommand;
+import com.echothree.control.user.accounting.server.command.GetGlAccountCategoriesCommand;
+import com.echothree.control.user.accounting.server.command.GetGlAccountCategoryCommand;
 import com.echothree.control.user.accounting.server.command.GetGlAccountClassCommand;
 import com.echothree.control.user.accounting.server.command.GetGlAccountClassesCommand;
 import com.echothree.control.user.accounting.server.command.GetGlAccountCommand;
@@ -364,6 +366,7 @@ import com.echothree.control.user.workflow.server.command.GetWorkflowStepTypesCo
 import com.echothree.control.user.workflow.server.command.GetWorkflowStepsCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowsCommand;
 import com.echothree.model.control.accounting.server.graphql.CurrencyObject;
+import com.echothree.model.control.accounting.server.graphql.GlAccountCategoryObject;
 import com.echothree.model.control.accounting.server.graphql.GlAccountClassObject;
 import com.echothree.model.control.accounting.server.graphql.GlAccountObject;
 import com.echothree.model.control.accounting.server.graphql.GlAccountTypeObject;
@@ -556,6 +559,7 @@ import com.echothree.model.control.workflow.server.graphql.WorkflowSelectorKindO
 import com.echothree.model.control.workflow.server.graphql.WorkflowStepObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowStepTypeObject;
 import com.echothree.model.data.accounting.common.CurrencyConstants;
+import com.echothree.model.data.accounting.common.GlAccountCategoryConstants;
 import com.echothree.model.data.accounting.common.GlAccountClassConstants;
 import com.echothree.model.data.accounting.common.GlAccountConstants;
 import com.echothree.model.data.accounting.common.GlAccountTypeConstants;
@@ -563,6 +567,7 @@ import com.echothree.model.data.accounting.common.ItemAccountingCategoryConstant
 import com.echothree.model.data.accounting.common.SymbolPositionConstants;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.accounting.server.entity.GlAccount;
+import com.echothree.model.data.accounting.server.entity.GlAccountCategory;
 import com.echothree.model.data.accounting.server.entity.GlAccountClass;
 import com.echothree.model.data.accounting.server.entity.GlAccountType;
 import com.echothree.model.data.accounting.server.entity.ItemAccountingCategory;
@@ -7978,6 +7983,59 @@ public interface GraphQlQueries {
                             .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, glAccountClasses);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("glAccountCategory")
+    static GlAccountCategoryObject glAccountCategory(final DataFetchingEnvironment env,
+            @GraphQLName("glAccountCategoryName") final String glAccountCategoryName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        GlAccountCategory glAccountCategory;
+
+        try {
+            var commandForm = AccountingUtil.getHome().getGetGlAccountCategoryForm();
+
+            commandForm.setGlAccountCategoryName(glAccountCategoryName);
+            commandForm.setUlid(id);
+
+            glAccountCategory = new GetGlAccountCategoryCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return glAccountCategory == null ? null : new GlAccountCategoryObject(glAccountCategory);
+    }
+
+    @GraphQLField
+    @GraphQLName("glAccountCategories")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<GlAccountCategoryObject> glAccountCategories(final DataFetchingEnvironment env) {
+        CountingPaginatedData<GlAccountCategoryObject> data;
+
+        try {
+            var commandForm = AccountingUtil.getHome().getGetGlAccountCategoriesForm();
+            var command = new GetGlAccountCategoriesCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
+
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, GlAccountCategoryConstants.COMPONENT_VENDOR_NAME, GlAccountCategoryConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var glAccountCategories = entities.stream()
+                            .map(GlAccountCategoryObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, glAccountCategories);
                 }
             }
         } catch (NamingException ex) {
