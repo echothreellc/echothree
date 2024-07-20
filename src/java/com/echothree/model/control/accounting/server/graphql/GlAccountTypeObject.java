@@ -55,7 +55,7 @@ public class GlAccountTypeObject
     }
 
     @GraphQLField
-    @GraphQLDescription("item accounting category name")
+    @GraphQLDescription("GL account type name")
     @GraphQLNonNull
     public String getGlAccountTypeName() {
         return glAccountType.getGlAccountTypeName();

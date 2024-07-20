@@ -62,7 +62,7 @@ public class GlResourceTypeObject
     }
     
     @GraphQLField
-    @GraphQLDescription("item accounting category name")
+    @GraphQLDescription("GL resource type name")
     @GraphQLNonNull
     public String getGlResourceTypeName() {
         return getGlResourceTypeDetail().getGlResourceTypeName();

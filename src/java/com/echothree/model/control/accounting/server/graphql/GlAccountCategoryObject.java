@@ -38,7 +38,7 @@ import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-@GraphQLDescription("item accounting category object")
+@GraphQLDescription("GL account category object")
 @GraphQLName("GlAccountCategory")
 public class GlAccountCategoryObject
         extends BaseEntityInstanceObject {
@@ -62,14 +62,14 @@ public class GlAccountCategoryObject
     }
     
     @GraphQLField
-    @GraphQLDescription("item accounting category name")
+    @GraphQLDescription("GL account category name")
     @GraphQLNonNull
     public String getGlAccountCategoryName() {
         return getGlAccountCategoryDetail().getGlAccountCategoryName();
     }
 
     @GraphQLField
-    @GraphQLDescription("parent item accounting category")
+    @GraphQLDescription("parent GL account category")
     public GlAccountCategoryObject getParentGlAccountCategory() {
         var parentGlAccountCategory = getGlAccountCategoryDetail().getParentGlAccountCategory();
         
