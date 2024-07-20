@@ -1318,7 +1318,7 @@ public class AccountingControl
         getGlAccountClassByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private GlAccountClass getGlAccountClassByName(String glAccountClassName, EntityPermission entityPermission) {
+    public GlAccountClass getGlAccountClassByName(String glAccountClassName, EntityPermission entityPermission) {
         return GlAccountClassFactory.getInstance().getEntityFromQuery(entityPermission, getGlAccountClassByNameQueries, glAccountClassName);
     }
 
@@ -1357,7 +1357,7 @@ public class AccountingControl
         getDefaultGlAccountClassQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private GlAccountClass getDefaultGlAccountClass(EntityPermission entityPermission) {
+    public GlAccountClass getDefaultGlAccountClass(EntityPermission entityPermission) {
         return GlAccountClassFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultGlAccountClassQueries);
     }
 
@@ -2848,6 +2848,14 @@ public class AccountingControl
                 FROM glaccounts, glaccountdetails
                 WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glatyp_glaccounttypeid = ?
                 """, glAccountType);
+    }
+
+    public long countGlAccountsByGlAccountClass(GlAccountClass glAccountClass) {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM glaccounts, glaccountdetails
+                WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glacls_glaccountclassid = ?
+                """, glAccountClass);
     }
 
     public long countGlAccountsByGlAccountCategory(GlAccountCategory glAccountCategory) {
