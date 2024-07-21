@@ -1,5 +1,23 @@
 # Changelog
 
+## 2024-07-21-01
+
+* Convert GetSymbolPositions UC to Use BasePaginatedMultipleEntitiesCommand [1119](https://gitlab.echothree.com/echothree/echothree/-/issues/1119)
+* Convert GetGlAccounts UC to Use BasePaginatedMultipleEntitiesCommand [1120](https://gitlab.echothree.com/echothree/echothree/-/issues/1120)
+* Convert GetCurrencies UC to Use BasePaginatedMultipleEntitiesCommand [1121](https://gitlab.echothree.com/echothree/echothree/-/issues/1121)
+* Convert GetItemAccountingCategories UC to Use BasePaginatedMultipleEntitiesCommand [1122](https://gitlab.echothree.com/echothree/echothree/-/issues/1122)
+* Add Security to GL Account Type UCs [1307](https://gitlab.echothree.com/echothree/echothree/-/issues/1307)
+* Convert GetGlAccountTypes UC to Use BasePaginatedMultipleEntitiesCommand [1308](https://gitlab.echothree.com/echothree/echothree/-/issues/1308)
+* Convert GetGlAccountClasses UC to Use BasePaginatedMultipleEntitiesCommand [1309](https://gitlab.echothree.com/echothree/echothree/-/issues/1309)
+* Convert GetGlAccountCategories UC to Use BasePaginatedMultipleEntitiesCommand [1310](https://gitlab.echothree.com/echothree/echothree/-/issues/1310)
+* Convert GetGlResourceTypes UC to Use BasePaginatedMultipleEntitiesCommand [1311](https://gitlab.echothree.com/echothree/echothree/-/issues/1311)
+* Add GL Account Type Object and Queries [1312](https://gitlab.echothree.com/echothree/echothree/-/issues/1312)
+* Add GL Account Class Object and Queries [1313](https://gitlab.echothree.com/echothree/echothree/-/issues/1313)
+* Add GL Account Category Object and Queries [1314](https://gitlab.echothree.com/echothree/echothree/-/issues/1314)
+* Add GL Resource Type Object and Queries [1315](https://gitlab.echothree.com/echothree/echothree/-/issues/1315)
+* Error Prone 2.29.2 Upgrade [1316](https://gitlab.echothree.com/echothree/echothree/-/issues/1316)
+* Guava 33.2.1-jre Upgrade [1317](https://gitlab.echothree.com/echothree/echothree/-/issues/1317)
+
 ## 2024-07-07-01
 
 * Add Security to WishlistPriority UCs [1303](https://gitlab.echothree.com/echothree/echothree/-/issues/1303)
