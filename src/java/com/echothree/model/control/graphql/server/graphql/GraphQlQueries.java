@@ -765,6 +765,7 @@ import com.echothree.model.data.warehouse.server.entity.WarehouseType;
 import com.echothree.model.data.wishlist.common.WishlistTypeConstants;
 import com.echothree.model.data.wishlist.server.entity.WishlistPriority;
 import com.echothree.model.data.wishlist.server.entity.WishlistType;
+import com.echothree.model.data.workflow.common.WorkflowStepTypeConstants;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestinationPartyType;
@@ -1713,31 +1714,36 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("workflowStepTypes")
-    static Collection<WorkflowStepTypeObject> workflowStepTypes(final DataFetchingEnvironment env) {
-        Collection<WorkflowStepType> workflowStepTypes;
-        Collection<WorkflowStepTypeObject> workflowStepTypeObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<WorkflowStepTypeObject> workflowStepTypes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<WorkflowStepTypeObject> data;
 
         try {
             var commandForm = WorkflowUtil.getHome().getGetWorkflowStepTypesForm();
+            var command = new GetWorkflowStepTypesCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
 
-            workflowStepTypes = new GetWorkflowStepTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, WorkflowStepTypeConstants.COMPONENT_VENDOR_NAME, WorkflowStepTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var workflowStepTypes = entities.stream()
+                            .map(WorkflowStepTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, workflowStepTypes);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(workflowStepTypes == null) {
-            workflowStepTypeObjects = emptyList();
-        } else {
-            workflowStepTypeObjects = new ArrayList<>(workflowStepTypes.size());
-
-            workflowStepTypes.stream()
-                    .map(WorkflowStepTypeObject::new)
-                    .forEachOrdered(workflowStepTypeObjects::add);
-        }
-
-        return workflowStepTypeObjects;
+        return data;
     }
-
+    
     @GraphQLField
     @GraphQLName("sequence")
     static SequenceObject sequence(final DataFetchingEnvironment env,
