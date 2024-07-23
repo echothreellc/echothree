@@ -24,7 +24,6 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.control.selector.server.logic.SelectorKindLogic;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
-import com.echothree.model.data.filter.server.factory.FilterKindFactory;
 import com.echothree.model.data.selector.server.entity.SelectorKind;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.workflow.server.entity.Workflow;
@@ -32,7 +31,7 @@ import com.echothree.model.data.workflow.server.factory.WorkflowFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -41,8 +40,8 @@ import java.util.Collection;
 import java.util.List;
 
 public class GetWorkflowsCommand
-        extends BaseMultipleEntitiesCommand<Workflow, GetWorkflowsForm> {
-    
+        extends BasePaginatedMultipleEntitiesCommand<Workflow, GetWorkflowsForm> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -67,22 +66,32 @@ public class GetWorkflowsCommand
     SelectorKind selectorKind;
 
     @Override
+    protected void handleForm() {
+        var selectorKindName = form.getSelectorKindName();
+
+        if(selectorKindName != null) {
+            selectorKind = SelectorKindLogic.getInstance().getSelectorKindByName(this, selectorKindName);
+        }
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        var workflowControl = Session.getModelController(WorkflowControl.class);
+
+        return hasExecutionErrors() ? null :
+                selectorKind == null ?
+                        workflowControl.countWorkflows() :
+                        workflowControl.countWorkflowsBySelectorKind(selectorKind);
+    }
+
+    @Override
     protected Collection<Workflow> getEntities() {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        var selectorKindName = form.getSelectorKindName();
-        Collection<Workflow> workflows = null;
 
-        if(selectorKindName == null) {
-            workflows = workflowControl.getWorkflows();
-        } else {
-            selectorKind = SelectorKindLogic.getInstance().getSelectorKindByName(this, selectorKindName);
-
-            if(!this.hasExecutionErrors()) {
-                workflows = workflowControl.getWorkflowsBySelectorKind(selectorKind);
-            }
-        }
-
-        return workflows;
+        return hasExecutionErrors() ? null :
+                selectorKind == null ?
+                        workflowControl.getWorkflows() :
+                        workflowControl.getWorkflowsBySelectorKind(selectorKind);
     }
 
     @Override
@@ -100,9 +109,7 @@ public class GetWorkflowsCommand
             }
 
             if(session.hasLimit(WorkflowFactory.class)) {
-                result.setWorkflowCount(selectorKind == null ?
-                        workflowControl.countWorkflows() :
-                        workflowControl.countWorkflowsBySelectorKind(selectorKind));
+                result.setWorkflowCount(getTotalEntities());
             }
 
             result.setWorkflows(workflowControl.getWorkflowTransfers(userVisit, entities));
