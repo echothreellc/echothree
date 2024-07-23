@@ -29,7 +29,7 @@ import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -38,11 +38,11 @@ import java.util.Collection;
 import java.util.List;
 
 public class GetWorkflowEntrancesCommand
-        extends BaseMultipleEntitiesCommand<WorkflowEntrance, GetWorkflowEntrancesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<WorkflowEntrance, GetWorkflowEntrancesForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -55,22 +55,34 @@ public class GetWorkflowEntrancesCommand
                 new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
     /** Creates a new instance of GetWorkflowEntrancesCommand */
     public GetWorkflowEntrancesCommand(UserVisitPK userVisitPK, GetWorkflowEntrancesForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     Workflow workflow;
 
     @Override
-    protected Collection<WorkflowEntrance> getEntities() {
+    protected void handleForm() {
         var workflowName = form.getWorkflowName();
-        Collection<WorkflowEntrance> workflowEntrances = null;
 
         workflow = WorkflowLogic.getInstance().getWorkflowByName(this, workflowName);
+    }
 
-        if(!this.hasExecutionErrors()) {
+    @Override
+    protected Long getTotalEntities() {
+        var workflowControl = Session.getModelController(WorkflowControl.class);
+
+        return hasExecutionErrors() ? null :
+                workflowControl.countWorkflowEntrancesByWorkflow(workflow);
+    }
+
+    @Override
+    protected Collection<WorkflowEntrance> getEntities() {
+        Collection<WorkflowEntrance> workflowEntrances = null;
+
+        if(!hasExecutionErrors()) {
             var workflowControl = Session.getModelController(WorkflowControl.class);
 
             workflowEntrances = workflowControl.getWorkflowEntrancesByWorkflow(workflow);
