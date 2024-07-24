@@ -79,7 +79,7 @@ public class GetWorkflowDestinationSecurityRolesCommand
         workflowDestinationPartyType = WorkflowDestinationLogic.getInstance().getWorkflowDestinationPartyTypeByName(this, workflowName,
                 workflowStepName, workflowDestinationName, partyTypeName);
 
-        if(!this.hasExecutionErrors()) {
+        if(!hasExecutionErrors()) {
             var workflowControl = Session.getModelController(WorkflowControl.class);
 
             workflowDestinationSecurityRoles = workflowControl.getWorkflowDestinationSecurityRolesByWorkflowDestinationPartyType(workflowDestinationPartyType);

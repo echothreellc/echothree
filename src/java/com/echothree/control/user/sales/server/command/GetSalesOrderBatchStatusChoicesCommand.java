@@ -67,7 +67,7 @@ public class GetSalesOrderBatchStatusChoicesCommand
         String batchName = form.getBatchName();
         Batch batch = batchName == null? null: SalesOrderBatchLogic.getInstance().getBatchByName(this, batchName);
 
-        if(!this.hasExecutionErrors()) {
+        if(!hasExecutionErrors()) {
             String defaultSalesOrderBatchStatusChoice = form.getDefaultSalesOrderBatchStatusChoice();
             boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 

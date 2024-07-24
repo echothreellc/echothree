@@ -75,7 +75,7 @@ public class GetWorkflowEntranceSelectorsCommand
         workflowEntrance = WorkflowEntranceLogic.getInstance().getWorkflowEntranceByName(this,
                 workflowName, workflowEntranceName);
 
-        if(!this.hasExecutionErrors()) {
+        if(!hasExecutionErrors()) {
             var workflowControl = Session.getModelController(WorkflowControl.class);
 
             workflowEntranceSelectors = workflowControl.getWorkflowEntranceSelectorsByWorkflowEntrance(workflowEntrance);

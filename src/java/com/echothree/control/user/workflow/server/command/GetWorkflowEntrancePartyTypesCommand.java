@@ -75,7 +75,7 @@ public class GetWorkflowEntrancePartyTypesCommand
         workflowEntrance = WorkflowEntranceLogic.getInstance().getWorkflowEntranceByName(this,
                 workflowName, workflowEntranceName);
 
-        if(!this.hasExecutionErrors()) {
+        if(!hasExecutionErrors()) {
             var workflowControl = Session.getModelController(WorkflowControl.class);
 
             workflowEntrancePartyTypes = workflowControl.getWorkflowEntrancePartyTypesByWorkflowEntrance(workflowEntrance);

@@ -77,7 +77,7 @@ public class GetWorkflowDestinationSelectorsCommand
         workflowDestination = WorkflowDestinationLogic.getInstance().getWorkflowDestinationByName(this, workflowName,
                 workflowStepName, workflowDestinationName);
 
-        if(!this.hasExecutionErrors()) {
+        if(!hasExecutionErrors()) {
             var workflowControl = Session.getModelController(WorkflowControl.class);
 
             workflowDestinationSelectors = workflowControl.getWorkflowDestinationSelectorsByWorkflowDestination(workflowDestination);
