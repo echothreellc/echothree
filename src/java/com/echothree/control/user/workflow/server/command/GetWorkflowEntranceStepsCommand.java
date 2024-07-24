@@ -29,34 +29,32 @@ import com.echothree.model.data.workflow.server.entity.WorkflowEntranceStep;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class GetWorkflowEntranceStepsCommand
-        extends BaseMultipleEntitiesCommand<WorkflowEntranceStep, GetWorkflowEntranceStepsForm> {
-    
+        extends BasePaginatedMultipleEntitiesCommand<WorkflowEntranceStep, GetWorkflowEntranceStepsForm> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.WorkflowEntrance.name(), SecurityRoles.WorkflowStep.name())
-                        )))
-                )));
+                ))
+        ));
 
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("WorkflowEntranceName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+        );
     }
     
     /** Creates a new instance of GetWorkflowEntranceStepsCommand */
@@ -67,13 +65,25 @@ public class GetWorkflowEntranceStepsCommand
     WorkflowEntrance workflowEntrance;
 
     @Override
-    protected Collection<WorkflowEntranceStep> getEntities() {
+    protected void handleForm() {
         var workflowName = form.getWorkflowName();
         var workflowEntranceName = form.getWorkflowEntranceName();
-        Collection<WorkflowEntranceStep> workflowEntranceSteps = null;
 
         workflowEntrance = WorkflowEntranceLogic.getInstance().getWorkflowEntranceByName(this,
                 workflowName, workflowEntranceName);
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        var workflowControl = Session.getModelController(WorkflowControl.class);
+
+        return hasExecutionErrors() ? null :
+                workflowControl.countWorkflowEntranceStepsByWorkflowEntrance(workflowEntrance);
+    }
+
+    @Override
+    protected Collection<WorkflowEntranceStep> getEntities() {
+        Collection<WorkflowEntranceStep> workflowEntranceSteps = null;
 
         if(!this.hasExecutionErrors()) {
             var workflowControl = Session.getModelController(WorkflowControl.class);
