@@ -767,6 +767,7 @@ import com.echothree.model.data.wishlist.server.entity.WishlistPriority;
 import com.echothree.model.data.wishlist.server.entity.WishlistType;
 import com.echothree.model.data.workflow.common.WorkflowConstants;
 import com.echothree.model.data.workflow.common.WorkflowDestinationConstants;
+import com.echothree.model.data.workflow.common.WorkflowDestinationStepConstants;
 import com.echothree.model.data.workflow.common.WorkflowEntranceConstants;
 import com.echothree.model.data.workflow.common.WorkflowEntranceStepConstants;
 import com.echothree.model.data.workflow.common.WorkflowStepConstants;
@@ -1218,36 +1219,42 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("workflowDestinationSteps")
-    static Collection<WorkflowDestinationStepObject> workflowDestinationSteps(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<WorkflowDestinationStepObject> workflowDestinationSteps(final DataFetchingEnvironment env,
             @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
             @GraphQLName("workflowStepName") @GraphQLNonNull final String workflowStepName,
             @GraphQLName("workflowDestinationName") @GraphQLNonNull final String workflowDestinationName) {
-        Collection<WorkflowDestinationStep> workflowDestinationSteps;
-        Collection<WorkflowDestinationStepObject> workflowDestinationStepObjects;
+        CountingPaginatedData<WorkflowDestinationStepObject> data;
 
         try {
             var commandForm = WorkflowUtil.getHome().getGetWorkflowDestinationStepsForm();
+            var command = new GetWorkflowDestinationStepsCommand(getUserVisitPK(env), commandForm);
 
             commandForm.setWorkflowName(workflowName);
             commandForm.setWorkflowStepName(workflowStepName);
             commandForm.setWorkflowDestinationName(workflowDestinationName);
 
-            workflowDestinationSteps = new GetWorkflowDestinationStepsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            var totalEntities = command.getTotalEntitiesForGraphQl();
+
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, WorkflowDestinationStepConstants.COMPONENT_VENDOR_NAME, WorkflowDestinationStepConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var workflowDestinationSteps = entities.stream()
+                            .map(WorkflowDestinationStepObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, workflowDestinationSteps);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(workflowDestinationSteps == null) {
-            workflowDestinationStepObjects = emptyList();
-        } else {
-            workflowDestinationStepObjects = new ArrayList<>(workflowDestinationSteps.size());
-
-            workflowDestinationSteps.stream()
-                    .map(WorkflowDestinationStepObject::new)
-                    .forEachOrdered(workflowDestinationStepObjects::add);
-        }
-
-        return workflowDestinationStepObjects;
+        return data;
     }
 
     @GraphQLField

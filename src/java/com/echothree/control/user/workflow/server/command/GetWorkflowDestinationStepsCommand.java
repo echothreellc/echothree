@@ -29,35 +29,33 @@ import com.echothree.model.data.workflow.server.entity.WorkflowDestinationStep;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class GetWorkflowDestinationStepsCommand
-        extends BaseMultipleEntitiesCommand<WorkflowDestinationStep, GetWorkflowDestinationStepsForm> {
-    
+        extends BasePaginatedMultipleEntitiesCommand<WorkflowDestinationStep, GetWorkflowDestinationStepsForm> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.WorkflowDestination.name(), SecurityRoles.WorkflowStep.name())
-                        )))
-                )));
+                ))
+        ));
 
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("WorkflowStepName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("WorkflowDestinationName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+        );
     }
     
     /** Creates a new instance of GetWorkflowDestinationStepsCommand */
@@ -68,14 +66,26 @@ public class GetWorkflowDestinationStepsCommand
     WorkflowDestination workflowDestination;
 
     @Override
-    protected Collection<WorkflowDestinationStep> getEntities() {
+    protected void handleForm() {
         var workflowName = form.getWorkflowName();
         var workflowStepName = form.getWorkflowStepName();
         var workflowDestinationName = form.getWorkflowDestinationName();
-        Collection<WorkflowDestinationStep> workflowDestinationSteps = null;
 
         workflowDestination = WorkflowDestinationLogic.getInstance().getWorkflowDestinationByName(this, workflowName,
                 workflowStepName, workflowDestinationName);
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        var workflowControl = Session.getModelController(WorkflowControl.class);
+
+        return hasExecutionErrors() ? null :
+                workflowControl.countWorkflowDestinationStepsByWorkflowDestination(workflowDestination);
+    }
+
+    @Override
+    protected Collection<WorkflowDestinationStep> getEntities() {
+        Collection<WorkflowDestinationStep> workflowDestinationSteps = null;
 
         if(!this.hasExecutionErrors()) {
             var workflowControl = Session.getModelController(WorkflowControl.class);
