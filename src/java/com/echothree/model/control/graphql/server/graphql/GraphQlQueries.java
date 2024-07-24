@@ -768,6 +768,7 @@ import com.echothree.model.data.wishlist.server.entity.WishlistType;
 import com.echothree.model.data.workflow.common.WorkflowConstants;
 import com.echothree.model.data.workflow.common.WorkflowDestinationConstants;
 import com.echothree.model.data.workflow.common.WorkflowDestinationStepConstants;
+import com.echothree.model.data.workflow.common.WorkflowEntityTypeConstants;
 import com.echothree.model.data.workflow.common.WorkflowEntranceConstants;
 import com.echothree.model.data.workflow.common.WorkflowEntranceStepConstants;
 import com.echothree.model.data.workflow.common.WorkflowStepConstants;
@@ -983,36 +984,42 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("workflowEntityTypes")
-    static Collection<WorkflowEntityTypeObject> workflowEntityTypes(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<WorkflowEntityTypeObject> workflowEntityTypes(final DataFetchingEnvironment env,
             @GraphQLName("workflowName") final String workflowName,
             @GraphQLName("componentVendorName") final String componentVendorName,
             @GraphQLName("entityTypeName") final String entityTypeName) {
-        Collection<WorkflowEntityType> workflowEntityTypes;
-        Collection<WorkflowEntityTypeObject> workflowEntityTypeObjects;
+        CountingPaginatedData<WorkflowEntityTypeObject> data;
 
         try {
             var commandForm = WorkflowUtil.getHome().getGetWorkflowEntityTypesForm();
+            var command = new GetWorkflowEntityTypesCommand(getUserVisitPK(env), commandForm);
 
             commandForm.setWorkflowName(workflowName);
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);
 
-            workflowEntityTypes = new GetWorkflowEntityTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            var totalEntities = command.getTotalEntitiesForGraphQl();
+
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, WorkflowEntityTypeConstants.COMPONENT_VENDOR_NAME, WorkflowEntityTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var workflowEntityTypes = entities.stream()
+                            .map(WorkflowEntityTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, workflowEntityTypes);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(workflowEntityTypes == null) {
-            workflowEntityTypeObjects = emptyList();
-        } else {
-            workflowEntityTypeObjects = new ArrayList<>(workflowEntityTypes.size());
-
-            workflowEntityTypes.stream()
-                    .map(WorkflowEntityTypeObject::new)
-                    .forEachOrdered(workflowEntityTypeObjects::add);
-        }
-
-        return workflowEntityTypeObjects;
+        return data;
     }
 
     @GraphQLField

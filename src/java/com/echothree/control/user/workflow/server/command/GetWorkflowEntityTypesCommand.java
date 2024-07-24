@@ -32,35 +32,33 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class GetWorkflowEntityTypesCommand
-        extends BaseMultipleEntitiesCommand<WorkflowEntityType, GetWorkflowEntityTypesForm> {
-    
+        extends BasePaginatedMultipleEntitiesCommand<WorkflowEntityType, GetWorkflowEntityTypesForm> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Workflow.name(), SecurityRoles.EntityType.name())
-                        )))
-                )));
+                ))
+        ));
 
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, false, null, null)
-                ));
+        );
     }
     
     /** Creates a new instance of GetWorkflowEntityTypesCommand */
@@ -72,33 +70,45 @@ public class GetWorkflowEntityTypesCommand
     EntityType entityType;
 
     @Override
-    protected Collection<WorkflowEntityType> getEntities() {
+    protected void handleForm() {
         var workflowName = form.getWorkflowName();
         var componentVendorName = form.getComponentVendorName();
         var entityTypeName = form.getEntityTypeName();
         var parameterCount = (workflowName == null ? 0 : 1) + (componentVendorName == null && entityTypeName == null ? 0 : 1);
-        Collection<WorkflowEntityType> workflowEntityTypes = null;
 
         if(parameterCount == 1) {
             if(workflowName != null) {
                 workflow = WorkflowLogic.getInstance().getWorkflowByName(this, workflowName);
-
-                if(!hasExecutionErrors()) {
-                    var workflowControl = Session.getModelController(WorkflowControl.class);
-
-                    workflowEntityTypes = workflowControl.getWorkflowEntityTypesByWorkflow(workflow);
-                }
             } else {
                 entityType = EntityTypeLogic.getInstance().getEntityTypeByName(this, componentVendorName, entityTypeName);
-
-                if(!hasExecutionErrors()) {
-                    var workflowControl = Session.getModelController(WorkflowControl.class);
-
-                    workflowEntityTypes = workflowControl.getWorkflowEntityTypesByEntityType(entityType);
-                }
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
+        }
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        var workflowControl = Session.getModelController(WorkflowControl.class);
+
+        return hasExecutionErrors() ? null :
+                workflow != null ?
+                        workflowControl.countWorkflowEntityTypesByWorkflow(workflow) :
+                        workflowControl.countWorkflowEntityTypesByEntityType(entityType);
+    }
+
+    @Override
+    protected Collection<WorkflowEntityType> getEntities() {
+        Collection<WorkflowEntityType> workflowEntityTypes = null;
+
+        if(!hasExecutionErrors()) {
+            var workflowControl = Session.getModelController(WorkflowControl.class);
+
+            if(workflow != null) {
+                workflowEntityTypes = workflowControl.getWorkflowEntityTypesByWorkflow(workflow);
+            } else {
+                workflowEntityTypes = workflowControl.getWorkflowEntityTypesByEntityType(entityType);
+            }
         }
 
         return workflowEntityTypes;
