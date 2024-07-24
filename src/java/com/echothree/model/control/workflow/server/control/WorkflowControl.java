@@ -20,7 +20,6 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.selector.common.SelectorKinds;
 import com.echothree.model.control.selector.server.evaluator.CachedSelector;
 import com.echothree.model.control.selector.server.evaluator.PostalAddressSelectorEvaluator;
-import com.echothree.model.control.warehouse.common.choice.LocationChoicesBean;
 import com.echothree.model.control.workflow.common.choice.BaseWorkflowChoicesBean;
 import com.echothree.model.control.workflow.common.choice.WorkflowChoicesBean;
 import com.echothree.model.control.workflow.common.choice.WorkflowStepChoicesBean;
