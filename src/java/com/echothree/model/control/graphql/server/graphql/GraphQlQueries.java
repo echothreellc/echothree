@@ -348,6 +348,7 @@ import com.echothree.control.user.workflow.server.command.GetWorkflowDestination
 import com.echothree.control.user.workflow.server.command.GetWorkflowDestinationStepCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowDestinationStepsCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowDestinationsCommand;
+import com.echothree.control.user.workflow.server.command.GetWorkflowEntityStatusesCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowEntityTypeCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowEntityTypesCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowEntranceCommand;
@@ -551,6 +552,7 @@ import com.echothree.model.control.workflow.server.graphql.WorkflowDestinationPa
 import com.echothree.model.control.workflow.server.graphql.WorkflowDestinationSecurityRoleObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowDestinationSelectorObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowDestinationStepObject;
+import com.echothree.model.control.workflow.server.graphql.WorkflowEntityStatusObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowEntityTypeObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowEntranceObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowEntrancePartyTypeObject;
@@ -768,6 +770,7 @@ import com.echothree.model.data.wishlist.server.entity.WishlistType;
 import com.echothree.model.data.workflow.common.WorkflowConstants;
 import com.echothree.model.data.workflow.common.WorkflowDestinationConstants;
 import com.echothree.model.data.workflow.common.WorkflowDestinationStepConstants;
+import com.echothree.model.data.workflow.common.WorkflowEntityStatusConstants;
 import com.echothree.model.data.workflow.common.WorkflowEntityTypeConstants;
 import com.echothree.model.data.workflow.common.WorkflowEntranceConstants;
 import com.echothree.model.data.workflow.common.WorkflowEntranceStepConstants;
@@ -1073,6 +1076,42 @@ public interface GraphQlQueries {
         }
 
         return workflowSelectorKindObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("workflowEntityStatuses")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<WorkflowEntityStatusObject> workflowEntityStatuses(final DataFetchingEnvironment env,
+            @GraphQLName("workflowName") final String workflowName) {
+        CountingPaginatedData<WorkflowEntityStatusObject> data;
+
+        try {
+            var commandForm = WorkflowUtil.getHome().getGetWorkflowEntityStatusesForm();
+            var command = new GetWorkflowEntityStatusesCommand(getUserVisitPK(env), commandForm);
+
+            commandForm.setWorkflowName(workflowName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl();
+
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, WorkflowEntityStatusConstants.COMPONENT_VENDOR_NAME, WorkflowEntityStatusConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var workflowEntityStatuses = entities.stream()
+                            .map(WorkflowEntityStatusObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, workflowEntityStatuses);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
     }
 
     @GraphQLField
