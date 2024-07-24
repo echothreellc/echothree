@@ -20,7 +20,6 @@ import com.echothree.control.user.workflow.common.WorkflowUtil;
 import com.echothree.control.user.workflow.common.form.GetWorkflowDestinationsForm;
 import com.echothree.control.user.workflow.common.result.GetWorkflowDestinationsResult;
 import com.echothree.model.control.workflow.common.transfer.WorkflowStepTransfer;
-import com.echothree.model.control.workflow.common.transfer.WorkflowTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -67,10 +66,8 @@ public class MainAction
             CommandResult commandResult = WorkflowUtil.getHome().getWorkflowDestinations(getUserVisitPK(request), commandForm);
             ExecutionResult executionResult = commandResult.getExecutionResult();
             GetWorkflowDestinationsResult result = (GetWorkflowDestinationsResult)executionResult.getResult();
-            WorkflowTransfer workflowTransfer = result.getWorkflow();
             WorkflowStepTransfer workflowStepTransfer = result.getWorkflowStep();
             
-            request.setAttribute(AttributeConstants.WORKFLOW, workflowTransfer);
             request.setAttribute(AttributeConstants.WORKFLOW_STEP, workflowStepTransfer);
             request.setAttribute(AttributeConstants.WORKFLOW_DESTINATIONS, result.getWorkflowDestinations());
             forwardKey = ForwardConstants.DISPLAY;
