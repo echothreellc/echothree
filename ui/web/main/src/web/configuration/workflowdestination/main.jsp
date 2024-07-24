@@ -31,7 +31,7 @@
                 <a href="<c:url value="/action/Configuration/Main" />">Configuration</a> &gt;&gt;
                 <a href="<c:url value="/action/Configuration/Workflow/Main" />">Workflows</a> &gt;&gt;
                 <c:url var="workflowStepsUrl" value="/action/Configuration/WorkflowStep/Main">
-                    <c:param name="WorkflowName" value="${workflow.workflowName}" />
+                    <c:param name="WorkflowName" value="${workflowStep.workflow.workflowName}" />
                 </c:url>
                 <a href="${workflowStepsUrl}">Steps</a> &gt;&gt;
                 Destinations
@@ -39,7 +39,7 @@
         </div>
         <div id="Content">
             <c:url var="addUrl" value="/action/Configuration/WorkflowDestination/Add">
-                <c:param name="WorkflowName" value="${workflow.workflowName}" />
+                <c:param name="WorkflowName" value="${workflowStep.workflow.workflowName}" />
                 <c:param name="WorkflowStepName" value="${workflowStep.workflowStepName}" />
             </c:url>
             <p><a href="${addUrl}">Add Destination.</a></p>

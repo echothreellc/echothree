@@ -29,7 +29,7 @@ import com.echothree.model.data.workflow.server.entity.WorkflowStep;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -38,7 +38,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class GetWorkflowDestinationsCommand
-        extends BaseMultipleEntitiesCommand<WorkflowDestination, GetWorkflowDestinationsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<WorkflowDestination, GetWorkflowDestinationsForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -65,14 +65,26 @@ public class GetWorkflowDestinationsCommand
     WorkflowStep workflowStep;
 
     @Override
-    protected Collection<WorkflowDestination> getEntities() {
+    protected void handleForm() {
         var workflowName = form.getWorkflowName();
         var workflowStepName = form.getWorkflowStepName();
-        Collection<WorkflowDestination> workflowDestinations = null;
 
         workflowStep = WorkflowStepLogic.getInstance().getWorkflowStepByName(this, workflowName, workflowStepName);
+    }
 
-        if(!this.hasExecutionErrors()) {
+    @Override
+    protected Long getTotalEntities() {
+        var workflowControl = Session.getModelController(WorkflowControl.class);
+
+        return hasExecutionErrors() ? null :
+                workflowControl.countWorkflowDestinationsByWorkflowStep(workflowStep);
+    }
+
+    @Override
+    protected Collection<WorkflowDestination> getEntities() {
+        Collection<WorkflowDestination> workflowDestinations = null;
+
+        if(!hasExecutionErrors()) {
             var workflowControl = Session.getModelController(WorkflowControl.class);
 
             workflowDestinations = workflowControl.getWorkflowDestinationsByWorkflowStep(workflowStep);
@@ -89,7 +101,6 @@ public class GetWorkflowDestinationsCommand
             var workflowControl = Session.getModelController(WorkflowControl.class);
             var userVisit = getUserVisit();
 
-            result.setWorkflow(workflowControl.getWorkflowTransfer(userVisit, workflowStep.getLastDetail().getWorkflow()));
             result.setWorkflowStep(workflowControl.getWorkflowStepTransfer(userVisit, workflowStep));
             result.setWorkflowDestinations(workflowControl.getWorkflowDestinationTransfers(getUserVisit(), entities));
         }
