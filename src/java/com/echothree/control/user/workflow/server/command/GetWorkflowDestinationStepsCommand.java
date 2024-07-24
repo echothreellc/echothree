@@ -87,7 +87,7 @@ public class GetWorkflowDestinationStepsCommand
     protected Collection<WorkflowDestinationStep> getEntities() {
         Collection<WorkflowDestinationStep> workflowDestinationSteps = null;
 
-        if(!this.hasExecutionErrors()) {
+        if(!hasExecutionErrors()) {
             var workflowControl = Session.getModelController(WorkflowControl.class);
 
             workflowDestinationSteps = workflowControl.getWorkflowDestinationStepsByWorkflowDestination(workflowDestination);

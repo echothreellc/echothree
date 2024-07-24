@@ -77,7 +77,7 @@ public class GetWorkflowEntranceSecurityRolesCommand
         workflowEntrancePartyType = WorkflowEntranceLogic.getInstance().getWorkflowEntrancePartyTypeByName(this,
                 workflowName, workflowEntranceName, partyTypeName);
 
-        if(!this.hasExecutionErrors()) {
+        if(!hasExecutionErrors()) {
             var workflowControl = Session.getModelController(WorkflowControl.class);
 
             workflowEntranceSecurityRoles = workflowControl.getWorkflowEntranceSecurityRolesByWorkflowEntrancePartyType(workflowEntrancePartyType);

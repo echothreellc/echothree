@@ -85,7 +85,7 @@ public class GetWorkflowEntranceStepsCommand
     protected Collection<WorkflowEntranceStep> getEntities() {
         Collection<WorkflowEntranceStep> workflowEntranceSteps = null;
 
-        if(!this.hasExecutionErrors()) {
+        if(!hasExecutionErrors()) {
             var workflowControl = Session.getModelController(WorkflowControl.class);
 
             workflowEntranceSteps = workflowControl.getWorkflowEntranceStepsByWorkflowEntrance(workflowEntrance);

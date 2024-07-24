@@ -72,7 +72,7 @@ public class GetWorkflowEntityStatusesCommand
 
         workflow = WorkflowLogic.getInstance().getWorkflowByName(this, workflowName);
 
-        if(!this.hasExecutionErrors()) {
+        if(!hasExecutionErrors()) {
             var workflowControl = Session.getModelController(WorkflowControl.class);
 
             workflowEntityStatuses = workflowControl.getWorkflowEntityStatusesByWorkflow(workflow);

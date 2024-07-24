@@ -77,7 +77,7 @@ public class GetWorkflowDestinationPartyTypesCommand
         workflowDestination = WorkflowDestinationLogic.getInstance().getWorkflowDestinationByName(this, workflowName,
                 workflowStepName, workflowDestinationName);
 
-        if(!this.hasExecutionErrors()) {
+        if(!hasExecutionErrors()) {
             var workflowControl = Session.getModelController(WorkflowControl.class);
 
             workflowDestinationPartyTypes = workflowControl.getWorkflowDestinationPartyTypesByWorkflowDestination(workflowDestination);
