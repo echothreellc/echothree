@@ -17,6 +17,7 @@
 package com.echothree.control.user.workflow.server.command;
 
 import com.echothree.control.user.workflow.common.form.CreateWorkflowEntranceForm;
+import com.echothree.control.user.workflow.common.result.WorkflowResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -24,6 +25,7 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
+import com.echothree.model.data.workflow.server.entity.WorkflowStep;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -67,13 +69,16 @@ public class CreateWorkflowEntranceCommand
     
     @Override
     protected BaseResult execute() {
+        var result = WorkflowResultFactory.getCreateWorkflowEntranceResult();
         var workflowControl = Session.getModelController(WorkflowControl.class);
         String workflowName = form.getWorkflowName();
         var workflow = workflowControl.getWorkflowByName(workflowName);
+        WorkflowEntrance workflowEntrance = null;
         
         if(workflow != null) {
             String workflowEntranceName = form.getWorkflowEntranceName();
-            WorkflowEntrance workflowEntrance = workflowControl.getWorkflowEntranceByName(workflow, workflowEntranceName);
+
+            workflowEntrance = workflowControl.getWorkflowEntranceByName(workflow, workflowEntranceName);
             
             if(workflowEntrance == null) {
                 var partyPK = getPartyPK();
@@ -92,8 +97,17 @@ public class CreateWorkflowEntranceCommand
         } else {
             addExecutionError(ExecutionErrors.UnknownWorkflowName.name(), workflowName);
         }
-        
-        return null;
+
+        if(workflowEntrance != null) {
+            var basePK = workflowEntrance.getPrimaryKey();
+            var workflowEntranceDetail = workflowEntrance.getLastDetail();
+
+            result.setWorkflowName(workflowEntranceDetail.getWorkflow().getLastDetail().getWorkflowName());
+            result.setWorkflowEntranceName(workflowEntranceDetail.getWorkflowEntranceName());
+            result.setEntityRef(basePK.getEntityRef());
+        }
+
+        return result;
     }
     
 }
