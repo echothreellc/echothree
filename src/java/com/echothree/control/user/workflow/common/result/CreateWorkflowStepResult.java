@@ -14,13 +14,15 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.workflow.common.form;
+package com.echothree.control.user.workflow.common.result;
 
-import com.echothree.control.user.workflow.common.spec.WorkflowStepUniversalSpec;
+import com.echothree.control.user.core.common.spec.EntityRefSpec;
+import com.echothree.control.user.workflow.common.spec.WorkflowStepSpec;
+import com.echothree.util.common.command.BaseResult;
 
-public interface DeleteWorkflowStepForm
-        extends WorkflowStepUniversalSpec {
-    
-    // Nothing additional beyond WorkflowStepUniversalSpec
-    
+public interface CreateWorkflowStepResult
+        extends EntityRefSpec, WorkflowStepSpec, BaseResult {
+
+    // Nothing additional beyond EntityRefSpec, WorkflowStepSpec, BaseResult
+
 }
