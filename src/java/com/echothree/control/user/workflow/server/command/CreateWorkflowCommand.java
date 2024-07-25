@@ -16,7 +16,9 @@
 
 package com.echothree.control.user.workflow.server.command;
 
+import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.workflow.common.form.CreateWorkflowForm;
+import com.echothree.control.user.workflow.common.result.WorkflowResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -71,6 +73,7 @@ public class CreateWorkflowCommand
     
     @Override
     protected BaseResult execute() {
+        var result = WorkflowResultFactory.getCreateWorkflowResult();
         var workflowControl = Session.getModelController(WorkflowControl.class);
         String workflowName = form.getWorkflowName();
         var workflow = workflowControl.getWorkflowByName(workflowName);
@@ -117,8 +120,15 @@ public class CreateWorkflowCommand
         } else {
             addExecutionError(ExecutionErrors.DuplicateWorkflowName.name(), workflowName);
         }
-        
-        return null;
+
+        if(workflow != null) {
+            var basePK = workflow.getPrimaryKey();
+
+            result.setWorkflowName(workflow.getLastDetail().getWorkflowName());
+            result.setEntityRef(basePK.getEntityRef());
+        }
+
+        return result;
     }
     
 }

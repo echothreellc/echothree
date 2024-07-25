@@ -186,6 +186,9 @@ import com.echothree.control.user.wishlist.common.result.CreateWishlistPriorityR
 import com.echothree.control.user.wishlist.common.result.CreateWishlistTypeResult;
 import com.echothree.control.user.wishlist.common.result.EditWishlistPriorityResult;
 import com.echothree.control.user.wishlist.common.result.EditWishlistTypeResult;
+import com.echothree.control.user.workflow.common.WorkflowUtil;
+import com.echothree.control.user.workflow.common.result.CreateWorkflowResult;
+import com.echothree.control.user.workflow.common.result.EditWorkflowResult;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.search.server.graphql.SearchCustomersResultObject;
 import com.echothree.model.control.search.server.graphql.SearchEmployeesResultObject;
@@ -10853,6 +10856,124 @@ public interface GraphQlMutations {
 
         try {
             mutationResultObject.setCommandResult(AuthenticationUtil.getHome().logout(BaseGraphQl.getUserVisitPK(env)));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject createWorkflow(final DataFetchingEnvironment env,
+            @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
+            @GraphQLName("selectorKindName") final String selectorKindName,
+            @GraphQLName("selectorTypeName") final String selectorTypeName,
+            @GraphQLName("securityRoleGroupName") final String securityRoleGroupName,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var commandForm = WorkflowUtil.getHome().getCreateWorkflowForm();
+
+            commandForm.setWorkflowName(workflowName);
+            commandForm.setSelectorKindName(selectorKindName);
+            commandForm.setSelectorTypeName(selectorTypeName);
+            commandForm.setSecurityRoleGroupName(securityRoleGroupName);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setDescription(description);
+
+            var commandResult = WorkflowUtil.getHome().createWorkflow(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateWorkflowResult)commandResult.getExecutionResult().getResult();
+
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject editWorkflow(final DataFetchingEnvironment env,
+            @GraphQLName("originalWorkflowName") final String originalWorkflowName,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("workflowName") final String workflowName,
+            @GraphQLName("selectorKindName") final String selectorKindName,
+            @GraphQLName("selectorTypeName") final String selectorTypeName,
+            @GraphQLName("securityRoleGroupName") final String securityRoleGroupName,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var spec = WorkflowUtil.getHome().getWorkflowUniversalSpec();
+
+            spec.setWorkflowName(originalWorkflowName);
+            spec.setUlid(id);
+
+            var commandForm = WorkflowUtil.getHome().getEditWorkflowForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = WorkflowUtil.getHome().editWorkflow(BaseGraphQl.getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditWorkflowResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                mutationResultObject.setEntityInstance(result.getWorkflow().getEntityInstance());
+
+                if(arguments.containsKey("workflowName"))
+                    edit.setWorkflowName(workflowName);
+                if(arguments.containsKey("selectorKindName"))
+                    edit.setSelectorKindName(selectorKindName);
+                if(arguments.containsKey("selectorTypeName"))
+                    edit.setSelectorTypeName(selectorTypeName);
+                if(arguments.containsKey("securityRoleGroupName"))
+                    edit.setSecurityRoleGroupName(securityRoleGroupName);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = WorkflowUtil.getHome().editWorkflow(BaseGraphQl.getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteWorkflow(final DataFetchingEnvironment env,
+            @GraphQLName("workflowName") final String workflowName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = WorkflowUtil.getHome().getDeleteWorkflowForm();
+
+            commandForm.setWorkflowName(workflowName);
+            commandForm.setUlid(id);
+
+            mutationResultObject.setCommandResult(WorkflowUtil.getHome().deleteWorkflow(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
