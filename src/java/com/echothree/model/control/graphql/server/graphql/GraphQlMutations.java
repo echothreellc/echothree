@@ -196,7 +196,6 @@ import com.echothree.model.control.search.server.graphql.SearchItemsResultObject
 import com.echothree.model.control.search.server.graphql.SearchVendorsResultObject;
 import com.echothree.model.control.search.server.graphql.SearchWarehousesResultObject;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.validation.FieldType;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLID;
 import graphql.annotations.annotationTypes.GraphQLName;
@@ -10964,16 +10963,15 @@ public interface GraphQlMutations {
     @GraphQLField
     @GraphQLRelayMutation
     static MutationResultObject deleteWorkflow(final DataFetchingEnvironment env,
-            @GraphQLName("workflowName") final String workflowName//,
-//            @GraphQLName("id") @GraphQLID final String id
-    ) {
+            @GraphQLName("workflowName") final String workflowName,
+            @GraphQLName("id") @GraphQLID final String id) {
         var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = WorkflowUtil.getHome().getDeleteWorkflowForm();
 
             commandForm.setWorkflowName(workflowName);
-//            commandForm.setUlid(id);
+            commandForm.setUlid(id);
 
             mutationResultObject.setCommandResult(WorkflowUtil.getHome().deleteWorkflow(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
