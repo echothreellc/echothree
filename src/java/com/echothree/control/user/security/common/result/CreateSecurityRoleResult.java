@@ -14,13 +14,15 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.security.common.form;
+package com.echothree.control.user.security.common.result;
 
-import com.echothree.control.user.security.common.spec.SecurityRoleUniversalSpec;
+import com.echothree.control.user.core.common.spec.EntityRefSpec;
+import com.echothree.control.user.security.common.spec.SecurityRoleSpec;
+import com.echothree.util.common.command.BaseResult;
 
-public interface DeleteSecurityRoleForm
-        extends SecurityRoleUniversalSpec {
-    
-    // Nothing additional beyond SecurityRoleUniversalSpec
-    
+public interface CreateSecurityRoleResult
+        extends EntityRefSpec, SecurityRoleSpec, BaseResult {
+
+    // Nothing additional beyond EntityRefSpec, SecurityRoleSpec, BaseResult
+
 }

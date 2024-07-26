@@ -17,16 +17,17 @@
 package com.echothree.control.user.security.server.command;
 
 import com.echothree.control.user.security.common.form.CreateSecurityRoleGroupForm;
+import com.echothree.control.user.security.common.result.SecurityResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.security.server.control.SecurityControl;
 import com.echothree.model.data.security.server.entity.SecurityRoleGroup;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -66,6 +67,7 @@ public class CreateSecurityRoleGroupCommand
     
     @Override
     protected BaseResult execute() {
+        var result = SecurityResultFactory.getCreateSecurityRoleGroupResult();
         var securityControl = Session.getModelController(SecurityControl.class);
         String securityRoleGroupName = form.getSecurityRoleGroupName();
         SecurityRoleGroup securityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
@@ -97,8 +99,15 @@ public class CreateSecurityRoleGroupCommand
         } else {
             addExecutionError(ExecutionErrors.DuplicateSecurityRoleGroupName.name(), securityRoleGroupName);
         }
-        
-        return null;
+
+        if(securityRoleGroup != null) {
+            var basePK = securityRoleGroup.getPrimaryKey();
+
+            result.setSecurityRoleGroupName(securityRoleGroup.getLastDetail().getSecurityRoleGroupName());
+            result.setEntityRef(basePK.getEntityRef());
+        }
+
+        return result;
     }
     
 }
