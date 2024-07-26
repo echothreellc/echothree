@@ -724,6 +724,8 @@ import com.echothree.model.data.search.common.SearchCheckSpellingActionTypeConst
 import com.echothree.model.data.search.common.SearchResultActionTypeConstants;
 import com.echothree.model.data.search.server.entity.SearchCheckSpellingActionType;
 import com.echothree.model.data.search.server.entity.SearchResultActionType;
+import com.echothree.model.data.security.common.SecurityRoleConstants;
+import com.echothree.model.data.security.common.SecurityRoleGroupConstants;
 import com.echothree.model.data.security.server.entity.SecurityRole;
 import com.echothree.model.data.security.server.entity.SecurityRoleGroup;
 import com.echothree.model.data.selector.server.entity.Selector;
@@ -9001,32 +9003,38 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("securityRoleGroups")
-    static Collection<SecurityRoleGroupObject> securityRoleGroups(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<SecurityRoleGroupObject> securityRoleGroups(final DataFetchingEnvironment env,
             @GraphQLName("parentSecurityRoleGroupName") final String parentSecurityRoleGroupName) {
-        Collection<SecurityRoleGroup> securityRoleGroups;
-        Collection<SecurityRoleGroupObject> securityRoleGroupObjects;
+        CountingPaginatedData<SecurityRoleGroupObject> data;
 
         try {
             var commandForm = SecurityUtil.getHome().getGetSecurityRoleGroupsForm();
+            var command = new GetSecurityRoleGroupsCommand(getUserVisitPK(env), commandForm);
 
             commandForm.setParentSecurityRoleGroupName(parentSecurityRoleGroupName);
 
-            securityRoleGroups = new GetSecurityRoleGroupsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            var totalEntities = command.getTotalEntitiesForGraphQl();
+
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, SecurityRoleGroupConstants.COMPONENT_VENDOR_NAME, SecurityRoleGroupConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var securityRoleGroups = entities.stream()
+                            .map(SecurityRoleGroupObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, securityRoleGroups);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(securityRoleGroups == null) {
-            securityRoleGroupObjects = emptyList();
-        } else {
-            securityRoleGroupObjects = new ArrayList<>(securityRoleGroups.size());
-
-            securityRoleGroups.stream()
-                    .map(SecurityRoleGroupObject::new)
-                    .forEachOrdered(securityRoleGroupObjects::add);
-        }
-
-        return securityRoleGroupObjects;
+        return data;
     }
 
     @GraphQLField
@@ -9054,32 +9062,38 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("securityRoles")
-    static Collection<SecurityRoleObject> securityRoles(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<SecurityRoleObject> securityRoles(final DataFetchingEnvironment env,
             @GraphQLName("securityRoleGroupName") @GraphQLNonNull final String securityRoleGroupName) {
-        Collection<SecurityRole> securityRoles;
-        Collection<SecurityRoleObject> securityRoleObjects;
+        CountingPaginatedData<SecurityRoleObject> data;
 
         try {
             var commandForm = SecurityUtil.getHome().getGetSecurityRolesForm();
+            var command = new GetSecurityRolesCommand(getUserVisitPK(env), commandForm);
 
             commandForm.setSecurityRoleGroupName(securityRoleGroupName);
 
-            securityRoles = new GetSecurityRolesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            var totalEntities = command.getTotalEntitiesForGraphQl();
+
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, SecurityRoleConstants.COMPONENT_VENDOR_NAME, SecurityRoleConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var securityRoles = entities.stream()
+                            .map(SecurityRoleObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, securityRoles);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(securityRoles == null) {
-            securityRoleObjects = emptyList();
-        } else {
-            securityRoleObjects = new ArrayList<>(securityRoles.size());
-
-            securityRoles.stream()
-                    .map(SecurityRoleObject::new)
-                    .forEachOrdered(securityRoleObjects::add);
-        }
-
-        return securityRoleObjects;
+        return data;
     }
 
     @GraphQLField
