@@ -17,6 +17,7 @@
 package com.echothree.control.user.security.server.command;
 
 import com.echothree.control.user.security.common.form.CreateSecurityRoleForm;
+import com.echothree.control.user.security.common.result.SecurityResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -24,10 +25,10 @@ import com.echothree.model.control.security.server.control.SecurityControl;
 import com.echothree.model.data.security.server.entity.SecurityRole;
 import com.echothree.model.data.security.server.entity.SecurityRoleGroup;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -67,13 +68,16 @@ public class CreateSecurityRoleCommand
     
     @Override
     protected BaseResult execute() {
+        var result = SecurityResultFactory.getCreateSecurityRoleResult();
         var securityControl = Session.getModelController(SecurityControl.class);
         String securityRoleGroupName = form.getSecurityRoleGroupName();
         SecurityRoleGroup securityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
-        
+        SecurityRole securityRole = null;
+
         if(securityRoleGroup != null) {
             String securityRoleName = form.getSecurityRoleName();
-            SecurityRole securityRole = securityControl.getSecurityRoleByName(securityRoleGroup, securityRoleName);
+
+            securityRole = securityControl.getSecurityRoleByName(securityRoleGroup, securityRoleName);
             
             if(securityRole == null) {
                 var partyPK = getPartyPK();
@@ -92,8 +96,17 @@ public class CreateSecurityRoleCommand
         } else {
             addExecutionError(ExecutionErrors.DuplicateSecurityRoleGroupName.name(), securityRoleGroupName);
         }
-        
-        return null;
+
+        if(securityRole != null) {
+            var basePK = securityRole.getPrimaryKey();
+            var securityRoleDetail = securityRole.getLastDetail();
+
+            result.setSecurityRoleGroupName(securityRoleDetail.getSecurityRole().getLastDetail().getSecurityRoleName());
+            result.setSecurityRoleName(securityRoleDetail.getSecurityRoleName());
+            result.setEntityRef(basePK.getEntityRef());
+        }
+
+        return result;
     }
     
 }
