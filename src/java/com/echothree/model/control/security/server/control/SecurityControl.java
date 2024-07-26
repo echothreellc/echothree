@@ -167,12 +167,21 @@ public class SecurityControl
         
         return securityRoleGroup;
     }
-    
+
     public long countSecurityRoleGroups() {
         return session.queryForLong(
                 "SELECT COUNT(*) " +
-                "FROM securityrolegroups, securityrolegroupdetails " +
-                "WHERE srg_activedetailid = srgdt_securityrolegroupdetailid");
+                        "FROM securityrolegroups, securityrolegroupdetails " +
+                        "WHERE srg_activedetailid = srgdt_securityrolegroupdetailid");
+    }
+
+    public long countSecurityRoleGroupsByParentSecurityRoleGroup(SecurityRoleGroup parentSecurityRoleGroup) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM securityrolegroups, securityrolegroupdetails " +
+                        "WHERE srg_activedetailid = srgdt_securityrolegroupdetailid " +
+                        "AND srgdt_parentsecurityrolegroupid = ?",
+                parentSecurityRoleGroup);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.SecurityRoleGroup */
@@ -715,6 +724,14 @@ public class SecurityControl
                 "WHERE srol_activedetailid = sroldt_securityroledetailid");
     }
 
+    public long countSecurityRolesBySecurityRoleGroup(SecurityRoleGroup securityRoleGroup) {
+        return session.queryForLong(
+                "SELECT COUNT(*) "
+                + "FROM securityroles, securityroledetails "
+                + "WHERE srol_activedetailid = sroldt_securityroledetailid AND sroldt_srg_securityrolegroupid = ?",
+                securityRoleGroup);
+    }
+
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.SecurityRole */
     public SecurityRole getSecurityRoleByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new SecurityRolePK(entityInstance.getEntityUniqueId());
@@ -740,7 +757,8 @@ public class SecurityControl
                 query = "SELECT _ALL_ " +
                         "FROM securityroles, securityroledetails " +
                         "WHERE srol_activedetailid = sroldt_securityroledetailid AND sroldt_srg_securityrolegroupid = ? " +
-                        "ORDER BY sroldt_sortorder, sroldt_securityrolename";
+                        "ORDER BY sroldt_sortorder, sroldt_securityrolename " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM securityroles, securityroledetails " +
@@ -777,14 +795,6 @@ public class SecurityControl
                 securityRoleGroup, securityRoleName) == 1;
     }
     
-    public long countSecurityRolesBySecurityRoleGroup(SecurityRoleGroup securityRoleGroup) {
-        return session.queryForLong(
-                "SELECT COUNT(*) "
-                + "FROM securityroles, securityroledetails "
-                + "WHERE srol_activedetailid = sroldt_securityroledetailid AND sroldt_srg_securityrolegroupid = ?",
-                securityRoleGroup);
-    }
-
     public SecurityRole getDefaultSecurityRole(SecurityRoleGroup securityRoleGroup, EntityPermission entityPermission) {
         SecurityRole securityRole;
         
