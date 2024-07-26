@@ -11438,4 +11438,59 @@ public interface GraphQlMutations {
         return mutationResultObject;
     }
 
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject createWorkflowDestinationStep(final DataFetchingEnvironment env,
+            @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
+            @GraphQLName("workflowStepName") @GraphQLNonNull final String workflowStepName,
+            @GraphQLName("workflowDestinationName") @GraphQLNonNull final String workflowDestinationName,
+            @GraphQLName("destinationWorkflowName") @GraphQLNonNull final String destinationWorkflowName,
+            @GraphQLName("destinationWorkflowStepName") @GraphQLNonNull final String destinationWorkflowStepName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = WorkflowUtil.getHome().getCreateWorkflowDestinationStepForm();
+
+            commandForm.setWorkflowName(workflowName);
+            commandForm.setWorkflowStepName(workflowStepName);
+            commandForm.setWorkflowDestinationName(workflowDestinationName);
+            commandForm.setDestinationWorkflowName(destinationWorkflowName);
+            commandForm.setDestinationWorkflowStepName(destinationWorkflowStepName);
+
+            var commandResult = WorkflowUtil.getHome().createWorkflowDestinationStep(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteWorkflowDestinationStep(final DataFetchingEnvironment env,
+            @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
+            @GraphQLName("workflowStepName") @GraphQLNonNull final String workflowStepName,
+            @GraphQLName("workflowDestinationName") @GraphQLNonNull final String workflowDestinationName,
+            @GraphQLName("destinationWorkflowName") @GraphQLNonNull final String destinationWorkflowName,
+            @GraphQLName("destinationWorkflowStepName") @GraphQLNonNull final String destinationWorkflowStepName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = WorkflowUtil.getHome().getDeleteWorkflowDestinationStepForm();
+
+            commandForm.setWorkflowName(workflowName);
+            commandForm.setWorkflowStepName(workflowStepName);
+            commandForm.setWorkflowDestinationName(workflowDestinationName);
+            commandForm.setDestinationWorkflowName(destinationWorkflowName);
+            commandForm.setDestinationWorkflowStepName(destinationWorkflowStepName);
+
+            mutationResultObject.setCommandResult(WorkflowUtil.getHome().deleteWorkflowDestinationStep(BaseGraphQl.getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
 }
