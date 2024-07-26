@@ -17,6 +17,7 @@
 package com.echothree.control.user.workflow.server.command;
 
 import com.echothree.control.user.workflow.common.form.CreateWorkflowDestinationForm;
+import com.echothree.control.user.workflow.common.result.WorkflowResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -69,9 +70,11 @@ public class CreateWorkflowDestinationCommand
     
     @Override
     protected BaseResult execute() {
+        var result = WorkflowResultFactory.getCreateWorkflowDestinationResult();
         var workflowControl = Session.getModelController(WorkflowControl.class);
         String workflowName = form.getWorkflowName();
         var workflow = workflowControl.getWorkflowByName(workflowName);
+        WorkflowDestination workflowDestination = null;
         
         if(workflow != null) {
             String workflowStepName = form.getWorkflowStepName();
@@ -79,7 +82,8 @@ public class CreateWorkflowDestinationCommand
             
             if(workflowStep != null) {
                 String workflowDestinationName = form.getWorkflowDestinationName();
-                WorkflowDestination workflowDestination = workflowControl.getWorkflowDestinationByName(workflowStep, workflowDestinationName);
+                
+                workflowDestination = workflowControl.getWorkflowDestinationByName(workflowStep, workflowDestinationName);
                 
                 if(workflowDestination == null) {
                     var partyPK = getPartyPK();
@@ -101,8 +105,19 @@ public class CreateWorkflowDestinationCommand
         } else {
             addExecutionError(ExecutionErrors.UnknownWorkflowName.name(), workflowName);
         }
-        
-        return null;
+
+        if(workflowDestination != null) {
+            var basePK = workflowDestination.getPrimaryKey();
+            var workflowDestinationDetail = workflowDestination.getLastDetail();
+            var workflowStepDetail = workflowDestinationDetail.getWorkflowStep().getLastDetail();
+
+            result.setWorkflowName(workflowStepDetail.getWorkflow().getLastDetail().getWorkflowName());
+            result.setWorkflowStepName(workflowStepDetail.getWorkflowStepName());
+            result.setWorkflowDestinationName(workflowDestinationDetail.getWorkflowDestinationName());
+            result.setEntityRef(basePK.getEntityRef());
+        }
+
+        return result;
     }
     
 }
