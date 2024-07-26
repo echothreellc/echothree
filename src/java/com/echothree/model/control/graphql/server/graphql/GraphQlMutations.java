@@ -148,6 +148,9 @@ import com.echothree.control.user.search.common.result.SearchEmployeesResult;
 import com.echothree.control.user.search.common.result.SearchItemsResult;
 import com.echothree.control.user.search.common.result.SearchVendorsResult;
 import com.echothree.control.user.search.common.result.SearchWarehousesResult;
+import com.echothree.control.user.security.common.SecurityUtil;
+import com.echothree.control.user.security.common.result.CreateSecurityRoleGroupResult;
+import com.echothree.control.user.security.common.result.EditSecurityRoleGroupResult;
 import com.echothree.control.user.selector.common.SelectorUtil;
 import com.echothree.control.user.selector.common.result.CreateSelectorResult;
 import com.echothree.control.user.selector.common.result.EditSelectorResult;
@@ -10869,6 +10872,119 @@ public interface GraphQlMutations {
         return mutationResultObject;
     }
 
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject createSecurityRoleGroup(final DataFetchingEnvironment env,
+            @GraphQLName("securityRoleGroupName") @GraphQLNonNull final String securityRoleGroupName,
+            @GraphQLName("parentSecurityRoleGroupName") final String parentSecurityRoleGroupName,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var commandForm = SecurityUtil.getHome().getCreateSecurityRoleGroupForm();
+
+            commandForm.setSecurityRoleGroupName(securityRoleGroupName);
+            commandForm.setParentSecurityRoleGroupName(parentSecurityRoleGroupName);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setDescription(description);
+
+            var commandResult = SecurityUtil.getHome().createSecurityRoleGroup(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateSecurityRoleGroupResult)commandResult.getExecutionResult().getResult();
+
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject editSecurityRoleGroup(final DataFetchingEnvironment env,
+            @GraphQLName("originalSecurityRoleGroupName") final String originalSecurityRoleGroupName,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("securityRoleGroupName") final String securityRoleGroupName,
+            @GraphQLName("parentSecurityRoleGroupName") final String parentSecurityRoleGroupName,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var spec = SecurityUtil.getHome().getSecurityRoleGroupUniversalSpec();
+
+            spec.setSecurityRoleGroupName(originalSecurityRoleGroupName);
+            spec.setUlid(id);
+
+            var commandForm = SecurityUtil.getHome().getEditSecurityRoleGroupForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = SecurityUtil.getHome().editSecurityRoleGroup(BaseGraphQl.getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditSecurityRoleGroupResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                mutationResultObject.setEntityInstance(result.getSecurityRoleGroup().getEntityInstance());
+
+                if(arguments.containsKey("securityRoleGroupName"))
+                    edit.setSecurityRoleGroupName(securityRoleGroupName);
+                if(arguments.containsKey("parentSecurityRoleGroupName"))
+                    edit.setParentSecurityRoleGroupName(parentSecurityRoleGroupName);
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = SecurityUtil.getHome().editSecurityRoleGroup(BaseGraphQl.getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteSecurityRoleGroup(final DataFetchingEnvironment env,
+            @GraphQLName("securityRoleGroupName") final String securityRoleGroupName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = SecurityUtil.getHome().getDeleteSecurityRoleGroupForm();
+
+            commandForm.setSecurityRoleGroupName(securityRoleGroupName);
+            commandForm.setUlid(id);
+
+            mutationResultObject.setCommandResult(SecurityUtil.getHome().deleteSecurityRoleGroup(BaseGraphQl.getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+    
     @GraphQLField
     @GraphQLRelayMutation
     static MutationResultWithIdObject createWorkflow(final DataFetchingEnvironment env,
