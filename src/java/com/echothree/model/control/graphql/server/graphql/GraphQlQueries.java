@@ -771,6 +771,7 @@ import com.echothree.model.data.wishlist.server.entity.WishlistPriority;
 import com.echothree.model.data.wishlist.server.entity.WishlistType;
 import com.echothree.model.data.workflow.common.WorkflowConstants;
 import com.echothree.model.data.workflow.common.WorkflowDestinationConstants;
+import com.echothree.model.data.workflow.common.WorkflowDestinationPartyTypeConstants;
 import com.echothree.model.data.workflow.common.WorkflowDestinationStepConstants;
 import com.echothree.model.data.workflow.common.WorkflowEntityStatusConstants;
 import com.echothree.model.data.workflow.common.WorkflowEntityTypeConstants;
@@ -1333,36 +1334,42 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("workflowDestinationPartyTypes")
-    static Collection<WorkflowDestinationPartyTypeObject> workflowDestinationPartyTypes(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<WorkflowDestinationPartyTypeObject> workflowDestinationPartyTypes(final DataFetchingEnvironment env,
             @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
             @GraphQLName("workflowStepName") @GraphQLNonNull final String workflowStepName,
             @GraphQLName("workflowDestinationName") @GraphQLNonNull final String workflowDestinationName) {
-        Collection<WorkflowDestinationPartyType> workflowDestinationPartyTypes;
-        Collection<WorkflowDestinationPartyTypeObject> workflowDestinationPartyTypeObjects;
+        CountingPaginatedData<WorkflowDestinationPartyTypeObject> data;
 
         try {
             var commandForm = WorkflowUtil.getHome().getGetWorkflowDestinationPartyTypesForm();
+            var command = new GetWorkflowDestinationPartyTypesCommand(getUserVisitPK(env), commandForm);
 
             commandForm.setWorkflowName(workflowName);
             commandForm.setWorkflowStepName(workflowStepName);
             commandForm.setWorkflowDestinationName(workflowDestinationName);
 
-            workflowDestinationPartyTypes = new GetWorkflowDestinationPartyTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            var totalEntities = command.getTotalEntitiesForGraphQl();
+
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, WorkflowDestinationPartyTypeConstants.COMPONENT_VENDOR_NAME, WorkflowDestinationPartyTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var workflowDestinationPartyTypes = entities.stream()
+                            .map(WorkflowDestinationPartyTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, workflowDestinationPartyTypes);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(workflowDestinationPartyTypes == null) {
-            workflowDestinationPartyTypeObjects = emptyList();
-        } else {
-            workflowDestinationPartyTypeObjects = new ArrayList<>(workflowDestinationPartyTypes.size());
-
-            workflowDestinationPartyTypes.stream()
-                    .map(WorkflowDestinationPartyTypeObject::new)
-                    .forEachOrdered(workflowDestinationPartyTypeObjects::add);
-        }
-
-        return workflowDestinationPartyTypeObjects;
+        return data;
     }
 
     @GraphQLField
