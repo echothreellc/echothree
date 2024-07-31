@@ -777,6 +777,7 @@ import com.echothree.model.data.workflow.common.WorkflowEntityStatusConstants;
 import com.echothree.model.data.workflow.common.WorkflowEntityTypeConstants;
 import com.echothree.model.data.workflow.common.WorkflowEntranceConstants;
 import com.echothree.model.data.workflow.common.WorkflowEntrancePartyTypeConstants;
+import com.echothree.model.data.workflow.common.WorkflowEntranceSecurityRoleConstants;
 import com.echothree.model.data.workflow.common.WorkflowEntranceStepConstants;
 import com.echothree.model.data.workflow.common.WorkflowStepConstants;
 import com.echothree.model.data.workflow.common.WorkflowStepTypeConstants;
@@ -1704,36 +1705,42 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("workflowEntranceSecurityRoles")
-    static Collection<WorkflowEntranceSecurityRoleObject> workflowEntranceSecurityRoles(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<WorkflowEntranceSecurityRoleObject> workflowEntranceSecurityRoles(final DataFetchingEnvironment env,
             @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
             @GraphQLName("workflowEntranceName") @GraphQLNonNull final String workflowEntranceName,
             @GraphQLName("partyTypeName") @GraphQLNonNull final String partyTypeName) {
-        Collection<WorkflowEntranceSecurityRole> workflowEntranceSecurityRoles;
-        Collection<WorkflowEntranceSecurityRoleObject> workflowEntranceSecurityRoleObjects;
+        CountingPaginatedData<WorkflowEntranceSecurityRoleObject> data;
 
         try {
             var commandForm = WorkflowUtil.getHome().getGetWorkflowEntranceSecurityRolesForm();
+            var command = new GetWorkflowEntranceSecurityRolesCommand(getUserVisitPK(env), commandForm);
 
             commandForm.setWorkflowName(workflowName);
             commandForm.setWorkflowEntranceName(workflowEntranceName);
             commandForm.setPartyTypeName(partyTypeName);
 
-            workflowEntranceSecurityRoles = new GetWorkflowEntranceSecurityRolesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            var totalEntities = command.getTotalEntitiesForGraphQl();
+
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, WorkflowEntranceSecurityRoleConstants.COMPONENT_VENDOR_NAME, WorkflowEntranceSecurityRoleConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var workflowEntranceSecurityRoles = entities.stream()
+                            .map(WorkflowEntranceSecurityRoleObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, workflowEntranceSecurityRoles);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(workflowEntranceSecurityRoles == null) {
-            workflowEntranceSecurityRoleObjects = emptyList();
-        } else {
-            workflowEntranceSecurityRoleObjects = new ArrayList<>(workflowEntranceSecurityRoles.size());
-
-            workflowEntranceSecurityRoles.stream()
-                    .map(WorkflowEntranceSecurityRoleObject::new)
-                    .forEachOrdered(workflowEntranceSecurityRoleObjects::add);
-        }
-
-        return workflowEntranceSecurityRoleObjects;
+        return data;
     }
 
     @GraphQLField
