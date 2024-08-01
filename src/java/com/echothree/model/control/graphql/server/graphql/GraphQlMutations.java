@@ -11599,6 +11599,57 @@ public interface GraphQlMutations {
 
     @GraphQLField
     @GraphQLRelayMutation
+    static MutationResultObject createWorkflowEntranceSecurityRole(final DataFetchingEnvironment env,
+            @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
+            @GraphQLName("workflowEntranceName") @GraphQLNonNull final String workflowEntranceName,
+            @GraphQLName("partyTypeName") @GraphQLNonNull final String partyTypeName,
+            @GraphQLName("securityRoleName") @GraphQLNonNull final String securityRoleName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = WorkflowUtil.getHome().getCreateWorkflowEntranceSecurityRoleForm();
+
+            commandForm.setWorkflowName(workflowName);
+            commandForm.setWorkflowEntranceName(workflowEntranceName);
+            commandForm.setSecurityRoleName(securityRoleName);
+            commandForm.setPartyTypeName(partyTypeName);
+
+            var commandResult = WorkflowUtil.getHome().createWorkflowEntranceSecurityRole(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteWorkflowEntranceSecurityRole(final DataFetchingEnvironment env,
+            @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
+            @GraphQLName("workflowEntranceName") @GraphQLNonNull final String workflowEntranceName,
+            @GraphQLName("partyTypeName") @GraphQLNonNull final String partyTypeName,
+            @GraphQLName("securityRoleName") @GraphQLNonNull final String securityRoleName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = WorkflowUtil.getHome().getDeleteWorkflowEntranceSecurityRoleForm();
+
+            commandForm.setWorkflowName(workflowName);
+            commandForm.setWorkflowEntranceName(workflowEntranceName);
+            commandForm.setPartyTypeName(partyTypeName);
+            commandForm.setSecurityRoleName(securityRoleName);
+
+            mutationResultObject.setCommandResult(WorkflowUtil.getHome().deleteWorkflowEntranceSecurityRole(BaseGraphQl.getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
     static MutationResultWithIdObject createWorkflowDestination(final DataFetchingEnvironment env,
             @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
             @GraphQLName("workflowStepName") @GraphQLNonNull final String workflowStepName,
