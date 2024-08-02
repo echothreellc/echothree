@@ -64,6 +64,9 @@
         <entityAttributeType entityAttributeTypeName="MULTIPLELISTITEM">
             <entityAttributeTypeDescription languageIsoName="en" description="Multiple Choices from List" />
         </entityAttributeType>
+        <entityAttributeType entityAttributeTypeName="WORKFLOW">
+            <entityAttributeTypeDescription languageIsoName="en" description="Workflow" />
+        </entityAttributeType>
     </entityAttributeTypes>
     <componentVendors>
         <componentVendor componentVendorName="ECHO_THREE" description="Echo Three">
@@ -2445,6 +2448,9 @@
             </entityType>
             <entityType entityTypeName="EntityAttributeString" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Entity Attribute String" />
+            </entityType>
+            <entityType entityTypeName="EntityAttributeWorkflow" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Attribute Workflow" />
             </entityType>
             <entityType entityTypeName="PaymentProcessorActionType" keepAllHistory="false" isExtensible="true" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Payment Processor Action Type" />
