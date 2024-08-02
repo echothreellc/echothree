@@ -11823,4 +11823,55 @@ public interface GraphQlMutations {
         return mutationResultObject;
     }
 
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject createWorkflowDestinationPartyType(final DataFetchingEnvironment env,
+            @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
+            @GraphQLName("workflowStepName") @GraphQLNonNull final String workflowStepName,
+            @GraphQLName("workflowDestinationName") @GraphQLNonNull final String workflowDestinationName,
+            @GraphQLName("partyTypeName") @GraphQLNonNull final String partyTypeName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = WorkflowUtil.getHome().getCreateWorkflowDestinationPartyTypeForm();
+
+            commandForm.setWorkflowName(workflowName);
+            commandForm.setWorkflowStepName(workflowStepName);
+            commandForm.setWorkflowDestinationName(workflowDestinationName);
+            commandForm.setPartyTypeName(partyTypeName);
+
+            var commandResult = WorkflowUtil.getHome().createWorkflowDestinationPartyType(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteWorkflowDestinationPartyType(final DataFetchingEnvironment env,
+            @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
+            @GraphQLName("workflowStepName") @GraphQLNonNull final String workflowStepName,
+            @GraphQLName("workflowDestinationName") @GraphQLNonNull final String workflowDestinationName,
+            @GraphQLName("partyTypeName") @GraphQLNonNull final String partyTypeName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = WorkflowUtil.getHome().getDeleteWorkflowDestinationPartyTypeForm();
+
+            commandForm.setWorkflowName(workflowName);
+            commandForm.setWorkflowStepName(workflowStepName);
+            commandForm.setWorkflowDestinationName(workflowDestinationName);
+            commandForm.setPartyTypeName(partyTypeName);
+
+            mutationResultObject.setCommandResult(WorkflowUtil.getHome().deleteWorkflowDestinationPartyType(BaseGraphQl.getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
 }
