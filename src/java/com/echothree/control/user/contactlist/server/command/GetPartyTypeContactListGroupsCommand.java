@@ -19,7 +19,8 @@ package com.echothree.control.user.contactlist.server.command;
 import com.echothree.control.user.contactlist.common.form.GetPartyTypeContactListGroupsForm;
 import com.echothree.control.user.contactlist.common.result.ContactListResultFactory;
 import com.echothree.control.user.contactlist.common.result.GetPartyTypeContactListGroupsResult;
-import com.echothree.model.control.contactlist.server.ContactListControl;
+import com.echothree.model.control.contactlist.server.control.ContactListControl;
+import com.echothree.model.control.contactlist.server.logic.ContactListGroupLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -28,10 +29,10 @@ import com.echothree.model.data.contactlist.server.entity.ContactListGroup;
 import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -91,7 +92,7 @@ public class GetPartyTypeContactListGroupsCommand
                 ContactListGroup contactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
                 
                 if(contactListGroup != null) {
-                    result.setContactListGroup(contactListControl.getContactListGroupTransfer(userVisit, contactListGroup));
+                    result.setContactListGroup(ContactListGroupLogic.getInstance().getContactListGroupTransfer(userVisit, contactListGroup));
                     result.setPartyTypeContactListGroups(contactListControl.getPartyTypeContactListGroupTransfersByContactListGroup(userVisit, contactListGroup));
                 } else {
                     addExecutionError(ExecutionErrors.UnknownContactListGroupName.name(), contactListGroupName);

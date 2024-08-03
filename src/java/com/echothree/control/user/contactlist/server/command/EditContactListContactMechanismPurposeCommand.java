@@ -23,7 +23,7 @@ import com.echothree.control.user.contactlist.common.result.ContactListResultFac
 import com.echothree.control.user.contactlist.common.result.EditContactListContactMechanismPurposeResult;
 import com.echothree.control.user.contactlist.common.spec.ContactListContactMechanismPurposeSpec;
 import com.echothree.model.control.contact.server.logic.ContactMechanismPurposeLogic;
-import com.echothree.model.control.contactlist.server.ContactListControl;
+import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.control.contactlist.server.logic.ContactListLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -33,7 +33,6 @@ import com.echothree.model.data.contactlist.server.entity.ContactList;
 import com.echothree.model.data.contactlist.server.entity.ContactListContactMechanismPurpose;
 import com.echothree.model.data.contactlist.server.entity.ContactListContactMechanismPurposeDetail;
 import com.echothree.model.data.contactlist.server.value.ContactListContactMechanismPurposeDetailValue;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
