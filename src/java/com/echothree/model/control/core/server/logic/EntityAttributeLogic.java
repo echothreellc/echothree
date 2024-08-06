@@ -106,6 +106,7 @@ import com.echothree.model.data.queue.common.pk.QueueTypePK;
 import com.echothree.model.data.queue.server.value.QueuedEntityValue;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
+import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
@@ -207,7 +208,8 @@ public class EntityAttributeLogic
             final Integer upperLimitIntegerValue, final Integer lowerLimitIntegerValue, final Integer lowerRangeIntegerValue,
             final Long upperRangeLongValue, final Long upperLimitLongValue, final Long lowerLimitLongValue,
             final Long lowerRangeLongValue, final Sequence entityListItemSequence, final UnitOfMeasureType unitOfMeasureType,
-            final Integer sortOrder, final BasePK createdBy, final Language language, final String description) {
+            final Workflow workflow, final Integer sortOrder, final BasePK createdBy, final Language language,
+            final String description) {
         EntityAttribute entityAttribute = null;
         var entityTypeDetail = entityType.getLastDetail();
 
@@ -260,6 +262,11 @@ public class EntityAttributeLogic
                     case LISTITEM, MULTIPLELISTITEM -> {
                         if(entityListItemSequence != null) {
                             coreControl.createEntityAttributeListItem(entityAttribute, entityListItemSequence, createdBy);
+                        }
+                    }
+                    case WORKFLOW -> {
+                        if(workflow != null) {
+                            coreControl.createEntityAttributeWorkflow(entityAttribute, workflow, createdBy);
                         }
                     }
                     default -> {

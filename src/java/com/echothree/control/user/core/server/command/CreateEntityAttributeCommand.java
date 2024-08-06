@@ -29,11 +29,13 @@ import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceTypeLogic;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
+import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityAttributeType;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.form.ValidationResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -59,6 +61,7 @@ public class CreateEntityAttributeCommand
     private final static List<FieldDefinition> LONG_FORM_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> LISTITEM_FORM_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> MULTIPLELISTITEM_FORM_FIELD_DEFINITIONS;
+    private final static List<FieldDefinition> WORKFLOW_FORM_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> OTHER_FORM_FIELD_DEFINITIONS;
     
     static {
@@ -96,7 +99,8 @@ public class CreateEntityAttributeCommand
                 new FieldDefinition("LowerRangeLongValue", FieldType.SIGNED_LONG, false, null, null),
                 new FieldDefinition("UnitOfMeasureKindName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("EntityListItemSequenceName", FieldType.ENTITY_NAME, false, null, null)
+                new FieldDefinition("EntityListItemSequenceName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, false, null, null)
         );
         
         STRING_FORM_FIELD_DEFINITIONS = List.of(
@@ -112,7 +116,8 @@ public class CreateEntityAttributeCommand
                 new FieldDefinition("LowerRangeLongValue", FieldType.NULL, false, null, null),
                 new FieldDefinition("UnitOfMeasureKindName", FieldType.NULL, false, null, null),
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.NULL, false, null, null),
-                new FieldDefinition("EntityListItemSequenceName", FieldType.NULL, false, null, null)
+                new FieldDefinition("EntityListItemSequenceName", FieldType.NULL, false, null, null),
+                new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, false, null, null)
         );
         
         INTEGER_FORM_FIELD_DEFINITIONS = List.of(
@@ -128,7 +133,8 @@ public class CreateEntityAttributeCommand
                 new FieldDefinition("LowerRangeLongValue", FieldType.NULL, false, null, null),
                 new FieldDefinition("UnitOfMeasureKindName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("EntityListItemSequenceName", FieldType.NULL, false, null, null)
+                new FieldDefinition("EntityListItemSequenceName", FieldType.NULL, false, null, null),
+                new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, false, null, null)
         );
         
         LONG_FORM_FIELD_DEFINITIONS = List.of(
@@ -144,7 +150,8 @@ public class CreateEntityAttributeCommand
                 new FieldDefinition("LowerRangeLongValue", FieldType.SIGNED_LONG, false, null, null),
                 new FieldDefinition("UnitOfMeasureKindName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("EntityListItemSequenceName", FieldType.NULL, false, null, null)
+                new FieldDefinition("EntityListItemSequenceName", FieldType.NULL, false, null, null),
+                new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, false, null, null)
         );
         
         LISTITEM_FORM_FIELD_DEFINITIONS = List.of(
@@ -160,7 +167,8 @@ public class CreateEntityAttributeCommand
                 new FieldDefinition("LowerRangeLongValue", FieldType.NULL, false, null, null),
                 new FieldDefinition("UnitOfMeasureKindName", FieldType.NULL, false, null, null),
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.NULL, false, null, null),
-                new FieldDefinition("EntityListItemSequenceName", FieldType.ENTITY_NAME, false, null, null)
+                new FieldDefinition("EntityListItemSequenceName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, false, null, null)
         );
         
         MULTIPLELISTITEM_FORM_FIELD_DEFINITIONS = List.of(
@@ -176,9 +184,27 @@ public class CreateEntityAttributeCommand
                 new FieldDefinition("LowerRangeLongValue", FieldType.NULL, false, null, null),
                 new FieldDefinition("UnitOfMeasureKindName", FieldType.NULL, false, null, null),
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.NULL, false, null, null),
-                new FieldDefinition("EntityListItemSequenceName", FieldType.ENTITY_NAME, false, null, null)
+                new FieldDefinition("EntityListItemSequenceName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, false, null, null)
         );
-        
+
+        WORKFLOW_FORM_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("CheckContentWebAddress", FieldType.NULL, false, null, null),
+                new FieldDefinition("ValidationPattern", FieldType.NULL, false, null, null),
+                new FieldDefinition("UpperRangeIntegerValue", FieldType.NULL, false, null, null),
+                new FieldDefinition("UpperLimitIntegerValue", FieldType.NULL, false, null, null),
+                new FieldDefinition("LowerLimitIntegerValue", FieldType.NULL, false, null, null),
+                new FieldDefinition("LowerRangeIntegerValue", FieldType.NULL, false, null, null),
+                new FieldDefinition("UpperRangeLongValue", FieldType.NULL, false, null, null),
+                new FieldDefinition("UpperLimitLongValue", FieldType.NULL, false, null, null),
+                new FieldDefinition("LowerLimitLongValue", FieldType.NULL, false, null, null),
+                new FieldDefinition("LowerRangeLongValue", FieldType.NULL, false, null, null),
+                new FieldDefinition("UnitOfMeasureKindName", FieldType.NULL, false, null, null),
+                new FieldDefinition("UnitOfMeasureTypeName", FieldType.NULL, false, null, null),
+                new FieldDefinition("EntityListItemSequenceName", FieldType.NULL, false, null, null),
+                new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, true, null, null)
+        );
+
         OTHER_FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CheckContentWebAddress", FieldType.NULL, false, null, null),
                 new FieldDefinition("ValidationPattern", FieldType.NULL, false, null, null),
@@ -192,7 +218,8 @@ public class CreateEntityAttributeCommand
                 new FieldDefinition("LowerRangeLongValue", FieldType.NULL, false, null, null),
                 new FieldDefinition("UnitOfMeasureKindName", FieldType.NULL, false, null, null),
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.NULL, false, null, null),
-                new FieldDefinition("EntityListItemSequenceName", FieldType.NULL, false, null, null)
+                new FieldDefinition("EntityListItemSequenceName", FieldType.NULL, false, null, null),
+                new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
     
@@ -210,6 +237,7 @@ public class CreateEntityAttributeCommand
             case LONG -> validator.validate(edit, LONG_FORM_FIELD_DEFINITIONS);
             case LISTITEM -> validator.validate(edit, LISTITEM_FORM_FIELD_DEFINITIONS);
             case MULTIPLELISTITEM -> validator.validate(edit, MULTIPLELISTITEM_FORM_FIELD_DEFINITIONS);
+            case WORKFLOW -> validator.validate(edit, WORKFLOW_FORM_FIELD_DEFINITIONS);
             default -> validator.validate(edit, OTHER_FORM_FIELD_DEFINITIONS);
         };
     }
@@ -273,37 +301,46 @@ public class CreateEntityAttributeCommand
                         }
 
                         if(!hasExecutionErrors()) {
-                            var partyPK = getPartyPK();
-                            var entityAttributeName = form.getEntityAttributeName();
-                            var trackRevisions = Boolean.valueOf(form.getTrackRevisions());
-                            var strCheckContentWebAddress = form.getCheckContentWebAddress();
-                            var checkContentWebAddress = strCheckContentWebAddress == null ? null : Boolean.valueOf(strCheckContentWebAddress);
-                            var validationPattern = form.getValidationPattern();
-                            var strUpperRangeIntegerValue = form.getUpperRangeIntegerValue();
-                            var upperRangeIntegerValue = strUpperRangeIntegerValue == null ? null : Integer.valueOf(strUpperRangeIntegerValue);
-                            var strUpperLimitIntegerValue = form.getUpperLimitIntegerValue();
-                            var upperLimitIntegerValue = strUpperLimitIntegerValue == null ? null : Integer.valueOf(strUpperLimitIntegerValue);
-                            var strLowerLimitIntegerValue = form.getLowerLimitIntegerValue();
-                            var lowerLimitIntegerValue = strLowerLimitIntegerValue == null ? null : Integer.valueOf(strLowerLimitIntegerValue);
-                            var strLowerRangeIntegerValue = form.getLowerRangeIntegerValue();
-                            var lowerRangeIntegerValue = strLowerRangeIntegerValue == null ? null : Integer.valueOf(strLowerRangeIntegerValue);
-                            var strUpperRangeLongValue = form.getUpperRangeLongValue();
-                            var upperRangeLongValue = strUpperRangeLongValue == null ? null : Long.valueOf(strUpperRangeLongValue);
-                            var strUpperLimitLongValue = form.getUpperLimitLongValue();
-                            var upperLimitLongValue = strUpperLimitLongValue == null ? null : Long.valueOf(strUpperLimitLongValue);
-                            var strLowerLimitLongValue = form.getLowerLimitLongValue();
-                            var lowerLimitLongValue = strLowerLimitLongValue == null ? null : Long.valueOf(strLowerLimitLongValue);
-                            var strLowerRangeLongValue = form.getLowerRangeLongValue();
-                            var lowerRangeLongValue = strLowerRangeLongValue == null ? null : Long.valueOf(strLowerRangeLongValue);
-                            var sortOrder = Integer.valueOf(form.getSortOrder());
-                            var description = form.getDescription();
+                            var workflowName = form.getWorkflowName();
+                            Workflow workflow = null;
 
-                            entityAttribute = EntityAttributeLogic.getInstance().createEntityAttribute(this, entityType,
-                                    entityAttributeName, entityAttributeType, trackRevisions, checkContentWebAddress,
-                                    validationPattern, upperRangeIntegerValue, upperLimitIntegerValue, lowerLimitIntegerValue,
-                                    lowerRangeIntegerValue, upperRangeLongValue, upperLimitLongValue, lowerLimitLongValue,
-                                    lowerRangeLongValue, entityListItemSequence, unitOfMeasureType, sortOrder, partyPK,
-                                    getPreferredLanguage(), description);
+                            if(workflowName != null) {
+                                workflow = WorkflowLogic.getInstance().getWorkflowByName(this, workflowName);
+                            }
+
+                            if(!hasExecutionErrors()) {
+                                var partyPK = getPartyPK();
+                                var entityAttributeName = form.getEntityAttributeName();
+                                var trackRevisions = Boolean.valueOf(form.getTrackRevisions());
+                                var strCheckContentWebAddress = form.getCheckContentWebAddress();
+                                var checkContentWebAddress = strCheckContentWebAddress == null ? null : Boolean.valueOf(strCheckContentWebAddress);
+                                var validationPattern = form.getValidationPattern();
+                                var strUpperRangeIntegerValue = form.getUpperRangeIntegerValue();
+                                var upperRangeIntegerValue = strUpperRangeIntegerValue == null ? null : Integer.valueOf(strUpperRangeIntegerValue);
+                                var strUpperLimitIntegerValue = form.getUpperLimitIntegerValue();
+                                var upperLimitIntegerValue = strUpperLimitIntegerValue == null ? null : Integer.valueOf(strUpperLimitIntegerValue);
+                                var strLowerLimitIntegerValue = form.getLowerLimitIntegerValue();
+                                var lowerLimitIntegerValue = strLowerLimitIntegerValue == null ? null : Integer.valueOf(strLowerLimitIntegerValue);
+                                var strLowerRangeIntegerValue = form.getLowerRangeIntegerValue();
+                                var lowerRangeIntegerValue = strLowerRangeIntegerValue == null ? null : Integer.valueOf(strLowerRangeIntegerValue);
+                                var strUpperRangeLongValue = form.getUpperRangeLongValue();
+                                var upperRangeLongValue = strUpperRangeLongValue == null ? null : Long.valueOf(strUpperRangeLongValue);
+                                var strUpperLimitLongValue = form.getUpperLimitLongValue();
+                                var upperLimitLongValue = strUpperLimitLongValue == null ? null : Long.valueOf(strUpperLimitLongValue);
+                                var strLowerLimitLongValue = form.getLowerLimitLongValue();
+                                var lowerLimitLongValue = strLowerLimitLongValue == null ? null : Long.valueOf(strLowerLimitLongValue);
+                                var strLowerRangeLongValue = form.getLowerRangeLongValue();
+                                var lowerRangeLongValue = strLowerRangeLongValue == null ? null : Long.valueOf(strLowerRangeLongValue);
+                                var sortOrder = Integer.valueOf(form.getSortOrder());
+                                var description = form.getDescription();
+
+                                entityAttribute = EntityAttributeLogic.getInstance().createEntityAttribute(this, entityType,
+                                        entityAttributeName, entityAttributeType, trackRevisions, checkContentWebAddress,
+                                        validationPattern, upperRangeIntegerValue, upperLimitIntegerValue, lowerLimitIntegerValue,
+                                        lowerRangeIntegerValue, upperRangeLongValue, upperLimitLongValue, lowerLimitLongValue,
+                                        lowerRangeLongValue, entityListItemSequence, unitOfMeasureType, workflow, sortOrder,
+                                        partyPK, getPreferredLanguage(), description);
+                            }
                         }
                     }
                 }

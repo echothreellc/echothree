@@ -4736,7 +4736,8 @@ public interface GraphQlMutations {
             @GraphQLName("lowerRangeLongValue") final String lowerRangeLongValue,
             @GraphQLName("unitOfMeasureKindName") final String unitOfMeasureKindName,
             @GraphQLName("unitOfMeasureTypeName") final String unitOfMeasureTypeName,
-            @GraphQLName("entityListItemSequenceName") final String entityListItemSequenceName) {
+            @GraphQLName("entityListItemSequenceName") final String entityListItemSequenceName,
+            @GraphQLName("workflowName") final String workflowName) {
         var mutationResultObject = new MutationResultWithIdObject();
 
         try {
@@ -4763,6 +4764,7 @@ public interface GraphQlMutations {
             commandForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
             commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
             commandForm.setEntityListItemSequenceName(entityListItemSequenceName);
+            commandForm.setWorkflowName(workflowName);
 
             var commandResult = CoreUtil.getHome().createEntityAttribute(BaseGraphQl.getUserVisitPK(env), commandForm);
             mutationResultObject.setCommandResult(commandResult);
