@@ -11,7 +11,7 @@ Feature: Employee entity attribute
     And the employee logs in
     Then no error should occur
 
-  Scenario: Existing employee adds an entity attribute, edits it, and then deletes it
+  Scenario: Existing employee adds an integer entity attribute, edits it, and then deletes it
     Given the employee Test begins using the application
     And the user begins entering a new entity attribute
     And the user sets the entity attribute's component vendor to ECHO_THREE
@@ -47,7 +47,7 @@ Feature: Employee entity attribute
     And the user deletes the entity attribute
     Then no error should occur
 
-  Scenario: Existing employee adds an entity attribute and then deletes it
+  Scenario: Existing employee adds a long entity attribute and then deletes it
     Given the employee Test begins using the application
     And the user begins entering a new entity attribute
     And the user sets the entity attribute's component vendor to ECHO_THREE
@@ -86,7 +86,7 @@ Feature: Employee entity attribute
     And the user deletes the entity attribute
     Then no error should occur
 
-  Scenario: Existing employee adds an entity attribute and then deletes it
+  Scenario: Existing employee adds a BLOB entity attribute and then deletes it
     Given the employee Test begins using the application
     And the user begins entering a new entity attribute
     And the user sets the entity attribute's component vendor to ECHO_THREE
@@ -105,7 +105,7 @@ Feature: Employee entity attribute
     And the user deletes the entity attribute
     Then no error should occur
 
-  Scenario: Existing employee adds an entity attribute and then deletes it
+  Scenario: Existing employee adds a CLOB entity attribute and then deletes it
     Given the employee Test begins using the application
     And the user begins entering a new entity attribute
     And the user sets the entity attribute's component vendor to ECHO_THREE
@@ -123,7 +123,7 @@ Feature: Employee entity attribute
     And the user deletes the entity attribute
     Then no error should occur
 
-  Scenario: Existing employee adds an entity attribute and then deletes it
+  Scenario: Existing employee adds a string entity attribute and then deletes it
     Given the employee Test begins using the application
     And the user begins entering a new entity attribute
     And the user sets the entity attribute's component vendor to ECHO_THREE
@@ -142,7 +142,7 @@ Feature: Employee entity attribute
     And the user deletes the entity attribute
     Then no error should occur
 
-  Scenario: Existing employee adds an entity attribute and then deletes it
+  Scenario: Existing employee adds a boolean entity attribute and then deletes it
     Given the employee Test begins using the application
     And the user begins entering a new entity attribute
     And the user sets the entity attribute's component vendor to ECHO_THREE
@@ -160,7 +160,7 @@ Feature: Employee entity attribute
     And the user deletes the entity attribute
     Then no error should occur
 
-  Scenario: Existing employee adds an entity attribute and then deletes it
+  Scenario: Existing employee adds a collection entity attribute and then deletes it
     Given the employee Test begins using the application
     And the user begins entering a new entity attribute
     And the user sets the entity attribute's component vendor to ECHO_THREE
@@ -178,7 +178,7 @@ Feature: Employee entity attribute
     And the user deletes the entity attribute
     Then no error should occur
 
-  Scenario: Existing employee adds an entity attribute and then deletes it
+  Scenario: Existing employee adds a date entity attribute and then deletes it
     Given the employee Test begins using the application
     And the user begins entering a new entity attribute
     And the user sets the entity attribute's component vendor to ECHO_THREE
@@ -196,7 +196,7 @@ Feature: Employee entity attribute
     And the user deletes the entity attribute
     Then no error should occur
 
-  Scenario: Existing employee adds an entity attribute and then deletes it
+  Scenario: Existing employee adds a time entity attribute and then deletes it
     Given the employee Test begins using the application
     And the user begins entering a new entity attribute
     And the user sets the entity attribute's component vendor to ECHO_THREE
@@ -214,7 +214,7 @@ Feature: Employee entity attribute
     And the user deletes the entity attribute
     Then no error should occur
 
-  Scenario: Existing employee adds an entity attribute and then deletes it
+  Scenario: Existing employee adds an entity entity attribute and then deletes it
     Given the employee Test begins using the application
     And the user begins entering a new entity attribute
     And the user sets the entity attribute's component vendor to ECHO_THREE
@@ -232,7 +232,7 @@ Feature: Employee entity attribute
     And the user deletes the entity attribute
     Then no error should occur
 
-  Scenario: Existing employee adds an entity attribute and then deletes it
+  Scenario: Existing employee adds a geopoint entity attribute and then deletes it
     Given the employee Test begins using the application
     And the user begins entering a new entity attribute
     And the user sets the entity attribute's component vendor to ECHO_THREE
@@ -250,7 +250,7 @@ Feature: Employee entity attribute
     And the user deletes the entity attribute
     Then no error should occur
 
-  Scenario: Existing employee adds an entity attribute and then deletes it
+  Scenario: Existing employee adds a name entity attribute and then deletes it
     Given the employee Test begins using the application
     And the user begins entering a new entity attribute
     And the user sets the entity attribute's component vendor to ECHO_THREE
@@ -268,7 +268,7 @@ Feature: Employee entity attribute
     And the user deletes the entity attribute
     Then no error should occur
 
-  Scenario: Existing employee adds an entity attribute and then deletes it
+  Scenario: Existing employee adds a list item entity attribute and then deletes it
     Given the employee Test begins using the application
     And the user begins entering a new entity attribute
     And the user sets the entity attribute's component vendor to ECHO_THREE
@@ -286,7 +286,7 @@ Feature: Employee entity attribute
     And the user deletes the entity attribute
     Then no error should occur
 
-  Scenario: Existing employee adds an entity attribute and then deletes it
+  Scenario: Existing employee adds a multiple list item entity attribute and then deletes it
     Given the employee Test begins using the application
     And the user begins entering a new entity attribute
     And the user sets the entity attribute's component vendor to ECHO_THREE
