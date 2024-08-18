@@ -289,6 +289,7 @@ import com.echothree.control.user.workflow.common.spec.WorkflowDestinationSpec;
 import com.echothree.control.user.workflow.common.spec.WorkflowEntranceSpec;
 import com.echothree.control.user.workflow.common.spec.WorkflowSpec;
 import com.echothree.control.user.workflow.common.spec.WorkflowStepSpec;
+import com.echothree.control.user.workflow.common.spec.WorkflowUniversalSpec;
 import com.echothree.cucumber.authentication.UserVisits;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import javax.naming.NamingException;
@@ -713,7 +714,7 @@ public class BasePersona {
     // Workflow
     public CreateWorkflowForm createWorkflowForm;
     public DeleteWorkflowForm deleteWorkflowForm;
-    public WorkflowSpec workflowSpec;
+    public WorkflowUniversalSpec workflowUniversalSpec;
     public WorkflowEdit workflowEdit;
 
     public CreateWorkflowEntityTypeForm createWorkflowEntityTypeForm;
