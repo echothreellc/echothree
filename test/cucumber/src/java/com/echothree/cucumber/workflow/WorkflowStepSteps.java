@@ -35,7 +35,7 @@ public class WorkflowStepSteps implements En {
 
                     assertThat(persona.createWorkflowStepForm).isNull();
                     assertThat(persona.deleteWorkflowStepForm).isNull();
-                    assertThat(persona.workflowStepSpec).isNull();
+                    assertThat(persona.workflowStepUniversalSpec).isNull();
 
                     persona.createWorkflowStepForm = WorkflowUtil.getHome().getCreateWorkflowStepForm();
                 });
@@ -67,7 +67,7 @@ public class WorkflowStepSteps implements En {
 
                     assertThat(persona.createWorkflowStepForm).isNull();
                     assertThat(persona.deleteWorkflowStepForm).isNull();
-                    assertThat(persona.workflowStepSpec).isNull();
+                    assertThat(persona.workflowStepUniversalSpec).isNull();
 
                     persona.deleteWorkflowStepForm = WorkflowUtil.getHome().getDeleteWorkflowStepForm();
                 });
@@ -90,15 +90,15 @@ public class WorkflowStepSteps implements En {
 
                     assertThat(persona.createWorkflowStepForm).isNull();
                     assertThat(persona.deleteWorkflowStepForm).isNull();
-                    assertThat(persona.workflowStepSpec).isNull();
+                    assertThat(persona.workflowStepUniversalSpec).isNull();
 
-                    persona.workflowStepSpec = WorkflowUtil.getHome().getWorkflowStepSpec();
+                    persona.workflowStepUniversalSpec = WorkflowUtil.getHome().getWorkflowStepUniversalSpec();
                 });
 
         When("^the user begins editing the workflow step$",
                 () -> {
                     var persona = CurrentPersona.persona;
-                    var spec = persona.workflowStepSpec;
+                    var spec = persona.workflowStepUniversalSpec;
 
                     assertThat(spec).isNotNull();
 
@@ -121,7 +121,7 @@ public class WorkflowStepSteps implements En {
         When("^the user finishes editing the workflow step$",
                 () -> {
                     var persona = CurrentPersona.persona;
-                    var spec = persona.workflowStepSpec;
+                    var spec = persona.workflowStepUniversalSpec;
                     var edit = persona.workflowStepEdit;
 
                     assertThat(edit).isNotNull();
@@ -134,7 +134,7 @@ public class WorkflowStepSteps implements En {
 
                     LastCommandResult.commandResult = WorkflowUtil.getHome().editWorkflowStep(persona.userVisitPK, commandForm);
 
-                    persona.workflowStepSpec = null;
+                    persona.workflowStepUniversalSpec = null;
                     persona.workflowStepEdit = null;
                 });
 
@@ -143,7 +143,7 @@ public class WorkflowStepSteps implements En {
                     var persona = CurrentPersona.persona;
                     var createWorkflowStepForm = persona.createWorkflowStepForm;
                     var deleteWorkflowStepForm = persona.deleteWorkflowStepForm;
-                    var workflowStepSpec = persona.workflowStepSpec;
+                    var workflowStepSpec = persona.workflowStepUniversalSpec;
 
                     assertThat(createWorkflowStepForm != null || deleteWorkflowStepForm != null || workflowStepSpec != null).isTrue();
 
@@ -156,7 +156,7 @@ public class WorkflowStepSteps implements En {
                     var lastWorkflowName = persona.lastWorkflowName;
                     var createWorkflowStepForm = persona.createWorkflowStepForm;
                     var deleteWorkflowStepForm = persona.deleteWorkflowStepForm;
-                    var workflowStepSpec = persona.workflowStepSpec;
+                    var workflowStepSpec = persona.workflowStepUniversalSpec;
 
                     assertThat(createWorkflowStepForm != null || deleteWorkflowStepForm != null || workflowStepSpec != null).isTrue();
 
@@ -168,7 +168,7 @@ public class WorkflowStepSteps implements En {
                     var persona = CurrentPersona.persona;
                     var createWorkflowStepForm = persona.createWorkflowStepForm;
                     var deleteWorkflowStepForm = persona.deleteWorkflowStepForm;
-                    var workflowStepSpec = persona.workflowStepSpec;
+                    var workflowStepSpec = persona.workflowStepUniversalSpec;
 
                     assertThat(createWorkflowStepForm != null || deleteWorkflowStepForm != null || workflowStepSpec != null).isTrue();
 
@@ -180,7 +180,7 @@ public class WorkflowStepSteps implements En {
                     var persona = CurrentPersona.persona;
                     var lastWorkflowStepName = persona.lastWorkflowStepName;
                     var deleteWorkflowStepForm = persona.deleteWorkflowStepForm;
-                    var workflowStepSpec = persona.workflowStepSpec;
+                    var workflowStepSpec = persona.workflowStepUniversalSpec;
 
                     assertThat(deleteWorkflowStepForm != null || workflowStepSpec != null).isTrue();
 

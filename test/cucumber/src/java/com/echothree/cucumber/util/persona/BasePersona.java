@@ -287,8 +287,7 @@ import com.echothree.control.user.workflow.common.form.DeleteWorkflowForm;
 import com.echothree.control.user.workflow.common.form.DeleteWorkflowStepForm;
 import com.echothree.control.user.workflow.common.spec.WorkflowDestinationSpec;
 import com.echothree.control.user.workflow.common.spec.WorkflowEntranceSpec;
-import com.echothree.control.user.workflow.common.spec.WorkflowSpec;
-import com.echothree.control.user.workflow.common.spec.WorkflowStepSpec;
+import com.echothree.control.user.workflow.common.spec.WorkflowStepUniversalSpec;
 import com.echothree.control.user.workflow.common.spec.WorkflowUniversalSpec;
 import com.echothree.cucumber.authentication.UserVisits;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -722,7 +721,7 @@ public class BasePersona {
 
     public CreateWorkflowStepForm createWorkflowStepForm;
     public DeleteWorkflowStepForm deleteWorkflowStepForm;
-    public WorkflowStepSpec workflowStepSpec;
+    public WorkflowStepUniversalSpec workflowStepUniversalSpec;
     public WorkflowStepEdit workflowStepEdit;
 
     public CreateWorkflowEntranceForm createWorkflowEntranceForm;
