@@ -1,5 +1,14 @@
 # Changelog
 
+## 2024-08-18-01
+
+* Convert EditWorkflowStep UC to Use BaseAbstractEditCommand [982](https://gitlab.echothree.com/echothree/echothree/-/issues/982)
+* Convert EditWorkflow UC to Use BaseAbstractEditCommand [983](https://gitlab.echothree.com/echothree/echothree/-/issues/983)
+* cucumber-java8/cucumber-junit 7.18.1 Upgrade [1321](https://gitlab.echothree.com/echothree/echothree/-/issues/1321)
+* Add Workflow Tests [1322](https://gitlab.echothree.com/echothree/echothree/-/issues/1322)
+* Add Workflow Entity Type Tests [1323](https://gitlab.echothree.com/echothree/echothree/-/issues/1323)
+* Add Workflow Step Tests [1324](https://gitlab.echothree.com/echothree/echothree/-/issues/1324)
+
 ## 2024-08-04-01
 
 * Add Workflow Entrance Mutations [652](https://gitlab.echothree.com/echothree/echothree/-/issues/652)
