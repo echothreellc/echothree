@@ -35,7 +35,7 @@ public class WorkflowDestinationSteps implements En {
 
                     assertThat(persona.createWorkflowDestinationForm).isNull();
                     assertThat(persona.deleteWorkflowDestinationForm).isNull();
-                    assertThat(persona.workflowDestinationSpec).isNull();
+                    assertThat(persona.workflowDestinationUniversalSpec).isNull();
 
                     persona.createWorkflowDestinationForm = WorkflowUtil.getHome().getCreateWorkflowDestinationForm();
                 });
@@ -67,7 +67,7 @@ public class WorkflowDestinationSteps implements En {
 
                     assertThat(persona.createWorkflowDestinationForm).isNull();
                     assertThat(persona.deleteWorkflowDestinationForm).isNull();
-                    assertThat(persona.workflowDestinationSpec).isNull();
+                    assertThat(persona.workflowDestinationUniversalSpec).isNull();
 
                     persona.deleteWorkflowDestinationForm = WorkflowUtil.getHome().getDeleteWorkflowDestinationForm();
                 });
@@ -90,15 +90,15 @@ public class WorkflowDestinationSteps implements En {
 
                     assertThat(persona.createWorkflowDestinationForm).isNull();
                     assertThat(persona.deleteWorkflowDestinationForm).isNull();
-                    assertThat(persona.workflowDestinationSpec).isNull();
+                    assertThat(persona.workflowDestinationUniversalSpec).isNull();
 
-                    persona.workflowDestinationSpec = WorkflowUtil.getHome().getWorkflowDestinationSpec();
+                    persona.workflowDestinationUniversalSpec = WorkflowUtil.getHome().getWorkflowDestinationUniversalSpec();
                 });
 
         When("^the user begins editing the workflow destination",
                 () -> {
                     var persona = CurrentPersona.persona;
-                    var spec = persona.workflowDestinationSpec;
+                    var spec = persona.workflowDestinationUniversalSpec;
 
                     assertThat(spec).isNotNull();
 
@@ -121,7 +121,7 @@ public class WorkflowDestinationSteps implements En {
         When("^the user finishes editing the workflow destination",
                 () -> {
                     var persona = CurrentPersona.persona;
-                    var spec = persona.workflowDestinationSpec;
+                    var spec = persona.workflowDestinationUniversalSpec;
                     var edit = persona.workflowDestinationEdit;
 
                     assertThat(edit).isNotNull();
@@ -134,7 +134,7 @@ public class WorkflowDestinationSteps implements En {
 
                     LastCommandResult.commandResult = WorkflowUtil.getHome().editWorkflowDestination(persona.userVisitPK, commandForm);
 
-                    persona.workflowDestinationSpec = null;
+                    persona.workflowDestinationUniversalSpec = null;
                     persona.workflowDestinationEdit = null;
                 });
 
@@ -143,7 +143,7 @@ public class WorkflowDestinationSteps implements En {
                     var persona = CurrentPersona.persona;
                     var createWorkflowDestinationForm = persona.createWorkflowDestinationForm;
                     var deleteWorkflowDestinationForm = persona.deleteWorkflowDestinationForm;
-                    var workflowDestinationSpec = persona.workflowDestinationSpec;
+                    var workflowDestinationSpec = persona.workflowDestinationUniversalSpec;
 
                     assertThat(createWorkflowDestinationForm != null || deleteWorkflowDestinationForm != null || workflowDestinationSpec != null).isTrue();
 
@@ -156,7 +156,7 @@ public class WorkflowDestinationSteps implements En {
                     var lastWorkflowName = persona.lastWorkflowName;
                     var createWorkflowDestinationForm = persona.createWorkflowDestinationForm;
                     var deleteWorkflowDestinationForm = persona.deleteWorkflowDestinationForm;
-                    var workflowDestinationSpec = persona.workflowDestinationSpec;
+                    var workflowDestinationSpec = persona.workflowDestinationUniversalSpec;
 
                     assertThat(createWorkflowDestinationForm != null || deleteWorkflowDestinationForm != null || workflowDestinationSpec != null).isTrue();
 
@@ -168,7 +168,7 @@ public class WorkflowDestinationSteps implements En {
                     var persona = CurrentPersona.persona;
                     var createWorkflowDestinationForm = persona.createWorkflowDestinationForm;
                     var deleteWorkflowDestinationForm = persona.deleteWorkflowDestinationForm;
-                    var workflowDestinationSpec = persona.workflowDestinationSpec;
+                    var workflowDestinationSpec = persona.workflowDestinationUniversalSpec;
 
                     assertThat(createWorkflowDestinationForm != null || deleteWorkflowDestinationForm != null || workflowDestinationSpec != null).isTrue();
 
@@ -181,7 +181,7 @@ public class WorkflowDestinationSteps implements En {
                     var lastWorkflowStepName = persona.lastWorkflowStepName;
                     var createWorkflowDestinationForm = persona.createWorkflowDestinationForm;
                     var deleteWorkflowDestinationForm = persona.deleteWorkflowDestinationForm;
-                    var workflowDestinationSpec = persona.workflowDestinationSpec;
+                    var workflowDestinationSpec = persona.workflowDestinationUniversalSpec;
 
                     assertThat(createWorkflowDestinationForm != null || deleteWorkflowDestinationForm != null || workflowDestinationSpec != null).isTrue();
 
@@ -193,7 +193,7 @@ public class WorkflowDestinationSteps implements En {
                     var persona = CurrentPersona.persona;
                     var createWorkflowDestinationForm = persona.createWorkflowDestinationForm;
                     var deleteWorkflowDestinationForm = persona.deleteWorkflowDestinationForm;
-                    var workflowDestinationSpec = persona.workflowDestinationSpec;
+                    var workflowDestinationSpec = persona.workflowDestinationUniversalSpec;
 
                     assertThat(createWorkflowDestinationForm != null || deleteWorkflowDestinationForm != null || workflowDestinationSpec != null).isTrue();
 
@@ -205,7 +205,7 @@ public class WorkflowDestinationSteps implements En {
                     var persona = CurrentPersona.persona;
                     var lastWorkflowDestinationName = persona.lastWorkflowDestinationName;
                     var deleteWorkflowDestinationForm = persona.deleteWorkflowDestinationForm;
-                    var workflowDestinationSpec = persona.workflowDestinationSpec;
+                    var workflowDestinationSpec = persona.workflowDestinationUniversalSpec;
 
                     assertThat(deleteWorkflowDestinationForm != null || workflowDestinationSpec != null).isTrue();
 
