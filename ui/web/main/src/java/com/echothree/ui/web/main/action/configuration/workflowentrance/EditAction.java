@@ -20,7 +20,7 @@ import com.echothree.control.user.workflow.common.WorkflowUtil;
 import com.echothree.control.user.workflow.common.edit.WorkflowEntranceEdit;
 import com.echothree.control.user.workflow.common.form.EditWorkflowEntranceForm;
 import com.echothree.control.user.workflow.common.result.EditWorkflowEntranceResult;
-import com.echothree.control.user.workflow.common.spec.WorkflowEntranceSpec;
+import com.echothree.control.user.workflow.common.spec.WorkflowEntranceUniversalSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -46,12 +46,12 @@ import javax.servlet.http.HttpServletRequest;
     }
 )
 public class EditAction
-        extends MainBaseEditAction<EditActionForm, WorkflowEntranceSpec, WorkflowEntranceEdit, EditWorkflowEntranceForm, EditWorkflowEntranceResult> {
+        extends MainBaseEditAction<EditActionForm, WorkflowEntranceUniversalSpec, WorkflowEntranceEdit, EditWorkflowEntranceForm, EditWorkflowEntranceResult> {
     
     @Override
-    protected WorkflowEntranceSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
+    protected WorkflowEntranceUniversalSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        WorkflowEntranceSpec spec = WorkflowUtil.getHome().getWorkflowEntranceSpec();
+        var spec = WorkflowUtil.getHome().getWorkflowEntranceUniversalSpec();
         
         spec.setWorkflowName(findParameter(request, ParameterConstants.WORKFLOW_NAME, actionForm.getWorkflowName()));
         spec.setWorkflowEntranceName(findParameter(request, ParameterConstants.ORIGINAL_WORKFLOW_ENTRANCE_NAME, actionForm.getOriginalWorkflowEntranceName()));
@@ -79,7 +79,7 @@ public class EditAction
     }
     
     @Override
-    protected void setupActionForm(HttpServletRequest request, EditActionForm actionForm, EditWorkflowEntranceResult result, WorkflowEntranceSpec spec, WorkflowEntranceEdit edit) {
+    protected void setupActionForm(HttpServletRequest request, EditActionForm actionForm, EditWorkflowEntranceResult result, WorkflowEntranceUniversalSpec spec, WorkflowEntranceEdit edit) {
         actionForm.setWorkflowName(spec.getWorkflowName());
         actionForm.setOriginalWorkflowEntranceName(spec.getWorkflowEntranceName());
         actionForm.setWorkflowEntranceName(edit.getWorkflowEntranceName());
