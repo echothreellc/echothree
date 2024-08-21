@@ -21,6 +21,7 @@ import com.echothree.control.user.workflow.common.edit.WorkflowDestinationEdit;
 import com.echothree.control.user.workflow.common.form.EditWorkflowDestinationForm;
 import com.echothree.control.user.workflow.common.result.EditWorkflowDestinationResult;
 import com.echothree.control.user.workflow.common.spec.WorkflowDestinationSpec;
+import com.echothree.control.user.workflow.common.spec.WorkflowDestinationUniversalSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -46,12 +47,12 @@ import javax.servlet.http.HttpServletRequest;
     }
 )
 public class EditAction
-        extends MainBaseEditAction<EditActionForm, WorkflowDestinationSpec, WorkflowDestinationEdit, EditWorkflowDestinationForm, EditWorkflowDestinationResult> {
+        extends MainBaseEditAction<EditActionForm, WorkflowDestinationUniversalSpec, WorkflowDestinationEdit, EditWorkflowDestinationForm, EditWorkflowDestinationResult> {
     
     @Override
-    protected WorkflowDestinationSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
+    protected WorkflowDestinationUniversalSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        WorkflowDestinationSpec spec = WorkflowUtil.getHome().getWorkflowDestinationSpec();
+        var spec = WorkflowUtil.getHome().getWorkflowDestinationUniversalSpec();
         
         spec.setWorkflowName(findParameter(request, ParameterConstants.WORKFLOW_NAME, actionForm.getWorkflowName()));
         spec.setWorkflowStepName(findParameter(request, ParameterConstants.WORKFLOW_STEP_NAME, actionForm.getWorkflowStepName()));
@@ -80,7 +81,7 @@ public class EditAction
     }
     
     @Override
-    protected void setupActionForm(HttpServletRequest request, EditActionForm actionForm, EditWorkflowDestinationResult result, WorkflowDestinationSpec spec, WorkflowDestinationEdit edit) {
+    protected void setupActionForm(HttpServletRequest request, EditActionForm actionForm, EditWorkflowDestinationResult result, WorkflowDestinationUniversalSpec spec, WorkflowDestinationEdit edit) {
         actionForm.setWorkflowName(spec.getWorkflowName());
         actionForm.setWorkflowStepName(spec.getWorkflowStepName());
         actionForm.setOriginalWorkflowDestinationName(spec.getWorkflowDestinationName());
