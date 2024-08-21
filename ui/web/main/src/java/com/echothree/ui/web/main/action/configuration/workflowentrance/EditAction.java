@@ -51,7 +51,7 @@ public class EditAction
     @Override
     protected WorkflowEntranceSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        WorkflowEntranceSpec spec = WorkflowUtil.getHome().getWorkflowEntranceSpec();
+        var spec = WorkflowUtil.getHome().getWorkflowEntranceUniversalSpec();
         
         spec.setWorkflowName(findParameter(request, ParameterConstants.WORKFLOW_NAME, actionForm.getWorkflowName()));
         spec.setWorkflowEntranceName(findParameter(request, ParameterConstants.ORIGINAL_WORKFLOW_ENTRANCE_NAME, actionForm.getOriginalWorkflowEntranceName()));
