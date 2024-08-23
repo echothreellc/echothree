@@ -20,7 +20,7 @@ import com.echothree.control.user.workflow.common.WorkflowUtil;
 import com.echothree.control.user.workflow.common.edit.WorkflowStepEdit;
 import com.echothree.control.user.workflow.common.form.EditWorkflowStepForm;
 import com.echothree.control.user.workflow.common.result.EditWorkflowStepResult;
-import com.echothree.control.user.workflow.common.spec.WorkflowStepSpec;
+import com.echothree.control.user.workflow.common.spec.WorkflowStepUniversalSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -47,12 +47,12 @@ import javax.servlet.http.HttpServletRequest;
     }
 )
 public class EditAction
-        extends MainBaseEditAction<EditActionForm, WorkflowStepSpec, WorkflowStepEdit, EditWorkflowStepForm, EditWorkflowStepResult> {
+        extends MainBaseEditAction<EditActionForm, WorkflowStepUniversalSpec, WorkflowStepEdit, EditWorkflowStepForm, EditWorkflowStepResult> {
     
     @Override
-    protected WorkflowStepSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
+    protected WorkflowStepUniversalSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        WorkflowStepSpec spec = WorkflowUtil.getHome().getWorkflowStepSpec();
+        var spec = WorkflowUtil.getHome().getWorkflowStepUniversalSpec();
 
         spec.setWorkflowName(findParameter(request, ParameterConstants.WORKFLOW_NAME, actionForm.getWorkflowName()));
         spec.setWorkflowStepName(findParameter(request, ParameterConstants.ORIGINAL_WORKFLOW_STEP_NAME, actionForm.getOriginalWorkflowStepName()));
@@ -81,7 +81,7 @@ public class EditAction
     }
     
     @Override
-    protected void setupActionForm(HttpServletRequest request, EditActionForm actionForm, EditWorkflowStepResult result, WorkflowStepSpec spec, WorkflowStepEdit edit) {
+    protected void setupActionForm(HttpServletRequest request, EditActionForm actionForm, EditWorkflowStepResult result, WorkflowStepUniversalSpec spec, WorkflowStepEdit edit) {
         actionForm.setWorkflowName(spec.getWorkflowName());
         actionForm.setWorkflowStepName(spec.getWorkflowStepName());
         actionForm.setOriginalWorkflowStepName(spec.getWorkflowStepName());

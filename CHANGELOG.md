@@ -1,5 +1,45 @@
 # Changelog
 
+## 2024-08-18-01
+
+* Convert EditWorkflowStep UC to Use BaseAbstractEditCommand [982](https://gitlab.echothree.com/echothree/echothree/-/issues/982)
+* Convert EditWorkflow UC to Use BaseAbstractEditCommand [983](https://gitlab.echothree.com/echothree/echothree/-/issues/983)
+* cucumber-java8/cucumber-junit 7.18.1 Upgrade [1321](https://gitlab.echothree.com/echothree/echothree/-/issues/1321)
+* Add Workflow Tests [1322](https://gitlab.echothree.com/echothree/echothree/-/issues/1322)
+* Add Workflow Entity Type Tests [1323](https://gitlab.echothree.com/echothree/echothree/-/issues/1323)
+* Add Workflow Step Tests [1324](https://gitlab.echothree.com/echothree/echothree/-/issues/1324)
+
+## 2024-08-04-01
+
+* Add Workflow Entrance Mutations [652](https://gitlab.echothree.com/echothree/echothree/-/issues/652)
+* Add Workflow Entrance Party Types Mutations [657](https://gitlab.echothree.com/echothree/echothree/-/issues/657)
+* Add Workflow Entrance Security Roles Mutations [658](https://gitlab.echothree.com/echothree/echothree/-/issues/658)
+* Add Workflow Entrance Steps Mutations [660](https://gitlab.echothree.com/echothree/echothree/-/issues/660)
+* Add Workflow Destinations Mutations [663](https://gitlab.echothree.com/echothree/echothree/-/issues/663)
+* Add Workflow Destination Steps Mutations [665](https://gitlab.echothree.com/echothree/echothree/-/issues/665)
+* Add Workflow Entity Type Mutations [669](https://gitlab.echothree.com/echothree/echothree/-/issues/669)
+* Add Workflow Destination Party Type Mutations [677](https://gitlab.echothree.com/echothree/echothree/-/issues/677)
+* Add Workflow Destination Security Role Mutations [679](https://gitlab.echothree.com/echothree/echothree/-/issues/679)
+* Add Security Role Mutations [683](https://gitlab.echothree.com/echothree/echothree/-/issues/683)
+* Add Security Role Group Mutations [738](https://gitlab.echothree.com/echothree/echothree/-/issues/738)
+* Convert GetSecurityRoleGroups UC to Use BasePaginatedMultipleEntitiesCommand [1168](https://gitlab.echothree.com/echothree/echothree/-/issues/1168)
+* Convert GetSecurityRoles UC to Use BasePaginatedMultipleEntitiesCommand [1169](https://gitlab.echothree.com/echothree/echothree/-/issues/1169)
+* Convert GetWorkflowEntrancePartyTypes UC to Use BasePaginatedMultipleEntitiesCommand [1226](https://gitlab.echothree.com/echothree/echothree/-/issues/1226)
+* Convert GetWorkflowEntrances UC to Use BasePaginatedMultipleEntitiesCommand [1227](https://gitlab.echothree.com/echothree/echothree/-/issues/1227)
+* Convert GetWorkflowDestinationSteps UC to Use BasePaginatedMultipleEntitiesCommand [1229](https://gitlab.echothree.com/echothree/echothree/-/issues/1229)
+* Convert GetWorkflowEntranceSecurityRoles UC to Use BasePaginatedMultipleEntitiesCommand [1230](https://gitlab.echothree.com/echothree/echothree/-/issues/1230)
+* Convert GetWorkflowSteps UC to Use BasePaginatedMultipleEntitiesCommand [1231](https://gitlab.echothree.com/echothree/echothree/-/issues/1231)
+* Convert GetWorkflowStepTypes UC to Use BasePaginatedMultipleEntitiesCommand [1232](https://gitlab.echothree.com/echothree/echothree/-/issues/1232)
+* Convert GetWorkflowDestinationPartyTypes UC to Use BasePaginatedMultipleEntitiesCommand [1234](https://gitlab.echothree.com/echothree/echothree/-/issues/1234)
+* Convert GetWorkflowEntranceSteps UC to Use BasePaginatedMultipleEntitiesCommand [1235](https://gitlab.echothree.com/echothree/echothree/-/issues/1235)
+* Convert GetWorkflowEntityTypes UC to Use BasePaginatedMultipleEntitiesCommand [1236](https://gitlab.echothree.com/echothree/echothree/-/issues/1236)
+* Convert GetWorkflowDestinations UC to Use BasePaginatedMultipleEntitiesCommand [1238](https://gitlab.echothree.com/echothree/echothree/-/issues/1238)
+* Convert GetWorkflows UC to Use BasePaginatedMultipleEntitiesCommand [1239](https://gitlab.echothree.com/echothree/echothree/-/issues/1239)
+* Convert GetWorkflowDestinationSecurityRoles UC to Use BasePaginatedMultipleEntitiesCommand [1240](https://gitlab.echothree.com/echothree/echothree/-/issues/1240)
+* Convert GetWorkflowEntityStatuses UC to Use BasePaginatedMultipleEntitiesCommand [1241](https://gitlab.echothree.com/echothree/echothree/-/issues/1241)
+* Add Workflow Mutations [1318](https://gitlab.echothree.com/echothree/echothree/-/issues/1318)
+* Add Workflow Step Mutations [1319](https://gitlab.echothree.com/echothree/echothree/-/issues/1319)
+
 ## 2024-07-21-01
 
 * Convert GetSymbolPositions UC to Use BasePaginatedMultipleEntitiesCommand [1119](https://gitlab.echothree.com/echothree/echothree/-/issues/1119)

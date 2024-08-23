@@ -771,10 +771,14 @@ import com.echothree.model.data.wishlist.server.entity.WishlistPriority;
 import com.echothree.model.data.wishlist.server.entity.WishlistType;
 import com.echothree.model.data.workflow.common.WorkflowConstants;
 import com.echothree.model.data.workflow.common.WorkflowDestinationConstants;
+import com.echothree.model.data.workflow.common.WorkflowDestinationPartyTypeConstants;
+import com.echothree.model.data.workflow.common.WorkflowDestinationSecurityRoleConstants;
 import com.echothree.model.data.workflow.common.WorkflowDestinationStepConstants;
 import com.echothree.model.data.workflow.common.WorkflowEntityStatusConstants;
 import com.echothree.model.data.workflow.common.WorkflowEntityTypeConstants;
 import com.echothree.model.data.workflow.common.WorkflowEntranceConstants;
+import com.echothree.model.data.workflow.common.WorkflowEntrancePartyTypeConstants;
+import com.echothree.model.data.workflow.common.WorkflowEntranceSecurityRoleConstants;
 import com.echothree.model.data.workflow.common.WorkflowEntranceStepConstants;
 import com.echothree.model.data.workflow.common.WorkflowStepConstants;
 import com.echothree.model.data.workflow.common.WorkflowStepTypeConstants;
@@ -1332,36 +1336,42 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("workflowDestinationPartyTypes")
-    static Collection<WorkflowDestinationPartyTypeObject> workflowDestinationPartyTypes(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<WorkflowDestinationPartyTypeObject> workflowDestinationPartyTypes(final DataFetchingEnvironment env,
             @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
             @GraphQLName("workflowStepName") @GraphQLNonNull final String workflowStepName,
             @GraphQLName("workflowDestinationName") @GraphQLNonNull final String workflowDestinationName) {
-        Collection<WorkflowDestinationPartyType> workflowDestinationPartyTypes;
-        Collection<WorkflowDestinationPartyTypeObject> workflowDestinationPartyTypeObjects;
+        CountingPaginatedData<WorkflowDestinationPartyTypeObject> data;
 
         try {
             var commandForm = WorkflowUtil.getHome().getGetWorkflowDestinationPartyTypesForm();
+            var command = new GetWorkflowDestinationPartyTypesCommand(getUserVisitPK(env), commandForm);
 
             commandForm.setWorkflowName(workflowName);
             commandForm.setWorkflowStepName(workflowStepName);
             commandForm.setWorkflowDestinationName(workflowDestinationName);
 
-            workflowDestinationPartyTypes = new GetWorkflowDestinationPartyTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            var totalEntities = command.getTotalEntitiesForGraphQl();
+
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, WorkflowDestinationPartyTypeConstants.COMPONENT_VENDOR_NAME, WorkflowDestinationPartyTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var workflowDestinationPartyTypes = entities.stream()
+                            .map(WorkflowDestinationPartyTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, workflowDestinationPartyTypes);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(workflowDestinationPartyTypes == null) {
-            workflowDestinationPartyTypeObjects = emptyList();
-        } else {
-            workflowDestinationPartyTypeObjects = new ArrayList<>(workflowDestinationPartyTypes.size());
-
-            workflowDestinationPartyTypes.stream()
-                    .map(WorkflowDestinationPartyTypeObject::new)
-                    .forEachOrdered(workflowDestinationPartyTypeObjects::add);
-        }
-
-        return workflowDestinationPartyTypeObjects;
+        return data;
     }
 
     @GraphQLField
@@ -1393,38 +1403,44 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("workflowDestinationSecurityRoles")
-    static Collection<WorkflowDestinationSecurityRoleObject> workflowDestinationSecurityRoles(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<WorkflowDestinationSecurityRoleObject> workflowDestinationSecurityRoles(final DataFetchingEnvironment env,
             @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
             @GraphQLName("workflowStepName") @GraphQLNonNull final String workflowStepName,
             @GraphQLName("workflowDestinationName") @GraphQLNonNull final String workflowDestinationName,
             @GraphQLName("partyTypeName") @GraphQLNonNull final String partyTypeName) {
-        Collection<WorkflowDestinationSecurityRole> workflowDestinationSecurityRoles;
-        Collection<WorkflowDestinationSecurityRoleObject> workflowDestinationSecurityRoleObjects;
+        CountingPaginatedData<WorkflowDestinationSecurityRoleObject> data;
 
         try {
             var commandForm = WorkflowUtil.getHome().getGetWorkflowDestinationSecurityRolesForm();
+            var command = new GetWorkflowDestinationSecurityRolesCommand(getUserVisitPK(env), commandForm);
 
             commandForm.setWorkflowName(workflowName);
             commandForm.setWorkflowStepName(workflowStepName);
             commandForm.setWorkflowDestinationName(workflowDestinationName);
             commandForm.setPartyTypeName(partyTypeName);
 
-            workflowDestinationSecurityRoles = new GetWorkflowDestinationSecurityRolesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            var totalEntities = command.getTotalEntitiesForGraphQl();
+
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, WorkflowDestinationSecurityRoleConstants.COMPONENT_VENDOR_NAME, WorkflowDestinationSecurityRoleConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var workflowDestinationSecurityRoles = entities.stream()
+                            .map(WorkflowDestinationSecurityRoleObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, workflowDestinationSecurityRoles);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(workflowDestinationSecurityRoles == null) {
-            workflowDestinationSecurityRoleObjects = emptyList();
-        } else {
-            workflowDestinationSecurityRoleObjects = new ArrayList<>(workflowDestinationSecurityRoles.size());
-
-            workflowDestinationSecurityRoles.stream()
-                    .map(WorkflowDestinationSecurityRoleObject::new)
-                    .forEachOrdered(workflowDestinationSecurityRoleObjects::add);
-        }
-
-        return workflowDestinationSecurityRoleObjects;
+        return data;
     }
 
     @GraphQLField
@@ -1633,34 +1649,40 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("workflowEntrancePartyTypes")
-    static Collection<WorkflowEntrancePartyTypeObject> workflowEntrancePartyTypes(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<WorkflowEntrancePartyTypeObject> workflowEntrancePartyTypes(final DataFetchingEnvironment env,
             @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
             @GraphQLName("workflowEntranceName") @GraphQLNonNull final String workflowEntranceName) {
-        Collection<WorkflowEntrancePartyType> workflowEntrancePartyTypes;
-        Collection<WorkflowEntrancePartyTypeObject> workflowEntrancePartyTypeObjects;
+        CountingPaginatedData<WorkflowEntrancePartyTypeObject> data;
 
         try {
             var commandForm = WorkflowUtil.getHome().getGetWorkflowEntrancePartyTypesForm();
+            var command = new GetWorkflowEntrancePartyTypesCommand(getUserVisitPK(env), commandForm);
 
             commandForm.setWorkflowName(workflowName);
             commandForm.setWorkflowEntranceName(workflowEntranceName);
 
-            workflowEntrancePartyTypes = new GetWorkflowEntrancePartyTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            var totalEntities = command.getTotalEntitiesForGraphQl();
+
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, WorkflowEntrancePartyTypeConstants.COMPONENT_VENDOR_NAME, WorkflowEntrancePartyTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var workflowEntrancePartyTypes = entities.stream()
+                            .map(WorkflowEntrancePartyTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, workflowEntrancePartyTypes);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(workflowEntrancePartyTypes == null) {
-            workflowEntrancePartyTypeObjects = emptyList();
-        } else {
-            workflowEntrancePartyTypeObjects = new ArrayList<>(workflowEntrancePartyTypes.size());
-
-            workflowEntrancePartyTypes.stream()
-                    .map(WorkflowEntrancePartyTypeObject::new)
-                    .forEachOrdered(workflowEntrancePartyTypeObjects::add);
-        }
-
-        return workflowEntrancePartyTypeObjects;
+        return data;
     }
 
     @GraphQLField
@@ -1690,36 +1712,42 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("workflowEntranceSecurityRoles")
-    static Collection<WorkflowEntranceSecurityRoleObject> workflowEntranceSecurityRoles(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<WorkflowEntranceSecurityRoleObject> workflowEntranceSecurityRoles(final DataFetchingEnvironment env,
             @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
             @GraphQLName("workflowEntranceName") @GraphQLNonNull final String workflowEntranceName,
             @GraphQLName("partyTypeName") @GraphQLNonNull final String partyTypeName) {
-        Collection<WorkflowEntranceSecurityRole> workflowEntranceSecurityRoles;
-        Collection<WorkflowEntranceSecurityRoleObject> workflowEntranceSecurityRoleObjects;
+        CountingPaginatedData<WorkflowEntranceSecurityRoleObject> data;
 
         try {
             var commandForm = WorkflowUtil.getHome().getGetWorkflowEntranceSecurityRolesForm();
+            var command = new GetWorkflowEntranceSecurityRolesCommand(getUserVisitPK(env), commandForm);
 
             commandForm.setWorkflowName(workflowName);
             commandForm.setWorkflowEntranceName(workflowEntranceName);
             commandForm.setPartyTypeName(partyTypeName);
 
-            workflowEntranceSecurityRoles = new GetWorkflowEntranceSecurityRolesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            var totalEntities = command.getTotalEntitiesForGraphQl();
+
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, WorkflowEntranceSecurityRoleConstants.COMPONENT_VENDOR_NAME, WorkflowEntranceSecurityRoleConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var workflowEntranceSecurityRoles = entities.stream()
+                            .map(WorkflowEntranceSecurityRoleObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, workflowEntranceSecurityRoles);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(workflowEntranceSecurityRoles == null) {
-            workflowEntranceSecurityRoleObjects = emptyList();
-        } else {
-            workflowEntranceSecurityRoleObjects = new ArrayList<>(workflowEntranceSecurityRoles.size());
-
-            workflowEntranceSecurityRoles.stream()
-                    .map(WorkflowEntranceSecurityRoleObject::new)
-                    .forEachOrdered(workflowEntranceSecurityRoleObjects::add);
-        }
-
-        return workflowEntranceSecurityRoleObjects;
+        return data;
     }
 
     @GraphQLField

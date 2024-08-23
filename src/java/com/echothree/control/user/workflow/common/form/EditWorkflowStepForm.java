@@ -17,11 +17,11 @@
 package com.echothree.control.user.workflow.common.form;
 
 import com.echothree.control.user.workflow.common.edit.WorkflowStepEdit;
-import com.echothree.control.user.workflow.common.spec.WorkflowStepSpec;
+import com.echothree.control.user.workflow.common.spec.WorkflowStepUniversalSpec;
 import com.echothree.util.common.form.BaseEditForm;
 
 public interface EditWorkflowStepForm
-        extends BaseEditForm<WorkflowStepSpec, WorkflowStepEdit> {
+        extends BaseEditForm<WorkflowStepUniversalSpec, WorkflowStepEdit> {
     
     // Nothing additional beyond BaseEditForm
     

@@ -259,6 +259,37 @@ import com.echothree.control.user.warehouse.common.spec.LocationSpec;
 import com.echothree.control.user.warehouse.common.spec.LocationTypeSpec;
 import com.echothree.control.user.warehouse.common.spec.WarehouseTypeSpec;
 import com.echothree.control.user.warehouse.common.spec.WarehouseUniversalSpec;
+import com.echothree.control.user.workflow.common.edit.WorkflowDestinationEdit;
+import com.echothree.control.user.workflow.common.edit.WorkflowEdit;
+import com.echothree.control.user.workflow.common.edit.WorkflowEntranceEdit;
+import com.echothree.control.user.workflow.common.edit.WorkflowStepEdit;
+import com.echothree.control.user.workflow.common.form.CreateWorkflowDestinationForm;
+import com.echothree.control.user.workflow.common.form.CreateWorkflowDestinationPartyTypeForm;
+import com.echothree.control.user.workflow.common.form.CreateWorkflowDestinationSecurityRoleForm;
+import com.echothree.control.user.workflow.common.form.CreateWorkflowDestinationStepForm;
+import com.echothree.control.user.workflow.common.form.CreateWorkflowEntityTypeForm;
+import com.echothree.control.user.workflow.common.form.CreateWorkflowEntranceForm;
+import com.echothree.control.user.workflow.common.form.CreateWorkflowEntrancePartyTypeForm;
+import com.echothree.control.user.workflow.common.form.CreateWorkflowEntranceSecurityRoleForm;
+import com.echothree.control.user.workflow.common.form.CreateWorkflowEntranceStepForm;
+import com.echothree.control.user.workflow.common.form.CreateWorkflowForm;
+import com.echothree.control.user.workflow.common.form.CreateWorkflowStepForm;
+import com.echothree.control.user.workflow.common.form.DeleteWorkflowDestinationForm;
+import com.echothree.control.user.workflow.common.form.DeleteWorkflowDestinationPartyTypeForm;
+import com.echothree.control.user.workflow.common.form.DeleteWorkflowDestinationSecurityRoleForm;
+import com.echothree.control.user.workflow.common.form.DeleteWorkflowDestinationStepForm;
+import com.echothree.control.user.workflow.common.form.DeleteWorkflowEntityTypeForm;
+import com.echothree.control.user.workflow.common.form.DeleteWorkflowEntranceForm;
+import com.echothree.control.user.workflow.common.form.DeleteWorkflowEntrancePartyTypeForm;
+import com.echothree.control.user.workflow.common.form.DeleteWorkflowEntranceSecurityRoleForm;
+import com.echothree.control.user.workflow.common.form.DeleteWorkflowEntranceStepForm;
+import com.echothree.control.user.workflow.common.form.DeleteWorkflowForm;
+import com.echothree.control.user.workflow.common.form.DeleteWorkflowStepForm;
+import com.echothree.control.user.workflow.common.spec.WorkflowDestinationUniversalSpec;
+import com.echothree.control.user.workflow.common.spec.WorkflowEntranceSpec;
+import com.echothree.control.user.workflow.common.spec.WorkflowEntranceUniversalSpec;
+import com.echothree.control.user.workflow.common.spec.WorkflowStepUniversalSpec;
+import com.echothree.control.user.workflow.common.spec.WorkflowUniversalSpec;
 import com.echothree.cucumber.authentication.UserVisits;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import javax.naming.NamingException;
@@ -679,5 +710,52 @@ public class BasePersona {
     public String lastLocationTypeName;
     public String lastLocationNameElementName;
     public String lastLocationName;
+
+    // Workflow
+    public CreateWorkflowForm createWorkflowForm;
+    public DeleteWorkflowForm deleteWorkflowForm;
+    public WorkflowUniversalSpec workflowUniversalSpec;
+    public WorkflowEdit workflowEdit;
+
+    public CreateWorkflowEntityTypeForm createWorkflowEntityTypeForm;
+    public DeleteWorkflowEntityTypeForm deleteWorkflowEntityTypeForm;
+
+    public CreateWorkflowStepForm createWorkflowStepForm;
+    public DeleteWorkflowStepForm deleteWorkflowStepForm;
+    public WorkflowStepUniversalSpec workflowStepUniversalSpec;
+    public WorkflowStepEdit workflowStepEdit;
+
+    public CreateWorkflowEntranceForm createWorkflowEntranceForm;
+    public DeleteWorkflowEntranceForm deleteWorkflowEntranceForm;
+    public WorkflowEntranceUniversalSpec workflowEntranceUniversalSpec;
+    public WorkflowEntranceEdit workflowEntranceEdit;
+
+    public CreateWorkflowEntranceStepForm createWorkflowEntranceStepForm;
+    public DeleteWorkflowEntranceStepForm deleteWorkflowEntranceStepForm;
+
+    public CreateWorkflowEntrancePartyTypeForm createWorkflowEntrancePartyTypeForm;
+    public DeleteWorkflowEntrancePartyTypeForm deleteWorkflowEntrancePartyTypeForm;
+
+    public CreateWorkflowEntranceSecurityRoleForm createWorkflowEntranceSecurityRoleForm;
+    public DeleteWorkflowEntranceSecurityRoleForm deleteWorkflowEntranceSecurityRoleForm;
+
+    public CreateWorkflowDestinationForm createWorkflowDestinationForm;
+    public DeleteWorkflowDestinationForm deleteWorkflowDestinationForm;
+    public WorkflowDestinationUniversalSpec workflowDestinationUniversalSpec;
+    public WorkflowDestinationEdit workflowDestinationEdit;
+
+    public CreateWorkflowDestinationStepForm createWorkflowDestinationStepForm;
+    public DeleteWorkflowDestinationStepForm deleteWorkflowDestinationStepForm;
+
+    public CreateWorkflowDestinationPartyTypeForm createWorkflowDestinationPartyTypeForm;
+    public DeleteWorkflowDestinationPartyTypeForm deleteWorkflowDestinationPartyTypeForm;
+
+    public CreateWorkflowDestinationSecurityRoleForm createWorkflowDestinationSecurityRoleForm;
+    public DeleteWorkflowDestinationSecurityRoleForm deleteWorkflowDestinationSecurityRoleForm;
+
+    public String lastWorkflowName;
+    public String lastWorkflowStepName;
+    public String lastWorkflowEntranceName;
+    public String lastWorkflowDestinationName;
 
 }

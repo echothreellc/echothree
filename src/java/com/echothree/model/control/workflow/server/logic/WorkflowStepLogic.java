@@ -24,7 +24,6 @@ import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.workflow.common.exception.MissingRequiredWorkflowNameException;
 import com.echothree.model.control.workflow.common.exception.UnknownDefaultWorkflowStepException;
-import com.echothree.model.control.workflow.common.exception.UnknownWorkflowNameException;
 import com.echothree.model.control.workflow.common.exception.UnknownWorkflowStepNameException;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;

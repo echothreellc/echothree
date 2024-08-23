@@ -53,7 +53,7 @@ public class WorkflowsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("workflow")) {
-            var spec = WorkflowSpecFactory.getWorkflowSpec();
+            var spec = WorkflowSpecFactory.getWorkflowUniversalSpec();
             var editForm = WorkflowFormFactory.getEditWorkflowForm();
 
             spec.set(getAttrsMap(attrs));
