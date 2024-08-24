@@ -17588,6 +17588,14 @@ public class CoreControl
         return getTextDecorationByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
+    public long countTextDecorations() {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM textdecorations, textdecorationdetails
+                WHERE txtdcrtn_activedetailid = txtdcrtndt_textdecorationdetailid
+                """);
+    }
+
     private static final Map<EntityPermission, String> getTextDecorationByNameQueries;
 
     static {
