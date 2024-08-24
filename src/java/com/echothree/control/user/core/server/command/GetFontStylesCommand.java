@@ -76,11 +76,11 @@ public class GetFontStylesCommand
     @Override
     protected BaseResult getResult(Collection<FontStyle> entities) {
         var result = CoreResultFactory.getGetFontStylesResult();
-        var coreControl = getCoreControl();
-        var userVisit = getUserVisit();
-        
-        result.setFontStyles(coreControl.getFontStyleTransfers(userVisit, entities));
-        
+
+        if(entities != null) {
+            result.setFontStyles(getCoreControl().getFontStyleTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
     
