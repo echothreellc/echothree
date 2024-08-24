@@ -84,7 +84,7 @@ public class GetUseTypesCommand
             var useTypeControl = Session.getModelController(UseTypeControl.class);
 
             if(session.hasLimit(UseTypeFactory.class)) {
-                result.setUseTypeCount(useTypeControl.countUseTypes());
+                result.setUseTypeCount(getTotalEntities());
             }
 
             result.setUseTypes(useTypeControl.getUseTypeTransfers(getUserVisit(), entities));

@@ -633,6 +633,7 @@ import com.echothree.model.data.customer.server.entity.Customer;
 import com.echothree.model.data.customer.server.entity.CustomerType;
 import com.echothree.model.data.employee.common.PartyEmployeeConstants;
 import com.echothree.model.data.employee.server.entity.PartyEmployee;
+import com.echothree.model.data.filter.common.FilterKindConstants;
 import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.filter.server.entity.FilterAdjustment;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentAmount;
@@ -2247,29 +2248,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("filterKinds")
-    static Collection<FilterKindObject> filterKinds(final DataFetchingEnvironment env) {
-        Collection<FilterKind> filterKinds;
-        Collection<FilterKindObject> filterKindObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<FilterKindObject> filterKinds(final DataFetchingEnvironment env) {
+        CountingPaginatedData<FilterKindObject> data;
 
         try {
             var commandForm = FilterUtil.getHome().getGetFilterKindsForm();
+            var command = new GetFilterKindsCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
 
-            filterKinds = new GetFilterKindsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, FilterKindConstants.COMPONENT_VENDOR_NAME, FilterKindConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var filterKinds = entities.stream()
+                            .map(FilterKindObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, filterKinds);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(filterKinds == null) {
-            filterKindObjects = emptyList();
-        } else {
-            filterKindObjects = new ArrayList<>(filterKinds.size());
-
-            filterKinds.stream()
-                    .map(FilterKindObject::new)
-                    .forEachOrdered(filterKindObjects::add);
-        }
-
-        return filterKindObjects;
+        return data;
     }
 
     @GraphQLField
