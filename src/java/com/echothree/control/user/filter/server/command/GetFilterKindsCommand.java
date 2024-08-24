@@ -27,7 +27,7 @@ import com.echothree.model.data.filter.server.factory.FilterKindFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -38,26 +38,37 @@ import java.util.Collections;
 import java.util.List;
 
 public class GetFilterKindsCommand
-        extends BaseMultipleEntitiesCommand<FilterKind, GetFilterKindsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<FilterKind, GetFilterKindsForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.FilterKind.name(), SecurityRoles.List.name())
-                )))
-        )));
-
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+                ))
         ));
+
+        FORM_FIELD_DEFINITIONS = List.of();
     }
 
     /** Creates a new instance of GetFilterKindsCommand */
     public GetFilterKindsCommand(UserVisitPK userVisitPK, GetFilterKindsForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    }
+
+    @Override
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        var filterControl = Session.getModelController(FilterControl.class);
+
+        return filterControl.countFilterKinds();
     }
 
     @Override
@@ -75,7 +86,7 @@ public class GetFilterKindsCommand
             var filterControl = Session.getModelController(FilterControl.class);
 
             if(session.hasLimit(FilterKindFactory.class)) {
-                result.setFilterKindCount(filterControl.countFilterKinds());
+                result.setFilterKindCount(getTotalEntities());
             }
 
             result.setFilterKinds(filterControl.getFilterKindTransfers(getUserVisit(), entities));
