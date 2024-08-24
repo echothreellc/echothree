@@ -16686,6 +16686,14 @@ public class CoreControl
         return getFontStyleByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
+    public long countFontStyles() {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM fontstyles, fontstyledetails
+                WHERE fntstyl_activedetailid = fntstyldt_fontstyledetailid
+                """);
+    }
+
     private static final Map<EntityPermission, String> getFontStyleByNameQueries;
 
     static {

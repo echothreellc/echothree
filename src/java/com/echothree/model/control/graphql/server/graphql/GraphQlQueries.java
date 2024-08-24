@@ -603,6 +603,7 @@ import com.echothree.model.data.core.common.EntityAttributeGroupConstants;
 import com.echothree.model.data.core.common.EntityAttributeTypeConstants;
 import com.echothree.model.data.core.common.EntityInstanceConstants;
 import com.echothree.model.data.core.common.EntityTypeConstants;
+import com.echothree.model.data.core.common.FontStyleConstants;
 import com.echothree.model.data.core.common.TextTransformationConstants;
 import com.echothree.model.data.core.server.entity.Appearance;
 import com.echothree.model.data.core.server.entity.Color;
@@ -5634,29 +5635,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("fontStyles")
-    static Collection<FontStyleObject> fontStyles(final DataFetchingEnvironment env) {
-        Collection<FontStyle> fontStyles;
-        Collection<FontStyleObject> fontStyleObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<FontStyleObject> fontStyles(final DataFetchingEnvironment env) {
+        CountingPaginatedData<FontStyleObject> data;
 
         try {
             var commandForm = CoreUtil.getHome().getGetFontStylesForm();
+            var command = new GetFontStylesCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
 
-            fontStyles = new GetFontStylesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, FontStyleConstants.COMPONENT_VENDOR_NAME, FontStyleConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var fontStyles = entities.stream()
+                            .map(FontStyleObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, fontStyles);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(fontStyles == null) {
-            fontStyleObjects = emptyList();
-        } else {
-            fontStyleObjects = new ArrayList<>(fontStyles.size());
-
-            fontStyles.stream()
-                    .map(FontStyleObject::new)
-                    .forEachOrdered(fontStyleObjects::add);
-        }
-
-        return fontStyleObjects;
+        return data;
     }
 
     @GraphQLField
