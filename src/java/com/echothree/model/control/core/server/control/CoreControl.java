@@ -17129,6 +17129,14 @@ public class CoreControl
         return getFontWeightByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
+    public long countFontWeights() {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM fontweights, fontweightdetails
+                WHERE fntwght_activedetailid = fntwghtdt_fontweightdetailid
+                """);
+    }
+
     private static final Map<EntityPermission, String> getFontWeightByNameQueries;
 
     static {
