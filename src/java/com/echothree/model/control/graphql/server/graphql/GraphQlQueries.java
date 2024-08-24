@@ -594,6 +594,7 @@ import com.echothree.model.data.content.server.entity.ContentPageLayout;
 import com.echothree.model.data.content.server.entity.ContentPageLayoutArea;
 import com.echothree.model.data.content.server.entity.ContentSection;
 import com.echothree.model.data.content.server.entity.ContentWebAddress;
+import com.echothree.model.data.core.common.ColorConstants;
 import com.echothree.model.data.core.common.ComponentVendorConstants;
 import com.echothree.model.data.core.common.EntityAliasConstants;
 import com.echothree.model.data.core.common.EntityAliasTypeConstants;
@@ -604,6 +605,8 @@ import com.echothree.model.data.core.common.EntityAttributeTypeConstants;
 import com.echothree.model.data.core.common.EntityInstanceConstants;
 import com.echothree.model.data.core.common.EntityTypeConstants;
 import com.echothree.model.data.core.common.TextDecorationConstants;
+import com.echothree.model.data.core.common.FontWeightConstants;
+import com.echothree.model.data.core.common.TextTransformationConstants;
 import com.echothree.model.data.core.server.entity.Appearance;
 import com.echothree.model.data.core.server.entity.Color;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
@@ -5586,29 +5589,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("colors")
-    static Collection<ColorObject> colors(final DataFetchingEnvironment env) {
-        Collection<Color> colors;
-        Collection<ColorObject> colorObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<ColorObject> colors(final DataFetchingEnvironment env) {
+        CountingPaginatedData<ColorObject> data;
 
         try {
             var commandForm = CoreUtil.getHome().getGetColorsForm();
+            var command = new GetColorsCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
 
-            colors = new GetColorsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ColorConstants.COMPONENT_VENDOR_NAME, ColorConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var colors = entities.stream()
+                            .map(ColorObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, colors);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(colors == null) {
-            colorObjects = emptyList();
-        } else {
-            colorObjects = new ArrayList<>(colors.size());
-
-            colors.stream()
-                    .map(ColorObject::new)
-                    .forEachOrdered(colorObjects::add);
-        }
-
-        return colorObjects;
+        return data;
     }
 
     @GraphQLField
@@ -5682,29 +5690,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("fontWeights")
-    static Collection<FontWeightObject> fontWeights(final DataFetchingEnvironment env) {
-        Collection<FontWeight> fontWeights;
-        Collection<FontWeightObject> fontWeightObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<FontWeightObject> fontWeights(final DataFetchingEnvironment env) {
+        CountingPaginatedData<FontWeightObject> data;
 
         try {
             var commandForm = CoreUtil.getHome().getGetFontWeightsForm();
+            var command = new GetFontWeightsCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
 
-            fontWeights = new GetFontWeightsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, FontWeightConstants.COMPONENT_VENDOR_NAME, FontWeightConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var fontWeights = entities.stream()
+                            .map(FontWeightObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, fontWeights);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(fontWeights == null) {
-            fontWeightObjects = emptyList();
-        } else {
-            fontWeightObjects = new ArrayList<>(fontWeights.size());
-
-            fontWeights.stream()
-                    .map(FontWeightObject::new)
-                    .forEachOrdered(fontWeightObjects::add);
-        }
-
-        return fontWeightObjects;
+        return data;
     }
 
     @GraphQLField
@@ -5783,29 +5796,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("textTransformations")
-    static Collection<TextTransformationObject> textTransformations(final DataFetchingEnvironment env) {
-        Collection<TextTransformation> textTransformations;
-        Collection<TextTransformationObject> textTransformationObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<TextTransformationObject> textTransformations(final DataFetchingEnvironment env) {
+        CountingPaginatedData<TextTransformationObject> data;
 
         try {
             var commandForm = CoreUtil.getHome().getGetTextTransformationsForm();
+            var command = new GetTextTransformationsCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
 
-            textTransformations = new GetTextTransformationsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, TextTransformationConstants.COMPONENT_VENDOR_NAME, TextTransformationConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var textTransformations = entities.stream()
+                            .map(TextTransformationObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, textTransformations);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(textTransformations == null) {
-            textTransformationObjects = emptyList();
-        } else {
-            textTransformationObjects = new ArrayList<>(textTransformations.size());
-
-            textTransformations.stream()
-                    .map(TextTransformationObject::new)
-                    .forEachOrdered(textTransformationObjects::add);
-        }
-
-        return textTransformationObjects;
+        return data;
     }
 
     @GraphQLField

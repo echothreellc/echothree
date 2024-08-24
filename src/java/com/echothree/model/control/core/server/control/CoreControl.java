@@ -16239,7 +16239,15 @@ public class CoreControl
     public Color getColorByEntityInstanceForUpdate(EntityInstance entityInstance) {
         return getColorByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
-    
+
+    public long countColors() {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM colors, colordetails
+                WHERE clr_activedetailid = clrdt_colordetailid
+                """);
+    }
+
     private static final Map<EntityPermission, String> getColorByNameQueries;
 
     static {
@@ -17127,6 +17135,14 @@ public class CoreControl
 
     public FontWeight getFontWeightByEntityInstanceForUpdate(EntityInstance entityInstance) {
         return getFontWeightByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countFontWeights() {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM fontweights, fontweightdetails
+                WHERE fntwght_activedetailid = fntwghtdt_fontweightdetailid
+                """);
     }
 
     private static final Map<EntityPermission, String> getFontWeightByNameQueries;
@@ -18021,6 +18037,14 @@ public class CoreControl
 
     public TextTransformation getTextTransformationByEntityInstanceForUpdate(EntityInstance entityInstance) {
         return getTextTransformationByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countTextTransformations() {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM texttransformations, texttransformationdetails
+                WHERE txttrns_activedetailid = txttrnsdt_texttransformationdetailid
+                """);
     }
 
     private static final Map<EntityPermission, String> getTextTransformationByNameQueries;
