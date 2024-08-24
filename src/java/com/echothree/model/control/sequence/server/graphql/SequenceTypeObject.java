@@ -84,8 +84,7 @@ public class SequenceTypeObject
 
     @GraphQLField
     @GraphQLDescription("chunk size")
-    @GraphQLNonNull
-    public int getChunkSize() {
+    public Integer getChunkSize() {
         return getSequenceTypeDetail().getChunkSize();
     }
 

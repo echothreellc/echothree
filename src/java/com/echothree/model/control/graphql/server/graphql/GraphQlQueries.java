@@ -739,6 +739,7 @@ import com.echothree.model.data.security.server.entity.SecurityRoleGroup;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.selector.server.entity.SelectorKind;
 import com.echothree.model.data.selector.server.entity.SelectorType;
+import com.echothree.model.data.sequence.common.SequenceTypeConstants;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.sequence.server.entity.SequenceChecksumType;
 import com.echothree.model.data.sequence.server.entity.SequenceEncoderType;
@@ -1942,29 +1943,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("sequenceTypes")
-    static Collection<SequenceTypeObject> sequenceTypes(final DataFetchingEnvironment env) {
-        Collection<SequenceType> sequenceTypes;
-        Collection<SequenceTypeObject> sequenceTypeObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<SequenceTypeObject> sequenceTypes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<SequenceTypeObject> data;
 
         try {
             var commandForm = SequenceUtil.getHome().getGetSequenceTypesForm();
+            var command = new GetSequenceTypesCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
 
-            sequenceTypes = new GetSequenceTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, SequenceTypeConstants.COMPONENT_VENDOR_NAME, SequenceTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var sequenceTypes = entities.stream()
+                            .map(SequenceTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, sequenceTypes);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(sequenceTypes == null) {
-            sequenceTypeObjects = emptyList();
-        } else {
-            sequenceTypeObjects = new ArrayList<>(sequenceTypes.size());
-
-            sequenceTypes.stream()
-                    .map(SequenceTypeObject::new)
-                    .forEachOrdered(sequenceTypeObjects::add);
-        }
-
-        return sequenceTypeObjects;
+        return data;
     }
 
     @GraphQLField

@@ -138,13 +138,6 @@ public class SequenceControl
         return sequenceType;
     }
 
-    public long countSequenceTypes() {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM sequencetypes, sequencetypedetails " +
-                        "WHERE sqtyp_activedetailid = sqtypdt_sequencetypedetailid");
-    }
-
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.SequenceType */
     public SequenceType getSequenceTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new SequenceTypePK(entityInstance.getEntityUniqueId());
@@ -159,6 +152,14 @@ public class SequenceControl
 
     public SequenceType getSequenceTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
         return getSequenceTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countSequenceTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM sequencetypes, sequencetypedetails
+                        WHERE sqtyp_activedetailid = sqtypdt_sequencetypedetailid
+                        """);
     }
 
     private List<SequenceType> getSequenceTypes(EntityPermission entityPermission) {
