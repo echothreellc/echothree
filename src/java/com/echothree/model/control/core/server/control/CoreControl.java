@@ -18484,6 +18484,14 @@ public class CoreControl
         return getAppearanceByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
+    public long countAppearances() {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM appearances, appearancedetails
+                WHERE apprnc_activedetailid = apprncdt_appearancedetailid
+                """);
+    }
+
     private static final Map<EntityPermission, String> getAppearanceByNameQueries;
 
     static {
