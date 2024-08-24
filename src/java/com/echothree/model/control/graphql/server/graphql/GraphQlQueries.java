@@ -603,6 +603,7 @@ import com.echothree.model.data.core.common.EntityAttributeGroupConstants;
 import com.echothree.model.data.core.common.EntityAttributeTypeConstants;
 import com.echothree.model.data.core.common.EntityInstanceConstants;
 import com.echothree.model.data.core.common.EntityTypeConstants;
+import com.echothree.model.data.core.common.TextDecorationConstants;
 import com.echothree.model.data.core.server.entity.Appearance;
 import com.echothree.model.data.core.server.entity.Color;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
@@ -5729,29 +5730,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("textDecorations")
-    static Collection<TextDecorationObject> textDecorations(final DataFetchingEnvironment env) {
-        Collection<TextDecoration> textDecorations;
-        Collection<TextDecorationObject> textDecorationObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<TextDecorationObject> textDecorations(final DataFetchingEnvironment env) {
+        CountingPaginatedData<TextDecorationObject> data;
 
         try {
             var commandForm = CoreUtil.getHome().getGetTextDecorationsForm();
+            var command = new GetTextDecorationsCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
 
-            textDecorations = new GetTextDecorationsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, TextDecorationConstants.COMPONENT_VENDOR_NAME, TextDecorationConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var textDecorations = entities.stream()
+                            .map(TextDecorationObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, textDecorations);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(textDecorations == null) {
-            textDecorationObjects = emptyList();
-        } else {
-            textDecorationObjects = new ArrayList<>(textDecorations.size());
-
-            textDecorations.stream()
-                    .map(TextDecorationObject::new)
-                    .forEachOrdered(textDecorationObjects::add);
-        }
-
-        return textDecorationObjects;
+        return data;
     }
 
     @GraphQLField
