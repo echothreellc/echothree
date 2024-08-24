@@ -76,11 +76,11 @@ public class GetTextDecorationsCommand
     @Override
     protected BaseResult getResult(Collection<TextDecoration> entities) {
         var result = CoreResultFactory.getGetTextDecorationsResult();
-        var coreControl = getCoreControl();
-        var userVisit = getUserVisit();
-        
-        result.setTextDecorations(coreControl.getTextDecorationTransfers(userVisit, entities));
-        
+
+        if(entities != null) {
+            result.setTextDecorations(getCoreControl().getTextDecorationTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
     
