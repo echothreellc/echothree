@@ -16239,7 +16239,15 @@ public class CoreControl
     public Color getColorByEntityInstanceForUpdate(EntityInstance entityInstance) {
         return getColorByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
-    
+
+    public long countColors() {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM colors, colordetails
+                WHERE clr_activedetailid = clrdt_colordetailid
+                """);
+    }
+
     private static final Map<EntityPermission, String> getColorByNameQueries;
 
     static {
@@ -17137,6 +17145,14 @@ public class CoreControl
         return getFontWeightByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
+    public long countFontWeights() {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM fontweights, fontweightdetails
+                WHERE fntwght_activedetailid = fntwghtdt_fontweightdetailid
+                """);
+    }
+
     private static final Map<EntityPermission, String> getFontWeightByNameQueries;
 
     static {
@@ -17578,6 +17594,14 @@ public class CoreControl
 
     public TextDecoration getTextDecorationByEntityInstanceForUpdate(EntityInstance entityInstance) {
         return getTextDecorationByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countTextDecorations() {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM textdecorations, textdecorationdetails
+                WHERE txtdcrtn_activedetailid = txtdcrtndt_textdecorationdetailid
+                """);
     }
 
     private static final Map<EntityPermission, String> getTextDecorationByNameQueries;
@@ -18474,6 +18498,14 @@ public class CoreControl
 
     public Appearance getAppearanceByEntityInstanceForUpdate(EntityInstance entityInstance) {
         return getAppearanceByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countAppearances() {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM appearances, appearancedetails
+                WHERE apprnc_activedetailid = apprncdt_appearancedetailid
+                """);
     }
 
     private static final Map<EntityPermission, String> getAppearanceByNameQueries;
