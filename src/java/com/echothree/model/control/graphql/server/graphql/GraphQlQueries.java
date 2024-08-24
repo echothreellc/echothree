@@ -595,6 +595,7 @@ import com.echothree.model.data.content.server.entity.ContentPageLayoutArea;
 import com.echothree.model.data.content.server.entity.ContentSection;
 import com.echothree.model.data.content.server.entity.ContentWebAddress;
 import com.echothree.model.data.core.common.AppearanceConstants;
+import com.echothree.model.data.core.common.ColorConstants;
 import com.echothree.model.data.core.common.ComponentVendorConstants;
 import com.echothree.model.data.core.common.EntityAliasConstants;
 import com.echothree.model.data.core.common.EntityAliasTypeConstants;
@@ -5594,29 +5595,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("colors")
-    static Collection<ColorObject> colors(final DataFetchingEnvironment env) {
-        Collection<Color> colors;
-        Collection<ColorObject> colorObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<ColorObject> colors(final DataFetchingEnvironment env) {
+        CountingPaginatedData<ColorObject> data;
 
         try {
             var commandForm = CoreUtil.getHome().getGetColorsForm();
+            var command = new GetColorsCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
 
-            colors = new GetColorsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ColorConstants.COMPONENT_VENDOR_NAME, ColorConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var colors = entities.stream()
+                            .map(ColorObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, colors);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(colors == null) {
-            colorObjects = emptyList();
-        } else {
-            colorObjects = new ArrayList<>(colors.size());
-
-            colors.stream()
-                    .map(ColorObject::new)
-                    .forEachOrdered(colorObjects::add);
-        }
-
-        return colorObjects;
+        return data;
     }
 
     @GraphQLField
