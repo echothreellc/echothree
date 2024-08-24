@@ -718,6 +718,7 @@ import com.echothree.model.data.payment.server.entity.PaymentProcessorTransactio
 import com.echothree.model.data.payment.server.entity.PaymentProcessorType;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCode;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCodeType;
+import com.echothree.model.data.queue.common.QueueTypeConstants;
 import com.echothree.model.data.queue.server.entity.QueueType;
 import com.echothree.model.data.returnpolicy.common.ReturnKindConstants;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnKind;
@@ -5157,29 +5158,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("queueTypes")
-    static Collection<QueueTypeObject> queueTypes(final DataFetchingEnvironment env) {
-        Collection<QueueType> queueTypes;
-        Collection<QueueTypeObject> queueTypeObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<QueueTypeObject> queueTypes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<QueueTypeObject> data;
 
         try {
             var commandForm = QueueUtil.getHome().getGetQueueTypesForm();
+            var command = new GetQueueTypesCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
 
-            queueTypes = new GetQueueTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, QueueTypeConstants.COMPONENT_VENDOR_NAME, QueueTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var queueTypes = entities.stream()
+                            .map(QueueTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, queueTypes);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(queueTypes == null) {
-            queueTypeObjects = emptyList();
-        } else {
-            queueTypeObjects = new ArrayList<>(queueTypes.size());
-
-            queueTypes.stream()
-                    .map(QueueTypeObject::new)
-                    .forEachOrdered(queueTypeObjects::add);
-        }
-
-        return queueTypeObjects;
+        return data;
     }
 
     @GraphQLField
