@@ -684,6 +684,7 @@ import com.echothree.model.data.item.server.entity.ItemUnitOfMeasureType;
 import com.echothree.model.data.item.server.entity.ItemUseType;
 import com.echothree.model.data.item.server.entity.RelatedItem;
 import com.echothree.model.data.item.server.entity.RelatedItemType;
+import com.echothree.model.data.offer.common.OfferConstants;
 import com.echothree.model.data.offer.common.UseTypeConstants;
 import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferItem;
@@ -2846,31 +2847,36 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("offers")
-    static Collection<OfferObject> offers(final DataFetchingEnvironment env) {
-        Collection<Offer> offers;
-        Collection<OfferObject> offerObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<OfferObject> offers(final DataFetchingEnvironment env) {
+        CountingPaginatedData<OfferObject> data;
 
         try {
             var commandForm = OfferUtil.getHome().getGetOffersForm();
+            var command = new GetOffersCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
 
-            offers = new GetOffersCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, OfferConstants.COMPONENT_VENDOR_NAME, OfferConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var offers = entities.stream()
+                            .map(OfferObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, offers);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(offers == null) {
-            offerObjects = emptyList();
-        } else {
-            offerObjects = new ArrayList<>(offers.size());
-
-            offers.stream()
-                    .map(OfferObject::new)
-                    .forEachOrdered(offerObjects::add);
-        }
-
-        return offerObjects;
+        return data;
     }
-
+    
     @GraphQLField
     @GraphQLName("offerItem")
     static OfferItemObject offerItem(final DataFetchingEnvironment env,
