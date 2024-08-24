@@ -603,6 +603,7 @@ import com.echothree.model.data.core.common.EntityAttributeGroupConstants;
 import com.echothree.model.data.core.common.EntityAttributeTypeConstants;
 import com.echothree.model.data.core.common.EntityInstanceConstants;
 import com.echothree.model.data.core.common.EntityTypeConstants;
+import com.echothree.model.data.core.common.TextTransformationConstants;
 import com.echothree.model.data.core.server.entity.Appearance;
 import com.echothree.model.data.core.server.entity.Color;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
@@ -5777,29 +5778,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("textTransformations")
-    static Collection<TextTransformationObject> textTransformations(final DataFetchingEnvironment env) {
-        Collection<TextTransformation> textTransformations;
-        Collection<TextTransformationObject> textTransformationObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<TextTransformationObject> textTransformations(final DataFetchingEnvironment env) {
+        CountingPaginatedData<TextTransformationObject> data;
 
         try {
             var commandForm = CoreUtil.getHome().getGetTextTransformationsForm();
+            var command = new GetTextTransformationsCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
 
-            textTransformations = new GetTextTransformationsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, TextTransformationConstants.COMPONENT_VENDOR_NAME, TextTransformationConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var textTransformations = entities.stream()
+                            .map(TextTransformationObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, textTransformations);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(textTransformations == null) {
-            textTransformationObjects = emptyList();
-        } else {
-            textTransformationObjects = new ArrayList<>(textTransformations.size());
-
-            textTransformations.stream()
-                    .map(TextTransformationObject::new)
-                    .forEachOrdered(textTransformationObjects::add);
-        }
-
-        return textTransformationObjects;
+        return data;
     }
 
     @GraphQLField
