@@ -18015,6 +18015,14 @@ public class CoreControl
         return getTextTransformationByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
+    public long countTextTransformations() {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM texttransformations, texttransformationdetails
+                WHERE txttrns_activedetailid = txttrnsdt_texttransformationdetailid
+                """);
+    }
+
     private static final Map<EntityPermission, String> getTextTransformationByNameQueries;
 
     static {
