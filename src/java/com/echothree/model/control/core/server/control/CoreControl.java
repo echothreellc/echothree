@@ -16239,7 +16239,15 @@ public class CoreControl
     public Color getColorByEntityInstanceForUpdate(EntityInstance entityInstance) {
         return getColorByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
-    
+
+    public long countColors() {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM colors, colordetails
+                WHERE clr_activedetailid = clrdt_colordetailid
+                """);
+    }
+
     private static final Map<EntityPermission, String> getColorByNameQueries;
 
     static {
