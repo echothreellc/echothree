@@ -736,6 +736,7 @@ import com.echothree.model.data.security.common.SecurityRoleConstants;
 import com.echothree.model.data.security.common.SecurityRoleGroupConstants;
 import com.echothree.model.data.security.server.entity.SecurityRole;
 import com.echothree.model.data.security.server.entity.SecurityRoleGroup;
+import com.echothree.model.data.selector.common.SelectorKindConstants;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.selector.server.entity.SelectorKind;
 import com.echothree.model.data.selector.server.entity.SelectorType;
@@ -2088,31 +2089,36 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("selectorKinds")
-    static Collection<SelectorKindObject> selectorKinds(final DataFetchingEnvironment env) {
-        Collection<SelectorKind> selectorKinds;
-        Collection<SelectorKindObject> selectorKindObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<SelectorKindObject> selectorKinds(final DataFetchingEnvironment env) {
+        CountingPaginatedData<SelectorKindObject> data;
 
         try {
             var commandForm = SelectorUtil.getHome().getGetSelectorKindsForm();
+            var command = new GetSelectorKindsCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
 
-            selectorKinds = new GetSelectorKindsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, SelectorKindConstants.COMPONENT_VENDOR_NAME, SelectorKindConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var selectorKinds = entities.stream()
+                            .map(SelectorKindObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, selectorKinds);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(selectorKinds == null) {
-            selectorKindObjects = emptyList();
-        } else {
-            selectorKindObjects = new ArrayList<>(selectorKinds.size());
-
-            selectorKinds.stream()
-                    .map(SelectorKindObject::new)
-                    .forEachOrdered(selectorKindObjects::add);
-        }
-
-        return selectorKindObjects;
+        return data;
     }
-
+    
     @GraphQLField
     @GraphQLName("selectorType")
     static SelectorTypeObject selectorType(final DataFetchingEnvironment env,
