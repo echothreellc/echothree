@@ -594,6 +594,7 @@ import com.echothree.model.data.content.server.entity.ContentPageLayout;
 import com.echothree.model.data.content.server.entity.ContentPageLayoutArea;
 import com.echothree.model.data.content.server.entity.ContentSection;
 import com.echothree.model.data.content.server.entity.ContentWebAddress;
+import com.echothree.model.data.core.common.AppearanceConstants;
 import com.echothree.model.data.core.common.ComponentVendorConstants;
 import com.echothree.model.data.core.common.EntityAliasConstants;
 import com.echothree.model.data.core.common.EntityAliasTypeConstants;
@@ -3569,27 +3570,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("appearances")
-    static Collection<AppearanceObject> appearances(final DataFetchingEnvironment env) {
-        Collection<Appearance> appearances;
-        Collection<AppearanceObject> appearanceObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<AppearanceObject> appearances(final DataFetchingEnvironment env) {
+        CountingPaginatedData<AppearanceObject> data;
 
         try {
             var commandForm = CoreUtil.getHome().getGetAppearancesForm();
+            var command = new GetAppearancesCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
 
-            appearances = new GetAppearancesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, AppearanceConstants.COMPONENT_VENDOR_NAME, AppearanceConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var appearances = entities.stream()
+                            .map(AppearanceObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, appearances);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(appearances == null) {
-            appearanceObjects = emptyList();
-        } else {
-            appearanceObjects = new ArrayList<>(appearances.size());
-
-            appearances.stream().map(AppearanceObject::new).forEachOrdered(appearanceObjects::add);
-        }
-
-        return appearanceObjects;
+        return data;
     }
 
     @GraphQLField
