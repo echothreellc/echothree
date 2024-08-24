@@ -27,37 +27,46 @@ import com.echothree.model.data.sequence.server.factory.SequenceTypeFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class GetSequenceTypesCommand
-        extends BaseMultipleEntitiesCommand<SequenceType, GetSequenceTypesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<SequenceType, GetSequenceTypesForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.SequenceType.name(), SecurityRoles.List.name())
-                )))
-        )));
-
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+                ))
         ));
+
+        FORM_FIELD_DEFINITIONS = List.of();
     }
 
     /** Creates a new instance of GetSequenceTypesCommand */
     public GetSequenceTypesCommand(UserVisitPK userVisitPK, GetSequenceTypesForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    }
+
+    @Override
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        var sequenceControl = Session.getModelController(SequenceControl.class);
+
+        return sequenceControl.countSequenceTypes();
     }
 
     @Override
@@ -70,13 +79,16 @@ public class GetSequenceTypesCommand
     @Override
     protected BaseResult getResult(Collection<SequenceType> entities) {
         var result = SequenceResultFactory.getGetSequenceTypesResult();
-        var sequenceControl = Session.getModelController(SequenceControl.class);
 
-        if(session.hasLimit(SequenceTypeFactory.class)) {
-            result.setSequenceTypeCount(sequenceControl.countSequenceTypes());
+        if(entities != null) {
+            var sequenceControl = Session.getModelController(SequenceControl.class);
+
+            if(session.hasLimit(SequenceTypeFactory.class)) {
+                result.setSequenceTypeCount(getTotalEntities());
+            }
+
+            result.setSequenceTypes(sequenceControl.getSequenceTypeTransfers(getUserVisit(), entities));
         }
-
-        result.setSequenceTypes(sequenceControl.getSequenceTypeTransfers(getUserVisit(), entities));
 
         return result;
     }
