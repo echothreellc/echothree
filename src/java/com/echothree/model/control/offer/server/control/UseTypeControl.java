@@ -88,13 +88,6 @@ public class UseTypeControl
         return useType;
     }
     
-    public long countUseTypes() {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM usetypes, usetypedetails " +
-                "WHERE usetyp_activedetailid = usetypdt_usetypedetailid");
-    }
-
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.UseType */
     public UseType getUseTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new UseTypePK(entityInstance.getEntityUniqueId());
@@ -109,6 +102,14 @@ public class UseTypeControl
 
     public UseType getUseTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
         return getUseTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countUseTypes() {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM usetypes, usetypedetails
+                WHERE usetyp_activedetailid = usetypdt_usetypedetailid
+                """);
     }
 
     private List<UseType> getUseTypes(EntityPermission entityPermission) {

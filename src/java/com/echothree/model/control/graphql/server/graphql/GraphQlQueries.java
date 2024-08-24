@@ -684,6 +684,7 @@ import com.echothree.model.data.item.server.entity.ItemUnitOfMeasureType;
 import com.echothree.model.data.item.server.entity.ItemUseType;
 import com.echothree.model.data.item.server.entity.RelatedItem;
 import com.echothree.model.data.item.server.entity.RelatedItemType;
+import com.echothree.model.data.offer.common.UseTypeConstants;
 import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferItem;
 import com.echothree.model.data.offer.server.entity.OfferItemPrice;
@@ -3143,29 +3144,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("useTypes")
-    static Collection<UseTypeObject> useTypes(final DataFetchingEnvironment env) {
-        Collection<UseType> useTypes;
-        Collection<UseTypeObject> useTypeObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<UseTypeObject> useTypes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<UseTypeObject> data;
 
         try {
             var commandForm = OfferUtil.getHome().getGetUseTypesForm();
+            var command = new GetUseTypesCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
 
-            useTypes = new GetUseTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, UseTypeConstants.COMPONENT_VENDOR_NAME, UseTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var useTypes = entities.stream()
+                            .map(UseTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, useTypes);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(useTypes == null) {
-            useTypeObjects = emptyList();
-        } else {
-            useTypeObjects = new ArrayList<>(useTypes.size());
-
-            useTypes.stream()
-                    .map(UseTypeObject::new)
-                    .forEachOrdered(useTypeObjects::add);
-        }
-
-        return useTypeObjects;
+        return data;
     }
 
     @GraphQLField
