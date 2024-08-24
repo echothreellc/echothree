@@ -604,6 +604,7 @@ import com.echothree.model.data.core.common.EntityAttributeGroupConstants;
 import com.echothree.model.data.core.common.EntityAttributeTypeConstants;
 import com.echothree.model.data.core.common.EntityInstanceConstants;
 import com.echothree.model.data.core.common.EntityTypeConstants;
+import com.echothree.model.data.core.common.FontWeightConstants;
 import com.echothree.model.data.core.common.TextTransformationConstants;
 import com.echothree.model.data.core.server.entity.Appearance;
 import com.echothree.model.data.core.server.entity.Color;
@@ -5688,29 +5689,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("fontWeights")
-    static Collection<FontWeightObject> fontWeights(final DataFetchingEnvironment env) {
-        Collection<FontWeight> fontWeights;
-        Collection<FontWeightObject> fontWeightObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<FontWeightObject> fontWeights(final DataFetchingEnvironment env) {
+        CountingPaginatedData<FontWeightObject> data;
 
         try {
             var commandForm = CoreUtil.getHome().getGetFontWeightsForm();
+            var command = new GetFontWeightsCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
 
-            fontWeights = new GetFontWeightsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, FontWeightConstants.COMPONENT_VENDOR_NAME, FontWeightConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var fontWeights = entities.stream()
+                            .map(FontWeightObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, fontWeights);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(fontWeights == null) {
-            fontWeightObjects = emptyList();
-        } else {
-            fontWeightObjects = new ArrayList<>(fontWeights.size());
-
-            fontWeights.stream()
-                    .map(FontWeightObject::new)
-                    .forEachOrdered(fontWeightObjects::add);
-        }
-
-        return fontWeightObjects;
+        return data;
     }
 
     @GraphQLField
