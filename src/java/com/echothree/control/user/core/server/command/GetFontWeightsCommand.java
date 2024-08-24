@@ -76,11 +76,11 @@ public class GetFontWeightsCommand
     @Override
     protected BaseResult getResult(Collection<FontWeight> entities) {
         var result = CoreResultFactory.getGetFontWeightsResult();
-        var coreControl = getCoreControl();
-        var userVisit = getUserVisit();
-        
-        result.setFontWeights(coreControl.getFontWeightTransfers(userVisit, entities));
-        
+
+        if(entities != null) {
+            result.setFontWeights(getCoreControl().getFontWeightTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
     
