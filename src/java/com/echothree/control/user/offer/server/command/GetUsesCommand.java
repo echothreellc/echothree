@@ -17,7 +17,6 @@
 package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.GetUsesForm;
-import com.echothree.control.user.offer.common.result.GetUsesResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.model.control.offer.server.control.UseControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -26,41 +25,50 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.offer.server.entity.Use;
 import com.echothree.model.data.offer.server.factory.UseFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class GetUsesCommand
-        extends BaseMultipleEntitiesCommand<Use, GetUsesForm> {
-    
+        extends BasePaginatedMultipleEntitiesCommand<Use, GetUsesForm> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Use.name(), SecurityRoles.List.name())
-                        )))
-                )));
+                ))
+        ));
         
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                ));
+        FORM_FIELD_DEFINITIONS = List.of();
     }
     
     /** Creates a new instance of GetUsesCommand */
     public GetUsesCommand(UserVisitPK userVisitPK, GetUsesForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    @Override
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        var useControl = Session.getModelController(UseControl.class);
+
+        return useControl.countUses();
+    }
+
     @Override
     protected Collection<Use> getEntities() {
         var useControl = Session.getModelController(UseControl.class);
@@ -70,15 +78,18 @@ public class GetUsesCommand
     
     @Override
     protected BaseResult getResult(Collection<Use> entities) {
-        GetUsesResult result = OfferResultFactory.getGetUsesResult();
-        var useControl = Session.getModelController(UseControl.class);
-        
-        if(session.hasLimit(UseFactory.class)) {
-            result.setUseCount(useControl.countUses());
+        var result = OfferResultFactory.getGetUsesResult();
+
+        if(entities != null) {
+            var useControl = Session.getModelController(UseControl.class);
+
+            if(session.hasLimit(UseFactory.class)) {
+                result.setUseCount(getTotalEntities());
+            }
+
+            result.setUses(useControl.getUseTransfers(getUserVisit(), entities));
         }
 
-        result.setUses(useControl.getUseTransfers(getUserVisit(), entities));
-        
         return result;
     }
     
