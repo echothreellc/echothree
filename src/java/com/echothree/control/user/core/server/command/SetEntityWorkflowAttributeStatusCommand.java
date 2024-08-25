@@ -34,8 +34,6 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class SetEntityWorkflowAttributeStatusCommand
@@ -50,21 +48,21 @@ public class SetEntityWorkflowAttributeStatusCommand
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), null)
         ));
 
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Key", FieldType.KEY, false, null, null),
                 new FieldDefinition("Guid", FieldType.GUID, false, null, null),
                 new FieldDefinition("Ulid", FieldType.ULID, false, null, null),
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityAttributeUlid", FieldType.ULID, false, null, null),
-                new FieldDefinition("WorkflowStepName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("WorkflowStepName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("WorkflowDestinationName", FieldType.ENTITY_NAME, false, null, null)
-        ));
+        );
     }
     
     /** Creates a new instance of SetEntityWorkflowAttributeStatusCommand */
     public SetEntityWorkflowAttributeStatusCommand(UserVisitPK userVisitPK, SetEntityWorkflowAttributeStatusForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
@@ -80,12 +78,20 @@ public class SetEntityWorkflowAttributeStatusCommand
             var workflowStep = WorkflowStepLogic.getInstance().getWorkflowStepByName(this, workflow, workflowStepName);
 
             if(!hasExecutionErrors()) {
+                var workflowControl = Session.getModelController(WorkflowControl.class);
                 var workflowDestinationName = form.getWorkflowDestinationName();
-                var workflowDestination = WorkflowDestinationLogic.getInstance().getWorkflowDestinationByName(this, workflowStep, workflowDestinationName);
+                var workflowDestination = workflowDestinationName == null ?
+                        workflowControl.getDefaultWorkflowDestination(workflowStep) :
+                        WorkflowDestinationLogic.getInstance().getWorkflowDestinationByName(this, workflowStep, workflowDestinationName);
+
+                if(!hasExecutionErrors() && workflowDestination == null) {
+                    var workflowName = workflow.getLastDetail().getWorkflowName();
+
+                    addExecutionError(ExecutionErrors.MissingDefaultWorkflowDestination.name(), workflowName, workflowStepName);
+                }
 
                 if(!hasExecutionErrors()) {
                     if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
-                        var workflowControl = Session.getModelController(WorkflowControl.class);
                         var workflowEntityStatuses = workflowControl.getWorkflowEntityStatusesByEntityInstanceForUpdate(workflow, entityInstance);
                         WorkflowEntityStatus foundWorkflowEntityStatus = null;
 
@@ -97,7 +103,7 @@ public class SetEntityWorkflowAttributeStatusCommand
                         }
 
                         if(foundWorkflowEntityStatus == null) {
-                            addExecutionError(ExecutionErrors.UnkownWorkflowEntityStatus.name());
+                            addExecutionError(ExecutionErrors.UnknownWorkflowEntityStatus.name());
                         } else {
                             workflowControl.transitionEntityInWorkflow(this, foundWorkflowEntityStatus, workflowDestination, null, getPartyPK());
                         }

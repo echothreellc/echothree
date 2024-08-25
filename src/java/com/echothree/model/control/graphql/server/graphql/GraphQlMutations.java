@@ -6220,6 +6220,76 @@ public interface GraphQlMutations {
 
     @GraphQLField
     @GraphQLRelayMutation
+    static MutationResultObject createEntityWorkflowAttribute(final DataFetchingEnvironment env,
+            @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
+            @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId,
+            @GraphQLName("workflowEntranceName") final String workflowEntranceName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = CoreUtil.getHome().getCreateEntityWorkflowAttributeForm();
+
+            commandForm.setUlid(id);
+            commandForm.setEntityAttributeUlid(entityAttributeId);
+            commandForm.setWorkflowEntranceName(workflowEntranceName);
+
+            mutationResultObject.setCommandResult(CoreUtil.getHome().createEntityWorkflowAttribute(BaseGraphQl.getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject setEntityWorkflowAttributeStatus(final DataFetchingEnvironment env,
+            @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
+            @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId,
+            @GraphQLName("workflowStepName") @GraphQLNonNull final String workflowStepName,
+            @GraphQLName("workflowDestinationName") final String workflowDestinationName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = CoreUtil.getHome().getSetEntityWorkflowAttributeStatusForm();
+
+            commandForm.setUlid(id);
+            commandForm.setEntityAttributeUlid(entityAttributeId);
+            commandForm.setWorkflowStepName(workflowStepName);
+            commandForm.setWorkflowDestinationName(workflowDestinationName);
+
+            mutationResultObject.setCommandResult(CoreUtil.getHome().setEntityWorkflowAttributeStatus(BaseGraphQl.getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteEntityWorkflowAttribute(final DataFetchingEnvironment env,
+            @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
+            @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = CoreUtil.getHome().getDeleteEntityWorkflowAttributeForm();
+
+            commandForm.setUlid(id);
+            commandForm.setEntityAttributeUlid(entityAttributeId);
+
+            mutationResultObject.setCommandResult(CoreUtil.getHome().deleteEntityWorkflowAttribute(BaseGraphQl.getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
     static MutationResultWithIdObject createSearchResultActionType(final DataFetchingEnvironment env,
             @GraphQLName("searchResultActionTypeName") @GraphQLNonNull final String searchResultActionTypeName,
             @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
