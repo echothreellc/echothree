@@ -27,37 +27,46 @@ import com.echothree.model.data.sequence.server.factory.SequenceEncoderTypeFacto
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class GetSequenceEncoderTypesCommand
-        extends BaseMultipleEntitiesCommand<SequenceEncoderType, GetSequenceEncoderTypesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<SequenceEncoderType, GetSequenceEncoderTypesForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.SequenceEncoderType.name(), SecurityRoles.List.name())
-                )))
-        )));
-
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+                ))
         ));
+
+        FORM_FIELD_DEFINITIONS = List.of();
     }
 
     /** Creates a new instance of GetSequenceEncoderTypesCommand */
     public GetSequenceEncoderTypesCommand(UserVisitPK userVisitPK, GetSequenceEncoderTypesForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    }
+
+    @Override
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        var sequenceControl = Session.getModelController(SequenceControl.class);
+
+        return sequenceControl.countSequenceEncoderTypes();
     }
 
     @Override
@@ -70,13 +79,16 @@ public class GetSequenceEncoderTypesCommand
     @Override
     protected BaseResult getResult(Collection<SequenceEncoderType> entities) {
         var result = SequenceResultFactory.getGetSequenceEncoderTypesResult();
-        var sequenceControl = Session.getModelController(SequenceControl.class);
 
-        if(session.hasLimit(SequenceEncoderTypeFactory.class)) {
-            result.setSequenceEncoderTypeCount(sequenceControl.countSequenceEncoderTypes());
+        if(entities != null) {
+            var sequenceControl = Session.getModelController(SequenceControl.class);
+
+            if(session.hasLimit(SequenceEncoderTypeFactory.class)) {
+                result.setSequenceEncoderTypeCount(getTotalEntities());
+            }
+
+            result.setSequenceEncoderTypes(sequenceControl.getSequenceEncoderTypeTransfers(getUserVisit(), entities));
         }
-
-        result.setSequenceEncoderTypes(sequenceControl.getSequenceEncoderTypeTransfers(getUserVisit(), entities));
 
         return result;
     }

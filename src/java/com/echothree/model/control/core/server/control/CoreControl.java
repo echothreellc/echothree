@@ -8643,11 +8643,36 @@ public class CoreControl
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.MimeType */
-    public MimeType getMimeTypeByEntityInstance(EntityInstance entityInstance) {
-        MimeTypePK pk = new MimeTypePK(entityInstance.getEntityUniqueId());
-        MimeType mimeType = MimeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+    public MimeType getMimeTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new MimeTypePK(entityInstance.getEntityUniqueId());
 
-        return mimeType;
+        return MimeTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public MimeType getMimeTypeByEntityInstance(EntityInstance entityInstance) {
+        return getMimeTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public MimeType getMimeTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getMimeTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countMimeTypes() {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM mimetypes
+                JOIN mimetypedetails ON mtyp_activedetailid = mtypdt_mimetypedetailid
+                """);
+    }
+
+    public long countMimeTypesByMimeTypeUsageType(MimeTypeUsageType mimeTypeUsageType) {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM mimetypes
+                JOIN mimetypedetails ON mtyp_activedetailid = mtypdt_mimetypedetailid
+                JOIN mimetypeusages ON mtyp_mimetypeid = mtypu_mtyp_mimetypeid
+                WHERE mtypu_mtyput_mimetypeusagetypeid = ?
+                """, mimeTypeUsageType);
     }
 
     private static final Map<EntityPermission, String> getMimeTypeByNameQueries;
@@ -16339,7 +16364,15 @@ public class CoreControl
     public Color getColorByEntityInstanceForUpdate(EntityInstance entityInstance) {
         return getColorByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
-    
+
+    public long countColors() {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM colors, colordetails
+                WHERE clr_activedetailid = clrdt_colordetailid
+                """);
+    }
+
     private static final Map<EntityPermission, String> getColorByNameQueries;
 
     static {
@@ -16786,6 +16819,14 @@ public class CoreControl
         return getFontStyleByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
+    public long countFontStyles() {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM fontstyles, fontstyledetails
+                WHERE fntstyl_activedetailid = fntstyldt_fontstyledetailid
+                """);
+    }
+
     private static final Map<EntityPermission, String> getFontStyleByNameQueries;
 
     static {
@@ -17227,6 +17268,14 @@ public class CoreControl
 
     public FontWeight getFontWeightByEntityInstanceForUpdate(EntityInstance entityInstance) {
         return getFontWeightByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countFontWeights() {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM fontweights, fontweightdetails
+                WHERE fntwght_activedetailid = fntwghtdt_fontweightdetailid
+                """);
     }
 
     private static final Map<EntityPermission, String> getFontWeightByNameQueries;
@@ -17672,6 +17721,14 @@ public class CoreControl
         return getTextDecorationByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
+    public long countTextDecorations() {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM textdecorations, textdecorationdetails
+                WHERE txtdcrtn_activedetailid = txtdcrtndt_textdecorationdetailid
+                """);
+    }
+
     private static final Map<EntityPermission, String> getTextDecorationByNameQueries;
 
     static {
@@ -18113,6 +18170,14 @@ public class CoreControl
 
     public TextTransformation getTextTransformationByEntityInstanceForUpdate(EntityInstance entityInstance) {
         return getTextTransformationByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countTextTransformations() {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM texttransformations, texttransformationdetails
+                WHERE txttrns_activedetailid = txttrnsdt_texttransformationdetailid
+                """);
     }
 
     private static final Map<EntityPermission, String> getTextTransformationByNameQueries;
@@ -18558,6 +18623,14 @@ public class CoreControl
 
     public Appearance getAppearanceByEntityInstanceForUpdate(EntityInstance entityInstance) {
         return getAppearanceByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countAppearances() {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM appearances, appearancedetails
+                WHERE apprnc_activedetailid = apprncdt_appearancedetailid
+                """);
     }
 
     private static final Map<EntityPermission, String> getAppearanceByNameQueries;

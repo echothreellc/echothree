@@ -594,6 +594,8 @@ import com.echothree.model.data.content.server.entity.ContentPageLayout;
 import com.echothree.model.data.content.server.entity.ContentPageLayoutArea;
 import com.echothree.model.data.content.server.entity.ContentSection;
 import com.echothree.model.data.content.server.entity.ContentWebAddress;
+import com.echothree.model.data.core.common.AppearanceConstants;
+import com.echothree.model.data.core.common.ColorConstants;
 import com.echothree.model.data.core.common.ComponentVendorConstants;
 import com.echothree.model.data.core.common.EntityAliasConstants;
 import com.echothree.model.data.core.common.EntityAliasTypeConstants;
@@ -603,6 +605,11 @@ import com.echothree.model.data.core.common.EntityAttributeGroupConstants;
 import com.echothree.model.data.core.common.EntityAttributeTypeConstants;
 import com.echothree.model.data.core.common.EntityInstanceConstants;
 import com.echothree.model.data.core.common.EntityTypeConstants;
+import com.echothree.model.data.core.common.FontStyleConstants;
+import com.echothree.model.data.core.common.FontWeightConstants;
+import com.echothree.model.data.core.common.MimeTypeConstants;
+import com.echothree.model.data.core.common.TextDecorationConstants;
+import com.echothree.model.data.core.common.TextTransformationConstants;
 import com.echothree.model.data.core.server.entity.Appearance;
 import com.echothree.model.data.core.server.entity.Color;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
@@ -627,6 +634,7 @@ import com.echothree.model.data.customer.server.entity.Customer;
 import com.echothree.model.data.customer.server.entity.CustomerType;
 import com.echothree.model.data.employee.common.PartyEmployeeConstants;
 import com.echothree.model.data.employee.server.entity.PartyEmployee;
+import com.echothree.model.data.filter.common.FilterKindConstants;
 import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.filter.server.entity.FilterAdjustment;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentAmount;
@@ -678,6 +686,9 @@ import com.echothree.model.data.item.server.entity.ItemUnitOfMeasureType;
 import com.echothree.model.data.item.server.entity.ItemUseType;
 import com.echothree.model.data.item.server.entity.RelatedItem;
 import com.echothree.model.data.item.server.entity.RelatedItemType;
+import com.echothree.model.data.offer.common.OfferConstants;
+import com.echothree.model.data.offer.common.UseConstants;
+import com.echothree.model.data.offer.common.UseTypeConstants;
 import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferItem;
 import com.echothree.model.data.offer.server.entity.OfferItemPrice;
@@ -716,6 +727,7 @@ import com.echothree.model.data.payment.server.entity.PaymentProcessorTransactio
 import com.echothree.model.data.payment.server.entity.PaymentProcessorType;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCode;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCodeType;
+import com.echothree.model.data.queue.common.QueueTypeConstants;
 import com.echothree.model.data.queue.server.entity.QueueType;
 import com.echothree.model.data.returnpolicy.common.ReturnKindConstants;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnKind;
@@ -728,9 +740,13 @@ import com.echothree.model.data.security.common.SecurityRoleConstants;
 import com.echothree.model.data.security.common.SecurityRoleGroupConstants;
 import com.echothree.model.data.security.server.entity.SecurityRole;
 import com.echothree.model.data.security.server.entity.SecurityRoleGroup;
+import com.echothree.model.data.selector.common.SelectorKindConstants;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.selector.server.entity.SelectorKind;
 import com.echothree.model.data.selector.server.entity.SelectorType;
+import com.echothree.model.data.sequence.common.SequenceChecksumTypeConstants;
+import com.echothree.model.data.sequence.common.SequenceEncoderTypeConstants;
+import com.echothree.model.data.sequence.common.SequenceTypeConstants;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.sequence.server.entity.SequenceChecksumType;
 import com.echothree.model.data.sequence.server.entity.SequenceEncoderType;
@@ -1934,29 +1950,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("sequenceTypes")
-    static Collection<SequenceTypeObject> sequenceTypes(final DataFetchingEnvironment env) {
-        Collection<SequenceType> sequenceTypes;
-        Collection<SequenceTypeObject> sequenceTypeObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<SequenceTypeObject> sequenceTypes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<SequenceTypeObject> data;
 
         try {
             var commandForm = SequenceUtil.getHome().getGetSequenceTypesForm();
+            var command = new GetSequenceTypesCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
 
-            sequenceTypes = new GetSequenceTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, SequenceTypeConstants.COMPONENT_VENDOR_NAME, SequenceTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var sequenceTypes = entities.stream()
+                            .map(SequenceTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, sequenceTypes);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(sequenceTypes == null) {
-            sequenceTypeObjects = emptyList();
-        } else {
-            sequenceTypeObjects = new ArrayList<>(sequenceTypes.size());
-
-            sequenceTypes.stream()
-                    .map(SequenceTypeObject::new)
-                    .forEachOrdered(sequenceTypeObjects::add);
-        }
-
-        return sequenceTypeObjects;
+        return data;
     }
 
     @GraphQLField
@@ -1980,29 +2001,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("sequenceChecksumTypes")
-    static Collection<SequenceChecksumTypeObject> sequenceChecksumTypes(final DataFetchingEnvironment env) {
-        Collection<SequenceChecksumType> sequenceChecksumTypes;
-        Collection<SequenceChecksumTypeObject> sequenceChecksumTypeObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<SequenceChecksumTypeObject> sequenceChecksumTypes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<SequenceChecksumTypeObject> data;
 
         try {
             var commandForm = SequenceUtil.getHome().getGetSequenceChecksumTypesForm();
+            var command = new GetSequenceChecksumTypesCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
 
-            sequenceChecksumTypes = new GetSequenceChecksumTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, SequenceChecksumTypeConstants.COMPONENT_VENDOR_NAME, SequenceChecksumTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var sequenceChecksumTypes = entities.stream()
+                            .map(SequenceChecksumTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, sequenceChecksumTypes);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(sequenceChecksumTypes == null) {
-            sequenceChecksumTypeObjects = emptyList();
-        } else {
-            sequenceChecksumTypeObjects = new ArrayList<>(sequenceChecksumTypes.size());
-
-            sequenceChecksumTypes.stream()
-                    .map(SequenceChecksumTypeObject::new)
-                    .forEachOrdered(sequenceChecksumTypeObjects::add);
-        }
-
-        return sequenceChecksumTypeObjects;
+        return data;
     }
 
     @GraphQLField
@@ -2026,29 +2052,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("sequenceEncoderTypes")
-    static Collection<SequenceEncoderTypeObject> sequenceEncoderTypes(final DataFetchingEnvironment env) {
-        Collection<SequenceEncoderType> sequenceEncoderTypes;
-        Collection<SequenceEncoderTypeObject> sequenceEncoderTypeObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<SequenceEncoderTypeObject> sequenceEncoderTypes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<SequenceEncoderTypeObject> data;
 
         try {
             var commandForm = SequenceUtil.getHome().getGetSequenceEncoderTypesForm();
+            var command = new GetSequenceEncoderTypesCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
 
-            sequenceEncoderTypes = new GetSequenceEncoderTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, SequenceEncoderTypeConstants.COMPONENT_VENDOR_NAME, SequenceEncoderTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var sequenceEncoderTypes = entities.stream()
+                            .map(SequenceEncoderTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, sequenceEncoderTypes);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(sequenceEncoderTypes == null) {
-            sequenceEncoderTypeObjects = emptyList();
-        } else {
-            sequenceEncoderTypeObjects = new ArrayList<>(sequenceEncoderTypes.size());
-
-            sequenceEncoderTypes.stream()
-                    .map(SequenceEncoderTypeObject::new)
-                    .forEachOrdered(sequenceEncoderTypeObjects::add);
-        }
-
-        return sequenceEncoderTypeObjects;
+        return data;
     }
 
     @GraphQLField
@@ -2074,31 +2105,36 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("selectorKinds")
-    static Collection<SelectorKindObject> selectorKinds(final DataFetchingEnvironment env) {
-        Collection<SelectorKind> selectorKinds;
-        Collection<SelectorKindObject> selectorKindObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<SelectorKindObject> selectorKinds(final DataFetchingEnvironment env) {
+        CountingPaginatedData<SelectorKindObject> data;
 
         try {
             var commandForm = SelectorUtil.getHome().getGetSelectorKindsForm();
+            var command = new GetSelectorKindsCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
 
-            selectorKinds = new GetSelectorKindsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, SelectorKindConstants.COMPONENT_VENDOR_NAME, SelectorKindConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var selectorKinds = entities.stream()
+                            .map(SelectorKindObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, selectorKinds);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(selectorKinds == null) {
-            selectorKindObjects = emptyList();
-        } else {
-            selectorKindObjects = new ArrayList<>(selectorKinds.size());
-
-            selectorKinds.stream()
-                    .map(SelectorKindObject::new)
-                    .forEachOrdered(selectorKindObjects::add);
-        }
-
-        return selectorKindObjects;
+        return data;
     }
-
+    
     @GraphQLField
     @GraphQLName("selectorType")
     static SelectorTypeObject selectorType(final DataFetchingEnvironment env,
@@ -2232,29 +2268,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("filterKinds")
-    static Collection<FilterKindObject> filterKinds(final DataFetchingEnvironment env) {
-        Collection<FilterKind> filterKinds;
-        Collection<FilterKindObject> filterKindObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<FilterKindObject> filterKinds(final DataFetchingEnvironment env) {
+        CountingPaginatedData<FilterKindObject> data;
 
         try {
             var commandForm = FilterUtil.getHome().getGetFilterKindsForm();
+            var command = new GetFilterKindsCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
 
-            filterKinds = new GetFilterKindsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, FilterKindConstants.COMPONENT_VENDOR_NAME, FilterKindConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var filterKinds = entities.stream()
+                            .map(FilterKindObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, filterKinds);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(filterKinds == null) {
-            filterKindObjects = emptyList();
-        } else {
-            filterKindObjects = new ArrayList<>(filterKinds.size());
-
-            filterKinds.stream()
-                    .map(FilterKindObject::new)
-                    .forEachOrdered(filterKindObjects::add);
-        }
-
-        return filterKindObjects;
+        return data;
     }
 
     @GraphQLField
@@ -2832,31 +2873,36 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("offers")
-    static Collection<OfferObject> offers(final DataFetchingEnvironment env) {
-        Collection<Offer> offers;
-        Collection<OfferObject> offerObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<OfferObject> offers(final DataFetchingEnvironment env) {
+        CountingPaginatedData<OfferObject> data;
 
         try {
             var commandForm = OfferUtil.getHome().getGetOffersForm();
+            var command = new GetOffersCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
 
-            offers = new GetOffersCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, OfferConstants.COMPONENT_VENDOR_NAME, OfferConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var offers = entities.stream()
+                            .map(OfferObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, offers);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(offers == null) {
-            offerObjects = emptyList();
-        } else {
-            offerObjects = new ArrayList<>(offers.size());
-
-            offers.stream()
-                    .map(OfferObject::new)
-                    .forEachOrdered(offerObjects::add);
-        }
-
-        return offerObjects;
+        return data;
     }
-
+    
     @GraphQLField
     @GraphQLName("offerItem")
     static OfferItemObject offerItem(final DataFetchingEnvironment env,
@@ -2992,29 +3038,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("uses")
-    static Collection<UseObject> uses(final DataFetchingEnvironment env) {
-        Collection<Use> uses;
-        Collection<UseObject> useObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<UseObject> uses(final DataFetchingEnvironment env) {
+        CountingPaginatedData<UseObject> data;
 
         try {
             var commandForm = OfferUtil.getHome().getGetUsesForm();
+            var command = new GetUsesCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
 
-            uses = new GetUsesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, UseConstants.COMPONENT_VENDOR_NAME, UseConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var uses = entities.stream()
+                            .map(UseObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, uses);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(uses == null) {
-            useObjects = emptyList();
-        } else {
-            useObjects = new ArrayList<>(uses.size());
-
-            uses.stream()
-                    .map(UseObject::new)
-                    .forEachOrdered(useObjects::add);
-        }
-
-        return useObjects;
+        return data;
     }
 
     @GraphQLField
@@ -3136,29 +3187,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("useTypes")
-    static Collection<UseTypeObject> useTypes(final DataFetchingEnvironment env) {
-        Collection<UseType> useTypes;
-        Collection<UseTypeObject> useTypeObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<UseTypeObject> useTypes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<UseTypeObject> data;
 
         try {
             var commandForm = OfferUtil.getHome().getGetUseTypesForm();
+            var command = new GetUseTypesCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
 
-            useTypes = new GetUseTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, UseTypeConstants.COMPONENT_VENDOR_NAME, UseTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var useTypes = entities.stream()
+                            .map(UseTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, useTypes);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(useTypes == null) {
-            useTypeObjects = emptyList();
-        } else {
-            useTypeObjects = new ArrayList<>(useTypes.size());
-
-            useTypes.stream()
-                    .map(UseTypeObject::new)
-                    .forEachOrdered(useTypeObjects::add);
-        }
-
-        return useTypeObjects;
+        return data;
     }
 
     @GraphQLField
@@ -3568,27 +3624,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("appearances")
-    static Collection<AppearanceObject> appearances(final DataFetchingEnvironment env) {
-        Collection<Appearance> appearances;
-        Collection<AppearanceObject> appearanceObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<AppearanceObject> appearances(final DataFetchingEnvironment env) {
+        CountingPaginatedData<AppearanceObject> data;
 
         try {
             var commandForm = CoreUtil.getHome().getGetAppearancesForm();
+            var command = new GetAppearancesCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
 
-            appearances = new GetAppearancesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, AppearanceConstants.COMPONENT_VENDOR_NAME, AppearanceConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var appearances = entities.stream()
+                            .map(AppearanceObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, appearances);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(appearances == null) {
-            appearanceObjects = emptyList();
-        } else {
-            appearanceObjects = new ArrayList<>(appearances.size());
-
-            appearances.stream().map(AppearanceObject::new).forEachOrdered(appearanceObjects::add);
-        }
-
-        return appearanceObjects;
+        return data;
     }
 
     @GraphQLField
@@ -5106,32 +5169,38 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("mimeTypes")
-    static Collection<MimeTypeObject> mimeTypes(final DataFetchingEnvironment env,
-           @GraphQLName("mimeTypeUsageTypeName") final String mimeTypeUsageTypeName) {
-        Collection<MimeType> mimeTypes;
-        Collection<MimeTypeObject> mimeTypeObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<MimeTypeObject> mimeTypes(final DataFetchingEnvironment env,
+            @GraphQLName("mimeTypeUsageTypeName") final String mimeTypeUsageTypeName) {
+        CountingPaginatedData<MimeTypeObject> data;
 
         try {
             var commandForm = CoreUtil.getHome().getGetMimeTypesForm();
 
             commandForm.setMimeTypeUsageTypeName(mimeTypeUsageTypeName);
 
-            mimeTypes = new GetMimeTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            var command = new GetMimeTypesCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
+
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, MimeTypeConstants.COMPONENT_VENDOR_NAME, MimeTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var mimeTypes = entities.stream()
+                            .map(MimeTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, mimeTypes);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(mimeTypes == null) {
-            mimeTypeObjects = emptyList();
-        } else {
-            mimeTypeObjects = new ArrayList<>(mimeTypes.size());
-
-            mimeTypes.stream()
-                    .map(MimeTypeObject::new)
-                    .forEachOrdered(mimeTypeObjects::add);
-        }
-
-        return mimeTypeObjects;
+        return data;
     }
 
     @GraphQLField
@@ -5155,29 +5224,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("queueTypes")
-    static Collection<QueueTypeObject> queueTypes(final DataFetchingEnvironment env) {
-        Collection<QueueType> queueTypes;
-        Collection<QueueTypeObject> queueTypeObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<QueueTypeObject> queueTypes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<QueueTypeObject> data;
 
         try {
             var commandForm = QueueUtil.getHome().getGetQueueTypesForm();
+            var command = new GetQueueTypesCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
 
-            queueTypes = new GetQueueTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, QueueTypeConstants.COMPONENT_VENDOR_NAME, QueueTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var queueTypes = entities.stream()
+                            .map(QueueTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, queueTypes);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(queueTypes == null) {
-            queueTypeObjects = emptyList();
-        } else {
-            queueTypeObjects = new ArrayList<>(queueTypes.size());
-
-            queueTypes.stream()
-                    .map(QueueTypeObject::new)
-                    .forEachOrdered(queueTypeObjects::add);
-        }
-
-        return queueTypeObjects;
+        return data;
     }
 
     @GraphQLField
@@ -5585,29 +5659,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("colors")
-    static Collection<ColorObject> colors(final DataFetchingEnvironment env) {
-        Collection<Color> colors;
-        Collection<ColorObject> colorObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<ColorObject> colors(final DataFetchingEnvironment env) {
+        CountingPaginatedData<ColorObject> data;
 
         try {
             var commandForm = CoreUtil.getHome().getGetColorsForm();
+            var command = new GetColorsCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
 
-            colors = new GetColorsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ColorConstants.COMPONENT_VENDOR_NAME, ColorConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var colors = entities.stream()
+                            .map(ColorObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, colors);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(colors == null) {
-            colorObjects = emptyList();
-        } else {
-            colorObjects = new ArrayList<>(colors.size());
-
-            colors.stream()
-                    .map(ColorObject::new)
-                    .forEachOrdered(colorObjects::add);
-        }
-
-        return colorObjects;
+        return data;
     }
 
     @GraphQLField
@@ -5633,29 +5712,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("fontStyles")
-    static Collection<FontStyleObject> fontStyles(final DataFetchingEnvironment env) {
-        Collection<FontStyle> fontStyles;
-        Collection<FontStyleObject> fontStyleObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<FontStyleObject> fontStyles(final DataFetchingEnvironment env) {
+        CountingPaginatedData<FontStyleObject> data;
 
         try {
             var commandForm = CoreUtil.getHome().getGetFontStylesForm();
+            var command = new GetFontStylesCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
 
-            fontStyles = new GetFontStylesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, FontStyleConstants.COMPONENT_VENDOR_NAME, FontStyleConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var fontStyles = entities.stream()
+                            .map(FontStyleObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, fontStyles);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(fontStyles == null) {
-            fontStyleObjects = emptyList();
-        } else {
-            fontStyleObjects = new ArrayList<>(fontStyles.size());
-
-            fontStyles.stream()
-                    .map(FontStyleObject::new)
-                    .forEachOrdered(fontStyleObjects::add);
-        }
-
-        return fontStyleObjects;
+        return data;
     }
 
     @GraphQLField
@@ -5681,29 +5765,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("fontWeights")
-    static Collection<FontWeightObject> fontWeights(final DataFetchingEnvironment env) {
-        Collection<FontWeight> fontWeights;
-        Collection<FontWeightObject> fontWeightObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<FontWeightObject> fontWeights(final DataFetchingEnvironment env) {
+        CountingPaginatedData<FontWeightObject> data;
 
         try {
             var commandForm = CoreUtil.getHome().getGetFontWeightsForm();
+            var command = new GetFontWeightsCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
 
-            fontWeights = new GetFontWeightsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, FontWeightConstants.COMPONENT_VENDOR_NAME, FontWeightConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var fontWeights = entities.stream()
+                            .map(FontWeightObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, fontWeights);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(fontWeights == null) {
-            fontWeightObjects = emptyList();
-        } else {
-            fontWeightObjects = new ArrayList<>(fontWeights.size());
-
-            fontWeights.stream()
-                    .map(FontWeightObject::new)
-                    .forEachOrdered(fontWeightObjects::add);
-        }
-
-        return fontWeightObjects;
+        return data;
     }
 
     @GraphQLField
@@ -5729,29 +5818,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("textDecorations")
-    static Collection<TextDecorationObject> textDecorations(final DataFetchingEnvironment env) {
-        Collection<TextDecoration> textDecorations;
-        Collection<TextDecorationObject> textDecorationObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<TextDecorationObject> textDecorations(final DataFetchingEnvironment env) {
+        CountingPaginatedData<TextDecorationObject> data;
 
         try {
             var commandForm = CoreUtil.getHome().getGetTextDecorationsForm();
+            var command = new GetTextDecorationsCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
 
-            textDecorations = new GetTextDecorationsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, TextDecorationConstants.COMPONENT_VENDOR_NAME, TextDecorationConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var textDecorations = entities.stream()
+                            .map(TextDecorationObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, textDecorations);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(textDecorations == null) {
-            textDecorationObjects = emptyList();
-        } else {
-            textDecorationObjects = new ArrayList<>(textDecorations.size());
-
-            textDecorations.stream()
-                    .map(TextDecorationObject::new)
-                    .forEachOrdered(textDecorationObjects::add);
-        }
-
-        return textDecorationObjects;
+        return data;
     }
 
     @GraphQLField
@@ -5777,29 +5871,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("textTransformations")
-    static Collection<TextTransformationObject> textTransformations(final DataFetchingEnvironment env) {
-        Collection<TextTransformation> textTransformations;
-        Collection<TextTransformationObject> textTransformationObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<TextTransformationObject> textTransformations(final DataFetchingEnvironment env) {
+        CountingPaginatedData<TextTransformationObject> data;
 
         try {
             var commandForm = CoreUtil.getHome().getGetTextTransformationsForm();
+            var command = new GetTextTransformationsCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
 
-            textTransformations = new GetTextTransformationsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, TextTransformationConstants.COMPONENT_VENDOR_NAME, TextTransformationConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var textTransformations = entities.stream()
+                            .map(TextTransformationObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, textTransformations);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(textTransformations == null) {
-            textTransformationObjects = emptyList();
-        } else {
-            textTransformationObjects = new ArrayList<>(textTransformations.size());
-
-            textTransformations.stream()
-                    .map(TextTransformationObject::new)
-                    .forEachOrdered(textTransformationObjects::add);
-        }
-
-        return textTransformationObjects;
+        return data;
     }
 
     @GraphQLField

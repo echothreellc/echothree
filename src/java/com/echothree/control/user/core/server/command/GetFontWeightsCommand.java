@@ -18,47 +18,54 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetFontWeightsForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetFontWeightsResult;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.FontWeight;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class GetFontWeightsCommand
-        extends BaseMultipleEntitiesCommand<FontWeight, GetFontWeightsForm> {
-    
+        extends BasePaginatedMultipleEntitiesCommand<FontWeight, GetFontWeightsForm> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.FontWeight.name(), SecurityRoles.List.name())
-                        )))
-                )));
+                ))
+        ));
         
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                ));
+        FORM_FIELD_DEFINITIONS = List.of();
     }
     
     /** Creates a new instance of GetFontWeightsCommand */
     public GetFontWeightsCommand(UserVisitPK userVisitPK, GetFontWeightsForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    @Override
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        var coreControl = getCoreControl();
+
+        return coreControl.countFontWeights();
+    }
+
     @Override
     protected Collection<FontWeight> getEntities() {
         var coreControl = getCoreControl();
@@ -68,12 +75,12 @@ public class GetFontWeightsCommand
     
     @Override
     protected BaseResult getResult(Collection<FontWeight> entities) {
-        GetFontWeightsResult result = CoreResultFactory.getGetFontWeightsResult();
-        var coreControl = getCoreControl();
-        UserVisit userVisit = getUserVisit();
-        
-        result.setFontWeights(coreControl.getFontWeightTransfers(userVisit, entities));
-        
+        var result = CoreResultFactory.getGetFontWeightsResult();
+
+        if(entities != null) {
+            result.setFontWeights(getCoreControl().getFontWeightTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
     

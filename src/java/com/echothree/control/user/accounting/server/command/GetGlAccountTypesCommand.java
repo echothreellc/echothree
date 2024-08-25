@@ -56,7 +56,6 @@ public class GetGlAccountTypesCommand
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
-
     @Override
     protected void handleForm() {
         // No form fields.
