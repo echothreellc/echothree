@@ -25,6 +25,8 @@ import com.echothree.model.control.sequence.server.graphql.SequenceSecurityUtils
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureTypeObject;
 import com.echothree.model.control.uom.server.graphql.UomSecurityUtils;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.control.workflow.server.graphql.WorkflowObject;
+import com.echothree.model.control.workflow.server.graphql.WorkflowSecurityUtils;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityAttributeBlob;
 import com.echothree.model.data.core.server.entity.EntityAttributeDetail;
@@ -33,6 +35,7 @@ import com.echothree.model.data.core.server.entity.EntityAttributeListItem;
 import com.echothree.model.data.core.server.entity.EntityAttributeLong;
 import com.echothree.model.data.core.server.entity.EntityAttributeNumeric;
 import com.echothree.model.data.core.server.entity.EntityAttributeString;
+import com.echothree.model.data.core.server.entity.EntityAttributeWorkflow;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
@@ -156,6 +159,20 @@ public class EntityAttributeObject
         }
 
         return entityAttributeListItem;
+    }
+
+    private EntityAttributeWorkflow entityAttributeWorkflow; // Optional, use getEntityAttributeWorkflow()
+
+    private EntityAttributeWorkflow getEntityAttributeWorkflow() {
+        var entityAttributeType = getEntityAttributeTypeEnum();
+
+        if(entityAttributeWorkflow == null && (entityAttributeType == EntityAttributeTypes.WORKFLOW)) {
+            var coreControl = Session.getModelController(CoreControl.class);
+
+            entityAttributeWorkflow = coreControl.getEntityAttributeWorkflow(entityAttribute);
+        }
+
+        return entityAttributeWorkflow;
     }
 
     @GraphQLField
@@ -343,6 +360,15 @@ public class EntityAttributeObject
         var entityListItemSequence = entityAttributeListItem == null ? null : entityAttributeListItem.getEntityListItemSequence();
 
         return entityListItemSequence != null && SequenceSecurityUtils.getHasSequenceAccess(env) ? new SequenceObject(entityListItemSequence) : null;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("workflow")
+    public WorkflowObject getWorkflow(final DataFetchingEnvironment env) {
+        var entityAttributeWorkflow = getEntityAttributeWorkflow();
+        var workflow = entityAttributeWorkflow == null ? null : entityAttributeWorkflow.getWorkflow();
+
+        return workflow != null && WorkflowSecurityUtils.getHasWorkflowAccess(env) ? new WorkflowObject(workflow) : null;
     }
 
     @GraphQLField
