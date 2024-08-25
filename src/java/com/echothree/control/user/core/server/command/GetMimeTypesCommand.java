@@ -18,29 +18,27 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetMimeTypesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetMimeTypesResult;
 import com.echothree.model.control.core.server.logic.MimeTypeLogic;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
-import java.util.Arrays;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class GetMimeTypesCommand
-        extends BaseMultipleEntitiesCommand<MimeType, GetMimeTypesForm> {
-    
+        extends BasePaginatedMultipleEntitiesCommand<MimeType, GetMimeTypesForm> {
+
+    // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("MimeTypeUsageTypeName", FieldType.ENTITY_NAME, false, null, null)
-                ));
+        );
     }
 
     /** Creates a new instance of GetMimeTypesCommand */
@@ -48,11 +46,26 @@ public class GetMimeTypesCommand
         super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
     }
 
+    MimeTypeUsageType mimeTypeUsageType;
+
+    @Override
+    protected void handleForm() {
+        var mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
+
+        mimeTypeUsageType = mimeTypeUsageTypeName == null ? null :
+                MimeTypeLogic.getInstance().getMimeTypeUsageTypeByName(this, mimeTypeUsageTypeName);
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null :
+                mimeTypeUsageType == null ? getCoreControl().countMimeTypes() :
+                        getCoreControl().countMimeTypesByMimeTypeUsageType(mimeTypeUsageType);
+    }
+
     @Override
     protected Collection<MimeType> getEntities() {
         var coreControl = getCoreControl();
-        String mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
-        MimeTypeUsageType mimeTypeUsageType = mimeTypeUsageTypeName == null ? null : MimeTypeLogic.getInstance().getMimeTypeUsageTypeByName(this, mimeTypeUsageTypeName);
         Collection<MimeType> mimeTypes = null;
 
         if(!hasExecutionErrors()) {
@@ -68,10 +81,13 @@ public class GetMimeTypesCommand
 
     @Override
     protected BaseResult getResult(Collection<MimeType> entities) {
-        var coreControl = getCoreControl();
-        GetMimeTypesResult result = CoreResultFactory.getGetMimeTypesResult();
+        var result = CoreResultFactory.getGetMimeTypesResult();
 
-        result.setMimeTypes(coreControl.getMimeTypeTransfers(getUserVisit(), entities));
+        if(entities != null) {
+            var coreControl = getCoreControl();
+
+            result.setMimeTypes(coreControl.getMimeTypeTransfers(getUserVisit(), entities));
+        }
 
         return result;
     }

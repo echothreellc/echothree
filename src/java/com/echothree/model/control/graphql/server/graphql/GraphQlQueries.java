@@ -607,6 +607,7 @@ import com.echothree.model.data.core.common.EntityInstanceConstants;
 import com.echothree.model.data.core.common.EntityTypeConstants;
 import com.echothree.model.data.core.common.FontStyleConstants;
 import com.echothree.model.data.core.common.FontWeightConstants;
+import com.echothree.model.data.core.common.MimeTypeConstants;
 import com.echothree.model.data.core.common.TextDecorationConstants;
 import com.echothree.model.data.core.common.TextTransformationConstants;
 import com.echothree.model.data.core.server.entity.Appearance;
@@ -5150,32 +5151,38 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("mimeTypes")
-    static Collection<MimeTypeObject> mimeTypes(final DataFetchingEnvironment env,
-           @GraphQLName("mimeTypeUsageTypeName") final String mimeTypeUsageTypeName) {
-        Collection<MimeType> mimeTypes;
-        Collection<MimeTypeObject> mimeTypeObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<MimeTypeObject> mimeTypes(final DataFetchingEnvironment env,
+            @GraphQLName("mimeTypeUsageTypeName") final String mimeTypeUsageTypeName) {
+        CountingPaginatedData<MimeTypeObject> data;
 
         try {
             var commandForm = CoreUtil.getHome().getGetMimeTypesForm();
 
             commandForm.setMimeTypeUsageTypeName(mimeTypeUsageTypeName);
 
-            mimeTypes = new GetMimeTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            var command = new GetMimeTypesCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
+
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, MimeTypeConstants.COMPONENT_VENDOR_NAME, MimeTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var mimeTypes = entities.stream()
+                            .map(MimeTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, mimeTypes);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(mimeTypes == null) {
-            mimeTypeObjects = emptyList();
-        } else {
-            mimeTypeObjects = new ArrayList<>(mimeTypes.size());
-
-            mimeTypes.stream()
-                    .map(MimeTypeObject::new)
-                    .forEachOrdered(mimeTypeObjects::add);
-        }
-
-        return mimeTypeObjects;
+        return data;
     }
 
     @GraphQLField
