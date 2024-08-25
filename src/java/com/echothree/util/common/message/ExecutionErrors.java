@@ -2293,5 +2293,6 @@ public enum ExecutionErrors {
     UnknownDefaultGlAccountType,
     UnknownDefaultGlAccountClass,
     UnknownDefaultGlResourceType,
+    UnkownWorkflowEntityStatus,
 
 }

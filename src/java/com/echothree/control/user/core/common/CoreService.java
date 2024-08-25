@@ -820,15 +820,25 @@ public interface CoreService
     CommandResult editEntityEntityAttribute(UserVisitPK userVisitPK, EditEntityEntityAttributeForm form);
     
     CommandResult deleteEntityEntityAttribute(UserVisitPK userVisitPK, DeleteEntityEntityAttributeForm form);
-    
+
     // --------------------------------------------------------------------------------
     //   Entity Collection Attributes
     // --------------------------------------------------------------------------------
-    
+
     CommandResult createEntityCollectionAttribute(UserVisitPK userVisitPK, CreateEntityCollectionAttributeForm form);
-    
+
     CommandResult deleteEntityCollectionAttribute(UserVisitPK userVisitPK, DeleteEntityCollectionAttributeForm form);
-    
+
+    // --------------------------------------------------------------------------------
+    //   Entity Workflow Attributes
+    // --------------------------------------------------------------------------------
+
+    CommandResult createEntityWorkflowAttribute(UserVisitPK userVisitPK, CreateEntityWorkflowAttributeForm form);
+
+    CommandResult setEntityWorkflowAttributeStatus(UserVisitPK userVisitPK, SetEntityWorkflowAttributeStatusForm form);
+
+    CommandResult deleteEntityWorkflowAttribute(UserVisitPK userVisitPK, DeleteEntityWorkflowAttributeForm form);
+
     // -------------------------------------------------------------------------
     //   Party Entity Types
     // -------------------------------------------------------------------------
