@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.workflow.common.form;
 
-import com.echothree.control.user.workflow.common.spec.WorkflowEntranceSpec;
+import com.echothree.control.user.workflow.common.spec.WorkflowEntranceUniversalSpec;
 
 public interface DeleteWorkflowEntranceForm
-        extends WorkflowEntranceSpec {
+        extends WorkflowEntranceUniversalSpec {
     
-    // Nothing additional beyond WorkflowEntranceSpec
+    // Nothing additional beyond WorkflowEntranceUniversalSpec
     
 }

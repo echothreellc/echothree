@@ -18,35 +18,56 @@ package com.echothree.control.user.accounting.server.command;
 
 import com.echothree.control.user.accounting.common.form.GetSymbolPositionsForm;
 import com.echothree.control.user.accounting.common.result.AccountingResultFactory;
-import com.echothree.control.user.accounting.common.result.GetSymbolPositionsResult;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
+import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.accounting.server.entity.SymbolPosition;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class GetSymbolPositionsCommand
-        extends BaseMultipleEntitiesCommand<SymbolPosition, GetSymbolPositionsForm> {
-    
-    // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
+        extends BasePaginatedMultipleEntitiesCommand<SymbolPosition, GetSymbolPositionsForm> {
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                ));
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.SymbolPosition.name(), SecurityRoles.List.name())
+                ))
+        ));
+
+        FORM_FIELD_DEFINITIONS = List.of();
     }
     
     /** Creates a new instance of GetSymbolPositionsCommand */
     public GetSymbolPositionsCommand(UserVisitPK userVisitPK, GetSymbolPositionsForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    @Override
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        var accountingControl = Session.getModelController(AccountingControl.class);
+
+        return accountingControl.countSymbolPositions();
+    }
+
     @Override
     protected Collection<SymbolPosition> getEntities() {
         var accountingControl = Session.getModelController(AccountingControl.class);
@@ -56,11 +77,13 @@ public class GetSymbolPositionsCommand
     
     @Override
     protected BaseResult getResult(Collection<SymbolPosition> entities) {
-        GetSymbolPositionsResult result = AccountingResultFactory.getGetSymbolPositionsResult();
+        var result = AccountingResultFactory.getGetSymbolPositionsResult();
         var accountingControl = Session.getModelController(AccountingControl.class);
-        
-        result.setSymbolPositions(accountingControl.getSymbolPositionTransfers(getUserVisit(), entities));
-        
+
+        if(entities != null) {
+            result.setSymbolPositions(accountingControl.getSymbolPositionTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
     

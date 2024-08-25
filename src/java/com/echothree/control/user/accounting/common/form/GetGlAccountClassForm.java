@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.accounting.common.form;
 
-import com.echothree.control.user.accounting.common.spec.GlAccountClassSpec;
+import com.echothree.control.user.accounting.common.spec.GlAccountClassUniversalSpec;
 
 public interface GetGlAccountClassForm
-        extends GlAccountClassSpec {
+        extends GlAccountClassUniversalSpec {
     
-    // Nothing additional beyond GlAccountClassSpec
+    // Nothing additional beyond GlAccountClassUniversalSpec
     
 }

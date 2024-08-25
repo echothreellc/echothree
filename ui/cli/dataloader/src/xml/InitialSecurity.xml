@@ -82,6 +82,30 @@
                 <securityRoleDescription languageIsoName="en" description="Gl Account Description" />
             </securityRole>
         </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="GlAccountType" parentSecurityRoleGroupName="AccountingComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Gl Account Type" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Gl Account Type Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Gl Account Type Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Gl Account Type Delete" />
+            </securityRole>
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Gl Account Type List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Gl Account Type Review" />
+            </securityRole>
+            <securityRole securityRoleName="Choices" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Gl Account Type Choices" />
+            </securityRole>
+            <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Gl Account Type Description" />
+            </securityRole>
+        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="GlAccountCategory" parentSecurityRoleGroupName="AccountingComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Gl Account Category" />
             <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
@@ -2551,6 +2575,21 @@
                 <securityRoleDescription languageIsoName="en" description="Wishlist Type Description" />
             </securityRole>
         </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="WishlistPriority" parentSecurityRoleGroupName="WishlistComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Wishlist Priority" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Wishlist Priority Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Wishlist Priority Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Wishlist Priority Delete" />
+            </securityRole>
+            <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Wishlist Priority Description" />
+            </securityRole>
+        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="Wishlist" parentSecurityRoleGroupName="WishlistComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Wishlist" />
             <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
@@ -3198,14 +3237,50 @@
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="TerminationReason" parentSecurityRoleGroupName="EmployeeComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Termination Reason" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Termination Reason Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Termination Reason Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Termination Reason Delete" />
+            </securityRole>
             <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Termination Reason List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Termination Reason Review" />
+            </securityRole>
+            <securityRole securityRoleName="Choices" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Termination Reason Choices" />
+            </securityRole>
+            <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Termination Reason Description" />
             </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="TerminationType" parentSecurityRoleGroupName="EmployeeComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Termination Type" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Termination Type Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Termination Type Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Termination Type Delete" />
+            </securityRole>
             <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Termination Type List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Termination Type Review" />
+            </securityRole>
+            <securityRole securityRoleName="Choices" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Termination Type Choices" />
+            </securityRole>
+            <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Termination Type Description" />
             </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="CancellationPolicyComponent" parentSecurityRoleGroupName="ROOT" isDefault="false" sortOrder="1">
@@ -7668,6 +7743,13 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="GlAccount" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="GlAccount" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="GlAccount" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="GlAccountType" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="GlAccountType" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="GlAccountType" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="GlAccountType" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="GlAccountType" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="GlAccountType" securityRoleName="Choices" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="GlAccountType" securityRoleName="Description" />
             <partySecurityRoleTemplateRole securityRoleGroupName="GlAccountCategory" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="GlAccountCategory" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="GlAccountCategory" securityRoleName="Delete" />
@@ -8365,8 +8447,20 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="LeaveStatus" securityRoleName="Approved" />
             <partySecurityRoleTemplateRole securityRoleGroupName="LeaveStatus" securityRoleName="Denied" />
             <partySecurityRoleTemplateRole securityRoleGroupName="LeaveStatus" securityRoleName="Revised" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="TerminationReason" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="TerminationReason" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="TerminationReason" securityRoleName="Delete" />
             <partySecurityRoleTemplateRole securityRoleGroupName="TerminationReason" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="TerminationReason" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="TerminationReason" securityRoleName="Choices" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="TerminationReason" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="TerminationType" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="TerminationType" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="TerminationType" securityRoleName="Delete" />
             <partySecurityRoleTemplateRole securityRoleGroupName="TerminationType" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="TerminationType" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="TerminationType" securityRoleName="Choices" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="TerminationType" securityRoleName="Description" />
             <partySecurityRoleTemplateRole securityRoleGroupName="TimeZone" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="TimeZone" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="TimeZone" securityRoleName="Delete" />
@@ -8534,6 +8628,10 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="WishlistType" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WishlistType" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WishlistType" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="WishlistPriority" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="WishlistPriority" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="WishlistPriority" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="WishlistPriority" securityRoleName="Description" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Wishlist" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Wishlist" securityRoleName="Search" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Workflow" securityRoleName="Create" />

@@ -112,11 +112,26 @@ public class QueueControl
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.QueueType */
-    public QueueType getQueueTypeByEntityInstance(EntityInstance entityInstance) {
-        QueueTypePK pk = new QueueTypePK(entityInstance.getEntityUniqueId());
-        QueueType queueType = QueueTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+    public QueueType getQueueTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new QueueTypePK(entityInstance.getEntityUniqueId());
 
-        return queueType;
+        return QueueTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public QueueType getQueueTypeByEntityInstance(EntityInstance entityInstance) {
+        return getQueueTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public QueueType getQueueTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getQueueTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countQueueTypes() {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM queuetypes, queuetypedetails
+                WHERE qtyp_activedetailid = qtypdt_queuetypedetailid
+                """);
     }
 
     private static final Map<EntityPermission, String> getQueueTypeByNameQueries;

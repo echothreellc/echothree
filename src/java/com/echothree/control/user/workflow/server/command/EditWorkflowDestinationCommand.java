@@ -21,169 +21,141 @@ import com.echothree.control.user.workflow.common.edit.WorkflowEditFactory;
 import com.echothree.control.user.workflow.common.form.EditWorkflowDestinationForm;
 import com.echothree.control.user.workflow.common.result.EditWorkflowDestinationResult;
 import com.echothree.control.user.workflow.common.result.WorkflowResultFactory;
-import com.echothree.control.user.workflow.common.spec.WorkflowDestinationSpec;
+import com.echothree.control.user.workflow.common.spec.WorkflowDestinationUniversalSpec;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
+import com.echothree.model.control.workflow.server.logic.WorkflowDestinationLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
-import com.echothree.model.data.workflow.server.entity.WorkflowDestinationDescription;
-import com.echothree.model.data.workflow.server.entity.WorkflowDestinationDetail;
-import com.echothree.model.data.workflow.server.entity.WorkflowStep;
 import com.echothree.model.data.workflow.server.value.WorkflowDestinationDescriptionValue;
-import com.echothree.model.data.workflow.server.value.WorkflowDestinationDetailValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class EditWorkflowDestinationCommand
-        extends BaseEditCommand<WorkflowDestinationSpec, WorkflowDestinationEdit> {
+        extends BaseAbstractEditCommand<WorkflowDestinationUniversalSpec, WorkflowDestinationEdit, EditWorkflowDestinationResult, WorkflowDestination, WorkflowDestination> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
-                    new SecurityRoleDefinition(SecurityRoleGroups.WorkflowDestination.name(), SecurityRoles.Edit.name())
-                    )))
-                )));
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.WorkflowDestination.name(), SecurityRoles.Edit.name())
+                ))
+        ));
         
-        SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("WorkflowStepName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("WorkflowDestinationName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+        SPEC_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("WorkflowStepName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("WorkflowDestinationName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
+        );
         
-        EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("WorkflowDestinationName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                ));
+        );
     }
     
     /** Creates a new instance of EditWorkflowDestinationCommand */
     public EditWorkflowDestinationCommand(UserVisitPK userVisitPK, EditWorkflowDestinationForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
+    public EditWorkflowDestinationResult getResult() {
+        return WorkflowResultFactory.getEditWorkflowDestinationResult();
+    }
+
+    @Override
+    public WorkflowDestinationEdit getEdit() {
+        return WorkflowEditFactory.getWorkflowDestinationEdit();
+    }
+
+    @Override
+    public WorkflowDestination getEntity(EditWorkflowDestinationResult result) {
+        return WorkflowDestinationLogic.getInstance().getWorkflowDestinationByUniversalSpec(this, spec, false, editModeToEntityPermission(editMode));
+    }
+
+    @Override
+    public WorkflowDestination getLockEntity(WorkflowDestination freeOnBoard) {
+        return freeOnBoard;
+    }
+
+    @Override
+    public void fillInResult(EditWorkflowDestinationResult result, WorkflowDestination freeOnBoard) {
+        var workflow = Session.getModelController(WorkflowControl.class);
+
+        result.setWorkflowDestination(workflow.getWorkflowDestinationTransfer(getUserVisit(), freeOnBoard));
+    }
+
+    @Override
+    public void doLock(WorkflowDestinationEdit edit, WorkflowDestination workflowDestination) {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        EditWorkflowDestinationResult result = WorkflowResultFactory.getEditWorkflowDestinationResult();
-        String workflowName = spec.getWorkflowName();
-        var workflow = workflowControl.getWorkflowByName(workflowName);
-        
-        if(workflow != null) {
-            String workflowStepName = spec.getWorkflowStepName();
-            var workflowStep = workflowControl.getWorkflowStepByName(workflow, workflowStepName);
-            
-            if(workflowStep != null) {
-                if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    String workflowDestinationName = spec.getWorkflowDestinationName();
-                    WorkflowDestination workflowDestination = workflowControl.getWorkflowDestinationByName(workflowStep, workflowDestinationName);
+        var workflowDestinationDescription = workflowControl.getWorkflowDestinationDescription(workflowDestination, getPreferredLanguage());
+        var workflowDestinationDetail = workflowDestination.getLastDetail();
 
-                    if(workflowDestination != null) {
-                        if(editMode.equals(EditMode.LOCK)) {
-                            if(lockEntity(workflowDestination)) {
-                                WorkflowDestinationDescription workflowDestinationDescription = workflowControl.getWorkflowDestinationDescription(workflowDestination, getPreferredLanguage());
-                                WorkflowDestinationEdit edit = WorkflowEditFactory.getWorkflowDestinationEdit();
-                                WorkflowDestinationDetail workflowDestinationDetail = workflowDestination.getLastDetail();
+        edit.setWorkflowDestinationName(workflowDestinationDetail.getWorkflowDestinationName());
+        edit.setIsDefault(workflowDestinationDetail.getIsDefault().toString());
+        edit.setSortOrder(workflowDestinationDetail.getSortOrder().toString());
 
-                                result.setWorkflowDestination(workflowControl.getWorkflowDestinationTransfer(getUserVisit(), workflowDestination));
-
-                                result.setEdit(edit);
-                                edit.setWorkflowDestinationName(workflowDestinationDetail.getWorkflowDestinationName());
-                                edit.setIsDefault(workflowDestinationDetail.getIsDefault().toString());
-                                edit.setSortOrder(workflowDestinationDetail.getSortOrder().toString());
-
-                                if(workflowDestinationDescription != null) {
-                                    edit.setDescription(workflowDestinationDescription.getDescription());
-                                }
-                            } else {
-                                addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                            }
-
-                            result.setEntityLock(getEntityLockTransfer(workflowDestination));
-                        } else { // EditMode.ABANDON
-                            unlockEntity(workflowDestination);
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownWorkflowDestinationName.name(), workflowName, workflowStepName, workflowDestinationName);
-                    }
-                } else if(editMode.equals(EditMode.UPDATE)) {
-                    String workflowDestinationName = spec.getWorkflowDestinationName();
-                    WorkflowDestination workflowDestination = workflowControl.getWorkflowDestinationByNameForUpdate(workflowStep, workflowDestinationName);
-
-                    if(workflowDestination != null) {
-                        workflowDestinationName = edit.getWorkflowDestinationName();
-                        WorkflowDestination duplicateWorkflowDestination = workflowControl.getWorkflowDestinationByName(workflowStep, workflowDestinationName);
-
-                        if(duplicateWorkflowDestination == null || workflowDestination.equals(duplicateWorkflowDestination)) {
-                            if(lockEntityForUpdate(workflowDestination)) {
-                                try {
-                                    var partyPK = getPartyPK();
-                                    WorkflowDestinationDetailValue workflowDestinationDetailValue = workflowControl.getWorkflowDestinationDetailValueForUpdate(workflowDestination);
-                                    WorkflowDestinationDescription workflowDestinationDescription = workflowControl.getWorkflowDestinationDescriptionForUpdate(workflowDestination, getPreferredLanguage());
-                                    String description = edit.getDescription();
-
-                                    workflowDestinationDetailValue.setWorkflowDestinationName(workflowDestinationName);
-                                    workflowDestinationDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
-                                    workflowDestinationDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
-
-                                    workflowControl.updateWorkflowDestinationFromValue(workflowDestinationDetailValue, partyPK);
-
-                                    if(workflowDestinationDescription == null && description != null) {
-                                        workflowControl.createWorkflowDestinationDescription(workflowDestination, getPreferredLanguage(), description, partyPK);
-                                    } else if(workflowDestinationDescription != null && description == null) {
-                                        workflowControl.deleteWorkflowDestinationDescription(workflowDestinationDescription, partyPK);
-                                    } else if(workflowDestinationDescription != null && description != null) {
-                                        WorkflowDestinationDescriptionValue workflowDestinationDescriptionValue = workflowControl.getWorkflowDestinationDescriptionValue(workflowDestinationDescription);
-
-                                        workflowDestinationDescriptionValue.setDescription(description);
-                                        workflowControl.updateWorkflowDestinationDescriptionFromValue(workflowDestinationDescriptionValue, partyPK);
-                                    }
-                                } finally {
-                                    unlockEntity(workflowDestination);
-                                }
-                            } else {
-                                addExecutionError(ExecutionErrors.EntityLockStale.name());
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.DuplicateWorkflowDestinationName.name(), workflowName, workflowStepName, workflowDestinationName);
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownWorkflowDestinationName.name(), workflowName, workflowStepName, workflowDestinationName);
-                    }
-
-                    if(hasExecutionErrors()) {
-                        result.setWorkflowDestination(workflowControl.getWorkflowDestinationTransfer(getUserVisit(), workflowDestination));
-                        result.setEntityLock(getEntityLockTransfer(workflowDestination));
-                    }
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownWorkflowStepName.name(), workflowStepName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownWorkflowName.name(), workflowName);
+        if(workflowDestinationDescription != null) {
+            edit.setDescription(workflowDestinationDescription.getDescription());
         }
-        
-        return result;
+    }
+
+    @Override
+    public void canUpdate(WorkflowDestination workflowDestination) {
+        var workflowControl = Session.getModelController(WorkflowControl.class);
+        var workflowStep = workflowDestination.getLastDetail().getWorkflowStep();
+        var workflowDestinationName = edit.getWorkflowDestinationName();
+        var duplicateWorkflowDestination = workflowControl.getWorkflowDestinationByName(workflowStep, workflowDestinationName);
+
+        if(duplicateWorkflowDestination != null && !workflowDestination.equals(duplicateWorkflowDestination)) {
+            addExecutionError(ExecutionErrors.DuplicateWorkflowDestinationName.name(), workflowDestinationName);
+        }
+    }
+
+    @Override
+    public void doUpdate(WorkflowDestination workflowDestination) {
+        var workflowControl = Session.getModelController(WorkflowControl.class);
+        var partyPK = getPartyPK();
+        var workflowDestinationDetailValue = workflowControl.getWorkflowDestinationDetailValueForUpdate(workflowDestination);
+        var workflowDestinationDescription = workflowControl.getWorkflowDestinationDescriptionForUpdate(workflowDestination, getPreferredLanguage());
+        var description = edit.getDescription();
+
+        workflowDestinationDetailValue.setWorkflowDestinationName(edit.getWorkflowDestinationName());
+        workflowDestinationDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
+        workflowDestinationDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
+
+        workflowControl.updateWorkflowDestinationFromValue(workflowDestinationDetailValue, partyPK);
+
+        if(workflowDestinationDescription == null && description != null) {
+            workflowControl.createWorkflowDestinationDescription(workflowDestination, getPreferredLanguage(), description, partyPK);
+        } else if(workflowDestinationDescription != null && description == null) {
+            workflowControl.deleteWorkflowDestinationDescription(workflowDestinationDescription, partyPK);
+        } else if(workflowDestinationDescription != null && description != null) {
+            WorkflowDestinationDescriptionValue workflowDestinationDescriptionValue = workflowControl.getWorkflowDestinationDescriptionValue(workflowDestinationDescription);
+
+            workflowDestinationDescriptionValue.setDescription(description);
+            workflowControl.updateWorkflowDestinationDescriptionFromValue(workflowDestinationDescriptionValue, partyPK);
+        }
     }
     
 }

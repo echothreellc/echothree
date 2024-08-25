@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.accounting.common.form;
 
-import com.echothree.control.user.accounting.common.spec.GlResourceTypeSpec;
+import com.echothree.control.user.accounting.common.spec.GlResourceTypeUniversalSpec;
 
 public interface GetGlResourceTypeForm
-        extends GlResourceTypeSpec {
+        extends GlResourceTypeUniversalSpec {
     
-    // Nothing additional beyond GlResourceTypeSpec
+    // Nothing additional beyond GlResourceTypeUniversalSpec
     
 }

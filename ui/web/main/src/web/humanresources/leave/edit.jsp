@@ -68,7 +68,7 @@
                             <td>
                                 <html:select property="leaveTypeChoice">
                                     <html:optionsCollection property="leaveTypeChoices" />
-                                </html:select>
+                                </html:select> (*)
                                 <et:validationErrors id="errorMessage" property="LeaveTypeName">
                                     <p><c:out value="${errorMessage}" /></p>
                                 </et:validationErrors>
@@ -79,7 +79,7 @@
                             <td>
                                 <html:select property="leaveReasonChoice">
                                     <html:optionsCollection property="leaveReasonChoices" />
-                                </html:select>
+                                </html:select> (*)
                                 <et:validationErrors id="errorMessage" property="LeaveReasonName">
                                     <p><c:out value="${errorMessage}" /></p>
                                 </et:validationErrors>

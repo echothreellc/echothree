@@ -27,7 +27,7 @@ import com.echothree.model.data.accounting.server.factory.ItemAccountingCategory
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -36,7 +36,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class GetItemAccountingCategoriesCommand
-        extends BaseMultipleEntitiesCommand<ItemAccountingCategory, GetItemAccountingCategoriesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<ItemAccountingCategory, GetItemAccountingCategoriesForm>  {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -58,6 +58,18 @@ public class GetItemAccountingCategoriesCommand
     }
 
     @Override
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        var accountingControl = Session.getModelController(AccountingControl.class);
+
+        return accountingControl.countItemAccountingCategories();
+    }
+
+    @Override
     protected Collection<ItemAccountingCategory> getEntities() {
         var accountingControl = Session.getModelController(AccountingControl.class);
 
@@ -72,7 +84,7 @@ public class GetItemAccountingCategoriesCommand
             var accountingControl = Session.getModelController(AccountingControl.class);
 
             if(session.hasLimit(ItemAccountingCategoryFactory.class)) {
-                result.setItemAccountingCategoryCount(accountingControl.countItemAccountingCategories());
+                result.setItemAccountingCategoryCount(getTotalEntities());
             }
 
             result.setItemAccountingCategories(accountingControl.getItemAccountingCategoryTransfers(getUserVisit(), entities));

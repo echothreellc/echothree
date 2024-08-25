@@ -17,7 +17,6 @@
 package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.GetUseTypesForm;
-import com.echothree.control.user.offer.common.result.GetUseTypesResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.model.control.offer.server.control.UseTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -28,39 +27,48 @@ import com.echothree.model.data.offer.server.factory.UseTypeFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class GetUseTypesCommand
-        extends BaseMultipleEntitiesCommand<UseType, GetUseTypesForm> {
-    
+        extends BasePaginatedMultipleEntitiesCommand<UseType, GetUseTypesForm> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.UseType.name(), SecurityRoles.List.name())
-                        )))
-                )));
+                ))
+        ));
         
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                ));
+        FORM_FIELD_DEFINITIONS = List.of();
     }
     
     /** Creates a new instance of GetUseTypesCommand */
     public GetUseTypesCommand(UserVisitPK userVisitPK, GetUseTypesForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    @Override
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        var useTypeControl = Session.getModelController(UseTypeControl.class);
+
+        return useTypeControl.countUseTypes();
+    }
+
     @Override
     protected Collection<UseType> getEntities() {
         var useTypeControl = Session.getModelController(UseTypeControl.class);
@@ -70,15 +78,18 @@ public class GetUseTypesCommand
     
     @Override
     protected BaseResult getResult(Collection<UseType> entities) {
-        GetUseTypesResult result = OfferResultFactory.getGetUseTypesResult();
-        var useTypeControl = Session.getModelController(UseTypeControl.class);
-        
-        if(session.hasLimit(UseTypeFactory.class)) {
-            result.setUseTypeCount(useTypeControl.countUseTypes());
+        var result = OfferResultFactory.getGetUseTypesResult();
+
+        if(entities != null) {
+            var useTypeControl = Session.getModelController(UseTypeControl.class);
+
+            if(session.hasLimit(UseTypeFactory.class)) {
+                result.setUseTypeCount(getTotalEntities());
+            }
+
+            result.setUseTypes(useTypeControl.getUseTypeTransfers(getUserVisit(), entities));
         }
 
-        result.setUseTypes(useTypeControl.getUseTypeTransfers(getUserVisit(), entities));
-        
         return result;
     }
     

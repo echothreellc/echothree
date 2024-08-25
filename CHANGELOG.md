@@ -1,5 +1,85 @@
 # Changelog
 
+## 2024-08-18-01
+
+* Convert EditWorkflowStep UC to Use BaseAbstractEditCommand [982](https://gitlab.echothree.com/echothree/echothree/-/issues/982)
+* Convert EditWorkflow UC to Use BaseAbstractEditCommand [983](https://gitlab.echothree.com/echothree/echothree/-/issues/983)
+* cucumber-java8/cucumber-junit 7.18.1 Upgrade [1321](https://gitlab.echothree.com/echothree/echothree/-/issues/1321)
+* Add Workflow Tests [1322](https://gitlab.echothree.com/echothree/echothree/-/issues/1322)
+* Add Workflow Entity Type Tests [1323](https://gitlab.echothree.com/echothree/echothree/-/issues/1323)
+* Add Workflow Step Tests [1324](https://gitlab.echothree.com/echothree/echothree/-/issues/1324)
+
+## 2024-08-04-01
+
+* Add Workflow Entrance Mutations [652](https://gitlab.echothree.com/echothree/echothree/-/issues/652)
+* Add Workflow Entrance Party Types Mutations [657](https://gitlab.echothree.com/echothree/echothree/-/issues/657)
+* Add Workflow Entrance Security Roles Mutations [658](https://gitlab.echothree.com/echothree/echothree/-/issues/658)
+* Add Workflow Entrance Steps Mutations [660](https://gitlab.echothree.com/echothree/echothree/-/issues/660)
+* Add Workflow Destinations Mutations [663](https://gitlab.echothree.com/echothree/echothree/-/issues/663)
+* Add Workflow Destination Steps Mutations [665](https://gitlab.echothree.com/echothree/echothree/-/issues/665)
+* Add Workflow Entity Type Mutations [669](https://gitlab.echothree.com/echothree/echothree/-/issues/669)
+* Add Workflow Destination Party Type Mutations [677](https://gitlab.echothree.com/echothree/echothree/-/issues/677)
+* Add Workflow Destination Security Role Mutations [679](https://gitlab.echothree.com/echothree/echothree/-/issues/679)
+* Add Security Role Mutations [683](https://gitlab.echothree.com/echothree/echothree/-/issues/683)
+* Add Security Role Group Mutations [738](https://gitlab.echothree.com/echothree/echothree/-/issues/738)
+* Convert GetSecurityRoleGroups UC to Use BasePaginatedMultipleEntitiesCommand [1168](https://gitlab.echothree.com/echothree/echothree/-/issues/1168)
+* Convert GetSecurityRoles UC to Use BasePaginatedMultipleEntitiesCommand [1169](https://gitlab.echothree.com/echothree/echothree/-/issues/1169)
+* Convert GetWorkflowEntrancePartyTypes UC to Use BasePaginatedMultipleEntitiesCommand [1226](https://gitlab.echothree.com/echothree/echothree/-/issues/1226)
+* Convert GetWorkflowEntrances UC to Use BasePaginatedMultipleEntitiesCommand [1227](https://gitlab.echothree.com/echothree/echothree/-/issues/1227)
+* Convert GetWorkflowDestinationSteps UC to Use BasePaginatedMultipleEntitiesCommand [1229](https://gitlab.echothree.com/echothree/echothree/-/issues/1229)
+* Convert GetWorkflowEntranceSecurityRoles UC to Use BasePaginatedMultipleEntitiesCommand [1230](https://gitlab.echothree.com/echothree/echothree/-/issues/1230)
+* Convert GetWorkflowSteps UC to Use BasePaginatedMultipleEntitiesCommand [1231](https://gitlab.echothree.com/echothree/echothree/-/issues/1231)
+* Convert GetWorkflowStepTypes UC to Use BasePaginatedMultipleEntitiesCommand [1232](https://gitlab.echothree.com/echothree/echothree/-/issues/1232)
+* Convert GetWorkflowDestinationPartyTypes UC to Use BasePaginatedMultipleEntitiesCommand [1234](https://gitlab.echothree.com/echothree/echothree/-/issues/1234)
+* Convert GetWorkflowEntranceSteps UC to Use BasePaginatedMultipleEntitiesCommand [1235](https://gitlab.echothree.com/echothree/echothree/-/issues/1235)
+* Convert GetWorkflowEntityTypes UC to Use BasePaginatedMultipleEntitiesCommand [1236](https://gitlab.echothree.com/echothree/echothree/-/issues/1236)
+* Convert GetWorkflowDestinations UC to Use BasePaginatedMultipleEntitiesCommand [1238](https://gitlab.echothree.com/echothree/echothree/-/issues/1238)
+* Convert GetWorkflows UC to Use BasePaginatedMultipleEntitiesCommand [1239](https://gitlab.echothree.com/echothree/echothree/-/issues/1239)
+* Convert GetWorkflowDestinationSecurityRoles UC to Use BasePaginatedMultipleEntitiesCommand [1240](https://gitlab.echothree.com/echothree/echothree/-/issues/1240)
+* Convert GetWorkflowEntityStatuses UC to Use BasePaginatedMultipleEntitiesCommand [1241](https://gitlab.echothree.com/echothree/echothree/-/issues/1241)
+* Add Workflow Mutations [1318](https://gitlab.echothree.com/echothree/echothree/-/issues/1318)
+* Add Workflow Step Mutations [1319](https://gitlab.echothree.com/echothree/echothree/-/issues/1319)
+
+## 2024-07-21-01
+
+* Convert GetSymbolPositions UC to Use BasePaginatedMultipleEntitiesCommand [1119](https://gitlab.echothree.com/echothree/echothree/-/issues/1119)
+* Convert GetGlAccounts UC to Use BasePaginatedMultipleEntitiesCommand [1120](https://gitlab.echothree.com/echothree/echothree/-/issues/1120)
+* Convert GetCurrencies UC to Use BasePaginatedMultipleEntitiesCommand [1121](https://gitlab.echothree.com/echothree/echothree/-/issues/1121)
+* Convert GetItemAccountingCategories UC to Use BasePaginatedMultipleEntitiesCommand [1122](https://gitlab.echothree.com/echothree/echothree/-/issues/1122)
+* Add Security to GL Account Type UCs [1307](https://gitlab.echothree.com/echothree/echothree/-/issues/1307)
+* Convert GetGlAccountTypes UC to Use BasePaginatedMultipleEntitiesCommand [1308](https://gitlab.echothree.com/echothree/echothree/-/issues/1308)
+* Convert GetGlAccountClasses UC to Use BasePaginatedMultipleEntitiesCommand [1309](https://gitlab.echothree.com/echothree/echothree/-/issues/1309)
+* Convert GetGlAccountCategories UC to Use BasePaginatedMultipleEntitiesCommand [1310](https://gitlab.echothree.com/echothree/echothree/-/issues/1310)
+* Convert GetGlResourceTypes UC to Use BasePaginatedMultipleEntitiesCommand [1311](https://gitlab.echothree.com/echothree/echothree/-/issues/1311)
+* Add GL Account Type Object and Queries [1312](https://gitlab.echothree.com/echothree/echothree/-/issues/1312)
+* Add GL Account Class Object and Queries [1313](https://gitlab.echothree.com/echothree/echothree/-/issues/1313)
+* Add GL Account Category Object and Queries [1314](https://gitlab.echothree.com/echothree/echothree/-/issues/1314)
+* Add GL Resource Type Object and Queries [1315](https://gitlab.echothree.com/echothree/echothree/-/issues/1315)
+* Error Prone 2.29.2 Upgrade [1316](https://gitlab.echothree.com/echothree/echothree/-/issues/1316)
+* Guava 33.2.1-jre Upgrade [1317](https://gitlab.echothree.com/echothree/echothree/-/issues/1317)
+
+## 2024-07-07-01
+
+* Add Security to WishlistPriority UCs [1303](https://gitlab.echothree.com/echothree/echothree/-/issues/1303)
+* Apache Lucene 9.11.1 Upgrade [1304](https://gitlab.echothree.com/echothree/echothree/-/issues/1304)
+* Gson 2.11.0 Upgrade [1305](https://gitlab.echothree.com/echothree/echothree/-/issues/1305)
+* Apache Avro 1.11.3 Upgrade [1306](https://gitlab.echothree.com/echothree/echothree/-/issues/1306)
+
+## 2024-06-23-01
+
+* Add Security to LeaveReason UCs [1099](https://gitlab.echothree.com/echothree/echothree/-/issues/1099)
+* Add Security to LeaveType UCs [1100](https://gitlab.echothree.com/echothree/echothree/-/issues/1100)
+* Add Security to TerminationReason UCs [1101](https://gitlab.echothree.com/echothree/echothree/-/issues/1101)
+* Add Security to TerminationType UCs [1102](https://gitlab.echothree.com/echothree/echothree/-/issues/1102)
+* Add Security to EntityAttributeType UCs [1290](https://gitlab.echothree.com/echothree/echothree/-/issues/1290)
+* jOOQ 3.19.9 Upgrade [1295](https://gitlab.echothree.com/echothree/echothree/-/issues/1295)
+* jOOQ 3.19.10 Upgrade [1296](https://gitlab.echothree.com/echothree/echothree/-/issues/1296)
+* GraphQL History Prototype for Entity Boolean Attributes [1297](https://gitlab.echothree.com/echothree/echothree/-/issues/1297)
+* GraphQL History for Entity String Attributes [1298](https://gitlab.echothree.com/echothree/echothree/-/issues/1298)
+* NPE Thrown With Null Related Entity Instance in Event Object [1299](https://gitlab.echothree.com/echothree/echothree/-/issues/1299)
+* Error Prone 2.28.0 Upgrade [1300](https://gitlab.echothree.com/echothree/echothree/-/issues/1300)
+* Leave Type and Reason Not Marked As Required [1301](https://gitlab.echothree.com/echothree/echothree/-/issues/1301)
+
 ## 2024-06-09-01
 
 * GraphQL Pagination Prototype [197](https://gitlab.echothree.com/echothree/echothree/-/issues/197)

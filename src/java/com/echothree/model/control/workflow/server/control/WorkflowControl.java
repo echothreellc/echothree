@@ -20,7 +20,6 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.selector.common.SelectorKinds;
 import com.echothree.model.control.selector.server.evaluator.CachedSelector;
 import com.echothree.model.control.selector.server.evaluator.PostalAddressSelectorEvaluator;
-import com.echothree.model.control.warehouse.common.choice.LocationChoicesBean;
 import com.echothree.model.control.workflow.common.choice.BaseWorkflowChoicesBean;
 import com.echothree.model.control.workflow.common.choice.WorkflowChoicesBean;
 import com.echothree.model.control.workflow.common.choice.WorkflowStepChoicesBean;
@@ -4041,7 +4040,42 @@ public class WorkflowControl
         
         return workflowEntityStatus;
     }
-    
+
+    public long countWorkflowEntityStatusesByEntityInstance(EntityInstance entityInstance) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM workflowentitystatuses " +
+                        "WHERE wkfles_eni_entityinstanceid = ? AND wkfles_thrutime = ?",
+                entityInstance, Session.MAX_TIME);
+    }
+
+    public long countWorkflowEntityStatusesByWorkflowStep(WorkflowStep workflowStep) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM workflowentitystatuses " +
+                        "WHERE wkfles_wkfls_workflowstepid = ? AND wkfles_thrutime = ?",
+                workflowStep, Session.MAX_TIME);
+    }
+
+    public long countWorkflowEntityStatusesByWorkEffortScope(WorkEffortScope workEffortScope) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM workflowentitystatuses " +
+                        "WHERE wkfles_wes_workeffortscopeid = ? AND wkfles_thrutime = ?",
+                workEffortScope, Session.MAX_TIME);
+    }
+
+    public long countWorkflowEntityStatusesByWorkflow(Workflow workflow) {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM workflowentitystatuses, workflowsteps, workflowstepdetails, workflows, workflowdetails
+                WHERE wkfles_thrutime = ?
+                AND wkfles_wkfls_workflowstepid = wkfls_workflowstepid AND wkfls_activedetailid = wkflsdt_workflowstepdetailid
+                AND wkflsdt_wkfl_workflowid = ?
+                AND wkflsdt_wkfl_workflowid = wkfl_workflowid AND wkfl_activedetailid = wkfldt_workflowdetailid
+                """, Session.MAX_TIME, workflow);
+    }
+
     private List<WorkflowEntityStatus> getWorkflowEntityStatusesByWorkEffortScope(WorkEffortScope workEffortScope,
             EntityPermission entityPermission) {
         List<WorkflowEntityStatus> workflowEntityStatuses;

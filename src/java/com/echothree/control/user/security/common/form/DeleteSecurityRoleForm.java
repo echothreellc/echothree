@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.security.common.form;
 
-import com.echothree.control.user.security.common.spec.SecurityRoleSpec;
+import com.echothree.control.user.security.common.spec.SecurityRoleUniversalSpec;
 
 public interface DeleteSecurityRoleForm
-        extends SecurityRoleSpec {
+        extends SecurityRoleUniversalSpec {
     
-    // Nothing additional beyond SecurityRoleSpec
+    // Nothing additional beyond SecurityRoleUniversalSpec
     
 }

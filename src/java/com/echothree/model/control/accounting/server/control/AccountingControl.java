@@ -1086,31 +1086,63 @@ public class AccountingControl
     public GlAccountType createGlAccountType(String glAccountTypeName, Boolean isDefault, Integer sortOrder) {
         return GlAccountTypeFactory.getInstance().create(glAccountTypeName, isDefault, sortOrder);
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.GlAccountType */
+    public GlAccountType getGlAccountTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new GlAccountTypePK(entityInstance.getEntityUniqueId());
+
+        return GlAccountTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public GlAccountType getGlAccountTypeByEntityInstance(EntityInstance entityInstance) {
+        return getGlAccountTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public GlAccountType getGlAccountTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getGlAccountTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countGlAccountTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM glaccounttypes
+                        """);
+    }
+
     public GlAccountType getGlAccountTypeByName(String glAccountTypeName) {
         GlAccountType glAccountType;
-        
+
         try {
-            PreparedStatement ps = GlAccountTypeFactory.getInstance().prepareStatement(
+            var ps = GlAccountTypeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM glaccounttypes " +
                     "WHERE glatyp_glaccounttypename = ?");
-            
+
             ps.setString(1, glAccountTypeName);
-            
+
             glAccountType = GlAccountTypeFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
-        
+
         return glAccountType;
     }
-    
-    public List<GlAccountType> getGlAccountTypes() {
-        PreparedStatement ps = GlAccountTypeFactory.getInstance().prepareStatement(
+
+    public GlAccountType getDefaultGlAccountType() {
+        var ps = GlAccountTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM glaccounttypes " +
-                "ORDER BY glatyp_sortorder, glatyp_glaccounttypename");
+                "WHERE glatyp_isdefault = 1");
+
+        return GlAccountTypeFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+    }
+
+    public List<GlAccountType> getGlAccountTypes() {
+        var ps = GlAccountTypeFactory.getInstance().prepareStatement(
+                "SELECT _ALL_ " +
+                "FROM glaccounttypes " +
+                "ORDER BY glatyp_sortorder, glatyp_glaccounttypename " +
+                "_LIMIT_");
         
         return GlAccountTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -1149,19 +1181,22 @@ public class AccountingControl
     public GlAccountTypeTransfer getGlAccountTypeTransfer(UserVisit userVisit, GlAccountType glAccountType) {
         return getAccountingTransferCaches(userVisit).getGlAccountTypeTransferCache().getTransfer(glAccountType);
     }
-    
-    public List<GlAccountTypeTransfer> getGlAccountTypeTransfers(UserVisit userVisit) {
-        List<GlAccountType> glAccountTypes = getGlAccountTypes();
+
+    public List<GlAccountTypeTransfer> getGlAccountTypeTransfers(UserVisit userVisit, Collection<GlAccountType> glAccountTypes) {
         List<GlAccountTypeTransfer> glAccountTypeTransfers = new ArrayList<>(glAccountTypes.size());
         GlAccountTypeTransferCache glAccountTypeTransferCache = getAccountingTransferCaches(userVisit).getGlAccountTypeTransferCache();
-        
+
         glAccountTypes.forEach((glAccountType) ->
                 glAccountTypeTransfers.add(glAccountTypeTransferCache.getTransfer(glAccountType))
         );
-        
+
         return glAccountTypeTransfers;
     }
-    
+
+    public List<GlAccountTypeTransfer> getGlAccountTypeTransfers(UserVisit userVisit) {
+        return getGlAccountTypeTransfers(userVisit, getGlAccountTypes());
+    }
+
     // --------------------------------------------------------------------------------
     //   Gl Account Type Descriptions
     // --------------------------------------------------------------------------------
@@ -1240,7 +1275,30 @@ public class AccountingControl
         
         return glAccountClass;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.GlAccountClass */
+    public GlAccountClass getGlAccountClassByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new GlAccountClassPK(entityInstance.getEntityUniqueId());
+
+        return GlAccountClassFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public GlAccountClass getGlAccountClassByEntityInstance(EntityInstance entityInstance) {
+        return getGlAccountClassByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public GlAccountClass getGlAccountClassByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getGlAccountClassByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countGlAccountClasses() {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM glaccountclasses, glaccountclassdetails
+                WHERE glacls_activedetailid = glaclsdt_glaccountclassdetailid
+                """);
+    }
+
     private static final Map<EntityPermission, String> getGlAccountClassByNameQueries;
 
     static {
@@ -1260,7 +1318,7 @@ public class AccountingControl
         getGlAccountClassByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private GlAccountClass getGlAccountClassByName(String glAccountClassName, EntityPermission entityPermission) {
+    public GlAccountClass getGlAccountClassByName(String glAccountClassName, EntityPermission entityPermission) {
         return GlAccountClassFactory.getInstance().getEntityFromQuery(entityPermission, getGlAccountClassByNameQueries, glAccountClassName);
     }
 
@@ -1299,7 +1357,7 @@ public class AccountingControl
         getDefaultGlAccountClassQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private GlAccountClass getDefaultGlAccountClass(EntityPermission entityPermission) {
+    public GlAccountClass getDefaultGlAccountClass(EntityPermission entityPermission) {
         return GlAccountClassFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultGlAccountClassQueries);
     }
 
@@ -1382,19 +1440,22 @@ public class AccountingControl
     public GlAccountClassTransfer getGlAccountClassTransfer(UserVisit userVisit, GlAccountClass glAccountClass) {
         return getAccountingTransferCaches(userVisit).getGlAccountClassTransferCache().getTransfer(glAccountClass);
     }
-    
-    public List<GlAccountClassTransfer> getGlAccountClassTransfers(UserVisit userVisit) {
-        List<GlAccountClass> glAccountClasses = getGlAccountClasses();
+
+    public List<GlAccountClassTransfer> getGlAccountClassTransfers(UserVisit userVisit, Collection<GlAccountClass> glAccountClasses) {
         List<GlAccountClassTransfer> glAccountClassTransfers = new ArrayList<>(glAccountClasses.size());
         GlAccountClassTransferCache glAccountClassTransferCache = getAccountingTransferCaches(userVisit).getGlAccountClassTransferCache();
-        
+
         glAccountClasses.forEach((glAccountClass) ->
                 glAccountClassTransfers.add(glAccountClassTransferCache.getTransfer(glAccountClass))
         );
-        
+
         return glAccountClassTransfers;
     }
-    
+
+    public List<GlAccountClassTransfer> getGlAccountClassTransfers(UserVisit userVisit) {
+        return getGlAccountClassTransfers(userVisit, getGlAccountClasses());
+    }
+
     public GlAccountClassChoicesBean getGlAccountClassChoices(String defaultGlAccountClassChoice, Language language,
             boolean allowNullChoice) {
         List<GlAccountClass> glAccountClasses = getGlAccountClasses();
@@ -1911,19 +1972,22 @@ public class AccountingControl
     public GlAccountCategoryTransfer getGlAccountCategoryTransfer(UserVisit userVisit, GlAccountCategory glAccountCategory) {
         return getAccountingTransferCaches(userVisit).getGlAccountCategoryTransferCache().getTransfer(glAccountCategory);
     }
-    
-    public List<GlAccountCategoryTransfer> getGlAccountCategoryTransfers(UserVisit userVisit) {
-        List<GlAccountCategory> glAccountCategories = getGlAccountCategories();
+
+    public List<GlAccountCategoryTransfer> getGlAccountCategoryTransfers(UserVisit userVisit, Collection<GlAccountCategory> glAccountCategories) {
         List<GlAccountCategoryTransfer> glAccountCategoryTransfers = new ArrayList<>(glAccountCategories.size());
         GlAccountCategoryTransferCache glAccountCategoryTransferCache = getAccountingTransferCaches(userVisit).getGlAccountCategoryTransferCache();
-        
+
         glAccountCategories.forEach((glAccountCategory) ->
                 glAccountCategoryTransfers.add(glAccountCategoryTransferCache.getTransfer(glAccountCategory))
         );
-        
+
         return glAccountCategoryTransfers;
     }
-    
+
+    public List<GlAccountCategoryTransfer> getGlAccountCategoryTransfers(UserVisit userVisit) {
+        return getGlAccountCategoryTransfers(userVisit, getGlAccountCategories());
+    }
+
     public GlAccountCategoryChoicesBean getGlAccountCategoryChoices(String defaultGlAccountCategoryChoice, Language language,
             boolean allowNullChoice) {
         List<GlAccountCategory> glAccountCategories = getGlAccountCategories();
@@ -2273,8 +2337,31 @@ public class AccountingControl
         
         return glResourceType;
     }
-    
-    private GlResourceType getGlResourceTypeByName(String glResourceTypeName, EntityPermission entityPermission) {
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.GlResourceType */
+    public GlResourceType getGlResourceTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new GlResourceTypePK(entityInstance.getEntityUniqueId());
+
+        return GlResourceTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public GlResourceType getGlResourceTypeByEntityInstance(EntityInstance entityInstance) {
+        return getGlResourceTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public GlResourceType getGlResourceTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getGlResourceTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countGlResourceTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM glresourcetypes, glresourcetypedetails
+                        WHERE glrtyp_activedetailid = glrtypdt_glresourcetypedetailid
+                        """);
+    }
+
+    public GlResourceType getGlResourceTypeByName(String glResourceTypeName, EntityPermission entityPermission) {
         GlResourceType glResourceType;
         
         try {
@@ -2320,7 +2407,7 @@ public class AccountingControl
         return getGlResourceTypeDetailValueForUpdate(getGlResourceTypeByNameForUpdate(glResourceTypeName));
     }
     
-    private GlResourceType getDefaultGlResourceType(EntityPermission entityPermission) {
+    public GlResourceType getDefaultGlResourceType(EntityPermission entityPermission) {
         GlResourceType glResourceType;
         
         try {
@@ -2402,19 +2489,22 @@ public class AccountingControl
     public GlResourceTypeTransfer getGlResourceTypeTransfer(UserVisit userVisit, GlResourceType glResourceType) {
         return getAccountingTransferCaches(userVisit).getGlResourceTypeTransferCache().getTransfer(glResourceType);
     }
-    
-    public List<GlResourceTypeTransfer> getGlResourceTypeTransfers(UserVisit userVisit) {
-        List<GlResourceType> glResourceTypes = getGlResourceTypes();
+
+    public List<GlResourceTypeTransfer> getGlResourceTypeTransfers(UserVisit userVisit, Collection<GlResourceType> glResourceTypes) {
         List<GlResourceTypeTransfer> glResourceTypeTransfers = new ArrayList<>(glResourceTypes.size());
         GlResourceTypeTransferCache glResourceTypeTransferCache = getAccountingTransferCaches(userVisit).getGlResourceTypeTransferCache();
-        
+
         glResourceTypes.forEach((glResourceType) ->
                 glResourceTypeTransfers.add(glResourceTypeTransferCache.getTransfer(glResourceType))
         );
-        
+
         return glResourceTypeTransfers;
     }
-    
+
+    public List<GlResourceTypeTransfer> getGlResourceTypeTransfers(UserVisit userVisit) {
+        return getGlResourceTypeTransfers(userVisit, getGlResourceTypes());
+    }
+
     public GlResourceTypeChoicesBean getGlResourceTypeChoices(String defaultGlResourceTypeChoice, Language language,
             boolean allowNullChoice) {
         List<GlResourceType> glResourceTypes = getGlResourceTypes();
@@ -2752,12 +2842,36 @@ public class AccountingControl
                 """);
     }
 
+    public long countGlAccountsByGlAccountType(GlAccountType glAccountType) {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM glaccounts, glaccountdetails
+                WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glatyp_glaccounttypeid = ?
+                """, glAccountType);
+    }
+
+    public long countGlAccountsByGlAccountClass(GlAccountClass glAccountClass) {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM glaccounts, glaccountdetails
+                WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glacls_glaccountclassid = ?
+                """, glAccountClass);
+    }
+
     public long countGlAccountsByGlAccountCategory(GlAccountCategory glAccountCategory) {
         return session.queryForLong("""
                 SELECT COUNT(*)
                 FROM glaccounts, glaccountdetails
                 WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glac_glaccountcategoryid = ?
                 """, glAccountCategory);
+    }
+
+    public long countGlAccountsByGlResourceType(GlResourceType glResourceType) {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM glaccounts, glaccountdetails
+                WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glrtyp_glresourcetypeid = ?
+                """, glResourceType);
     }
 
     public GlAccount getGlAccountByName(String glAccountName, EntityPermission entityPermission) {
@@ -2890,13 +3004,52 @@ public class AccountingControl
     public List<GlAccount> getGlAccountsForUpdate() {
         return getGlAccounts(EntityPermission.READ_WRITE);
     }
-    
-    private List<GlAccount> getGlAccountsByGlAccountClass(GlAccountClass glAccountClass, EntityPermission entityPermission) {
+
+    private List<GlAccount> getGlAccountsByGlAccountType(GlAccountType glAccountType, EntityPermission entityPermission) {
         List<GlAccount> glAccounts;
-        
+
         try {
             String query = null;
-            
+
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM glaccounts, glaccountdetails " +
+                        "WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glatyp_glaccounttypeid = ? " +
+                        "ORDER BY gladt_glaccountname " +
+                        "_LIMIT_";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM glaccounts, glaccountdetails " +
+                        "WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glatyp_glaccounttypeid = ? " +
+                        "FOR UPDATE";
+            }
+
+            PreparedStatement ps = GlAccountFactory.getInstance().prepareStatement(query);
+
+            ps.setLong(1, glAccountType.getPrimaryKey().getEntityId());
+
+            glAccounts = GlAccountFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return glAccounts;
+    }
+
+    public List<GlAccount> getGlAccountsByGlAccountType(GlAccountType glAccountType) {
+        return getGlAccountsByGlAccountType(glAccountType, EntityPermission.READ_ONLY);
+    }
+
+    public List<GlAccount> getGlAccountsByGlAccountTypeForUpdate(GlAccountType glAccountType) {
+        return getGlAccountsByGlAccountType(glAccountType, EntityPermission.READ_WRITE);
+    }
+
+    private List<GlAccount> getGlAccountsByGlAccountClass(GlAccountClass glAccountClass, EntityPermission entityPermission) {
+        List<GlAccount> glAccounts;
+
+        try {
+            String query = null;
+
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 query = "SELECT _ALL_ " +
                         "FROM glaccounts, glaccountdetails " +
@@ -2909,27 +3062,27 @@ public class AccountingControl
                         "WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glacls_glaccountclassid = ? " +
                         "FOR UPDATE";
             }
-            
+
             PreparedStatement ps = GlAccountFactory.getInstance().prepareStatement(query);
-            
+
             ps.setLong(1, glAccountClass.getPrimaryKey().getEntityId());
-            
+
             glAccounts = GlAccountFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
-        
+
         return glAccounts;
     }
-    
+
     public List<GlAccount> getGlAccountsByGlAccountClass(GlAccountClass glAccountClass) {
         return getGlAccountsByGlAccountClass(glAccountClass, EntityPermission.READ_ONLY);
     }
-    
+
     public List<GlAccount> getGlAccountsByGlAccountClassForUpdate(GlAccountClass glAccountClass) {
         return getGlAccountsByGlAccountClass(glAccountClass, EntityPermission.READ_WRITE);
     }
-    
+
     private List<GlAccount> getGlAccountsByGlAccountCategory(GlAccountCategoryPK glAccountCategoryPK, EntityPermission entityPermission) {
         List<GlAccount> glAccounts;
         
@@ -5406,7 +5559,14 @@ public class AccountingControl
     public SymbolPosition getSymbolPositionByEntityInstanceForUpdate(EntityInstance entityInstance) {
         return getSymbolPositionByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
-    
+
+    public long countSymbolPositions() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM symbolpositions, symbolpositiondetails " +
+                        "WHERE sympos_activedetailid = symposdt_symbolpositiondetailid");
+    }
+
     private SymbolPosition getSymbolPositionByName(String symbolPositionName, EntityPermission entityPermission) {
         SymbolPosition symbolPosition;
         
@@ -5504,7 +5664,8 @@ public class AccountingControl
                 query = "SELECT _ALL_ " +
                         "FROM symbolpositions, symbolpositiondetails " +
                         "WHERE sympos_symbolpositionid = symposdt_sympos_symbolpositionid AND symposdt_thrutime = ? " +
-                        "ORDER BY symposdt_sortorder, symposdt_symbolpositionname";
+                        "ORDER BY symposdt_sortorder, symposdt_symbolpositionname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM symbolpositions, symbolpositiondetails " +

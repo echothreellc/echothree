@@ -27,7 +27,7 @@ import com.echothree.model.data.workflow.server.entity.WorkflowStepType;
 import com.echothree.model.data.workflow.server.factory.WorkflowStepTypeFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -36,7 +36,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class GetWorkflowStepTypesCommand
-        extends BaseMultipleEntitiesCommand<WorkflowStepType, GetWorkflowStepTypesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<WorkflowStepType, GetWorkflowStepTypesForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -58,6 +58,18 @@ public class GetWorkflowStepTypesCommand
     }
 
     @Override
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        var workflowControl = Session.getModelController(WorkflowControl.class);
+
+        return workflowControl.countWorkflowStepTypes();
+    }
+
+    @Override
     protected Collection<WorkflowStepType> getEntities() {
         var workflowControl = Session.getModelController(WorkflowControl.class);
 
@@ -70,7 +82,7 @@ public class GetWorkflowStepTypesCommand
         var workflowControl = Session.getModelController(WorkflowControl.class);
 
         if(session.hasLimit(WorkflowStepTypeFactory.class)) {
-            result.setWorkflowStepTypeCount(workflowControl.countWorkflowStepTypes());
+            result.setWorkflowStepTypeCount(getTotalEntities());
         }
 
         result.setWorkflowStepTypes(workflowControl.getWorkflowStepTypeTransfers(getUserVisit(), entities));
