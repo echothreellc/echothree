@@ -8543,11 +8543,36 @@ public class CoreControl
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.MimeType */
-    public MimeType getMimeTypeByEntityInstance(EntityInstance entityInstance) {
-        MimeTypePK pk = new MimeTypePK(entityInstance.getEntityUniqueId());
-        MimeType mimeType = MimeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+    public MimeType getMimeTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new MimeTypePK(entityInstance.getEntityUniqueId());
 
-        return mimeType;
+        return MimeTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public MimeType getMimeTypeByEntityInstance(EntityInstance entityInstance) {
+        return getMimeTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public MimeType getMimeTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getMimeTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countMimeTypes() {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM mimetypes
+                JOIN mimetypedetails ON mtyp_activedetailid = mtypdt_mimetypedetailid
+                """);
+    }
+
+    public long countMimeTypesByMimeTypeUsageType(MimeTypeUsageType mimeTypeUsageType) {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM mimetypes
+                JOIN mimetypedetails ON mtyp_activedetailid = mtypdt_mimetypedetailid
+                JOIN mimetypeusages ON mtyp_mimetypeid = mtypu_mtyp_mimetypeid
+                WHERE mtypu_mtyput_mimetypeusagetypeid = ?
+                """, mimeTypeUsageType);
     }
 
     private static final Map<EntityPermission, String> getMimeTypeByNameQueries;
