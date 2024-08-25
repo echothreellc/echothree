@@ -743,6 +743,7 @@ import com.echothree.model.data.selector.common.SelectorKindConstants;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.selector.server.entity.SelectorKind;
 import com.echothree.model.data.selector.server.entity.SelectorType;
+import com.echothree.model.data.sequence.common.SequenceChecksumTypeConstants;
 import com.echothree.model.data.sequence.common.SequenceTypeConstants;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.sequence.server.entity.SequenceChecksumType;
@@ -1998,29 +1999,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("sequenceChecksumTypes")
-    static Collection<SequenceChecksumTypeObject> sequenceChecksumTypes(final DataFetchingEnvironment env) {
-        Collection<SequenceChecksumType> sequenceChecksumTypes;
-        Collection<SequenceChecksumTypeObject> sequenceChecksumTypeObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<SequenceChecksumTypeObject> sequenceChecksumTypes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<SequenceChecksumTypeObject> data;
 
         try {
             var commandForm = SequenceUtil.getHome().getGetSequenceChecksumTypesForm();
+            var command = new GetSequenceChecksumTypesCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
 
-            sequenceChecksumTypes = new GetSequenceChecksumTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, SequenceChecksumTypeConstants.COMPONENT_VENDOR_NAME, SequenceChecksumTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var sequenceChecksumTypes = entities.stream()
+                            .map(SequenceChecksumTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, sequenceChecksumTypes);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(sequenceChecksumTypes == null) {
-            sequenceChecksumTypeObjects = emptyList();
-        } else {
-            sequenceChecksumTypeObjects = new ArrayList<>(sequenceChecksumTypes.size());
-
-            sequenceChecksumTypes.stream()
-                    .map(SequenceChecksumTypeObject::new)
-                    .forEachOrdered(sequenceChecksumTypeObjects::add);
-        }
-
-        return sequenceChecksumTypeObjects;
+        return data;
     }
 
     @GraphQLField
