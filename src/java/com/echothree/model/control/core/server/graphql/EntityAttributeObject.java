@@ -461,6 +461,9 @@ public class EntityAttributeObject
 
                     attributeInterface = entityTimeAttribute == null ? null : new EntityTimeAttributeObject(entityTimeAttribute);
                 }
+                case WORKFLOW -> {
+                    attributeInterface = new EntityWorkflowAttributeObject(entityAttribute, entityInstance);
+                }
                 default -> {} // Leave attributeInterface null
             }
         }
