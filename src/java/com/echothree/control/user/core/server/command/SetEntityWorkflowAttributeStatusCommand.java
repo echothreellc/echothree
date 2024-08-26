@@ -23,9 +23,12 @@ import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workflow.server.logic.WorkflowDestinationLogic;
+import com.echothree.model.control.workflow.server.logic.WorkflowEntranceLogic;
 import com.echothree.model.control.workflow.server.logic.WorkflowStepLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntityStatus;
+import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -80,42 +83,46 @@ public class SetEntityWorkflowAttributeStatusCommand
             if(!hasExecutionErrors()) {
                 var workflowControl = Session.getModelController(WorkflowControl.class);
                 var workflowDestinationName = form.getWorkflowDestinationName();
-                var workflowDestination = workflowDestinationName == null ?
-                        workflowControl.getDefaultWorkflowDestination(workflowStep) :
-                        WorkflowDestinationLogic.getInstance().getWorkflowDestinationByName(this, workflowStep, workflowDestinationName);
+                WorkflowDestination workflowDestination;
 
-                if(!hasExecutionErrors() && workflowDestination == null) {
-                    var workflowName = workflow.getLastDetail().getWorkflowName();
-
-                    addExecutionError(ExecutionErrors.MissingDefaultWorkflowDestination.name(), workflowName, workflowStepName);
+                if(workflowDestinationName == null) {
+                    workflowDestination = workflowControl.getDefaultWorkflowDestination(workflowStep);
+                } else {
+                    workflowDestination = WorkflowDestinationLogic.getInstance().getWorkflowDestinationByName(this, workflowStep, workflowDestinationName);
                 }
 
                 if(!hasExecutionErrors()) {
-                    if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
-                        var workflowEntityStatuses = workflowControl.getWorkflowEntityStatusesByEntityInstanceForUpdate(workflow, entityInstance);
-                        WorkflowEntityStatus foundWorkflowEntityStatus = null;
-
-                        for(var workflowEntityStatus : workflowEntityStatuses) {
-                            if(workflowEntityStatus.getWorkflowStep().equals(workflowStep)) {
-                                foundWorkflowEntityStatus = workflowEntityStatus;
-                                break;
-                            }
-                        }
-
-                        if(foundWorkflowEntityStatus == null) {
-                            addExecutionError(ExecutionErrors.UnknownWorkflowEntityStatus.name());
-                        } else {
-                            workflowControl.transitionEntityInWorkflow(this, foundWorkflowEntityStatus, workflowDestination, null, getPartyPK());
-                        }
+                    if(workflowDestination == null) {
+                        addExecutionError(ExecutionErrors.MissingDefaultWorkflowDestination.name(),
+                                workflow.getLastDetail().getWorkflowName(),
+                                workflowStep.getLastDetail().getWorkflowStepName());
                     } else {
-                        var componentVendorName = entityInstance.getEntityType().getLastDetail().getComponentVendor().getLastDetail().getComponentVendorName();
-                        var entityTypeName = entityInstance.getEntityType().getLastDetail().getEntityTypeName();
-                        var attributeComponentVendorName = entityAttribute.getLastDetail().getEntityType().getLastDetail().getComponentVendor().getLastDetail().getComponentVendorName();
-                        var attributeEntityTypeName = entityAttribute.getLastDetail().getEntityType().getLastDetail().getEntityTypeName();
+                        if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
+                            var workflowEntityStatuses = workflowControl.getWorkflowEntityStatusesByEntityInstanceForUpdate(workflow, entityInstance);
+                            WorkflowEntityStatus foundWorkflowEntityStatus = null;
 
-                        addExecutionError(ExecutionErrors.MismatchedEntityType.name(), componentVendorName, entityTypeName, attributeComponentVendorName, attributeEntityTypeName);
+                            for(var workflowEntityStatus : workflowEntityStatuses) {
+                                if(workflowEntityStatus.getWorkflowStep().equals(workflowStep)) {
+                                    foundWorkflowEntityStatus = workflowEntityStatus;
+                                    break;
+                                }
+                            }
+
+                            if(foundWorkflowEntityStatus == null) {
+                                addExecutionError(ExecutionErrors.UnknownWorkflowEntityStatus.name());
+                            } else {
+                                workflowControl.transitionEntityInWorkflow(this, foundWorkflowEntityStatus, workflowDestination, null, getPartyPK());
+                            }
+                        } else {
+                            var componentVendorName = entityInstance.getEntityType().getLastDetail().getComponentVendor().getLastDetail().getComponentVendorName();
+                            var entityTypeName = entityInstance.getEntityType().getLastDetail().getEntityTypeName();
+                            var attributeComponentVendorName = entityAttribute.getLastDetail().getEntityType().getLastDetail().getComponentVendor().getLastDetail().getComponentVendorName();
+                            var attributeEntityTypeName = entityAttribute.getLastDetail().getEntityType().getLastDetail().getEntityTypeName();
+
+                            addExecutionError(ExecutionErrors.MismatchedEntityType.name(), componentVendorName, entityTypeName, attributeComponentVendorName, attributeEntityTypeName);
+                        }
                     }
-                }
+                }                
             }
         }
 
