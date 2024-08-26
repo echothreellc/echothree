@@ -6244,6 +6244,7 @@ public interface GraphQlMutations {
 
     @GraphQLField
     @GraphQLRelayMutation
+    @GraphQLName("setEntityWorkflowAttributeStatus")
     static MutationResultObject setEntityWorkflowAttributeStatus(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
             @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId,
