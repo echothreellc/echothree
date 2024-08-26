@@ -2295,4 +2295,7 @@ public enum ExecutionErrors {
     UnknownDefaultGlResourceType,
     UnknownWorkflowEntityStatus,
     MissingDefaultWorkflowDestination,
+    DuplicateEntityWorkflowAttribute,
+    UnknownEntityWorkflowAttribute,
+
 }

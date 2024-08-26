@@ -18,10 +18,12 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateEntityWorkflowAttributeForm;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
+import com.echothree.model.control.core.common.exception.DuplicateEntityLongAttributeException;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
+import com.echothree.model.control.workflow.server.logic.WorkflowEntranceLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.util.common.command.BaseResult;
@@ -76,21 +78,32 @@ public class CreateEntityWorkflowAttributeCommand
                 var workflowControl = Session.getModelController(WorkflowControl.class);
                 var entityAttributeWorkflow = getCoreControl().getEntityAttributeWorkflow(entityAttribute);
                 var workflow = entityAttributeWorkflow.getWorkflow();
-                var workflowEntranceName = form.getWorkflowEntranceName();
-                WorkflowEntrance workflowEntrance = null;
+                var workflowEntityStatuses = workflowControl.getWorkflowEntityStatusesByEntityInstance(workflow, entityInstance);
 
-                if(workflowEntranceName == null) {
-                    workflowControl.getDefaultWorkflowEntrance(workflow);
+                if(workflowEntityStatuses.isEmpty()) {
+                    var workflowEntranceName = form.getWorkflowEntranceName();
+                    WorkflowEntrance workflowEntrance;
+
+                    if(workflowEntranceName == null) {
+                        workflowEntrance = workflowControl.getDefaultWorkflowEntrance(workflow);
+                    } else {
+                        workflowEntrance = WorkflowEntranceLogic.getInstance().getWorkflowEntranceByName(this, workflow, workflowEntranceName);
+                    }
+
+                    if(!hasExecutionErrors()) {
+                        if(workflowEntrance == null) {
+                            var workflowName = workflow.getLastDetail().getWorkflowName();
+
+                            addExecutionError(ExecutionErrors.MissingDefaultWorkflowEntrance.name(), workflowName);
+                        } else {
+                            workflowControl.addEntityToWorkflow(workflowEntrance, entityInstance, null, null, getPartyPK());
+                        }
+                    }
                 } else {
-                    workflowEntrance = workflowControl.getDefaultWorkflowEntrance(workflow);
-                }
+                    addExecutionError(ExecutionErrors.DuplicateEntityWorkflowAttribute.name(),
+                            EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance),
+                            entityAttribute.getLastDetail().getEntityAttributeName());
 
-                if(workflowEntrance == null) {
-                    var workflowName = workflow.getLastDetail().getWorkflowName();
-
-                    addExecutionError(ExecutionErrors.MissingDefaultWorkflowEntrance.name(), workflowName);
-                } else {
-                    workflowControl.addEntityToWorkflow(workflowEntrance, entityInstance, null, null, getPartyPK());
                 }
             }
         }

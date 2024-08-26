@@ -75,8 +75,15 @@ public class DeleteEntityWorkflowAttributeCommand
                     var workflowControl = Session.getModelController(WorkflowControl.class);
                     var entityAttributeWorkflow = getCoreControl().getEntityAttributeWorkflow(entityAttribute);
                     var workflow = entityAttributeWorkflow.getWorkflow();
+                    var workflowEntityStatuses = workflowControl.getWorkflowEntityStatusesByEntityInstance(workflow, entityInstance);
 
-                    workflowControl.deleteWorkflowEntityStatusesByEntityInstance(workflow, entityInstance, getPartyPK());
+                    if(workflowEntityStatuses.isEmpty()) {
+                        addExecutionError(ExecutionErrors.UnknownEntityWorkflowAttribute.name(),
+                                EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance),
+                                entityAttribute.getLastDetail().getEntityAttributeName());
+                    } else {
+                        workflowControl.deleteWorkflowEntityStatusesByEntityInstance(workflow, entityInstance, getPartyPK());
+                    }
                 } else {
                     addExecutionError(ExecutionErrors.MismatchedEntityType.name());
                 }
