@@ -789,6 +789,18 @@ public class WorkflowControl
     
     public WorkflowStep createWorkflowStep(Workflow workflow, String workflowStepName, WorkflowStepType workflowStepType,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
+        var defaultWorkflowStep = getDefaultWorkflowStep(workflow);
+        var defaultFound = defaultWorkflowStep != null;
+
+        if(defaultFound && isDefault) {
+            var defaultWorkflowStepDetailValue = getDefaultWorkflowStepDetailValueForUpdate(workflow);
+
+            defaultWorkflowStepDetailValue.setIsDefault(Boolean.FALSE);
+            updateWorkflowStepFromValue(defaultWorkflowStepDetailValue, false, createdBy);
+        } else if(!defaultFound) {
+            isDefault = Boolean.TRUE;
+        }
+
         WorkflowStep workflowStep = WorkflowStepFactory.getInstance().create();
         WorkflowStepDetail workflowStepDetail = WorkflowStepDetailFactory.getInstance().create(workflowStep, workflow,
                 workflowStepName, workflowStepType, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1444,6 +1456,18 @@ public class WorkflowControl
     
     public WorkflowEntrance createWorkflowEntrance(Workflow workflow, String workflowEntranceName, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
+        var defaultWorkflowEntrance = getDefaultWorkflowEntrance(workflow);
+        var defaultFound = defaultWorkflowEntrance != null;
+
+        if(defaultFound && isDefault) {
+            var defaultWorkflowEntranceDetailValue = getDefaultWorkflowEntranceDetailValueForUpdate(workflow);
+
+            defaultWorkflowEntranceDetailValue.setIsDefault(Boolean.FALSE);
+            updateWorkflowEntranceFromValue(defaultWorkflowEntranceDetailValue, false, createdBy);
+        } else if(!defaultFound) {
+            isDefault = Boolean.TRUE;
+        }
+
         WorkflowEntrance workflowEntrance = WorkflowEntranceFactory.getInstance().create();
         WorkflowEntranceDetail workflowEntranceDetail = WorkflowEntranceDetailFactory.getInstance().create(workflowEntrance,
                 workflow, workflowEntranceName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -2678,6 +2702,18 @@ public class WorkflowControl
     
     public WorkflowDestination createWorkflowDestination(WorkflowStep workflowStep, String workflowDestinationName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
+        var defaultWorkflowDestination = getDefaultWorkflowDestination(workflowStep);
+        var defaultFound = defaultWorkflowDestination != null;
+
+        if(defaultFound && isDefault) {
+            var defaultWorkflowDestinationDetailValue = getDefaultWorkflowDestinationDetailValueForUpdate(workflowStep);
+
+            defaultWorkflowDestinationDetailValue.setIsDefault(Boolean.FALSE);
+            updateWorkflowDestinationFromValue(defaultWorkflowDestinationDetailValue, false, createdBy);
+        } else if(!defaultFound) {
+            isDefault = Boolean.TRUE;
+        }
+
         WorkflowDestination workflowDestination = WorkflowDestinationFactory.getInstance().create();
         WorkflowDestinationDetail workflowDestinationDetail = WorkflowDestinationDetailFactory.getInstance().create(workflowDestination, workflowStep,
                 workflowDestinationName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
