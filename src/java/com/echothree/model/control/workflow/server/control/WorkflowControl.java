@@ -4112,6 +4112,17 @@ public class WorkflowControl
                 """, Session.MAX_TIME, workflow);
     }
 
+    public long countWorkflowEntityStatusesByWorkflowAndEntityInstance(Workflow workflow, EntityInstance entityInstance) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM workflowentitystatuses
+                        JOIN workflowstepdetails ON wkfles_wkfls_workflowstepid = wkflsdt_wkfls_workflowstepid
+                        WHERE wkfles_eni_entityinstanceid = ? AND wkfles_thrutime = ?
+                        AND wkflsdt_wkfl_workflowid = ? AND wkflsdt_thrutime = ?
+                        """, entityInstance, Session.MAX_TIME, workflow, Session.MAX_TIME);
+    }
+
+
     private List<WorkflowEntityStatus> getWorkflowEntityStatusesByWorkEffortScope(WorkEffortScope workEffortScope,
             EntityPermission entityPermission) {
         List<WorkflowEntityStatus> workflowEntityStatuses;
@@ -4154,7 +4165,7 @@ public class WorkflowControl
     public List<WorkflowEntityStatus> getWorkflowEntityStatusesByWorkEffortScopeForUpdate(WorkEffortScope workEffortScope) {
         return getWorkflowEntityStatusesByWorkEffortScope(workEffortScope, EntityPermission.READ_WRITE);
     }
-    
+
     public List<WorkflowEntityStatus> getWorkflowEntityStatusesByEntityInstance(Workflow workflow, EntityInstance entityInstance, EntityPermission entityPermission) {
         List<WorkflowEntityStatus> workflowEntityStatuses;
         

@@ -78,9 +78,8 @@ public class CreateEntityWorkflowAttributeCommand
                 var workflowControl = Session.getModelController(WorkflowControl.class);
                 var entityAttributeWorkflow = getCoreControl().getEntityAttributeWorkflow(entityAttribute);
                 var workflow = entityAttributeWorkflow.getWorkflow();
-                var workflowEntityStatuses = workflowControl.getWorkflowEntityStatusesByEntityInstance(workflow, entityInstance);
 
-                if(workflowEntityStatuses.isEmpty()) {
+                if(workflowControl.countWorkflowEntityStatusesByWorkflowAndEntityInstance(workflow, entityInstance) == 0) {
                     var workflowEntranceName = form.getWorkflowEntranceName();
                     WorkflowEntrance workflowEntrance;
 
@@ -103,7 +102,6 @@ public class CreateEntityWorkflowAttributeCommand
                     addExecutionError(ExecutionErrors.DuplicateEntityWorkflowAttribute.name(),
                             EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance),
                             entityAttribute.getLastDetail().getEntityAttributeName());
-
                 }
             }
         }
