@@ -1295,19 +1295,27 @@ public class WorkflowControl
     }
 
     public long countWorkflowEntityTypesByWorkflow(Workflow workflow) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM workflowentitytypes " +
-                "WHERE wkflent_wkfl_workflowid = ? AND wkflent_thrutime = ?",
-                workflow, Session.MAX_TIME);
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM workflowentitytypes
+                        WHERE wkflent_wkfl_workflowid = ? AND wkflent_thrutime = ?
+                        """, workflow, Session.MAX_TIME);
     }
 
     public long countWorkflowEntityTypesByEntityType(EntityType entityType) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM workflowentitytypes " +
-                "WHERE wkflent_ent_entitytypeid = ? AND wkflent_thrutime = ?",
-                entityType, Session.MAX_TIME);
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM workflowentitytypes
+                        WHERE wkflent_ent_entitytypeid = ? AND wkflent_thrutime = ?
+                        """, entityType, Session.MAX_TIME);
+    }
+
+    public boolean workflowEntityTypeExists(final Workflow workflow, final EntityType entityType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM workflowentitytypes
+                        WHERE wkflent_ent_entitytypeid = ? AND wkflent_ent_entitytypeid = ? AND wkflent_thrutime = ?
+                        """, workflow, entityType, Session.MAX_TIME) == 1;
     }
 
     private static final Map<EntityPermission, String> getWorkflowEntityTypeQueries;
