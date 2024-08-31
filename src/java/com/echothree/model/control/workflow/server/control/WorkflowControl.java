@@ -1314,7 +1314,7 @@ public class WorkflowControl
         return session.queryForLong("""
                         SELECT COUNT(*)
                         FROM workflowentitytypes
-                        WHERE wkflent_ent_entitytypeid = ? AND wkflent_ent_entitytypeid = ? AND wkflent_thrutime = ?
+                        WHERE wkflent_wkfl_workflowid = ? AND wkflent_ent_entitytypeid = ? AND wkflent_thrutime = ?
                         """, workflow, entityType, Session.MAX_TIME) == 1;
     }
 
