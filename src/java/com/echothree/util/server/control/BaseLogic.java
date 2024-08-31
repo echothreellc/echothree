@@ -110,7 +110,7 @@ public abstract class BaseLogic {
         }
     }
     
-    // This is only safe to use if all function are using handleError. If eea is null in that case, an Exception will be throw, and this
+    // This is only safe to use if all function are using handleError. If eea is null in that case, an Exception will be thrown, and this
     // code will never be needed. Otherwise, eea will be checked and the value of hasExecutionErrors() returned.
     public boolean hasExecutionErrors(final ExecutionErrorAccumulator eea) {
         boolean hasExecutionErrors = false;

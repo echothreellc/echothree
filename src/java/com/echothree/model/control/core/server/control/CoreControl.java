@@ -5515,11 +5515,22 @@ public class CoreControl
     public long countEntityAttributesByEntityAttributeGroupAndEntityType(EntityAttributeGroup entityAttributeGroup, EntityType entityType) {
         return session.queryForLong(
                 "SELECT COUNT(*) " +
-                "FROM entityattributeentityattributegroups, entityattributes, entityattributedetails " +
-                "WHERE enaenagp_enagp_entityattributegroupid = ? AND enaenagp_thrutime = ? " +
-                "AND enaenagp_ena_entityattributeid = ena_entityattributeid " +
-                "AND ena_lastdetailid = enadt_entityattributedetailid AND enadt_ent_entitytypeid = ?",
+                        "FROM entityattributeentityattributegroups, entityattributes, entityattributedetails " +
+                        "WHERE enaenagp_enagp_entityattributegroupid = ? AND enaenagp_thrutime = ? " +
+                        "AND enaenagp_ena_entityattributeid = ena_entityattributeid " +
+                        "AND ena_lastdetailid = enadt_entityattributedetailid AND enadt_ent_entitytypeid = ?",
                 entityAttributeGroup, Session.MAX_TIME, entityType);
+    }
+
+    public long countEntityAttributesByEntityTypeAndWorkflow(final EntityType entityType, final Workflow workflow) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM entityattributes
+                        JOIN entityattributedetails ON ena_activedetailid = enadt_entityattributedetailid
+                        JOIN entityattributetypes ON enadt_enat_entityattributetypeid = enat_entityattributetypeid
+                        JOIN entityattributeworkflows ON ena_entityattributeid = enawkfl_ena_entityattributeid AND enawkfl_thrutime = ?
+                        WHERE enadt_ent_entitytypeid = ? AND enat_entityattributetypename = ? AND enawkfl_wkfl_workflowid = ?
+                        """, Session.MAX_TIME, entityType, EntityAttributeTypes.WORKFLOW.name(), workflow);
     }
 
     public EntityAttribute getEntityAttributeByName(EntityType entityType, String entityAttributeName, EntityPermission entityPermission) {
