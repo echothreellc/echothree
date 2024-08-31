@@ -76,6 +76,8 @@ import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.common.exception.MissingDefaultSequenceException;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
+import com.echothree.model.control.workflow.common.exception.UnknownWorkflowEntityTypeException;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityAttributeDetail;
@@ -230,10 +232,25 @@ public class EntityAttributeLogic
             if(entityAttribute == null) {
                 var entityAttributeTypeEnum = EntityAttributeTypes.valueOf(entityAttributeType.getEntityAttributeTypeName());
 
-                if(entityAttributeTypeEnum == WORKFLOW) {
-                    if(coreControl.countEntityAttributesByEntityTypeAndWorkflow(entityType, workflow) != 0) {
-                        handleExecutionError(DuplicateWorkflowUsageInEntityAttributeException.class, eea, ExecutionErrors.DuplicateWorkflowUsageInEntityAttribute.name(),
-                                entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(), entityTypeDetail.getEntityTypeName(), entityAttributeName);
+                switch(entityAttributeTypeEnum) {
+                    case WORKFLOW -> {
+                        if(coreControl.countEntityAttributesByEntityTypeAndWorkflow(entityType, workflow) != 0) {
+                            handleExecutionError(DuplicateWorkflowUsageInEntityAttributeException.class, eea, ExecutionErrors.DuplicateWorkflowUsageInEntityAttribute.name(),
+                                    entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(), entityTypeDetail.getEntityTypeName(),
+                                    workflow.getLastDetail().getWorkflowName());
+                        } else {
+                            var workflowControl = Session.getModelController(WorkflowControl.class);
+
+                            if(!workflowControl.workflowEntityTypeExists(workflow, entityType)) {
+                                handleExecutionError(UnknownWorkflowEntityTypeException.class, eea, ExecutionErrors.UnknownWorkflowEntityType.name(),
+                                        workflow.getLastDetail().getWorkflowName(), entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
+                                        entityTypeDetail.getEntityTypeName());
+                            }
+
+                        }
+                    }
+                    default -> {
+                        // Nothing required for other EntityAttributeTypes
                     }
                 }
 
