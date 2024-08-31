@@ -4329,7 +4329,7 @@ public class WorkflowControl
         
         return workflowEntityStatuses;
     }
-    
+
     private static final Map<EntityPermission, String> getWorkflowEntityStatusesByWorkflowStepQueries;
 
     static {
@@ -4337,29 +4337,68 @@ public class WorkflowControl
 
         queryMap.put(EntityPermission.READ_ONLY,
                 "SELECT _ALL_ " +
-                "FROM workflowentitystatuses " +
-                "WHERE wkfles_wkfls_workflowstepid = ? AND wkfles_thrutime = ?");
+                        "FROM workflowentitystatuses " +
+                        "WHERE wkfles_wkfls_workflowstepid = ? AND wkfles_thrutime = ?");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
-                "FROM workflowentitystatuses " +
-                "WHERE wkfles_wkfls_workflowstepid = ? AND wkfles_thrutime = ? " +
-                "FOR UPDATE");
+                        "FROM workflowentitystatuses " +
+                        "WHERE wkfles_wkfls_workflowstepid = ? AND wkfles_thrutime = ? " +
+                        "FOR UPDATE");
         getWorkflowEntityStatusesByWorkflowStepQueries = Collections.unmodifiableMap(queryMap);
     }
-    
+
     private List<WorkflowEntityStatus> getWorkflowEntityStatusesByWorkflowStep(WorkflowStep workflowStep, EntityPermission entityPermission) {
         return WorkflowEntityStatusFactory.getInstance().getEntitiesFromQuery(entityPermission, getWorkflowEntityStatusesByWorkflowStepQueries,
                 workflowStep, Session.MAX_TIME_LONG);
     }
-    
+
     public List<WorkflowEntityStatus> getWorkflowEntityStatusesByWorkflowStep(WorkflowStep workflowStep) {
         return getWorkflowEntityStatusesByWorkflowStep(workflowStep, EntityPermission.READ_ONLY);
     }
-    
+
     public List<WorkflowEntityStatus> getWorkflowEntityStatusesByWorkflowStepForUpdate(WorkflowStep workflowStep) {
         return getWorkflowEntityStatusesByWorkflowStep(workflowStep, EntityPermission.READ_WRITE);
     }
-    
+
+    private static final Map<EntityPermission, String> getWorkflowEntityStatusesByWorkflowAndEntityTypeQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY, """
+                        SELECT _ALL_
+                        FROM workflowentitystatuses
+                        JOIN workflowsteps ON wkfles_wkfls_workflowstepid = wkfls_workflowstepid
+                        JOIN workflowstepdetails ON wkfls_activedetailid = wkflsdt_workflowstepdetailid
+                        JOIN entityinstances ON wkfles_eni_entityinstanceid = eni_entityinstanceid
+                        WHERE wkflsdt_wkfl_workflowid = ? AND eni_ent_entitytypeid = ? AND wkfles_thrutime = ?
+                        ORDER BY eni_entityuniqueid
+                        """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                        SELECT _ALL_
+                        FROM workflowentitystatuses
+                        JOIN workflowsteps ON wkfles_wkfls_workflowstepid = wkfls_workflowstepid
+                        JOIN workflowstepdetails ON wkfls_activedetailid = wkflsdt_workflowstepdetailid
+                        JOIN entityinstances ON wkfles_eni_entityinstanceid = eni_entityinstanceid
+                        WHERE wkflsdt_wkfl_workflowid = ? AND eni_ent_entitytypeid = ? AND wkfles_thrutime = ?
+                        FOR UPDATE
+                        """);
+        getWorkflowEntityStatusesByWorkflowAndEntityTypeQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    private List<WorkflowEntityStatus> getWorkflowEntityStatusesByWorkflowAndEntityType(Workflow workflow, EntityType entityType, EntityPermission entityPermission) {
+        return WorkflowEntityStatusFactory.getInstance().getEntitiesFromQuery(entityPermission, getWorkflowEntityStatusesByWorkflowAndEntityTypeQueries,
+                workflow, entityType, Session.MAX_TIME_LONG);
+    }
+
+    public List<WorkflowEntityStatus> getWorkflowEntityStatusesByWorkflowAndEntityType(Workflow workflow, EntityType entityType) {
+        return getWorkflowEntityStatusesByWorkflowAndEntityType(workflow, entityType, EntityPermission.READ_ONLY);
+    }
+
+    public List<WorkflowEntityStatus> getWorkflowEntityStatusesByWorkflowAndEntityTypeForUpdate(Workflow workflow, EntityType entityType) {
+        return getWorkflowEntityStatusesByWorkflowAndEntityType(workflow, entityType, EntityPermission.READ_WRITE);
+    }
+
     public WorkflowEntityStatusTransfer getWorkflowEntityStatusTransfer(UserVisit userVisit, WorkflowEntityStatus workflowEntityStatus) {
         return getWorkflowTransferCaches(userVisit).getWorkflowEntityStatusTransferCache().getWorkflowEntityStatusTransfer(workflowEntityStatus);
     }
@@ -4431,7 +4470,11 @@ public class WorkflowControl
     public void deleteWorkflowEntityStatusesByWorkflowStep(WorkflowStep workflowStep, BasePK deletedBy) {
         deleteWorkflowEntityStatuses(getWorkflowEntityStatusesByWorkflowStepForUpdate(workflowStep), deletedBy);
     }
-    
+
+    public void deleteWorkflowEntityStatusesByWorkflowAndEntityType(Workflow workflow, EntityType entityType, BasePK deletedBy) {
+        deleteWorkflowEntityStatuses(getWorkflowEntityStatusesByWorkflowAndEntityTypeForUpdate(workflow, entityType), deletedBy);
+    }
+
     // -------------------------------------------------------------------------
     //   Workflow Triggers
     // -------------------------------------------------------------------------

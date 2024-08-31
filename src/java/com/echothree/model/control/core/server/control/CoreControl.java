@@ -5774,16 +5774,11 @@ public class CoreControl
         var entityAttributeDetail = entityAttribute.getLastDetailForUpdate();
         var entityAttributeTypeName = entityAttributeDetail.getEntityAttributeType().getEntityAttributeTypeName();
         var entityAttributeType = EntityAttributeTypes.valueOf(entityAttributeTypeName);
-        
+
         switch(entityAttributeType) {
-            case BOOLEAN:
-                deleteEntityBooleanAttributesByEntityAttribute(entityAttribute, deletedBy);
-                break;
-            case NAME:
-                deleteEntityNameAttributesByEntityAttribute(entityAttribute, deletedBy);
-                break;
-            case INTEGER:
-            case LONG:
+            case BOOLEAN -> deleteEntityBooleanAttributesByEntityAttribute(entityAttribute, deletedBy);
+            case NAME -> deleteEntityNameAttributesByEntityAttribute(entityAttribute, deletedBy);
+            case INTEGER, LONG -> {
                 deleteEntityAttributeNumericByEntityAttribute(entityAttribute, deletedBy);
 
                 switch(entityAttributeType) {
@@ -5800,34 +5795,24 @@ public class CoreControl
                     default:
                         break;
                 }
-                break;
-            case STRING:
+            }
+            case STRING -> {
                 deleteEntityAttributeStringByEntityAttribute(entityAttribute, deletedBy);
                 deleteEntityStringAttributesByEntityAttribute(entityAttribute, deletedBy);
-                break;
-            case GEOPOINT:
-                deleteEntityGeoPointAttributesByEntityAttribute(entityAttribute, deletedBy);
-                break;
-            case BLOB:
+            }
+            case GEOPOINT -> deleteEntityGeoPointAttributesByEntityAttribute(entityAttribute, deletedBy);
+            case BLOB -> {
                 deleteEntityAttributeBlobByEntityAttribute(entityAttribute, deletedBy);
                 deleteEntityBlobAttributesByEntityAttribute(entityAttribute, deletedBy);
-                break;
-            case CLOB:
-                deleteEntityClobAttributesByEntityAttribute(entityAttribute, deletedBy);
-                break;
-            case DATE:
-                deleteEntityDateAttributesByEntityAttribute(entityAttribute, deletedBy);
-                break;
-            case TIME:
-                deleteEntityTimeAttributesByEntityAttribute(entityAttribute, deletedBy);
-                break;
-            case LISTITEM:
-            case MULTIPLELISTITEM:
+            }
+            case CLOB -> deleteEntityClobAttributesByEntityAttribute(entityAttribute, deletedBy);
+            case DATE -> deleteEntityDateAttributesByEntityAttribute(entityAttribute, deletedBy);
+            case TIME -> deleteEntityTimeAttributesByEntityAttribute(entityAttribute, deletedBy);
+            case LISTITEM, MULTIPLELISTITEM -> {
                 deleteEntityAttributeListItemByEntityAttribute(entityAttribute, deletedBy);
                 deleteEntityListItemsByEntityAttribute(entityAttribute, deletedBy);
-                break;
-            case ENTITY:
-            case COLLECTION:
+            }
+            case ENTITY, COLLECTION -> {
                 deleteEntityAttributeEntityTypesByEntityAttribute(entityAttribute, deletedBy);
 
                 switch(entityAttributeType) {
@@ -5840,11 +5825,15 @@ public class CoreControl
                     default:
                         break;
                 }
-                break;
-            case WORKFLOW:
-                // TODO: delete from WorkflowEntityStatuses
+            }
+            case WORKFLOW -> {
+                var workflowControl = Session.getModelController(WorkflowControl.class);
+                var entityAttributeWorkflow = getEntityAttributeWorkflow(entityAttribute);
+
+                workflowControl.deleteWorkflowEntityStatusesByWorkflowAndEntityType(entityAttributeWorkflow.getWorkflow(),
+                        entityAttributeDetail.getEntityType(), deletedBy);
                 deleteEntityAttributeWorkflowByEntityAttribute(entityAttribute, deletedBy);
-                break;
+            }
         }
         
         deleteEntityAttributeEntityAttributeGroupsByEntityAttribute(entityAttribute, deletedBy);
