@@ -17,17 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.workflowdestinationstep;
 
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.common.form.GetWorkflowDestinationStepsForm;
 import com.echothree.control.user.workflow.common.result.GetWorkflowDestinationStepsResult;
-import com.echothree.model.control.workflow.common.transfer.WorkflowDestinationTransfer;
-import com.echothree.model.control.workflow.common.transfer.WorkflowStepTransfer;
-import com.echothree.model.control.workflow.common.transfer.WorkflowTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -55,30 +49,30 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
-            String workflowName = request.getParameter(ParameterConstants.WORKFLOW_NAME);
-            String workflowStepName = request.getParameter(ParameterConstants.WORKFLOW_STEP_NAME);
-            String workflowDestinationName = request.getParameter(ParameterConstants.WORKFLOW_DESTINATION_NAME);
-            GetWorkflowDestinationStepsForm commandForm = WorkflowUtil.getHome().getGetWorkflowDestinationStepsForm();
+            var workflowName = request.getParameter(ParameterConstants.WORKFLOW_NAME);
+            var workflowStepName = request.getParameter(ParameterConstants.WORKFLOW_STEP_NAME);
+            var workflowDestinationName = request.getParameter(ParameterConstants.WORKFLOW_DESTINATION_NAME);
+            var commandForm = WorkflowUtil.getHome().getGetWorkflowDestinationStepsForm();
             
             commandForm.setWorkflowName(workflowName);
             commandForm.setWorkflowStepName(workflowStepName);
             commandForm.setWorkflowDestinationName(workflowDestinationName);
-            
-            CommandResult commandResult = WorkflowUtil.getHome().getWorkflowDestinationSteps(getUserVisitPK(request), commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetWorkflowDestinationStepsResult result = (GetWorkflowDestinationStepsResult)executionResult.getResult();
-            WorkflowTransfer workflowTransfer = result.getWorkflow();
-            WorkflowStepTransfer workflowStepTransfer = result.getWorkflowStep();
-            WorkflowDestinationTransfer workflowDestinationTransfer = result.getWorkflowDestination();
-            
-            request.setAttribute(AttributeConstants.WORKFLOW, workflowTransfer);
-            request.setAttribute(AttributeConstants.WORKFLOW_STEP, workflowStepTransfer);
-            request.setAttribute(AttributeConstants.WORKFLOW_DESTINATION, workflowDestinationTransfer);
-            request.setAttribute(AttributeConstants.WORKFLOW_DESTINATION_STEPS, result.getWorkflowDestinationSteps());
-            forwardKey = ForwardConstants.DISPLAY;
+
+            var commandResult = WorkflowUtil.getHome().getWorkflowDestinationSteps(getUserVisitPK(request), commandForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWorkflowDestinationStepsResult)executionResult.getResult();
+            var workflowDestination = result.getWorkflowDestination();
+
+            if(workflowDestination == null) {
+                forwardKey = ForwardConstants.ERROR_404;
+            } else {
+                request.setAttribute(AttributeConstants.WORKFLOW_DESTINATION, workflowDestination);
+                request.setAttribute(AttributeConstants.WORKFLOW_DESTINATION_STEPS, result.getWorkflowDestinationSteps());
+                forwardKey = ForwardConstants.DISPLAY;
+            }
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;
         }
