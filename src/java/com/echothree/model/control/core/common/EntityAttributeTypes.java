@@ -31,6 +31,7 @@ public enum EntityAttributeTypes {
     MULTIPLELISTITEM,
     NAME,
     STRING,
-    TIME
+    TIME,
+    WORKFLOW,
 
 }

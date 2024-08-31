@@ -14,14 +14,14 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.core.server.graphql;
+package com.echothree.control.user.core.common.form;
 
-import graphql.annotations.annotationTypes.GraphQLUnion;
+import com.echothree.control.user.core.common.spec.EntityWorkflowAttributeSpec;
 
-@GraphQLUnion(possibleTypes = {EntityBooleanAttributeObject.class, EntityCollectionAttributesObject.class, EntityClobAttributeObject.class,
-        EntityDateAttributeObject.class, EntityEntityAttributeObject.class, EntityGeoPointAttributeObject.class, EntityIntegerAttributeObject.class,
-        EntityListItemAttributeObject.class, EntityLongAttributeObject.class, EntityMultipleListItemAttributesObject.class, EntityNameAttributeObject.class,
-        EntityStringAttributeObject.class, EntityTimeAttributeObject.class, EntityWorkflowAttributeObject.class})
-public interface AttributeInterface {
+public interface CreateEntityWorkflowAttributeForm
+        extends EntityWorkflowAttributeSpec {
 
+    String getWorkflowEntranceName();
+    void setWorkflowEntranceName(String workflowEntranceName);
+    
 }

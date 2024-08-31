@@ -312,6 +312,7 @@ import com.echothree.model.data.core.server.entity.EntityAttributeNumeric;
 import com.echothree.model.data.core.server.entity.EntityAttributeString;
 import com.echothree.model.data.core.server.entity.EntityAttributeType;
 import com.echothree.model.data.core.server.entity.EntityAttributeTypeDescription;
+import com.echothree.model.data.core.server.entity.EntityAttributeWorkflow;
 import com.echothree.model.data.core.server.entity.EntityBlobAttribute;
 import com.echothree.model.data.core.server.entity.EntityBooleanAttribute;
 import com.echothree.model.data.core.server.entity.EntityClobAttribute;
@@ -446,6 +447,7 @@ import com.echothree.model.data.core.server.factory.EntityAttributeNumericFactor
 import com.echothree.model.data.core.server.factory.EntityAttributeStringFactory;
 import com.echothree.model.data.core.server.factory.EntityAttributeTypeDescriptionFactory;
 import com.echothree.model.data.core.server.factory.EntityAttributeTypeFactory;
+import com.echothree.model.data.core.server.factory.EntityAttributeWorkflowFactory;
 import com.echothree.model.data.core.server.factory.EntityBlobAttributeFactory;
 import com.echothree.model.data.core.server.factory.EntityBooleanAttributeFactory;
 import com.echothree.model.data.core.server.factory.EntityClobAttributeFactory;
@@ -556,6 +558,7 @@ import com.echothree.model.data.core.server.value.EntityAttributeListItemValue;
 import com.echothree.model.data.core.server.value.EntityAttributeLongValue;
 import com.echothree.model.data.core.server.value.EntityAttributeNumericValue;
 import com.echothree.model.data.core.server.value.EntityAttributeStringValue;
+import com.echothree.model.data.core.server.value.EntityAttributeWorkflowValue;
 import com.echothree.model.data.core.server.value.EntityBlobAttributeValue;
 import com.echothree.model.data.core.server.value.EntityBooleanAttributeValue;
 import com.echothree.model.data.core.server.value.EntityClobAttributeValue;
@@ -606,6 +609,7 @@ import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.uom.common.pk.UnitOfMeasureTypePK;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntityStatus;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
@@ -5511,11 +5515,22 @@ public class CoreControl
     public long countEntityAttributesByEntityAttributeGroupAndEntityType(EntityAttributeGroup entityAttributeGroup, EntityType entityType) {
         return session.queryForLong(
                 "SELECT COUNT(*) " +
-                "FROM entityattributeentityattributegroups, entityattributes, entityattributedetails " +
-                "WHERE enaenagp_enagp_entityattributegroupid = ? AND enaenagp_thrutime = ? " +
-                "AND enaenagp_ena_entityattributeid = ena_entityattributeid " +
-                "AND ena_lastdetailid = enadt_entityattributedetailid AND enadt_ent_entitytypeid = ?",
+                        "FROM entityattributeentityattributegroups, entityattributes, entityattributedetails " +
+                        "WHERE enaenagp_enagp_entityattributegroupid = ? AND enaenagp_thrutime = ? " +
+                        "AND enaenagp_ena_entityattributeid = ena_entityattributeid " +
+                        "AND ena_lastdetailid = enadt_entityattributedetailid AND enadt_ent_entitytypeid = ?",
                 entityAttributeGroup, Session.MAX_TIME, entityType);
+    }
+
+    public long countEntityAttributesByEntityTypeAndWorkflow(final EntityType entityType, final Workflow workflow) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM entityattributes
+                        JOIN entityattributedetails ON ena_activedetailid = enadt_entityattributedetailid
+                        JOIN entityattributetypes ON enadt_enat_entityattributetypeid = enat_entityattributetypeid
+                        JOIN entityattributeworkflows ON ena_entityattributeid = enawkfl_ena_entityattributeid AND enawkfl_thrutime = ?
+                        WHERE enadt_ent_entitytypeid = ? AND enat_entityattributetypename = ? AND enawkfl_wkfl_workflowid = ?
+                        """, Session.MAX_TIME, entityType, EntityAttributeTypes.WORKFLOW.name(), workflow);
     }
 
     public EntityAttribute getEntityAttributeByName(EntityType entityType, String entityAttributeName, EntityPermission entityPermission) {
@@ -5756,19 +5771,14 @@ public class CoreControl
     }
     
     public void deleteEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
-        EntityAttributeDetail entityAttributeDetail = entityAttribute.getLastDetailForUpdate();
-        String entityAttributeTypeName = entityAttributeDetail.getEntityAttributeType().getEntityAttributeTypeName();
-        EntityAttributeTypes entityAttributeType = EntityAttributeTypes.valueOf(entityAttributeTypeName);
-        
+        var entityAttributeDetail = entityAttribute.getLastDetailForUpdate();
+        var entityAttributeTypeName = entityAttributeDetail.getEntityAttributeType().getEntityAttributeTypeName();
+        var entityAttributeType = EntityAttributeTypes.valueOf(entityAttributeTypeName);
+
         switch(entityAttributeType) {
-            case BOOLEAN:
-                deleteEntityBooleanAttributesByEntityAttribute(entityAttribute, deletedBy);
-                break;
-            case NAME:
-                deleteEntityNameAttributesByEntityAttribute(entityAttribute, deletedBy);
-                break;
-            case INTEGER:
-            case LONG:
+            case BOOLEAN -> deleteEntityBooleanAttributesByEntityAttribute(entityAttribute, deletedBy);
+            case NAME -> deleteEntityNameAttributesByEntityAttribute(entityAttribute, deletedBy);
+            case INTEGER, LONG -> {
                 deleteEntityAttributeNumericByEntityAttribute(entityAttribute, deletedBy);
 
                 switch(entityAttributeType) {
@@ -5785,34 +5795,24 @@ public class CoreControl
                     default:
                         break;
                 }
-                break;
-            case STRING:
+            }
+            case STRING -> {
                 deleteEntityAttributeStringByEntityAttribute(entityAttribute, deletedBy);
                 deleteEntityStringAttributesByEntityAttribute(entityAttribute, deletedBy);
-                break;
-            case GEOPOINT:
-                deleteEntityGeoPointAttributesByEntityAttribute(entityAttribute, deletedBy);
-                break;
-            case BLOB:
+            }
+            case GEOPOINT -> deleteEntityGeoPointAttributesByEntityAttribute(entityAttribute, deletedBy);
+            case BLOB -> {
                 deleteEntityAttributeBlobByEntityAttribute(entityAttribute, deletedBy);
                 deleteEntityBlobAttributesByEntityAttribute(entityAttribute, deletedBy);
-                break;
-            case CLOB:
-                deleteEntityClobAttributesByEntityAttribute(entityAttribute, deletedBy);
-                break;
-            case DATE:
-                deleteEntityDateAttributesByEntityAttribute(entityAttribute, deletedBy);
-                break;
-            case TIME:
-                deleteEntityTimeAttributesByEntityAttribute(entityAttribute, deletedBy);
-                break;
-            case LISTITEM:
-            case MULTIPLELISTITEM:
+            }
+            case CLOB -> deleteEntityClobAttributesByEntityAttribute(entityAttribute, deletedBy);
+            case DATE -> deleteEntityDateAttributesByEntityAttribute(entityAttribute, deletedBy);
+            case TIME -> deleteEntityTimeAttributesByEntityAttribute(entityAttribute, deletedBy);
+            case LISTITEM, MULTIPLELISTITEM -> {
                 deleteEntityAttributeListItemByEntityAttribute(entityAttribute, deletedBy);
                 deleteEntityListItemsByEntityAttribute(entityAttribute, deletedBy);
-                break;
-            case ENTITY:
-            case COLLECTION:
+            }
+            case ENTITY, COLLECTION -> {
                 deleteEntityAttributeEntityTypesByEntityAttribute(entityAttribute, deletedBy);
 
                 switch(entityAttributeType) {
@@ -5825,7 +5825,15 @@ public class CoreControl
                     default:
                         break;
                 }
-                break;
+            }
+            case WORKFLOW -> {
+                var workflowControl = Session.getModelController(WorkflowControl.class);
+                var entityAttributeWorkflow = getEntityAttributeWorkflow(entityAttribute);
+
+                workflowControl.deleteWorkflowEntityStatusesByWorkflowAndEntityType(entityAttributeWorkflow.getWorkflow(),
+                        entityAttributeDetail.getEntityType(), deletedBy);
+                deleteEntityAttributeWorkflowByEntityAttribute(entityAttribute, deletedBy);
+            }
         }
         
         deleteEntityAttributeEntityAttributeGroupsByEntityAttribute(entityAttribute, deletedBy);
@@ -6496,7 +6504,7 @@ public class CoreControl
     }
     
     // --------------------------------------------------------------------------------
-    //   Entity Attribute ListItems
+    //   Entity Attribute List Items
     // --------------------------------------------------------------------------------
     
     public EntityAttributeListItem createEntityAttributeListItem(EntityAttribute entityAttribute, Sequence entityListItemSequence,
@@ -6586,7 +6594,99 @@ public class CoreControl
             deleteEntityAttributeListItem(entityAttributeListItem, deletedBy);
         }
     }
-    
+
+    // --------------------------------------------------------------------------------
+    //   Entity Attribute Workflows
+    // --------------------------------------------------------------------------------
+
+    public EntityAttributeWorkflow createEntityAttributeWorkflow(EntityAttribute entityAttribute, Workflow workflow,
+            BasePK createdBy) {
+        var entityAttributeWorkflow = EntityAttributeWorkflowFactory.getInstance().create(session,
+                entityAttribute, workflow, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+
+        sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeWorkflow.getPrimaryKey(), EventTypes.CREATE, createdBy);
+
+        return entityAttributeWorkflow;
+    }
+
+    public long countEntityAttributeWorkflowsByWorkflow(Workflow workflow) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM entityattributeworkflows " +
+                        "WHERE enawkfl_wkfl_workflowid = ? AND enawkfl_thrutime = ?",
+                workflow, Session.MAX_TIME_LONG);
+    }
+
+    private static final Map<EntityPermission, String> getEntityAttributeWorkflowQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(1);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ "
+                        + "FROM entityattributeworkflows "
+                        + "WHERE enawkfl_ena_entityattributeid = ? AND enawkfl_thrutime = ?");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ "
+                        + "FROM entityattributeworkflows "
+                        + "WHERE enawkfl_ena_entityattributeid = ? AND enawkfl_thrutime = ? "
+                        + "FOR UPDATE");
+        getEntityAttributeWorkflowQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    private EntityAttributeWorkflow getEntityAttributeWorkflow(EntityAttribute entityAttribute, EntityPermission entityPermission) {
+        return EntityAttributeWorkflowFactory.getInstance().getEntityFromQuery(entityPermission, getEntityAttributeWorkflowQueries,
+                entityAttribute, Session.MAX_TIME_LONG);
+    }
+
+    public EntityAttributeWorkflow getEntityAttributeWorkflow(EntityAttribute entityAttribute) {
+        return getEntityAttributeWorkflow(entityAttribute, EntityPermission.READ_ONLY);
+    }
+
+    public EntityAttributeWorkflow getEntityAttributeWorkflowForUpdate(EntityAttribute entityAttribute) {
+        return getEntityAttributeWorkflow(entityAttribute, EntityPermission.READ_WRITE);
+    }
+
+    public EntityAttributeWorkflowValue getEntityAttributeWorkflowValue(EntityAttributeWorkflow entityAttributeWorkflow) {
+        return entityAttributeWorkflow == null? null: entityAttributeWorkflow.getEntityAttributeWorkflowValue().clone();
+    }
+
+    public EntityAttributeWorkflowValue getEntityAttributeWorkflowValueForUpdate(EntityAttribute entityAttribute) {
+        return getEntityAttributeWorkflowValue(getEntityAttributeWorkflowForUpdate(entityAttribute));
+    }
+
+    public void updateEntityAttributeWorkflowFromValue(EntityAttributeWorkflowValue entityAttributeWorkflowValue, BasePK updatedBy) {
+        if(entityAttributeWorkflowValue.hasBeenModified()) {
+            var entityAttributeWorkflow = EntityAttributeWorkflowFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+                    entityAttributeWorkflowValue.getPrimaryKey());
+
+            entityAttributeWorkflow.setThruTime(session.START_TIME_LONG);
+            entityAttributeWorkflow.store();
+
+            var entityAttributePK = entityAttributeWorkflow.getEntityAttributePK();
+            var workflowPK = entityAttributeWorkflowValue.getWorkflowPK();
+
+            entityAttributeWorkflow = EntityAttributeWorkflowFactory.getInstance().create(entityAttributePK, workflowPK,
+                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+
+            sendEvent(entityAttributePK, EventTypes.MODIFY, entityAttributeWorkflow.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+        }
+    }
+
+    public void deleteEntityAttributeWorkflow(EntityAttributeWorkflow entityAttributeWorkflow, BasePK deletedBy) {
+        entityAttributeWorkflow.setThruTime(session.START_TIME_LONG);
+
+        sendEvent(entityAttributeWorkflow.getEntityAttributePK(), EventTypes.MODIFY, entityAttributeWorkflow.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+    }
+
+    public void deleteEntityAttributeWorkflowByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
+        var entityAttributeWorkflow = getEntityAttributeWorkflowForUpdate(entityAttribute);
+
+        if(entityAttributeWorkflow != null) {
+            deleteEntityAttributeWorkflow(entityAttributeWorkflow, deletedBy);
+        }
+    }
+
     // --------------------------------------------------------------------------------
     //   Entity Attribute Entity Attribute Groups
     // --------------------------------------------------------------------------------

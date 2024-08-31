@@ -147,7 +147,6 @@ import com.echothree.model.data.workflow.server.value.WorkflowEntranceDescriptio
 import com.echothree.model.data.workflow.server.value.WorkflowEntranceDetailValue;
 import com.echothree.model.data.workflow.server.value.WorkflowStepDescriptionValue;
 import com.echothree.model.data.workflow.server.value.WorkflowStepDetailValue;
-import com.echothree.model.data.workrequirement.server.entity.WorkRequirementScope;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
@@ -789,6 +788,18 @@ public class WorkflowControl
     
     public WorkflowStep createWorkflowStep(Workflow workflow, String workflowStepName, WorkflowStepType workflowStepType,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
+        var defaultWorkflowStep = getDefaultWorkflowStep(workflow);
+        var defaultFound = defaultWorkflowStep != null;
+
+        if(defaultFound && isDefault) {
+            var defaultWorkflowStepDetailValue = getDefaultWorkflowStepDetailValueForUpdate(workflow);
+
+            defaultWorkflowStepDetailValue.setIsDefault(Boolean.FALSE);
+            updateWorkflowStepFromValue(defaultWorkflowStepDetailValue, false, createdBy);
+        } else if(!defaultFound) {
+            isDefault = Boolean.TRUE;
+        }
+
         WorkflowStep workflowStep = WorkflowStepFactory.getInstance().create();
         WorkflowStepDetail workflowStepDetail = WorkflowStepDetailFactory.getInstance().create(workflowStep, workflow,
                 workflowStepName, workflowStepType, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1284,19 +1295,27 @@ public class WorkflowControl
     }
 
     public long countWorkflowEntityTypesByWorkflow(Workflow workflow) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM workflowentitytypes " +
-                "WHERE wkflent_wkfl_workflowid = ? AND wkflent_thrutime = ?",
-                workflow, Session.MAX_TIME);
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM workflowentitytypes
+                        WHERE wkflent_wkfl_workflowid = ? AND wkflent_thrutime = ?
+                        """, workflow, Session.MAX_TIME);
     }
 
     public long countWorkflowEntityTypesByEntityType(EntityType entityType) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM workflowentitytypes " +
-                "WHERE wkflent_ent_entitytypeid = ? AND wkflent_thrutime = ?",
-                entityType, Session.MAX_TIME);
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM workflowentitytypes
+                        WHERE wkflent_ent_entitytypeid = ? AND wkflent_thrutime = ?
+                        """, entityType, Session.MAX_TIME);
+    }
+
+    public boolean workflowEntityTypeExists(final Workflow workflow, final EntityType entityType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM workflowentitytypes
+                        WHERE wkflent_wkfl_workflowid = ? AND wkflent_ent_entitytypeid = ? AND wkflent_thrutime = ?
+                        """, workflow, entityType, Session.MAX_TIME) == 1;
     }
 
     private static final Map<EntityPermission, String> getWorkflowEntityTypeQueries;
@@ -1444,6 +1463,18 @@ public class WorkflowControl
     
     public WorkflowEntrance createWorkflowEntrance(Workflow workflow, String workflowEntranceName, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
+        var defaultWorkflowEntrance = getDefaultWorkflowEntrance(workflow);
+        var defaultFound = defaultWorkflowEntrance != null;
+
+        if(defaultFound && isDefault) {
+            var defaultWorkflowEntranceDetailValue = getDefaultWorkflowEntranceDetailValueForUpdate(workflow);
+
+            defaultWorkflowEntranceDetailValue.setIsDefault(Boolean.FALSE);
+            updateWorkflowEntranceFromValue(defaultWorkflowEntranceDetailValue, false, createdBy);
+        } else if(!defaultFound) {
+            isDefault = Boolean.TRUE;
+        }
+
         WorkflowEntrance workflowEntrance = WorkflowEntranceFactory.getInstance().create();
         WorkflowEntranceDetail workflowEntranceDetail = WorkflowEntranceDetailFactory.getInstance().create(workflowEntrance,
                 workflow, workflowEntranceName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -2678,6 +2709,18 @@ public class WorkflowControl
     
     public WorkflowDestination createWorkflowDestination(WorkflowStep workflowStep, String workflowDestinationName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
+        var defaultWorkflowDestination = getDefaultWorkflowDestination(workflowStep);
+        var defaultFound = defaultWorkflowDestination != null;
+
+        if(defaultFound && isDefault) {
+            var defaultWorkflowDestinationDetailValue = getDefaultWorkflowDestinationDetailValueForUpdate(workflowStep);
+
+            defaultWorkflowDestinationDetailValue.setIsDefault(Boolean.FALSE);
+            updateWorkflowDestinationFromValue(defaultWorkflowDestinationDetailValue, false, createdBy);
+        } else if(!defaultFound) {
+            isDefault = Boolean.TRUE;
+        }
+
         WorkflowDestination workflowDestination = WorkflowDestinationFactory.getInstance().create();
         WorkflowDestinationDetail workflowDestinationDetail = WorkflowDestinationDetailFactory.getInstance().create(workflowDestination, workflowStep,
                 workflowDestinationName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -4076,6 +4119,17 @@ public class WorkflowControl
                 """, Session.MAX_TIME, workflow);
     }
 
+    public long countWorkflowEntityStatusesByWorkflowAndEntityInstance(Workflow workflow, EntityInstance entityInstance) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM workflowentitystatuses
+                        JOIN workflowstepdetails ON wkfles_wkfls_workflowstepid = wkflsdt_wkfls_workflowstepid
+                        WHERE wkfles_eni_entityinstanceid = ? AND wkfles_thrutime = ?
+                        AND wkflsdt_wkfl_workflowid = ? AND wkflsdt_thrutime = ?
+                        """, entityInstance, Session.MAX_TIME, workflow, Session.MAX_TIME);
+    }
+
+
     private List<WorkflowEntityStatus> getWorkflowEntityStatusesByWorkEffortScope(WorkEffortScope workEffortScope,
             EntityPermission entityPermission) {
         List<WorkflowEntityStatus> workflowEntityStatuses;
@@ -4118,7 +4172,7 @@ public class WorkflowControl
     public List<WorkflowEntityStatus> getWorkflowEntityStatusesByWorkEffortScopeForUpdate(WorkEffortScope workEffortScope) {
         return getWorkflowEntityStatusesByWorkEffortScope(workEffortScope, EntityPermission.READ_WRITE);
     }
-    
+
     public List<WorkflowEntityStatus> getWorkflowEntityStatusesByEntityInstance(Workflow workflow, EntityInstance entityInstance, EntityPermission entityPermission) {
         List<WorkflowEntityStatus> workflowEntityStatuses;
         
@@ -4275,7 +4329,7 @@ public class WorkflowControl
         
         return workflowEntityStatuses;
     }
-    
+
     private static final Map<EntityPermission, String> getWorkflowEntityStatusesByWorkflowStepQueries;
 
     static {
@@ -4283,29 +4337,68 @@ public class WorkflowControl
 
         queryMap.put(EntityPermission.READ_ONLY,
                 "SELECT _ALL_ " +
-                "FROM workflowentitystatuses " +
-                "WHERE wkfles_wkfls_workflowstepid = ? AND wkfles_thrutime = ?");
+                        "FROM workflowentitystatuses " +
+                        "WHERE wkfles_wkfls_workflowstepid = ? AND wkfles_thrutime = ?");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
-                "FROM workflowentitystatuses " +
-                "WHERE wkfles_wkfls_workflowstepid = ? AND wkfles_thrutime = ? " +
-                "FOR UPDATE");
+                        "FROM workflowentitystatuses " +
+                        "WHERE wkfles_wkfls_workflowstepid = ? AND wkfles_thrutime = ? " +
+                        "FOR UPDATE");
         getWorkflowEntityStatusesByWorkflowStepQueries = Collections.unmodifiableMap(queryMap);
     }
-    
+
     private List<WorkflowEntityStatus> getWorkflowEntityStatusesByWorkflowStep(WorkflowStep workflowStep, EntityPermission entityPermission) {
         return WorkflowEntityStatusFactory.getInstance().getEntitiesFromQuery(entityPermission, getWorkflowEntityStatusesByWorkflowStepQueries,
                 workflowStep, Session.MAX_TIME_LONG);
     }
-    
+
     public List<WorkflowEntityStatus> getWorkflowEntityStatusesByWorkflowStep(WorkflowStep workflowStep) {
         return getWorkflowEntityStatusesByWorkflowStep(workflowStep, EntityPermission.READ_ONLY);
     }
-    
+
     public List<WorkflowEntityStatus> getWorkflowEntityStatusesByWorkflowStepForUpdate(WorkflowStep workflowStep) {
         return getWorkflowEntityStatusesByWorkflowStep(workflowStep, EntityPermission.READ_WRITE);
     }
-    
+
+    private static final Map<EntityPermission, String> getWorkflowEntityStatusesByWorkflowAndEntityTypeQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY, """
+                        SELECT _ALL_
+                        FROM workflowentitystatuses
+                        JOIN workflowsteps ON wkfles_wkfls_workflowstepid = wkfls_workflowstepid
+                        JOIN workflowstepdetails ON wkfls_activedetailid = wkflsdt_workflowstepdetailid
+                        JOIN entityinstances ON wkfles_eni_entityinstanceid = eni_entityinstanceid
+                        WHERE wkflsdt_wkfl_workflowid = ? AND eni_ent_entitytypeid = ? AND wkfles_thrutime = ?
+                        ORDER BY eni_entityuniqueid
+                        """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                        SELECT _ALL_
+                        FROM workflowentitystatuses
+                        JOIN workflowsteps ON wkfles_wkfls_workflowstepid = wkfls_workflowstepid
+                        JOIN workflowstepdetails ON wkfls_activedetailid = wkflsdt_workflowstepdetailid
+                        JOIN entityinstances ON wkfles_eni_entityinstanceid = eni_entityinstanceid
+                        WHERE wkflsdt_wkfl_workflowid = ? AND eni_ent_entitytypeid = ? AND wkfles_thrutime = ?
+                        FOR UPDATE
+                        """);
+        getWorkflowEntityStatusesByWorkflowAndEntityTypeQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    private List<WorkflowEntityStatus> getWorkflowEntityStatusesByWorkflowAndEntityType(Workflow workflow, EntityType entityType, EntityPermission entityPermission) {
+        return WorkflowEntityStatusFactory.getInstance().getEntitiesFromQuery(entityPermission, getWorkflowEntityStatusesByWorkflowAndEntityTypeQueries,
+                workflow, entityType, Session.MAX_TIME_LONG);
+    }
+
+    public List<WorkflowEntityStatus> getWorkflowEntityStatusesByWorkflowAndEntityType(Workflow workflow, EntityType entityType) {
+        return getWorkflowEntityStatusesByWorkflowAndEntityType(workflow, entityType, EntityPermission.READ_ONLY);
+    }
+
+    public List<WorkflowEntityStatus> getWorkflowEntityStatusesByWorkflowAndEntityTypeForUpdate(Workflow workflow, EntityType entityType) {
+        return getWorkflowEntityStatusesByWorkflowAndEntityType(workflow, entityType, EntityPermission.READ_WRITE);
+    }
+
     public WorkflowEntityStatusTransfer getWorkflowEntityStatusTransfer(UserVisit userVisit, WorkflowEntityStatus workflowEntityStatus) {
         return getWorkflowTransferCaches(userVisit).getWorkflowEntityStatusTransferCache().getWorkflowEntityStatusTransfer(workflowEntityStatus);
     }
@@ -4377,7 +4470,11 @@ public class WorkflowControl
     public void deleteWorkflowEntityStatusesByWorkflowStep(WorkflowStep workflowStep, BasePK deletedBy) {
         deleteWorkflowEntityStatuses(getWorkflowEntityStatusesByWorkflowStepForUpdate(workflowStep), deletedBy);
     }
-    
+
+    public void deleteWorkflowEntityStatusesByWorkflowAndEntityType(Workflow workflow, EntityType entityType, BasePK deletedBy) {
+        deleteWorkflowEntityStatuses(getWorkflowEntityStatusesByWorkflowAndEntityTypeForUpdate(workflow, entityType), deletedBy);
+    }
+
     // -------------------------------------------------------------------------
     //   Workflow Triggers
     // -------------------------------------------------------------------------
@@ -4450,7 +4547,7 @@ public class WorkflowControl
     // -------------------------------------------------------------------------
     
     public Boolean isEntityInWorkflow(final Workflow workflow, final EntityInstance entityInstance) {
-        List<WorkflowEntityStatus> workflowEntityStatuses = getWorkflowEntityStatusesByEntityInstance(workflow, entityInstance);
+        var workflowEntityStatuses = getWorkflowEntityStatusesByEntityInstance(workflow, entityInstance);
 
         return workflowEntityStatuses != null && !workflowEntityStatuses.isEmpty();
     }
@@ -4458,18 +4555,20 @@ public class WorkflowControl
     public void addEntityToWorkflow(final WorkflowEntrance workflowEntrance, final EntityInstance entityInstance, final WorkEffort workEffort,
             final Long triggerTime, final BasePK createdBy) {
         var workRequirementControl = Session.getModelController(WorkRequirementControl.class);
-        List<WorkflowEntranceStep> workflowEntranceSteps = getWorkflowEntranceStepsByWorkflowEntrance(workflowEntrance);
-        WorkEffortScope workEffortScope = workEffort == null ? null : workEffort.getLastDetail().getWorkEffortScope();
+        var workflowEntranceSteps = getWorkflowEntranceStepsByWorkflowEntrance(workflowEntrance);
+        var workEffortScope = workEffort == null ? null : workEffort.getLastDetail().getWorkEffortScope();
 
-        workflowEntranceSteps.stream().map((workflowEntranceStep) -> workflowEntranceStep.getWorkflowStep()).forEach((workflowStep) -> {
-            WorkflowEntityStatus workflowEntityStatus = createWorkflowEntityStatus(entityInstance, workflowStep, workEffortScope, createdBy);
-            if (workEffortScope != null) {
-                List<WorkRequirementScope> workRequirementScopes = workRequirementControl.getWorkRequirementScopesByWorkRequirementType(workEffortScope,
+        workflowEntranceSteps.stream().map(WorkflowEntranceStep::getWorkflowStep).forEach((workflowStep) -> {
+            var workflowEntityStatus = createWorkflowEntityStatus(entityInstance, workflowStep, workEffortScope, createdBy);
+
+            if(workEffortScope != null) {
+                var workRequirementScopes = workRequirementControl.getWorkRequirementScopesByWorkRequirementType(workEffortScope,
                         workflowStep);
                 workRequirementScopes.forEach((workRequirementScope) -> {
                     WorkRequirementLogic.getInstance().createWorkRequirement(session, workEffort, workRequirementScope, null, null, null, createdBy);
                 });
             }
+
             if (triggerTime != null) {
                 createWorkflowTrigger(workflowEntityStatus, triggerTime, null);
             }
@@ -4478,22 +4577,22 @@ public class WorkflowControl
 
     public WorkflowEntrance addEntityToWorkflow(final Workflow workflow, final EntityInstance entityInstance, final WorkEffort workEffort,
             final Long triggerTime, final BasePK createdBy) {
-        SelectorType selectorType = workflow.getLastDetail().getSelectorType();
+        var selectorType = workflow.getLastDetail().getSelectorType();
         WorkflowEntrance workflowEntrance = null;
 
         if(selectorType == null) {
             workflowEntrance = getDefaultWorkflowEntrance(workflow);
         } else {
-            List<WorkflowEntranceSelector> workflowEntranceSelectors = getWorkflowEntranceSelectorsByWorkflow(workflow);
-            String selectorKindName = selectorType.getLastDetail().getSelectorKind().getLastDetail().getSelectorKindName();
+            var workflowEntranceSelectors = getWorkflowEntranceSelectorsByWorkflow(workflow);
+            var selectorKindName = selectorType.getLastDetail().getSelectorKind().getLastDetail().getSelectorKindName();
 
             if(selectorKindName.equals(SelectorKinds.POSTAL_ADDRESS.name())) {
-                PostalAddressSelectorEvaluator pase = new PostalAddressSelectorEvaluator(session, createdBy);
+                var postalAddressSelectorEvaluator = new PostalAddressSelectorEvaluator(session, createdBy);
 
                 for(var workflowEntranceSelector : workflowEntranceSelectors) {
-                    CachedSelector cs = new CachedSelector(workflowEntranceSelector.getSelector());
+                    var cachedSelector = new CachedSelector(workflowEntranceSelector.getSelector());
 
-                    if(pase.isPostalAddressSelected(cs, entityInstance)) {
+                    if(postalAddressSelectorEvaluator.isPostalAddressSelected(cachedSelector, entityInstance)) {
                         workflowEntrance = workflowEntranceSelector.getWorkflowEntrance();
                         break;
                     }
@@ -4512,7 +4611,7 @@ public class WorkflowControl
 
     public WorkflowEntrance addEntityToWorkflowUsingNames(final ExecutionErrorAccumulator eea, final String workflowName, final EntityInstance entityInstance,
             final WorkEffort workEffort, final Long triggerTime, final BasePK createdBy) {
-        WorkflowEntrance workflowEntrance = getWorkflowEntranceUsingNames(eea, workflowName, null);
+        var workflowEntrance = getWorkflowEntranceUsingNames(eea, workflowName, null);
 
         if(eea == null ? workflowEntrance != null : !eea.hasExecutionErrors()) {
             addEntityToWorkflow(workflowEntrance, entityInstance, workEffort, triggerTime, createdBy);
@@ -4523,7 +4622,7 @@ public class WorkflowControl
 
     public WorkflowEntrance addEntityToWorkflowUsingNames(final ExecutionErrorAccumulator eea, final String workflowName, final String workflowEntranceName,
             final EntityInstance entityInstance, final WorkEffort workEffort, final Long triggerTime, final BasePK createdBy) {
-        WorkflowEntrance workflowEntrance = getWorkflowEntranceUsingNames(eea, workflowName, workflowEntranceName);
+        var workflowEntrance = getWorkflowEntranceUsingNames(eea, workflowName, workflowEntranceName);
 
         if(eea == null ? workflowEntrance != null : !eea.hasExecutionErrors()) {
             addEntityToWorkflow(workflowEntrance, entityInstance, workEffort, triggerTime, createdBy);
@@ -4556,8 +4655,8 @@ public class WorkflowControl
     
     public void transitionEntityInWorkflowUsingNames(final ExecutionErrorAccumulator eea, WorkflowEntityStatus workflowEntityStatus,
             final String workflowDestinationName, final Long triggerTime, final PartyPK modifiedBy) {
-        WorkflowStep workflowStep = workflowEntityStatus.getWorkflowStep();
-        WorkflowDestination workflowDestination = getWorkflowDestinationByName(workflowStep, workflowDestinationName);
+        var workflowStep = workflowEntityStatus.getWorkflowStep();
+        var workflowDestination = getWorkflowDestinationByName(workflowStep, workflowDestinationName);
         
         if(workflowDestination != null) {
             transitionEntityInWorkflow(eea, workflowEntityStatus, workflowDestination, triggerTime, modifiedBy);

@@ -25,9 +25,6 @@ import java.util.List;
 public interface GetWorkflowEntranceStepsResult
         extends BaseResult {
     
-    WorkflowTransfer getWorkflow();
-    void setWorkflow(WorkflowTransfer workflow);
-    
     WorkflowEntranceTransfer getWorkflowEntrance();
     void setWorkflowEntrance(WorkflowEntranceTransfer workflowEntrance);
     

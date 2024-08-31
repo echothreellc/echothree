@@ -31,12 +31,12 @@
                 <a href="<c:url value="/action/Configuration/Main" />"><fmt:message key="navigation.configuration" /></a> &gt;&gt;
                 <a href="<c:url value="/action/Configuration/Workflow/Main" />"><fmt:message key="navigation.workflows" /></a> &gt;&gt;
                 <c:url var="workflowStepsUrl" value="/action/Configuration/WorkflowStep/Main">
-                    <c:param name="WorkflowName" value="${workflow.workflowName}" />
+                    <c:param name="WorkflowName" value="${workflowDestination.workflowStep.workflow.workflowName}" />
                 </c:url>
                 <a href="${workflowStepsUrl}"><fmt:message key="navigation.workflowSteps" /></a> &gt;&gt;
                 <c:url var="workflowDestinationsUrl" value="/action/Configuration/WorkflowDestination/Main">
-                    <c:param name="WorkflowName" value="${workflow.workflowName}" />
-                    <c:param name="WorkflowStepName" value="${workflowStep.workflowStepName}" />
+                    <c:param name="WorkflowName" value="${workflowDestination.workflowStep.workflow.workflowName}" />
+                    <c:param name="WorkflowStepName" value="${workflowDestination.workflowStep.workflowStepName}" />
                 </c:url>
                 <a href="${workflowDestinationsUrl}"><fmt:message key="navigation.workflowDestinations" /></a> &gt;&gt;
                 <fmt:message key="navigation.workflowDestinationSteps" />
@@ -49,8 +49,8 @@
             </et:hasSecurityRole>
             <et:hasSecurityRole securityRole="WorkflowDestination.WorkflowStep">
                 <c:url var="addUrl" value="/action/Configuration/WorkflowDestinationStep/Add">
-                    <c:param name="WorkflowName" value="${workflow.workflowName}" />
-                    <c:param name="WorkflowStepName" value="${workflowStep.workflowStepName}" />
+                    <c:param name="WorkflowName" value="${workflowDestination.workflowStep.workflow.workflowName}" />
+                    <c:param name="WorkflowStepName" value="${workflowDestination.workflowStep.workflowStepName}" />
                     <c:param name="WorkflowDestinationName" value="${workflowDestination.workflowDestinationName}" />
                 </c:url>
             </et:hasSecurityRole>

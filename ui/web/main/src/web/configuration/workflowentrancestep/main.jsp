@@ -31,7 +31,7 @@
                 <a href="<c:url value="/action/Configuration/Main" />"><fmt:message key="navigation.configuration" /></a> &gt;&gt;
                 <a href="<c:url value="/action/Configuration/Workflow/Main" />"><fmt:message key="navigation.workflows" /></a> &gt;&gt;
                 <c:url var="workflowEntrancesUrl" value="/action/Configuration/WorkflowEntrance/Main">
-                    <c:param name="WorkflowName" value="${workflow.workflowName}" />
+                    <c:param name="WorkflowName" value="${workflowEntrance.workflow.workflowName}" />
                 </c:url>
                 <a href="${workflowEntrancesUrl}"><fmt:message key="navigation.workflowEntrances" /></a> &gt;&gt;
                 <fmt:message key="navigation.workflowEntranceSteps" />
@@ -44,7 +44,7 @@
             </et:hasSecurityRole>
             <et:hasSecurityRole securityRole="WorkflowEntrance.WorkflowStep">
                 <c:url var="addUrl" value="/action/Configuration/WorkflowEntranceStep/Add">
-                    <c:param name="WorkflowName" value="${workflow.workflowName}" />
+                    <c:param name="WorkflowName" value="${workflowEntrance.workflow.workflowName}" />
                     <c:param name="WorkflowEntranceName" value="${workflowEntrance.workflowEntranceName}" />
                 </c:url>
                 <p><a href="${addUrl}">Add Step.</a></p>

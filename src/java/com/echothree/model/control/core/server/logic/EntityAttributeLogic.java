@@ -24,6 +24,7 @@ import com.echothree.control.user.core.common.spec.EntityListItemUlid;
 import com.echothree.control.user.core.common.spec.EntityListItemUniversalSpec;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
+import static com.echothree.model.control.core.common.EntityAttributeTypes.*;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.DuplicateEntityAttributeNameException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityBooleanAttributeException;
@@ -37,6 +38,7 @@ import com.echothree.model.control.core.common.exception.DuplicateEntityMultiple
 import com.echothree.model.control.core.common.exception.DuplicateEntityNameAttributeException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityStringAttributeException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityTimeAttributeException;
+import com.echothree.model.control.core.common.exception.DuplicateWorkflowUsageInEntityAttributeException;
 import com.echothree.model.control.core.common.exception.EntityTypeIsNotExtensibleException;
 import com.echothree.model.control.core.common.exception.InvalidEntityAttributeTypeException;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
@@ -74,6 +76,8 @@ import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.common.exception.MissingDefaultSequenceException;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
+import com.echothree.model.control.workflow.common.exception.UnknownWorkflowEntityTypeException;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityAttributeDetail;
@@ -106,6 +110,7 @@ import com.echothree.model.data.queue.common.pk.QueueTypePK;
 import com.echothree.model.data.queue.server.value.QueuedEntityValue;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
+import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
@@ -207,7 +212,8 @@ public class EntityAttributeLogic
             final Integer upperLimitIntegerValue, final Integer lowerLimitIntegerValue, final Integer lowerRangeIntegerValue,
             final Long upperRangeLongValue, final Long upperLimitLongValue, final Long lowerLimitLongValue,
             final Long lowerRangeLongValue, final Sequence entityListItemSequence, final UnitOfMeasureType unitOfMeasureType,
-            final Integer sortOrder, final BasePK createdBy, final Language language, final String description) {
+            final Workflow workflow, final Integer sortOrder, final BasePK createdBy, final Language language,
+            final String description) {
         EntityAttribute entityAttribute = null;
         var entityTypeDetail = entityType.getLastDetail();
 
@@ -224,46 +230,77 @@ public class EntityAttributeLogic
             entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
 
             if(entityAttribute == null) {
-                entityAttribute = coreControl.createEntityAttribute(entityType, entityAttributeName, entityAttributeType,
-                        trackRevisions, sortOrder, createdBy);
+                var entityAttributeTypeEnum = EntityAttributeTypes.valueOf(entityAttributeType.getEntityAttributeTypeName());
 
-                if(description != null) {
-                    coreControl.createEntityAttributeDescription(entityAttribute, language, description, createdBy);
-                }
+                switch(entityAttributeTypeEnum) {
+                    case WORKFLOW -> {
+                        if(coreControl.countEntityAttributesByEntityTypeAndWorkflow(entityType, workflow) != 0) {
+                            handleExecutionError(DuplicateWorkflowUsageInEntityAttributeException.class, eea, ExecutionErrors.DuplicateWorkflowUsageInEntityAttribute.name(),
+                                    entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(), entityTypeDetail.getEntityTypeName(),
+                                    workflow.getLastDetail().getWorkflowName());
+                        } else {
+                            var workflowControl = Session.getModelController(WorkflowControl.class);
 
-                switch(EntityAttributeTypes.valueOf(entityAttributeType.getEntityAttributeTypeName())) {
-                    case BLOB ->
-                            coreControl.createEntityAttributeBlob(entityAttribute, checkContentWebAddress, createdBy);
-                    case STRING -> {
-                        if(validationPattern != null) {
-                            coreControl.createEntityAttributeString(entityAttribute, validationPattern, createdBy);
-                        }
-                    }
-                    case INTEGER -> {
-                        if(upperRangeIntegerValue != null || upperLimitIntegerValue != null || lowerLimitIntegerValue != null || lowerRangeIntegerValue != null) {
-                            coreControl.createEntityAttributeInteger(entityAttribute, upperRangeIntegerValue, upperLimitIntegerValue,
-                                    lowerLimitIntegerValue, lowerRangeIntegerValue, createdBy);
-                        }
-                        if(unitOfMeasureType != null) {
-                            coreControl.createEntityAttributeNumeric(entityAttribute, unitOfMeasureType, createdBy);
-                        }
-                    }
-                    case LONG -> {
-                        if(upperRangeLongValue != null || upperLimitLongValue != null || lowerLimitLongValue != null || lowerRangeLongValue != null) {
-                            coreControl.createEntityAttributeLong(entityAttribute, upperRangeLongValue, upperLimitLongValue,
-                                    lowerLimitLongValue, lowerRangeLongValue, createdBy);
-                        }
-                        if(unitOfMeasureType != null) {
-                            coreControl.createEntityAttributeNumeric(entityAttribute, unitOfMeasureType, createdBy);
-                        }
-                    }
-                    case LISTITEM, MULTIPLELISTITEM -> {
-                        if(entityListItemSequence != null) {
-                            coreControl.createEntityAttributeListItem(entityAttribute, entityListItemSequence, createdBy);
+                            if(!workflowControl.workflowEntityTypeExists(workflow, entityType)) {
+                                handleExecutionError(UnknownWorkflowEntityTypeException.class, eea, ExecutionErrors.UnknownWorkflowEntityType.name(),
+                                        workflow.getLastDetail().getWorkflowName(), entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
+                                        entityTypeDetail.getEntityTypeName());
+                            }
+
                         }
                     }
                     default -> {
                         // Nothing required for other EntityAttributeTypes
+                    }
+                }
+
+                if(!hasExecutionErrors(eea)) {
+                    entityAttribute = coreControl.createEntityAttribute(entityType, entityAttributeName, entityAttributeType,
+                            trackRevisions, sortOrder, createdBy);
+
+                    if(description != null) {
+                        coreControl.createEntityAttributeDescription(entityAttribute, language, description, createdBy);
+                    }
+
+                    switch(entityAttributeTypeEnum) {
+                        case BLOB ->
+                                coreControl.createEntityAttributeBlob(entityAttribute, checkContentWebAddress, createdBy);
+                        case STRING -> {
+                            if(validationPattern != null) {
+                                coreControl.createEntityAttributeString(entityAttribute, validationPattern, createdBy);
+                            }
+                        }
+                        case INTEGER -> {
+                            if(upperRangeIntegerValue != null || upperLimitIntegerValue != null || lowerLimitIntegerValue != null || lowerRangeIntegerValue != null) {
+                                coreControl.createEntityAttributeInteger(entityAttribute, upperRangeIntegerValue, upperLimitIntegerValue,
+                                        lowerLimitIntegerValue, lowerRangeIntegerValue, createdBy);
+                            }
+                            if(unitOfMeasureType != null) {
+                                coreControl.createEntityAttributeNumeric(entityAttribute, unitOfMeasureType, createdBy);
+                            }
+                        }
+                        case LONG -> {
+                            if(upperRangeLongValue != null || upperLimitLongValue != null || lowerLimitLongValue != null || lowerRangeLongValue != null) {
+                                coreControl.createEntityAttributeLong(entityAttribute, upperRangeLongValue, upperLimitLongValue,
+                                        lowerLimitLongValue, lowerRangeLongValue, createdBy);
+                            }
+                            if(unitOfMeasureType != null) {
+                                coreControl.createEntityAttributeNumeric(entityAttribute, unitOfMeasureType, createdBy);
+                            }
+                        }
+                        case LISTITEM, MULTIPLELISTITEM -> {
+                            if(entityListItemSequence != null) {
+                                coreControl.createEntityAttributeListItem(entityAttribute, entityListItemSequence, createdBy);
+                            }
+                        }
+                        case WORKFLOW -> {
+                            if(workflow != null) {
+                                coreControl.createEntityAttributeWorkflow(entityAttribute, workflow, createdBy);
+                            }
+                        }
+                        default -> {
+                            // Nothing required for other EntityAttributeTypes
+                        }
                     }
                 }
             } else {
