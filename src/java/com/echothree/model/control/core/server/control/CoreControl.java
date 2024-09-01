@@ -4992,14 +4992,19 @@ public class CoreControl
     }
 
     public long countEntityAttributeGroupsByEntityType(EntityType entityType) {
-        var count = session.queryForLong(
-                "SELECT COUNT(*) OVER() " +
-                "FROM entityattributegroups, entityattributegroupdetails, entityattributeentityattributegroups, entityattributes, entityattributedetails " +
-                "WHERE enagp_lastdetailid = enagpdt_entityattributegroupdetailid " +
-                "AND enagp_entityattributegroupid = enaenagp_enagp_entityattributegroupid AND enaenagp_ena_entityattributeid = ena_entityattributeid AND enaenagp_thrutime = ? " +
-                "AND ena_lastdetailid = enadt_entityattributedetailid AND enadt_ent_entitytypeid = ? " +
-                "GROUP BY enagp_entityattributegroupid",
-                Session.MAX_TIME, entityType);
+        var count = session.queryForLong("""
+                                SELECT COUNT(*)
+                                FROM (
+                                    SELECT COUNT(*)
+                                    FROM entityattributegroups
+                                    JOIN entityattributegroupdetails ON enagp_lastdetailid = enagpdt_entityattributegroupdetailid
+                                    JOIN entityattributeentityattributegroups ON enagp_entityattributegroupid = enaenagp_enagp_entityattributegroupid AND enaenagp_thrutime = ?
+                                    JOIN entityattributes ON enaenagp_ena_entityattributeid = ena_entityattributeid
+                                    JOIN entityattributedetails ON ena_lastdetailid = enadt_entityattributedetailid
+                                    WHERE enadt_ent_entitytypeid = ?
+                                    GROUP BY enagp_entityattributegroupid
+                                ) AS entityattributegroups
+                                """, Session.MAX_TIME, entityType);
 
         return count == null ? 0L : count;
     }
