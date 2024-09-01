@@ -17,17 +17,23 @@
 package com.echothree.model.control.core.server.graphql;
 
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
+import com.echothree.model.data.core.common.EntityMultipleListItemAttributeConstants;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
+import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 @GraphQLDescription("entity multiple list item attributes object")
 @GraphQLName("EntityMultipleListItemAttributes")
@@ -56,20 +62,24 @@ public class EntityMultipleListItemAttributesObject
 
     @GraphQLField
     @GraphQLDescription("entity list items")
-    public Collection<EntityListItemObject> getEntityListItems(final DataFetchingEnvironment env) {
-        List<EntityListItemObject> entityListItemObjects = null;
-
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<EntityListItemObject> getEntityListItems(final DataFetchingEnvironment env) {
         if(CoreSecurityUtils.getHasEntityListItemAccess(env)) {
             var coreControl = Session.getModelController(CoreControl.class);
-            var entityMultipleListItemAttributes = coreControl.getEntityMultipleListItemAttributes(entityAttribute, entityInstance);
-            entityListItemObjects = new ArrayList<EntityListItemObject>(entityMultipleListItemAttributes.size());
+            var totalCount = coreControl.countEntityMultipleListItemAttributes(entityAttribute, entityInstance);
 
-            for(var entityMultipleListItemAttribute : entityMultipleListItemAttributes) {
-                entityListItemObjects.add(new EntityListItemObject(entityMultipleListItemAttribute.getEntityListItem()));
+            try(var objectLimiter = new ObjectLimiter(env, EntityMultipleListItemAttributeConstants.COMPONENT_VENDOR_NAME, EntityMultipleListItemAttributeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = coreControl.getEntityMultipleListItemAttributes(entityAttribute, entityInstance);
+                var entityMultipleListItemAttributes = new ArrayList<EntityListItemObject>(entities.size());
+
+                entities.forEach((entity) -> entityMultipleListItemAttributes.add(new EntityListItemObject(entity.getEntityListItem())));
+
+                return new CountedObjects<>(objectLimiter, entityMultipleListItemAttributes);
             }
+        } else {
+            return Connections.emptyConnection();
         }
-
-        return entityListItemObjects;
     }
     
 }

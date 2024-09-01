@@ -11633,7 +11633,15 @@ public class CoreControl
         
         return entityMultipleListItemAttribute;
     }
-    
+
+    public long countEntityMultipleListItemAttributes(EntityAttribute entityAttribute, EntityInstance entityInstance) {
+        return session.queryForLong("""
+                    SELECT COUNT(*)
+                    FROM entitymultiplelistitemattributes
+                    WHERE emlia_ena_entityattributeid = ? AND emlia_eni_entityinstanceid = ? AND emlia_thrutime = ?
+                    """, entityAttribute, entityInstance, Session.MAX_TIME);
+    }
+
     public List<EntityMultipleListItemAttribute> getEntityMultipleListItemAttributes(EntityAttribute entityAttribute, EntityInstance entityInstance) {
         List<EntityMultipleListItemAttribute> entityMultipleListItemAttributes;
         
