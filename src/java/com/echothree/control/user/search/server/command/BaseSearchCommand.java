@@ -27,7 +27,6 @@ import com.echothree.model.data.search.server.entity.SearchKind;
 import com.echothree.model.data.search.server.entity.SearchSortDirection;
 import com.echothree.model.data.search.server.entity.SearchSortOrder;
 import com.echothree.model.data.search.server.entity.SearchType;
-import com.echothree.model.data.search.server.value.PartySearchTypePreferenceDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;

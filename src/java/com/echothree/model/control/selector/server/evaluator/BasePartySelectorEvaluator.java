@@ -22,14 +22,8 @@ import com.echothree.model.control.selector.common.SelectorNodeTypes;
 import com.echothree.model.control.training.common.training.PartyTrainingClassStatusConstants;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.employee.server.entity.PartyResponsibility;
-import com.echothree.model.data.employee.server.entity.PartySkill;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.selector.server.entity.SelectorNodeDetail;
-import com.echothree.model.data.selector.server.entity.SelectorNodeResponsibilityType;
-import com.echothree.model.data.selector.server.entity.SelectorNodeSkillType;
-import com.echothree.model.data.selector.server.entity.SelectorNodeTrainingClass;
-import com.echothree.model.data.selector.server.entity.SelectorNodeType;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.Session;
 

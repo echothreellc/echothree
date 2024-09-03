@@ -18,7 +18,6 @@ package com.echothree.control.user.term.server.command;
 
 import com.echothree.control.user.term.common.form.DeleteTermForm;
 import com.echothree.model.control.term.server.control.TermControl;
-import com.echothree.model.data.term.server.entity.Term;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;

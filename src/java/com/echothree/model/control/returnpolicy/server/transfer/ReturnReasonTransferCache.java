@@ -16,11 +16,9 @@
 
 package com.echothree.model.control.returnpolicy.server.transfer;
 
-import com.echothree.model.control.returnpolicy.common.transfer.ReturnKindTransfer;
 import com.echothree.model.control.returnpolicy.common.transfer.ReturnReasonTransfer;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnReason;
-import com.echothree.model.data.returnpolicy.server.entity.ReturnReasonDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class ReturnReasonTransferCache

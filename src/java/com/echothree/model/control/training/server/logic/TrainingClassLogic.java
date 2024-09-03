@@ -20,12 +20,9 @@ import com.echothree.model.control.training.common.exception.UnknownTrainingClas
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.training.server.entity.TrainingClass;
 import com.echothree.model.data.training.server.entity.TrainingClassAnswer;
-import com.echothree.model.data.training.server.entity.TrainingClassDetail;
 import com.echothree.model.data.training.server.entity.TrainingClassPage;
 import com.echothree.model.data.training.server.entity.TrainingClassQuestion;
-import com.echothree.model.data.training.server.entity.TrainingClassQuestionDetail;
 import com.echothree.model.data.training.server.entity.TrainingClassSection;
-import com.echothree.model.data.training.server.entity.TrainingClassSectionDetail;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;

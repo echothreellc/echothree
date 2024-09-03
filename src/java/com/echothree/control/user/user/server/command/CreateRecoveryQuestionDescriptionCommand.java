@@ -18,11 +18,7 @@ package com.echothree.control.user.user.server.command;
 
 import com.echothree.control.user.user.common.form.CreateRecoveryQuestionDescriptionForm;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.control.user.server.control.UserControl;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.RecoveryQuestion;
-import com.echothree.model.data.user.server.entity.RecoveryQuestionDescription;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;

@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.shipment.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.shipment.common.transfer.FreeOnBoardDescriptionTransfer;
-import com.echothree.model.control.shipment.common.transfer.FreeOnBoardTransfer;
 import com.echothree.model.control.shipment.server.control.FreeOnBoardControl;
 import com.echothree.model.data.shipment.server.entity.FreeOnBoardDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;

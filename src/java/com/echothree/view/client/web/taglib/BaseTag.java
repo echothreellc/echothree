@@ -23,7 +23,6 @@ import com.echothree.view.client.web.WebConstants;
 import com.google.common.base.Splitter;
 import java.util.HashSet;
 import java.util.Set;
-import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.BodyTagSupport;

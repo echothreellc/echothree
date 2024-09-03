@@ -17,7 +17,6 @@
 package com.echothree.control.user.sequence.common.result;
 
 import com.echothree.model.control.sequence.common.transfer.SequenceTransfer;
-import com.echothree.model.control.sequence.common.transfer.SequenceTypeTransfer;
 import com.echothree.util.common.command.BaseResult;
 
 public interface GetSequenceResult

@@ -16,19 +16,13 @@
 
 package com.echothree.model.control.geo.server.transfer;
 
-import com.echothree.model.control.contact.common.transfer.PostalAddressFormatTransfer;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.geo.common.GeoOptions;
 import com.echothree.model.control.geo.common.transfer.CountryTransfer;
-import com.echothree.model.control.geo.common.transfer.GeoCodeScopeTransfer;
-import com.echothree.model.control.geo.common.transfer.GeoCodeTypeTransfer;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.data.geo.server.entity.GeoCode;
-import com.echothree.model.data.geo.server.entity.GeoCodeCountry;
-import com.echothree.model.data.geo.server.entity.GeoCodeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class CountryTransferCache
         extends BaseGeoCodeTransferCache<GeoCode, CountryTransfer> {

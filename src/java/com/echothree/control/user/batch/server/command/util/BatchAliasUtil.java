@@ -19,7 +19,6 @@ package com.echothree.control.user.batch.server.command.util;
 import com.echothree.control.user.batch.common.spec.BatchTypeSpec;
 import com.echothree.model.control.batch.common.BatchConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
-import com.echothree.model.control.security.common.SecurityRoles;
 import java.util.HashMap;
 import java.util.Map;
 

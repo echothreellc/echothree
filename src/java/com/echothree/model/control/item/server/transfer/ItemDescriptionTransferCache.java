@@ -16,33 +16,18 @@
 
 package com.echothree.model.control.item.server.transfer;
 
-import com.echothree.model.control.core.common.transfer.EntityTimeTransfer;
-import com.echothree.model.control.core.common.transfer.MimeTypeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.item.common.ItemOptions;
 import com.echothree.model.control.item.common.ItemProperties;
 import com.echothree.model.control.item.common.transfer.ItemDescriptionTransfer;
-import com.echothree.model.control.item.common.transfer.ItemDescriptionTypeTransfer;
 import com.echothree.model.control.item.common.transfer.ItemImageTypeTransfer;
-import com.echothree.model.control.item.common.transfer.ItemTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.core.server.entity.EntityTime;
-import com.echothree.model.data.core.server.entity.MimeType;
-import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.item.server.entity.ItemBlobDescription;
-import com.echothree.model.data.item.server.entity.ItemClobDescription;
 import com.echothree.model.data.item.server.entity.ItemDescription;
-import com.echothree.model.data.item.server.entity.ItemDescriptionDetail;
-import com.echothree.model.data.item.server.entity.ItemImageDescription;
-import com.echothree.model.data.item.server.entity.ItemStringDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class ItemDescriptionTransferCache
         extends BaseItemTransferCache<ItemDescription, ItemDescriptionTransfer> {

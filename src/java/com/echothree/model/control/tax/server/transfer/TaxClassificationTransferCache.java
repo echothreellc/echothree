@@ -16,13 +16,10 @@
 
 package com.echothree.model.control.tax.server.transfer;
 
-import com.echothree.model.control.geo.common.transfer.CountryTransfer;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.tax.common.transfer.TaxClassificationTransfer;
 import com.echothree.model.control.tax.server.control.TaxControl;
 import com.echothree.model.data.tax.server.entity.TaxClassification;
-import com.echothree.model.data.tax.server.entity.TaxClassificationDetail;
-import com.echothree.model.data.tax.server.entity.TaxClassificationTranslation;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 

@@ -18,7 +18,6 @@ package com.echothree.control.user.contactlist.common;
 
 import com.echothree.control.user.contactlist.server.ContactListLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class ContactListUtil {

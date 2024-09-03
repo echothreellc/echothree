@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.workeffort.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.workeffort.common.transfer.WorkEffortScopeDescriptionTransfer;
-import com.echothree.model.control.workeffort.common.transfer.WorkEffortScopeTransfer;
 import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortScopeDescription;

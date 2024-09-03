@@ -19,7 +19,6 @@ package com.echothree.model.control.item.server.transfer;
 import com.echothree.model.control.item.common.transfer.ItemDescriptionTypeUseTypeTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemDescriptionTypeUseType;
-import com.echothree.model.data.item.server.entity.ItemDescriptionTypeUseTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class ItemDescriptionTypeUseTypeTransferCache

@@ -18,7 +18,6 @@ package com.echothree.control.user.content.server.command;
 
 import com.echothree.control.user.content.common.form.GetContentPageAreaTypeForm;
 import com.echothree.control.user.content.common.result.ContentResultFactory;
-import com.echothree.control.user.content.common.result.GetContentPageAreaTypeResult;
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.content.server.logic.ContentPageAreaTypeLogic;
 import com.echothree.model.control.core.common.EventTypes;

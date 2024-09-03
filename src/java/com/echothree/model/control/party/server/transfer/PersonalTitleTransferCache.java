@@ -18,9 +18,7 @@ package com.echothree.model.control.party.server.transfer;
 
 import com.echothree.model.control.party.common.transfer.PersonalTitleTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.party.common.pk.PersonalTitlePK;
 import com.echothree.model.data.party.server.entity.PersonalTitle;
-import com.echothree.model.data.party.server.entity.PersonalTitleDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class PersonalTitleTransferCache

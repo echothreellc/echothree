@@ -29,20 +29,14 @@ import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.training.server.entity.PartyTrainingClass;
-import com.echothree.model.data.training.server.entity.PartyTrainingClassDetail;
 import com.echothree.model.data.training.server.entity.TrainingClass;
-import com.echothree.model.data.training.server.entity.TrainingClassDetail;
-import com.echothree.model.data.training.server.entity.TrainingClassSection;
 import com.echothree.model.data.training.server.value.PartyTrainingClassDetailValue;
 import com.echothree.model.data.workeffort.server.entity.WorkEffort;
-import com.echothree.model.data.workeffort.server.entity.WorkEffortScope;
-import com.echothree.model.data.workflow.server.entity.WorkflowEntityStatus;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
-import java.util.List;
 
 public class PartyTrainingClassLogic
         extends BaseLogic {

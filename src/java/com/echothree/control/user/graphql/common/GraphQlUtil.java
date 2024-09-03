@@ -18,7 +18,6 @@ package com.echothree.control.user.graphql.common;
 
 import com.echothree.control.user.graphql.server.GraphQlLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class GraphQlUtil {

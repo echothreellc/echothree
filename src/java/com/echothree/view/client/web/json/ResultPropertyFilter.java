@@ -23,13 +23,11 @@ import com.echothree.util.common.transfer.BaseWrapper;
 import de.odysseus.el.ExpressionFactoryImpl;
 import de.odysseus.el.util.SimpleContext;
 import java.lang.reflect.Proxy;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import javax.el.ExpressionFactory;
-import javax.el.ValueExpression;
 import net.sf.json.util.PropertyFilter;
 
 public class ResultPropertyFilter

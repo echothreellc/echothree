@@ -18,7 +18,6 @@ package com.echothree.control.user.campaign.common;
 
 import com.echothree.control.user.campaign.server.CampaignLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class CampaignUtil {

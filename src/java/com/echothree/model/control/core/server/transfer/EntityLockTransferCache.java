@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.core.server.transfer;
 
-import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.model.control.core.common.transfer.EntityLockTransfer;
 import com.echothree.model.control.core.server.CoreDebugFlags;
 import com.echothree.model.control.core.server.control.CoreControl;
@@ -30,9 +29,6 @@ import com.echothree.util.server.persistence.DslContextFactory;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.PersistenceUtils;
 import com.echothree.util.server.persistence.Session;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.sql.DataSource;
 

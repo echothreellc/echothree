@@ -23,7 +23,6 @@ import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class MimeTypeUsageTypeTransferCache
         extends BaseCoreTransferCache<MimeTypeUsageType, MimeTypeUsageTypeTransfer> {

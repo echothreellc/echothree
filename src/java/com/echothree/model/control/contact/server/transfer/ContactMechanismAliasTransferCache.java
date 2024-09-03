@@ -17,8 +17,6 @@
 package com.echothree.model.control.contact.server.transfer;
 
 import com.echothree.model.control.contact.common.transfer.ContactMechanismAliasTransfer;
-import com.echothree.model.control.contact.common.transfer.ContactMechanismAliasTypeTransfer;
-import com.echothree.model.control.contact.common.transfer.ContactMechanismTransfer;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.data.contact.server.entity.ContactMechanismAlias;
 import com.echothree.model.data.user.server.entity.UserVisit;

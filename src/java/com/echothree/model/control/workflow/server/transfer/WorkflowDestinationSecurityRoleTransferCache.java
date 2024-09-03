@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.workflow.server.transfer;
 
-import com.echothree.model.control.security.common.transfer.SecurityRoleTransfer;
 import com.echothree.model.control.security.server.control.SecurityControl;
-import com.echothree.model.control.workflow.common.transfer.WorkflowDestinationPartyTypeTransfer;
 import com.echothree.model.control.workflow.common.transfer.WorkflowDestinationSecurityRoleTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;

@@ -18,7 +18,6 @@ package com.echothree.control.user.queue.common;
 
 import com.echothree.control.user.queue.server.QueueLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class QueueUtil {

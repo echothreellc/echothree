@@ -17,7 +17,6 @@
 package com.echothree.control.user.period.server.command;
 
 import com.echothree.control.user.period.common.form.GetPeriodKindsForm;
-import com.echothree.control.user.period.common.result.GetPeriodKindsResult;
 import com.echothree.control.user.period.common.result.PeriodResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.period.server.control.PeriodControl;

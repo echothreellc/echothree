@@ -21,19 +21,13 @@ import com.echothree.model.control.training.common.transfer.TrainingClassTransfe
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.control.UomControl;
-import com.echothree.model.control.workeffort.common.transfer.WorkEffortScopeTransfer;
 import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.data.training.server.entity.TrainingClass;
-import com.echothree.model.data.training.server.entity.TrainingClassDetail;
-import com.echothree.model.data.training.server.entity.TrainingClassTranslation;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.model.data.workeffort.server.entity.WorkEffortScope;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.PercentUtils;
 import com.echothree.util.server.string.UnitOfMeasureUtils;
-import java.util.Set;
 
 public class TrainingClassTransferCache
         extends BaseTrainingTransferCache<TrainingClass, TrainingClassTransfer> {

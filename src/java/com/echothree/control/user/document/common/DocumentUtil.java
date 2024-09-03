@@ -18,7 +18,6 @@ package com.echothree.control.user.document.common;
 
 import com.echothree.control.user.document.server.DocumentLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class DocumentUtil {

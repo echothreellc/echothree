@@ -80,12 +80,7 @@ import com.echothree.model.control.workflow.common.exception.UnknownWorkflowEnti
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
-import com.echothree.model.data.core.server.entity.EntityAttributeDetail;
 import com.echothree.model.data.core.server.entity.EntityAttributeGroup;
-import com.echothree.model.data.core.server.entity.EntityAttributeInteger;
-import com.echothree.model.data.core.server.entity.EntityAttributeListItem;
-import com.echothree.model.data.core.server.entity.EntityAttributeLong;
-import com.echothree.model.data.core.server.entity.EntityAttributeString;
 import com.echothree.model.data.core.server.entity.EntityAttributeType;
 import com.echothree.model.data.core.server.entity.EntityBooleanAttribute;
 import com.echothree.model.data.core.server.entity.EntityClobAttribute;
@@ -100,13 +95,11 @@ import com.echothree.model.data.core.server.entity.EntityNameAttribute;
 import com.echothree.model.data.core.server.entity.EntityStringAttribute;
 import com.echothree.model.data.core.server.entity.EntityTimeAttribute;
 import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.core.server.entity.EntityTypeDetail;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.core.server.value.EntityAttributeDetailValue;
 import com.echothree.model.data.core.server.value.EntityListItemDetailValue;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.queue.common.pk.QueueTypePK;
 import com.echothree.model.data.queue.server.value.QueuedEntityValue;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
@@ -119,7 +112,6 @@ import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class EntityAttributeLogic

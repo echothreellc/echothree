@@ -24,12 +24,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.spell.DirectSpellChecker;
-import org.apache.lucene.search.spell.SuggestWord;
 
 public class IndexSpellCheck
         extends BaseIndex<List<List<CheckSpellingSuggestionTransfer>>> {

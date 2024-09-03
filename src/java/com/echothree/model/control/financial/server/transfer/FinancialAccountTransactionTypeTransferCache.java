@@ -16,13 +16,10 @@
 
 package com.echothree.model.control.financial.server.transfer;
 
-import com.echothree.model.control.accounting.common.transfer.GlAccountTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.financial.common.transfer.FinancialAccountTransactionTypeTransfer;
-import com.echothree.model.control.financial.common.transfer.FinancialAccountTypeTransfer;
 import com.echothree.model.control.financial.server.control.FinancialControl;
 import com.echothree.model.data.financial.server.entity.FinancialAccountTransactionType;
-import com.echothree.model.data.financial.server.entity.FinancialAccountTransactionTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 

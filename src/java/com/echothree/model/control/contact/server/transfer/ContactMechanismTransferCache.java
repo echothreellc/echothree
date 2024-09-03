@@ -20,12 +20,9 @@ import com.echothree.model.control.comment.common.CommentConstants;
 import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.common.ContactOptions;
 import com.echothree.model.control.contact.common.transfer.ContactMechanismTransfer;
-import com.echothree.model.control.contact.common.transfer.ContactMechanismTypeTransfer;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.data.contact.server.entity.ContactMechanism;
-import com.echothree.model.data.contact.server.entity.ContactMechanismDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import java.util.Set;
 
 public class ContactMechanismTransferCache
         extends BaseContactTransferCache<ContactMechanism, ContactMechanismTransfer> {

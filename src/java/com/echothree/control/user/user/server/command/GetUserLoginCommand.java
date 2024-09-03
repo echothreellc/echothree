@@ -17,7 +17,6 @@
 package com.echothree.control.user.user.server.command;
 
 import com.echothree.control.user.user.common.form.GetUserLoginForm;
-import com.echothree.control.user.user.common.result.GetUserLoginResult;
 import com.echothree.control.user.user.common.result.UserResultFactory;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
@@ -32,11 +31,8 @@ import static com.echothree.model.control.security.common.SecurityRoleGroups.Emp
 import static com.echothree.model.control.security.common.SecurityRoleGroups.Vendor;
 import static com.echothree.model.control.security.common.SecurityRoles.UserLogin;
 import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
-import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.user.server.logic.UserLoginLogic;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserLogin;
 import com.echothree.util.common.command.BaseResult;

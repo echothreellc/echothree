@@ -19,7 +19,6 @@ package com.echothree.model.control.selector.server.evaluator;
 import com.echothree.model.control.selector.common.SelectorKinds;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.selector.server.entity.Selector;
-import com.echothree.model.data.selector.server.entity.SelectorDetail;
 import com.echothree.model.data.selector.server.entity.SelectorNode;
 import com.echothree.model.data.selector.server.entity.SelectorNodeBoolean;
 import com.echothree.model.data.selector.server.entity.SelectorNodeDetail;
@@ -34,7 +33,6 @@ import com.echothree.model.data.selector.server.entity.SelectorNodeTrainingClass
 import com.echothree.model.data.selector.server.entity.SelectorNodeWorkflowStep;
 import com.echothree.util.server.persistence.Session;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class CachedSelector {

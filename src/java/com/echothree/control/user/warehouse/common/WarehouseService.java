@@ -16,18 +16,6 @@
 
 package com.echothree.control.user.warehouse.common;
 
-import com.echothree.control.user.filter.common.form.CreateFilterKindDescriptionForm;
-import com.echothree.control.user.filter.common.form.CreateFilterKindForm;
-import com.echothree.control.user.filter.common.form.DeleteFilterKindDescriptionForm;
-import com.echothree.control.user.filter.common.form.DeleteFilterKindForm;
-import com.echothree.control.user.filter.common.form.EditFilterKindDescriptionForm;
-import com.echothree.control.user.filter.common.form.EditFilterKindForm;
-import com.echothree.control.user.filter.common.form.GetFilterKindChoicesForm;
-import com.echothree.control.user.filter.common.form.GetFilterKindDescriptionForm;
-import com.echothree.control.user.filter.common.form.GetFilterKindDescriptionsForm;
-import com.echothree.control.user.filter.common.form.GetFilterKindForm;
-import com.echothree.control.user.filter.common.form.GetFilterKindsForm;
-import com.echothree.control.user.filter.common.form.SetDefaultFilterKindForm;
 import com.echothree.control.user.warehouse.common.form.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;

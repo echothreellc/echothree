@@ -18,7 +18,6 @@ package com.echothree.model.control.party.server.logic;
 
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.party.server.entity.PartyTypeLockoutPolicy;
 import com.echothree.model.data.party.server.entity.PartyTypeLockoutPolicyDetail;
 import com.echothree.model.data.user.server.entity.UserLoginStatus;
 import com.echothree.util.common.message.ExecutionErrors;

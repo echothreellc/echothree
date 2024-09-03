@@ -18,7 +18,6 @@ package com.echothree.control.user.filter.common.result;
 
 import com.echothree.model.control.filter.common.transfer.FilterAdjustmentFixedAmountTransfer;
 import com.echothree.model.control.filter.common.transfer.FilterAdjustmentTransfer;
-import com.echothree.model.control.filter.common.transfer.FilterKindTransfer;
 import com.echothree.util.common.command.BaseResult;
 import java.util.List;
 

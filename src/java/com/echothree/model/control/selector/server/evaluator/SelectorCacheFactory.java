@@ -17,8 +17,6 @@
 package com.echothree.model.control.selector.server.evaluator;
 
 import com.echothree.model.control.selector.server.control.SelectorControl;
-import com.echothree.model.data.selector.server.entity.SelectorKind;
-import com.echothree.model.data.selector.server.entity.SelectorType;
 import com.echothree.util.server.persistence.Session;
 
 public class SelectorCacheFactory {

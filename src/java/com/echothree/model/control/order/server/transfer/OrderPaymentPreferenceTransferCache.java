@@ -17,13 +17,9 @@
 package com.echothree.model.control.order.server.transfer;
 
 import com.echothree.model.control.order.common.transfer.OrderPaymentPreferenceTransfer;
-import com.echothree.model.control.payment.common.transfer.PartyPaymentMethodTransfer;
-import com.echothree.model.control.payment.common.transfer.PaymentMethodTransfer;
 import com.echothree.model.control.payment.server.control.PartyPaymentMethodControl;
 import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.data.order.server.entity.OrderPaymentPreference;
-import com.echothree.model.data.order.server.entity.OrderPaymentPreferenceDetail;
-import com.echothree.model.data.payment.server.entity.PartyPaymentMethod;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;

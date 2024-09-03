@@ -19,7 +19,6 @@ package com.echothree.model.control.printer.server.logic;
 import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.printer.server.entity.PartyPrinterGroupUse;
-import com.echothree.model.data.printer.server.entity.PrinterGroup;
 import com.echothree.model.data.printer.server.entity.PrinterGroupUseType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;

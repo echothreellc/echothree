@@ -16,16 +16,9 @@
 
 package com.echothree.model.control.accounting.server.transfer;
 
-import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
-import com.echothree.model.control.accounting.common.transfer.GlAccountCategoryTransfer;
-import com.echothree.model.control.accounting.common.transfer.GlAccountClassTransfer;
 import com.echothree.model.control.accounting.common.transfer.GlAccountTransfer;
-import com.echothree.model.control.accounting.common.transfer.GlAccountTypeTransfer;
-import com.echothree.model.control.accounting.common.transfer.GlResourceTypeTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.data.accounting.server.entity.GlAccount;
-import com.echothree.model.data.accounting.server.entity.GlAccountCategory;
-import com.echothree.model.data.accounting.server.entity.GlAccountDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class GlAccountTransferCache

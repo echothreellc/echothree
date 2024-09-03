@@ -17,10 +17,8 @@
 package com.echothree.model.control.picklist.server.transfer;
 
 import com.echothree.model.control.picklist.common.transfer.PicklistAliasTypeTransfer;
-import com.echothree.model.control.picklist.common.transfer.PicklistTypeTransfer;
 import com.echothree.model.control.picklist.server.control.PicklistControl;
 import com.echothree.model.data.picklist.server.entity.PicklistAliasType;
-import com.echothree.model.data.picklist.server.entity.PicklistAliasTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class PicklistAliasTypeTransferCache

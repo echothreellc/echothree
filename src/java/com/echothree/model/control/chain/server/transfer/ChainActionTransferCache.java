@@ -18,15 +18,10 @@ package com.echothree.model.control.chain.server.transfer;
 
 import com.echothree.model.control.chain.common.ChainConstants;
 import com.echothree.model.control.chain.common.ChainOptions;
-import com.echothree.model.control.chain.common.transfer.ChainActionSetTransfer;
 import com.echothree.model.control.chain.common.transfer.ChainActionTransfer;
-import com.echothree.model.control.chain.common.transfer.ChainActionTypeTransfer;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.data.chain.server.entity.ChainAction;
-import com.echothree.model.data.chain.server.entity.ChainActionDetail;
-import com.echothree.model.data.chain.server.entity.ChainActionType;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import java.util.Set;
 
 public class ChainActionTransferCache
         extends BaseChainTransferCache<ChainAction, ChainActionTransfer> {

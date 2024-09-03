@@ -17,9 +17,7 @@
 package com.echothree.model.control.order.server.transfer;
 
 import com.echothree.model.control.order.common.transfer.OrderRoleTransfer;
-import com.echothree.model.control.order.common.transfer.OrderRoleTypeTransfer;
 import com.echothree.model.control.order.server.control.OrderRoleControl;
-import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.order.server.entity.OrderRole;
 import com.echothree.model.data.user.server.entity.UserVisit;

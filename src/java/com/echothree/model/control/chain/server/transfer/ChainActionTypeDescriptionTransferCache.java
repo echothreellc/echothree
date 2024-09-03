@@ -17,9 +17,7 @@
 package com.echothree.model.control.chain.server.transfer;
 
 import com.echothree.model.control.chain.common.transfer.ChainActionTypeDescriptionTransfer;
-import com.echothree.model.control.chain.common.transfer.ChainActionTypeTransfer;
 import com.echothree.model.control.chain.server.control.ChainControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.chain.server.entity.ChainActionTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 

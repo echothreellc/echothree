@@ -16,7 +16,6 @@
 
 package com.echothree.util.server.validation.fieldtype;
 
-import com.echothree.model.data.party.server.entity.DateTimeFormatDetail;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.form.BaseForm;
 import com.echothree.util.common.message.Message;

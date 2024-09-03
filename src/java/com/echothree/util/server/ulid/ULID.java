@@ -44,7 +44,6 @@ package com.echothree.util.server.ulid;
 
 import com.echothree.util.server.persistence.EncryptionUtils;
 import com.google.common.primitives.Longs;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ULID {

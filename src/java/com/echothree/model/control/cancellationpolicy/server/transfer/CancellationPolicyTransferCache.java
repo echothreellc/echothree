@@ -16,12 +16,9 @@
 
 package com.echothree.model.control.cancellationpolicy.server.transfer;
 
-import com.echothree.model.control.cancellationpolicy.common.transfer.CancellationKindTransfer;
 import com.echothree.model.control.cancellationpolicy.common.transfer.CancellationPolicyTransfer;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
-import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicyDetail;
-import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicyTranslation;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class CancellationPolicyTransferCache

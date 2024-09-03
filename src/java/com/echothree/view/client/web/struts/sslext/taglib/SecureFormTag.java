@@ -76,7 +76,6 @@ package com.echothree.view.client.web.struts.sslext.taglib;
 import com.echothree.view.client.web.struts.sslext.util.SecureRequestUtils;
 import java.net.MalformedURLException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import org.apache.struts.Globals;

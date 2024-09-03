@@ -22,7 +22,6 @@ import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.document.server.entity.Document;
 import com.echothree.model.data.document.server.entity.DocumentType;
-import com.echothree.model.data.document.server.entity.DocumentTypeDetail;
 import com.echothree.model.data.document.server.entity.PartyDocument;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;

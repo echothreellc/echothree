@@ -21,13 +21,11 @@ import com.echothree.model.control.payment.common.exception.UnknownPaymentMethod
 import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.control.selector.common.SelectorKinds;
 import com.echothree.model.control.selector.common.SelectorTypes;
-import com.echothree.model.control.selector.server.evaluator.CachedSelector;
 import com.echothree.model.control.selector.server.evaluator.PaymentMethodItemSelectorEvaluator;
 import com.echothree.model.control.selector.server.evaluator.SelectorCache;
 import com.echothree.model.control.selector.server.evaluator.SelectorCacheFactory;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.payment.server.entity.PaymentMethod;
-import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;

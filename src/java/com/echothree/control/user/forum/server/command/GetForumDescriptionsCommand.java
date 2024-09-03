@@ -18,11 +18,9 @@ package com.echothree.control.user.forum.server.command;
 
 import com.echothree.control.user.forum.common.form.GetForumDescriptionsForm;
 import com.echothree.control.user.forum.common.result.ForumResultFactory;
-import com.echothree.control.user.forum.common.result.GetForumDescriptionsResult;
 import com.echothree.model.control.forum.common.ForumConstants;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.forum.server.logic.ForumLogic;
-import com.echothree.model.data.forum.server.entity.Forum;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;

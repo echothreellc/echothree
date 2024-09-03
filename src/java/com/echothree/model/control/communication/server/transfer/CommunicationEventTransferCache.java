@@ -16,17 +16,11 @@
 
 package com.echothree.model.control.communication.server.transfer;
 
-import com.echothree.model.control.communication.common.transfer.CommunicationEventPurposeTransfer;
 import com.echothree.model.control.communication.common.transfer.CommunicationEventTransfer;
-import com.echothree.model.control.communication.common.transfer.CommunicationEventTypeTransfer;
-import com.echothree.model.control.communication.common.transfer.CommunicationSourceTransfer;
 import com.echothree.model.control.communication.server.control.CommunicationControl;
-import com.echothree.model.control.contact.common.transfer.PartyContactMechanismTransfer;
 import com.echothree.model.control.contact.server.control.ContactControl;
-import com.echothree.model.control.document.common.transfer.DocumentTransfer;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.data.communication.server.entity.CommunicationEvent;
-import com.echothree.model.data.communication.server.entity.CommunicationEventDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 

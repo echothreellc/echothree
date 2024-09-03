@@ -16,7 +16,6 @@
 
 package com.echothree.util.server.validation.fieldtype;
 
-import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.util.common.string.DecimalUtils;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.form.BaseForm;

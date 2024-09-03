@@ -33,7 +33,6 @@ import com.echothree.model.control.user.common.UserConstants;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyRelationship;
 import com.echothree.model.data.party.server.entity.PartyType;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserLoginPasswordString;
 import com.echothree.model.data.user.server.entity.UserLoginStatus;

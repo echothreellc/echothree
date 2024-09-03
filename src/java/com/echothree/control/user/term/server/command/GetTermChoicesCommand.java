@@ -17,7 +17,6 @@
 package com.echothree.control.user.term.server.command;
 
 import com.echothree.control.user.term.common.form.GetTermChoicesForm;
-import com.echothree.control.user.term.common.result.GetTermChoicesResult;
 import com.echothree.control.user.term.common.result.TermResultFactory;
 import com.echothree.model.control.term.server.control.TermControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;

@@ -20,7 +20,6 @@ import com.echothree.model.control.index.common.exception.IndexUnavailableExcept
 import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.search.common.exception.SearchIOErrorException;
 import com.echothree.model.data.index.server.entity.Index;
-import com.echothree.model.data.index.server.entity.IndexStatus;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;

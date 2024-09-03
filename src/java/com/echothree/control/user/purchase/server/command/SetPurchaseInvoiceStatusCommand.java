@@ -19,7 +19,6 @@ package com.echothree.control.user.purchase.server.command;
 import com.echothree.control.user.purchase.common.form.SetPurchaseInvoiceStatusForm;
 import com.echothree.model.control.invoice.server.logic.PurchaseInvoiceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.data.invoice.server.entity.Invoice;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;

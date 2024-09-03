@@ -17,7 +17,6 @@
 package com.echothree.model.control.shipment.server.transfer;
 
 import com.echothree.model.control.shipment.common.transfer.ShipmentAliasTransfer;
-import com.echothree.model.control.shipment.common.transfer.ShipmentAliasTypeTransfer;
 import com.echothree.model.control.shipment.server.ShipmentControl;
 import com.echothree.model.data.shipment.server.entity.ShipmentAlias;
 import com.echothree.model.data.user.server.entity.UserVisit;

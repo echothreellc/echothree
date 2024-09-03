@@ -17,14 +17,11 @@
 package com.echothree.model.control.content.server.transfer;
 
 import com.echothree.model.control.content.common.ContentProperties;
-import com.echothree.model.control.content.common.transfer.ContentCatalogItemTransfer;
 import com.echothree.model.control.content.common.transfer.ContentCategoryItemTransfer;
-import com.echothree.model.control.content.common.transfer.ContentCategoryTransfer;
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.data.content.server.entity.ContentCategoryItem;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
-import java.util.Set;
 
 public class ContentCategoryItemTransferCache
         extends BaseContentTransferCache<ContentCategoryItem, ContentCategoryItemTransfer> {

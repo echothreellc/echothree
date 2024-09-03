@@ -16,14 +16,11 @@
 
 package com.echothree.model.control.user.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.user.common.UserConstants;
 import com.echothree.model.control.user.common.transfer.UserLoginPasswordTransfer;
-import com.echothree.model.control.user.common.transfer.UserLoginPasswordTypeTransfer;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.user.server.entity.UserLoginPassword;
-import com.echothree.model.data.user.server.entity.UserLoginPasswordString;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 

@@ -19,7 +19,6 @@ package com.echothree.model.control.order.server.transfer;
 import com.echothree.model.control.order.common.transfer.OrderPriorityTransfer;
 import com.echothree.model.control.order.server.control.OrderPriorityControl;
 import com.echothree.model.data.order.server.entity.OrderPriority;
-import com.echothree.model.data.order.server.entity.OrderPriorityDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 

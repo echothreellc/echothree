@@ -25,25 +25,18 @@ import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.data.chain.server.entity.Chain;
-import com.echothree.model.data.chain.server.entity.ChainActionSet;
 import com.echothree.model.data.chain.server.entity.ChainEntityRoleType;
 import com.echothree.model.data.chain.server.entity.ChainInstance;
-import com.echothree.model.data.chain.server.entity.ChainInstanceEntityRole;
 import com.echothree.model.data.chain.server.entity.ChainKind;
 import com.echothree.model.data.chain.server.entity.ChainType;
 import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.customer.server.entity.Customer;
-import com.echothree.model.data.offer.server.entity.OfferChainType;
-import com.echothree.model.data.offer.server.entity.OfferUse;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class BaseChainLogic

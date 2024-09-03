@@ -18,7 +18,6 @@ package com.echothree.control.user.content.common;
 
 import com.echothree.control.user.content.server.ContentLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class ContentUtil {

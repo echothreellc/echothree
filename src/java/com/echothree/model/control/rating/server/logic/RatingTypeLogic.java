@@ -20,7 +20,6 @@ import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.model.control.rating.common.exception.UnknownRatingTypeNameException;
 import com.echothree.model.control.rating.server.control.RatingControl;
 import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.core.server.entity.EntityTypeDetail;
 import com.echothree.model.data.rating.server.entity.RatingType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;

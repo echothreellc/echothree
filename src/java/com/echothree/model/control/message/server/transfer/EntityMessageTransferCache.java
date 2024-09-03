@@ -16,10 +16,8 @@
 
 package com.echothree.model.control.message.server.transfer;
 
-import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.message.common.transfer.EntityMessageTransfer;
-import com.echothree.model.control.message.common.transfer.MessageTransfer;
 import com.echothree.model.control.message.server.control.MessageControl;
 import com.echothree.model.data.message.server.entity.EntityMessage;
 import com.echothree.model.data.user.server.entity.UserVisit;

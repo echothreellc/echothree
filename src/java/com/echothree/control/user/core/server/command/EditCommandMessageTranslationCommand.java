@@ -25,9 +25,6 @@ import com.echothree.control.user.core.common.spec.CommandMessageTranslationSpec
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.core.server.entity.CommandMessage;
 import com.echothree.model.data.core.server.entity.CommandMessageTranslation;
-import com.echothree.model.data.core.server.entity.CommandMessageType;
-import com.echothree.model.data.core.server.value.CommandMessageTranslationValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;

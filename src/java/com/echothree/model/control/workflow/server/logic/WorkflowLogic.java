@@ -27,7 +27,6 @@ import com.echothree.model.control.workflow.common.exception.UnknownWorkflowEnti
 import com.echothree.model.control.workflow.common.exception.UnknownWorkflowNameException;
 import com.echothree.model.control.workflow.common.exception.UnknownWorkflowSelectorKindException;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntityType;
 import com.echothree.model.data.workflow.server.entity.WorkflowSelectorKind;

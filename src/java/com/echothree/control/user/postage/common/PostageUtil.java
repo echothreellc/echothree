@@ -18,7 +18,6 @@ package com.echothree.control.user.postage.common;
 
 import com.echothree.control.user.postage.server.PostageLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class PostageUtil {

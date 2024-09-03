@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.invoice.server.transfer;
 
-import com.echothree.model.control.accounting.common.transfer.GlAccountTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.invoice.common.InvoiceOptions;
@@ -24,18 +23,13 @@ import com.echothree.model.control.invoice.common.InvoiceTypes;
 import com.echothree.model.control.invoice.common.transfer.InvoiceRoleTransfer;
 import com.echothree.model.control.invoice.common.transfer.InvoiceTimeTransfer;
 import com.echothree.model.control.invoice.common.transfer.InvoiceTransfer;
-import com.echothree.model.control.invoice.common.transfer.InvoiceTypeTransfer;
 import com.echothree.model.control.invoice.common.workflow.PurchaseInvoiceStatusConstants;
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
-import com.echothree.model.control.payment.common.transfer.BillingAccountTransfer;
 import com.echothree.model.control.payment.server.control.BillingControl;
-import com.echothree.model.control.term.common.transfer.TermTransfer;
 import com.echothree.model.control.term.server.control.TermControl;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.invoice.server.entity.Invoice;
-import com.echothree.model.data.invoice.server.entity.InvoiceDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.string.DateTimeFormatType;
 import com.echothree.util.common.string.DateTimeFormatter;
@@ -43,8 +37,6 @@ import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.common.transfer.MapWrapper;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.DateUtils;
-import java.util.List;
-import java.util.Set;
 
 public class InvoiceTransferCache
         extends BaseInvoiceTransferCache<Invoice, InvoiceTransfer> {

@@ -17,7 +17,6 @@
 package com.echothree.util.server.validation.fieldtype;
 
 import com.echothree.util.common.validation.FieldDefinition;
-import static com.echothree.util.common.validation.FieldType.ULID;
 import com.echothree.util.common.form.BaseForm;
 import com.echothree.util.common.message.Message;
 import com.echothree.util.common.message.Messages;

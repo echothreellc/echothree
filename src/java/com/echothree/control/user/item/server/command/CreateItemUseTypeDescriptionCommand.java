@@ -20,9 +20,6 @@ import com.echothree.control.user.item.common.form.CreateItemUseTypeDescriptionF
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.item.server.entity.ItemUseType;
-import com.echothree.model.data.item.server.entity.ItemUseTypeDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;

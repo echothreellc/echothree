@@ -25,8 +25,6 @@ import com.echothree.control.user.forum.common.spec.ForumForumThreadSpec;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.data.forum.server.entity.Forum;
 import com.echothree.model.data.forum.server.entity.ForumForumThread;
-import com.echothree.model.data.forum.server.entity.ForumThread;
-import com.echothree.model.data.forum.server.value.ForumForumThreadValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;

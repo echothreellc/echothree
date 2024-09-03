@@ -17,7 +17,6 @@
 package com.echothree.control.user.letter.server.command;
 
 import com.echothree.control.user.letter.common.form.GetLetterSourceChoicesForm;
-import com.echothree.control.user.letter.common.result.GetLetterSourceChoicesResult;
 import com.echothree.control.user.letter.common.result.LetterResultFactory;
 import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.control.party.common.PartyTypes;

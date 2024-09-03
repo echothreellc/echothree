@@ -19,7 +19,6 @@ package com.echothree.model.control.item.server.transfer;
 import com.echothree.model.control.item.common.transfer.RelatedItemTypeTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.RelatedItemType;
-import com.echothree.model.data.item.server.entity.RelatedItemTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class RelatedItemTypeTransferCache

@@ -18,14 +18,10 @@ package com.echothree.control.user.inventory.server.command;
 
 
 import com.echothree.control.user.inventory.common.form.GetInventoryLocationGroupCapacitiesForm;
-import com.echothree.control.user.inventory.common.result.GetInventoryLocationGroupCapacitiesResult;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
-import com.echothree.model.data.inventory.server.entity.InventoryLocationGroup;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.model.data.warehouse.server.entity.Warehouse;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;

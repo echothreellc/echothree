@@ -20,10 +20,8 @@ import com.echothree.model.control.party.common.PartyProperties;
 import com.echothree.model.control.party.common.transfer.TimeZoneTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.TimeZone;
-import com.echothree.model.data.party.server.entity.TimeZoneDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
-import java.util.Set;
 
 public class TimeZoneTransferCache
         extends BasePartyTransferCache<TimeZone, TimeZoneTransfer> {

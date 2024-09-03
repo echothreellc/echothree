@@ -28,8 +28,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.RelatedItem;
-import com.echothree.model.data.item.server.entity.RelatedItemType;
-import com.echothree.model.data.item.server.value.RelatedItemDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;

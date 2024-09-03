@@ -18,10 +18,7 @@ package com.echothree.control.user.associate.server.command;
 
 import com.echothree.control.user.associate.common.form.GetAssociateReferralsForm;
 import com.echothree.control.user.associate.common.result.AssociateResultFactory;
-import com.echothree.control.user.associate.common.result.GetAssociateReferralsResult;
 import com.echothree.model.control.associate.server.control.AssociateControl;
-import com.echothree.model.data.associate.server.entity.Associate;
-import com.echothree.model.data.associate.server.entity.AssociateProgram;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;

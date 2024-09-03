@@ -17,7 +17,6 @@
 package com.echothree.control.user.selector.server.command;
 
 import com.echothree.control.user.selector.common.form.GetSelectorTextSearchTypeChoicesForm;
-import com.echothree.control.user.selector.common.result.GetSelectorTextSearchTypeChoicesResult;
 import com.echothree.control.user.selector.common.result.SelectorResultFactory;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;

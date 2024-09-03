@@ -20,7 +20,6 @@ import com.echothree.view.client.web.struts.sprout.SproutRequestProcessor;
 import com.echothree.view.client.web.util.HttpSessionUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**

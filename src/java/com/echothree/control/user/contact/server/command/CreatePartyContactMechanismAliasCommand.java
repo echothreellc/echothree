@@ -19,11 +19,6 @@ package com.echothree.control.user.contact.server.command;
 import com.echothree.control.user.contact.common.form.CreatePartyContactMechanismAliasForm;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.contact.server.entity.ContactMechanism;
-import com.echothree.model.data.contact.server.entity.ContactMechanismAliasType;
-import com.echothree.model.data.contact.server.entity.ContactMechanismAliasTypeDetail;
-import com.echothree.model.data.contact.server.entity.PartyContactMechanismAlias;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -34,7 +29,6 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CreatePartyContactMechanismAliasCommand

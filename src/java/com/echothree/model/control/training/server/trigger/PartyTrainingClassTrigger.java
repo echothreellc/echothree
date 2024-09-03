@@ -21,21 +21,17 @@ import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.security.server.control.SecurityControl;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.control.training.server.logic.PartyTrainingClassLogic;
-import com.echothree.model.control.training.server.logic.PartyTrainingClassLogic.PreparedPartyTrainingClass;
 import com.echothree.model.control.training.common.training.PartyTrainingClassStatusConstants;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workflow.server.trigger.BaseTrigger;
 import com.echothree.model.control.workflow.server.trigger.EntityTypeTrigger;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.security.server.entity.PartySecurityRoleTemplateUse;
 import com.echothree.model.data.training.server.entity.PartyTrainingClass;
-import com.echothree.model.data.training.server.entity.PartyTrainingClassDetail;
 import com.echothree.model.data.training.server.entity.TrainingClass;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntityStatus;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class PartyTrainingClassTrigger
         extends BaseTrigger

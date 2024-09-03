@@ -19,7 +19,6 @@ package com.echothree.model.control.core.server.transfer;
 import com.echothree.model.control.core.common.transfer.ProtocolTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.Protocol;
-import com.echothree.model.data.core.server.entity.ProtocolDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 

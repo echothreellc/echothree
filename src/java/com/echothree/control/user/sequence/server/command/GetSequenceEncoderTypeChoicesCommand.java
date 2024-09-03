@@ -17,7 +17,6 @@
 package com.echothree.control.user.sequence.server.command;
 
 import com.echothree.control.user.sequence.common.form.GetSequenceEncoderTypeChoicesForm;
-import com.echothree.control.user.sequence.common.result.GetSequenceEncoderTypeChoicesResult;
 import com.echothree.control.user.sequence.common.result.SequenceResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;

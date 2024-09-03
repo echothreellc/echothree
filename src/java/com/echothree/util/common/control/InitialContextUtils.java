@@ -17,7 +17,6 @@
 package com.echothree.util.common.control;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Properties;
 import javax.naming.Context;
 import javax.naming.InitialContext;

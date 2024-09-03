@@ -23,19 +23,9 @@ import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.comment.server.entity.Comment;
-import com.echothree.model.data.comment.server.entity.CommentBlob;
-import com.echothree.model.data.comment.server.entity.CommentClob;
-import com.echothree.model.data.comment.server.entity.CommentDetail;
-import com.echothree.model.data.comment.server.entity.CommentString;
-import com.echothree.model.data.comment.server.entity.CommentType;
-import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.model.data.workflow.server.entity.Workflow;
-import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class CommentTransferCache
         extends BaseCommentTransferCache<Comment, CommentTransfer> {

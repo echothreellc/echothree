@@ -17,12 +17,8 @@
 package com.echothree.view.client.web.struts;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.form.GetCurrencyChoicesForm;
 import com.echothree.control.user.accounting.common.result.GetCurrencyChoicesResult;
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.GetDateTimeFormatChoicesForm;
-import com.echothree.control.user.party.common.form.GetLanguageChoicesForm;
-import com.echothree.control.user.party.common.form.GetTimeZoneChoicesForm;
 import com.echothree.control.user.party.common.result.GetDateTimeFormatChoicesResult;
 import com.echothree.control.user.party.common.result.GetLanguageChoicesResult;
 import com.echothree.control.user.party.common.result.GetTimeZoneChoicesResult;
@@ -30,8 +26,6 @@ import com.echothree.model.control.accounting.common.choice.CurrencyChoicesBean;
 import com.echothree.model.control.party.common.choice.DateTimeFormatChoicesBean;
 import com.echothree.model.control.party.common.choice.LanguageChoicesBean;
 import com.echothree.model.control.party.common.choice.TimeZoneChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import java.util.List;
 import javax.naming.NamingException;
 import org.apache.struts.util.LabelValueBean;

@@ -17,9 +17,7 @@
 package com.echothree.model.control.icon.server.transfer;
 
 import com.echothree.model.control.icon.common.transfer.IconUsageTypeDescriptionTransfer;
-import com.echothree.model.control.icon.common.transfer.IconUsageTypeTransfer;
 import com.echothree.model.control.icon.server.control.IconControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.icon.server.entity.IconUsageTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 

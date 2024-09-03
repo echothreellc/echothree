@@ -20,9 +20,7 @@ import com.echothree.model.control.search.common.SearchOptions;
 import com.echothree.model.control.search.common.transfer.SearchUseTypeTransfer;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.data.search.server.entity.SearchUseType;
-import com.echothree.model.data.search.server.entity.SearchUseTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import java.util.Set;
 
 public class SearchUseTypeTransferCache
         extends BaseSearchTransferCache<SearchUseType, SearchUseTypeTransfer> {

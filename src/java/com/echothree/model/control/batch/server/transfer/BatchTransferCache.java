@@ -17,13 +17,9 @@
 package com.echothree.model.control.batch.server.transfer;
 
 import com.echothree.model.control.batch.common.transfer.BatchTransfer;
-import com.echothree.model.control.batch.common.transfer.BatchTypeTransfer;
 import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.batch.server.entity.Batch;
-import com.echothree.model.data.batch.server.entity.BatchDetail;
-import com.echothree.model.data.batch.server.entity.BatchType;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 

@@ -17,7 +17,6 @@
 package com.echothree.control.user.warehouse.server.command;
 
 import com.echothree.control.user.warehouse.common.form.GetLocationUseTypeChoicesForm;
-import com.echothree.control.user.warehouse.common.result.GetLocationUseTypeChoicesResult;
 import com.echothree.control.user.warehouse.common.result.WarehouseResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;

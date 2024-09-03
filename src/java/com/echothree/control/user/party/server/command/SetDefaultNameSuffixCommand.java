@@ -18,8 +18,6 @@ package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.SetDefaultNameSuffixForm;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.party.common.pk.NameSuffixPK;
-import com.echothree.model.data.party.server.value.NameSuffixDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;

@@ -18,7 +18,6 @@ package com.echothree.control.user.rating.common;
 
 import com.echothree.control.user.rating.server.RatingLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class RatingUtil {

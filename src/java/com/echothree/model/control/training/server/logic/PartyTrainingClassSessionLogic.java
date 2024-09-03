@@ -23,23 +23,14 @@ import com.echothree.model.control.training.common.exception.UnknownPartyTrainin
 import com.echothree.model.control.training.common.exception.UnknownPartyTrainingClassSessionStatusException;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.training.server.entity.PartyTrainingClass;
-import com.echothree.model.data.training.server.entity.PartyTrainingClassDetail;
 import com.echothree.model.data.training.server.entity.PartyTrainingClassSession;
 import com.echothree.model.data.training.server.entity.PartyTrainingClassSessionAnswer;
-import com.echothree.model.data.training.server.entity.PartyTrainingClassSessionDetail;
 import com.echothree.model.data.training.server.entity.PartyTrainingClassSessionPage;
 import com.echothree.model.data.training.server.entity.PartyTrainingClassSessionQuestion;
-import com.echothree.model.data.training.server.entity.PartyTrainingClassSessionQuestionDetail;
 import com.echothree.model.data.training.server.entity.PartyTrainingClassSessionSection;
 import com.echothree.model.data.training.server.entity.PartyTrainingClassSessionStatus;
-import com.echothree.model.data.training.server.entity.PartyTrainingClassStatus;
-import com.echothree.model.data.training.server.entity.TrainingClass;
-import com.echothree.model.data.training.server.entity.TrainingClassDetail;
 import com.echothree.model.data.training.server.entity.TrainingClassPage;
 import com.echothree.model.data.training.server.entity.TrainingClassQuestion;
-import com.echothree.model.data.training.server.entity.TrainingClassQuestionDetail;
-import com.echothree.model.data.training.server.entity.TrainingClassSection;
-import com.echothree.model.data.training.server.entity.TrainingClassSectionDetail;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
@@ -52,7 +43,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Random;
 
 public class PartyTrainingClassSessionLogic
         extends BaseLogic {

@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.chain.server.transfer;
 
-import com.echothree.model.control.chain.common.transfer.ChainActionSetTransfer;
 import com.echothree.model.control.chain.common.transfer.ChainInstanceStatusTransfer;
-import com.echothree.model.control.chain.common.transfer.ChainInstanceTransfer;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.chain.server.entity.ChainInstanceStatus;

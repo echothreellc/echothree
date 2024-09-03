@@ -17,12 +17,9 @@
 package com.echothree.model.control.warehouse.server.transfer;
 
 import com.echothree.model.control.warehouse.common.transfer.LocationTypeTransfer;
-import com.echothree.model.control.warehouse.common.transfer.WarehouseTransfer;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.warehouse.server.entity.LocationType;
-import com.echothree.model.data.warehouse.server.entity.LocationTypeDetail;
-import com.echothree.model.data.warehouse.server.entity.Warehouse;
 
 public class LocationTypeTransferCache
         extends BaseWarehouseTransferCache<LocationType, LocationTypeTransfer> {

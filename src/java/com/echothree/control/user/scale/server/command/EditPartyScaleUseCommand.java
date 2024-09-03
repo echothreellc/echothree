@@ -30,8 +30,6 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.scale.server.entity.PartyScaleUse;
 import com.echothree.model.data.scale.server.entity.Scale;
-import com.echothree.model.data.scale.server.entity.ScaleUseType;
-import com.echothree.model.data.scale.server.value.PartyScaleUseValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;

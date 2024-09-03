@@ -18,7 +18,6 @@ package com.echothree.control.user.license.common;
 
 import com.echothree.control.user.license.server.LicenseLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class LicenseUtil {

@@ -17,9 +17,7 @@
 package com.echothree.model.control.order.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.data.accounting.common.pk.CurrencyPK;
 import com.echothree.model.data.accounting.server.entity.Currency;
-import com.echothree.model.data.batch.common.pk.BatchPK;
 import com.echothree.model.data.batch.server.entity.Batch;
 import com.echothree.model.data.order.server.entity.OrderBatch;
 import com.echothree.model.data.order.server.factory.OrderBatchFactory;

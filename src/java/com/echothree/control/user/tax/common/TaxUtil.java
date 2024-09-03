@@ -18,7 +18,6 @@ package com.echothree.control.user.tax.common;
 
 import com.echothree.control.user.tax.server.TaxLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class TaxUtil {

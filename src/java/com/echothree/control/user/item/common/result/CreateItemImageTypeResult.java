@@ -17,7 +17,6 @@
 package com.echothree.control.user.item.common.result;
 
 import com.echothree.control.user.core.common.spec.EntityRefSpec;
-import com.echothree.control.user.item.common.spec.ItemCategorySpec;
 import com.echothree.control.user.item.common.spec.ItemImageTypeSpec;
 import com.echothree.util.common.command.BaseResult;
 

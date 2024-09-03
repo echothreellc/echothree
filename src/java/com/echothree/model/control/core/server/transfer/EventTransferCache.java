@@ -16,13 +16,9 @@
 
 package com.echothree.model.control.core.server.transfer;
 
-import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.model.control.core.common.transfer.EventTransfer;
-import com.echothree.model.control.core.common.transfer.EventTypeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.Event;
-import com.echothree.model.data.core.server.entity.EventType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 

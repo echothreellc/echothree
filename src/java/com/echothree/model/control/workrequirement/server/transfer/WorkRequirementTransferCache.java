@@ -18,22 +18,16 @@ package com.echothree.model.control.workrequirement.server.transfer;
 
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.uom.server.control.UomControl;
-import com.echothree.model.control.workeffort.common.transfer.WorkEffortTransfer;
 import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.control.workrequirement.common.workflow.WorkRequirementStatusConstants;
-import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workrequirement.common.WorkRequirementOptions;
-import com.echothree.model.control.workrequirement.common.transfer.WorkRequirementScopeTransfer;
 import com.echothree.model.control.workrequirement.common.transfer.WorkRequirementTransfer;
 import com.echothree.model.control.workrequirement.server.control.WorkRequirementControl;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workrequirement.server.entity.WorkRequirement;
-import com.echothree.model.data.workrequirement.server.entity.WorkRequirementDetail;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class WorkRequirementTransferCache
         extends BaseWorkRequirementTransferCache<WorkRequirement, WorkRequirementTransfer> {

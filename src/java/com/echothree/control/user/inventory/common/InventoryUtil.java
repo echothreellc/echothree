@@ -18,7 +18,6 @@ package com.echothree.control.user.inventory.common;
 
 import com.echothree.control.user.inventory.server.InventoryLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class InventoryUtil {

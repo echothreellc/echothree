@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.security.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.security.common.transfer.SecurityRoleGroupDescriptionTransfer;
-import com.echothree.model.control.security.common.transfer.SecurityRoleGroupTransfer;
 import com.echothree.model.control.security.server.control.SecurityControl;
 import com.echothree.model.data.security.server.entity.SecurityRoleGroupDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;

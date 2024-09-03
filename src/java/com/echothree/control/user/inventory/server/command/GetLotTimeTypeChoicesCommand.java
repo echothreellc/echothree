@@ -17,7 +17,6 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.GetLotTimeTypeChoicesForm;
-import com.echothree.control.user.inventory.common.result.GetLotTimeTypeChoicesResult;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.model.control.inventory.server.control.LotTimeControl;
 import com.echothree.model.control.party.common.PartyTypes;

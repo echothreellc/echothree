@@ -75,7 +75,6 @@ package com.echothree.view.client.web.struts.sslext.action;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.MissingResourceException;

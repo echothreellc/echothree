@@ -17,11 +17,8 @@
 package com.echothree.model.control.training.server.transfer;
 
 import com.echothree.model.control.training.common.transfer.PartyTrainingClassSessionAnswerTransfer;
-import com.echothree.model.control.training.common.transfer.PartyTrainingClassSessionQuestionTransfer;
-import com.echothree.model.control.training.common.transfer.TrainingClassAnswerTransfer;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.training.server.entity.PartyTrainingClassSessionAnswer;
-import com.echothree.model.data.training.server.entity.TrainingClassAnswer;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class PartyTrainingClassSessionAnswerTransferCache

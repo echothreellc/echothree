@@ -39,15 +39,10 @@ import com.echothree.model.control.workflow.server.logic.WorkflowStepLogic;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.batch.server.entity.Batch;
 import com.echothree.model.data.batch.server.entity.BatchEntity;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.order.server.entity.Order;
-import com.echothree.model.data.order.server.entity.OrderBatch;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.payment.server.entity.PaymentMethod;
-import com.echothree.model.data.workflow.server.entity.Workflow;
-import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
-import com.echothree.model.data.workflow.server.entity.WorkflowEntityStatus;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
@@ -56,8 +51,6 @@ import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class SalesOrderBatchLogic
         extends BaseLogic {

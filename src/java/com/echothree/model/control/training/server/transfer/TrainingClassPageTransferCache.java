@@ -17,11 +17,8 @@
 package com.echothree.model.control.training.server.transfer;
 
 import com.echothree.model.control.training.common.transfer.TrainingClassPageTransfer;
-import com.echothree.model.control.training.common.transfer.TrainingClassSectionTransfer;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.training.server.entity.TrainingClassPage;
-import com.echothree.model.data.training.server.entity.TrainingClassPageDetail;
-import com.echothree.model.data.training.server.entity.TrainingClassPageTranslation;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class TrainingClassPageTransferCache

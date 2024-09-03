@@ -17,12 +17,9 @@
 package com.echothree.control.user.workeffort.server.command;
 
 import com.echothree.control.user.workeffort.common.form.GetWorkEffortScopeChoicesForm;
-import com.echothree.control.user.workeffort.common.result.GetWorkEffortScopeChoicesResult;
 import com.echothree.control.user.workeffort.common.result.WorkEffortResultFactory;
 import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.workeffort.server.entity.WorkEffortType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;

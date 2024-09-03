@@ -24,7 +24,6 @@ import com.echothree.model.control.uom.common.exception.UnknownUnitOfMeasureKind
 import com.echothree.model.control.uom.common.exception.UnknownUnitOfMeasureTypeNameException;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.uom.server.util.Conversion;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.util.common.exception.BaseException;

@@ -18,7 +18,6 @@ package com.echothree.control.user.party.common;
 
 import com.echothree.control.user.party.server.PartyLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class PartyUtil {

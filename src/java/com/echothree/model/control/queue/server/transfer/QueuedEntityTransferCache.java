@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.queue.server.transfer;
 
-import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.queue.common.transfer.QueueTypeTransfer;
 import com.echothree.model.control.queue.common.transfer.QueuedEntityTransfer;
 import com.echothree.model.control.queue.server.control.QueueControl;
 import com.echothree.model.data.queue.server.entity.QueuedEntity;

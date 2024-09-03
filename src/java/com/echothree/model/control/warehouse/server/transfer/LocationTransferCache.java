@@ -17,24 +17,15 @@
 package com.echothree.model.control.warehouse.server.transfer;
 
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.inventory.common.transfer.InventoryLocationGroupTransfer;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.warehouse.common.WarehouseOptions;
 import com.echothree.model.control.warehouse.common.transfer.LocationTransfer;
-import com.echothree.model.control.warehouse.common.transfer.LocationTypeTransfer;
-import com.echothree.model.control.warehouse.common.transfer.LocationUseTypeTransfer;
-import com.echothree.model.control.warehouse.common.transfer.WarehouseTransfer;
 import com.echothree.model.control.warehouse.common.workflow.LocationStatusConstants;
 import com.echothree.model.control.warehouse.server.control.LocationUseTypeControl;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
-import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.warehouse.server.entity.Location;
-import com.echothree.model.data.warehouse.server.entity.LocationDetail;
-import com.echothree.model.data.warehouse.server.entity.LocationVolume;
-import com.echothree.model.data.warehouse.server.entity.Warehouse;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
 

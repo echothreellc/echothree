@@ -17,15 +17,7 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.core.server.entity.Event;
 import com.echothree.model.data.core.server.entity.EventSubscriber;
-import com.echothree.model.data.core.server.entity.EventSubscriberEntityInstance;
-import com.echothree.model.data.core.server.entity.EventSubscriberEntityType;
-import com.echothree.model.data.core.server.entity.EventSubscriberEventType;
-import com.echothree.model.data.core.server.entity.EventType;
-import com.echothree.model.data.core.server.entity.QueuedEvent;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
@@ -34,7 +26,6 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class ProcessQueuedEventsCommand

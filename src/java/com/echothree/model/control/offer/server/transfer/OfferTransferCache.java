@@ -16,30 +16,20 @@
 
 package com.echothree.model.control.offer.server.transfer;
 
-import com.echothree.model.control.filter.common.transfer.FilterTransfer;
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.offer.common.OfferOptions;
 import com.echothree.model.control.offer.common.OfferProperties;
 import com.echothree.model.control.offer.common.transfer.OfferTransfer;
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.control.OfferNameElementControl;
-import com.echothree.model.control.party.common.transfer.DepartmentTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.control.selector.common.transfer.SelectorTransfer;
 import com.echothree.model.control.selector.server.control.SelectorControl;
-import com.echothree.model.control.sequence.common.transfer.SequenceTransfer;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
-import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.offer.server.entity.Offer;
-import com.echothree.model.data.offer.server.entity.OfferDetail;
-import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.selector.server.entity.Selector;
-import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.transfer.ListWrapperBuilder;
-import java.util.Set;
 
 public class OfferTransferCache
         extends BaseOfferTransferCache<Offer, OfferTransfer> {

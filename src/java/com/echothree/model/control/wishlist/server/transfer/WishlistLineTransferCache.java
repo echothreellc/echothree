@@ -17,23 +17,14 @@
 package com.echothree.model.control.wishlist.server.transfer;
 
 import com.echothree.model.control.associate.common.transfer.AssociateReferralTransfer;
-import com.echothree.model.control.inventory.common.transfer.InventoryConditionTransfer;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
-import com.echothree.model.control.item.common.transfer.ItemTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.control.offer.common.transfer.OfferUseTransfer;
 import com.echothree.model.control.offer.server.control.OfferUseControl;
-import com.echothree.model.control.uom.common.transfer.UnitOfMeasureTypeTransfer;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.wishlist.common.transfer.WishlistLineTransfer;
-import com.echothree.model.control.wishlist.common.transfer.WishlistTransfer;
-import com.echothree.model.control.wishlist.common.transfer.WishlistPriorityTransfer;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
-import com.echothree.model.data.order.server.entity.Order;
 import com.echothree.model.data.order.server.entity.OrderLine;
-import com.echothree.model.data.order.server.entity.OrderLineDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.model.data.wishlist.server.entity.WishlistLine;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
 

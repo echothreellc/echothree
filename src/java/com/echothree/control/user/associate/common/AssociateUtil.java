@@ -18,7 +18,6 @@ package com.echothree.control.user.associate.common;
 
 import com.echothree.control.user.associate.server.AssociateLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class AssociateUtil {

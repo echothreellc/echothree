@@ -22,11 +22,9 @@ import com.echothree.model.control.order.common.exception.UnknownOrderTimeTypeNa
 import com.echothree.model.control.order.common.transfer.OrderTimeTransfer;
 import com.echothree.model.control.order.server.control.OrderTimeControl;
 import com.echothree.model.data.order.server.entity.Order;
-import com.echothree.model.data.order.server.entity.OrderDetail;
 import com.echothree.model.data.order.server.entity.OrderTime;
 import com.echothree.model.data.order.server.entity.OrderTimeType;
 import com.echothree.model.data.order.server.entity.OrderType;
-import com.echothree.model.data.order.server.value.OrderTimeValue;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;

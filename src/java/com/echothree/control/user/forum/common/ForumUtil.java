@@ -18,7 +18,6 @@ package com.echothree.control.user.forum.common;
 
 import com.echothree.control.user.forum.server.ForumLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class ForumUtil {

@@ -19,7 +19,6 @@ package com.echothree.model.control.party.server.transfer;
 import com.echothree.model.control.party.common.transfer.BirthdayFormatTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.BirthdayFormat;
-import com.echothree.model.data.party.server.entity.BirthdayFormatDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class BirthdayFormatTransferCache

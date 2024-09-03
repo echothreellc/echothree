@@ -18,7 +18,6 @@ package com.echothree.control.user.uom.common;
 
 import com.echothree.control.user.uom.server.UomLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class UomUtil {

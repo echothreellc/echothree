@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.queue.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.queue.common.transfer.QueueTypeDescriptionTransfer;
-import com.echothree.model.control.queue.common.transfer.QueueTypeTransfer;
 import com.echothree.model.control.queue.server.control.QueueControl;
 import com.echothree.model.data.queue.server.entity.QueueTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;

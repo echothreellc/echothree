@@ -23,7 +23,6 @@ import com.echothree.util.common.message.Messages;
 import com.echothree.util.server.validation.Patterns;
 import com.echothree.util.server.validation.Validator;
 import java.util.Locale;
-import java.util.regex.Matcher;
 
 public class TagFieldType
         extends BaseFieldType {

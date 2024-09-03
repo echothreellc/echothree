@@ -23,7 +23,6 @@ import com.echothree.model.data.core.server.entity.EntityAttributeType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class EntityAttributeTypeTransferCache
         extends BaseCoreTransferCache<EntityAttributeType, EntityAttributeTypeTransfer> {

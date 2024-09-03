@@ -37,7 +37,6 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workflow.server.logic.WorkflowSecurityLogic;
 import com.echothree.model.data.accounting.server.entity.ItemAccountingCategory;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.item.server.entity.ItemDeliveryType;
 import com.echothree.model.data.item.server.entity.ItemInventoryType;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;

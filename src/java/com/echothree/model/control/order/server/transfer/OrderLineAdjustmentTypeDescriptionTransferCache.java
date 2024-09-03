@@ -17,9 +17,7 @@
 package com.echothree.model.control.order.server.transfer;
 
 import com.echothree.model.control.order.common.transfer.OrderLineAdjustmentTypeDescriptionTransfer;
-import com.echothree.model.control.order.common.transfer.OrderLineAdjustmentTypeTransfer;
 import com.echothree.model.control.order.server.control.OrderLineAdjustmentControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.order.server.entity.OrderLineAdjustmentTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;

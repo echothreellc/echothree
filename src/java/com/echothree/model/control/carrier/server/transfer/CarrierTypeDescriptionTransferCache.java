@@ -17,9 +17,7 @@
 package com.echothree.model.control.carrier.server.transfer;
 
 import com.echothree.model.control.carrier.common.transfer.CarrierTypeDescriptionTransfer;
-import com.echothree.model.control.carrier.common.transfer.CarrierTypeTransfer;
 import com.echothree.model.control.carrier.server.control.CarrierControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.carrier.server.entity.CarrierTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 

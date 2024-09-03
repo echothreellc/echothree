@@ -18,7 +18,6 @@ package com.echothree.control.user.returnpolicy.common;
 
 import com.echothree.control.user.returnpolicy.server.ReturnPolicyLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class ReturnPolicyUtil {

@@ -17,13 +17,10 @@
 package com.echothree.control.user.term.server.command;
 
 import com.echothree.control.user.term.common.form.GetPartyCreditLimitsForm;
-import com.echothree.control.user.term.common.result.GetPartyCreditLimitsResult;
 import com.echothree.control.user.term.common.result.TermResultFactory;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.term.server.control.TermControl;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;

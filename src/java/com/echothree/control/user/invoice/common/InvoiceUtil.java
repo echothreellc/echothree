@@ -18,7 +18,6 @@ package com.echothree.control.user.invoice.common;
 
 import com.echothree.control.user.invoice.server.InvoiceLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class InvoiceUtil {

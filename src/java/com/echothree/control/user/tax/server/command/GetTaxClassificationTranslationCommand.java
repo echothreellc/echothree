@@ -17,7 +17,6 @@
 package com.echothree.control.user.tax.server.command;
 
 import com.echothree.control.user.tax.common.form.GetTaxClassificationTranslationForm;
-import com.echothree.control.user.tax.common.result.GetTaxClassificationTranslationResult;
 import com.echothree.control.user.tax.common.result.TaxResultFactory;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -25,10 +24,6 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.tax.server.control.TaxControl;
-import com.echothree.model.data.geo.server.entity.GeoCode;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.tax.server.entity.TaxClassification;
-import com.echothree.model.data.tax.server.entity.TaxClassificationTranslation;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;

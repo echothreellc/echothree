@@ -20,19 +20,12 @@ import com.echothree.model.control.comment.common.CommentConstants;
 import com.echothree.model.control.payment.common.PaymentMethodTypes;
 import com.echothree.model.control.payment.common.PaymentOptions;
 import com.echothree.model.control.payment.common.transfer.PaymentMethodTransfer;
-import com.echothree.model.control.payment.common.transfer.PaymentMethodTypeTransfer;
-import com.echothree.model.control.payment.common.transfer.PaymentProcessorTransfer;
 import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.control.payment.server.control.PaymentMethodTypeControl;
 import com.echothree.model.control.payment.server.control.PaymentProcessorControl;
 import com.echothree.model.data.payment.server.entity.PaymentMethod;
-import com.echothree.model.data.payment.server.entity.PaymentMethodCheck;
-import com.echothree.model.data.payment.server.entity.PaymentMethodCreditCard;
-import com.echothree.model.data.payment.server.entity.PaymentMethodDetail;
-import com.echothree.model.data.payment.server.entity.PaymentProcessor;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class PaymentMethodTransferCache
         extends BasePaymentTransferCache<PaymentMethod, PaymentMethodTransfer> {

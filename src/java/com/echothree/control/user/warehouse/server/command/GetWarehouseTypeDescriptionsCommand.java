@@ -18,12 +18,10 @@ package com.echothree.control.user.warehouse.server.command;
 
 import com.echothree.control.user.warehouse.common.form.GetWarehouseTypeDescriptionsForm;
 import com.echothree.control.user.warehouse.common.result.WarehouseResultFactory;
-import com.echothree.control.user.warehouse.common.result.GetWarehouseTypeDescriptionsResult;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.warehouse.server.entity.WarehouseType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;

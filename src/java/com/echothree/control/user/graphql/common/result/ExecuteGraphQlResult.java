@@ -17,7 +17,6 @@
 package com.echothree.control.user.graphql.common.result;
 
 import com.echothree.util.common.command.BaseResult;
-import java.util.Map;
 
 public interface ExecuteGraphQlResult
         extends BaseResult {

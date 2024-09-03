@@ -18,7 +18,6 @@ package com.echothree.control.user.communication.common;
 
 import com.echothree.control.user.communication.server.CommunicationLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class CommunicationUtil {

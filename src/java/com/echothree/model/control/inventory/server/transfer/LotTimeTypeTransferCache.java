@@ -20,7 +20,6 @@ import com.echothree.model.control.inventory.common.transfer.LotTimeTypeTransfer
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.inventory.server.control.LotTimeControl;
 import com.echothree.model.data.inventory.server.entity.LotTimeType;
-import com.echothree.model.data.inventory.server.entity.LotTimeTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 

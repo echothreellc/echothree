@@ -18,7 +18,6 @@ package com.echothree.control.user.user.common;
 
 import com.echothree.control.user.user.server.UserLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class UserUtil {

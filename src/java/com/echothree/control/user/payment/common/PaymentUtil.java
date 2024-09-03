@@ -18,7 +18,6 @@ package com.echothree.control.user.payment.common;
 
 import com.echothree.control.user.payment.server.PaymentLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class PaymentUtil {

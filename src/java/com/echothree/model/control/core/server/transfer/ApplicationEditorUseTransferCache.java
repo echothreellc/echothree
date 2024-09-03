@@ -16,13 +16,9 @@
 
 package com.echothree.model.control.core.server.transfer;
 
-import com.echothree.model.control.core.common.transfer.ApplicationEditorTransfer;
 import com.echothree.model.control.core.common.transfer.ApplicationEditorUseTransfer;
-import com.echothree.model.control.core.common.transfer.ApplicationTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.data.core.server.entity.ApplicationEditor;
 import com.echothree.model.data.core.server.entity.ApplicationEditorUse;
-import com.echothree.model.data.core.server.entity.ApplicationEditorUseDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 

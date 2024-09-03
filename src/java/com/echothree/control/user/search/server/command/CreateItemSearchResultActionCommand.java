@@ -19,7 +19,6 @@ package com.echothree.control.user.search.server.command;
 import com.echothree.control.user.search.common.form.CreateItemSearchResultActionForm;
 import com.echothree.model.control.item.server.logic.ItemLogic;
 import com.echothree.model.control.search.common.SearchKinds;
-import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;

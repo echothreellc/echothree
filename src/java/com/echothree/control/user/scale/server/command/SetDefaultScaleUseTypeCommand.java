@@ -18,7 +18,6 @@ package com.echothree.control.user.scale.server.command;
 
 import com.echothree.control.user.scale.common.form.SetDefaultScaleUseTypeForm;
 import com.echothree.model.control.scale.server.control.ScaleControl;
-import com.echothree.model.data.scale.server.value.ScaleUseTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;

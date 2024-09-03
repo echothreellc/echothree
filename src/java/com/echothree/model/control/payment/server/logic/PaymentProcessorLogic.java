@@ -25,7 +25,6 @@ import com.echothree.model.control.payment.common.exception.DuplicatePaymentProc
 import com.echothree.model.control.payment.common.exception.UnknownDefaultPaymentProcessorException;
 import com.echothree.model.control.payment.common.exception.UnknownPaymentProcessorNameException;
 import com.echothree.model.control.payment.server.control.PaymentProcessorControl;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.payment.server.entity.PaymentProcessor;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorType;

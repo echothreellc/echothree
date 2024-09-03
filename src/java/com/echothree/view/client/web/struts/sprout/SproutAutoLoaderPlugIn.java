@@ -33,13 +33,7 @@ package com.echothree.view.client.web.struts.sprout;
 
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
-import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
-import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import io.github.classgraph.ClassGraph;
-import io.github.classgraph.ClassInfoList;
-import io.github.classgraph.ScanResult;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import javax.servlet.ServletException;
@@ -47,11 +41,8 @@ import org.apache.commons.beanutils.BeanMap;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionFormBean;
 import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionServlet;
-import org.apache.struts.action.PlugIn;
 import org.apache.struts.config.ActionConfig;
 import org.apache.struts.config.ForwardConfig;
-import org.apache.struts.config.ModuleConfig;
 
 /**
  * <p>Finds Sprouts present in the classpath and registers them with

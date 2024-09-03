@@ -18,9 +18,7 @@ package com.echothree.model.control.shipment.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.shipment.common.transfer.PartyFreeOnBoardTransfer;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.shipment.common.pk.FreeOnBoardPK;
 import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
 import com.echothree.model.data.shipment.server.entity.PartyFreeOnBoard;
 import com.echothree.model.data.shipment.server.factory.PartyFreeOnBoardFactory;
@@ -30,7 +28,6 @@ import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 

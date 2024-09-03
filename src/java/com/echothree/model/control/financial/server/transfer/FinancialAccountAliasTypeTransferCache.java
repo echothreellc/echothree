@@ -17,10 +17,8 @@
 package com.echothree.model.control.financial.server.transfer;
 
 import com.echothree.model.control.financial.common.transfer.FinancialAccountAliasTypeTransfer;
-import com.echothree.model.control.financial.common.transfer.FinancialAccountTypeTransfer;
 import com.echothree.model.control.financial.server.control.FinancialControl;
 import com.echothree.model.data.financial.server.entity.FinancialAccountAliasType;
-import com.echothree.model.data.financial.server.entity.FinancialAccountAliasTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class FinancialAccountAliasTypeTransferCache

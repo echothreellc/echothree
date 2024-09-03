@@ -21,10 +21,6 @@ import com.echothree.control.user.picklist.server.command.util.PicklistAliasUtil
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.picklist.server.control.PicklistControl;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.picklist.server.entity.Picklist;
-import com.echothree.model.data.picklist.server.entity.PicklistAliasType;
-import com.echothree.model.data.picklist.server.entity.PicklistAliasTypeDetail;
-import com.echothree.model.data.picklist.server.entity.PicklistType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -38,7 +34,6 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CreatePicklistAliasCommand

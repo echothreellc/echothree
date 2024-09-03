@@ -18,7 +18,6 @@ package com.echothree.model.control.shipping.server.logic;
 
 import com.echothree.model.control.selector.common.SelectorKinds;
 import com.echothree.model.control.selector.common.SelectorTypes;
-import com.echothree.model.control.selector.server.evaluator.CachedSelector;
 import com.echothree.model.control.selector.server.evaluator.SelectorCache;
 import com.echothree.model.control.selector.server.evaluator.SelectorCacheFactory;
 import com.echothree.model.control.selector.server.evaluator.ShippingMethodItemSelectorEvaluator;
@@ -26,7 +25,6 @@ import com.echothree.model.control.shipping.common.exception.ItemNotAcceptibleFo
 import com.echothree.model.control.shipping.common.exception.UnknownShippingMethodNameException;
 import com.echothree.model.control.shipping.server.control.ShippingControl;
 import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;

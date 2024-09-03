@@ -19,7 +19,6 @@ package com.echothree.model.control.employee.server.transfer;
 import com.echothree.model.control.employee.common.transfer.LeaveTypeTransfer;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.data.employee.server.entity.LeaveType;
-import com.echothree.model.data.employee.server.entity.LeaveTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class LeaveTypeTransferCache

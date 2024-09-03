@@ -17,7 +17,6 @@
 package com.echothree.control.user.returnpolicy.server.command;
 
 import com.echothree.control.user.returnpolicy.common.form.GetReturnKindChoicesForm;
-import com.echothree.control.user.returnpolicy.common.result.GetReturnKindChoicesResult;
 import com.echothree.control.user.returnpolicy.common.result.ReturnPolicyResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;

@@ -19,7 +19,6 @@ package com.echothree.model.control.invoice.server.transfer;
 import com.echothree.model.control.invoice.common.transfer.InvoiceTimeTypeTransfer;
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
 import com.echothree.model.data.invoice.server.entity.InvoiceTimeType;
-import com.echothree.model.data.invoice.server.entity.InvoiceTimeTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class InvoiceTimeTypeTransferCache

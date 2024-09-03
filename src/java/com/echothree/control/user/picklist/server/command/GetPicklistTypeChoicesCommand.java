@@ -17,7 +17,6 @@
 package com.echothree.control.user.picklist.server.command;
 
 import com.echothree.control.user.picklist.common.form.GetPicklistTypeChoicesForm;
-import com.echothree.control.user.picklist.common.result.GetPicklistTypeChoicesResult;
 import com.echothree.control.user.picklist.common.result.PicklistResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.picklist.server.control.PicklistControl;

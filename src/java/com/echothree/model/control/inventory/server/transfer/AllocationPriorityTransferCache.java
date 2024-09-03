@@ -19,7 +19,6 @@ package com.echothree.model.control.inventory.server.transfer;
 import com.echothree.model.control.inventory.common.transfer.AllocationPriorityTransfer;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.data.inventory.server.entity.AllocationPriority;
-import com.echothree.model.data.inventory.server.entity.AllocationPriorityDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class AllocationPriorityTransferCache

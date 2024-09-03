@@ -18,7 +18,6 @@ package com.echothree.control.user.offer.common;
 
 import com.echothree.control.user.offer.server.OfferLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class OfferUtil {

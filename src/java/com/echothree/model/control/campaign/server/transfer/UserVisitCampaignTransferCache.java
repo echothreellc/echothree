@@ -16,20 +16,9 @@
 
 package com.echothree.model.control.campaign.server.transfer;
 
-import com.echothree.model.control.campaign.common.transfer.CampaignContentTransfer;
-import com.echothree.model.control.campaign.common.transfer.CampaignMediumTransfer;
-import com.echothree.model.control.campaign.common.transfer.CampaignSourceTransfer;
-import com.echothree.model.control.campaign.common.transfer.CampaignTermTransfer;
-import com.echothree.model.control.campaign.common.transfer.CampaignTransfer;
 import com.echothree.model.control.campaign.common.transfer.UserVisitCampaignTransfer;
 import com.echothree.model.control.campaign.server.control.CampaignControl;
-import com.echothree.model.control.user.common.transfer.UserVisitTransfer;
 import com.echothree.model.control.user.server.control.UserControl;
-import com.echothree.model.data.campaign.server.entity.Campaign;
-import com.echothree.model.data.campaign.server.entity.CampaignContent;
-import com.echothree.model.data.campaign.server.entity.CampaignMedium;
-import com.echothree.model.data.campaign.server.entity.CampaignSource;
-import com.echothree.model.data.campaign.server.entity.CampaignTerm;
 import com.echothree.model.data.campaign.server.entity.UserVisitCampaign;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;

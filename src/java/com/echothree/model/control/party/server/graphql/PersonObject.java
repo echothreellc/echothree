@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.party.server.graphql;
 
-import com.echothree.model.data.party.server.entity.NameSuffix;
 import com.echothree.model.data.party.server.entity.Person;
-import com.echothree.model.data.party.server.entity.PersonalTitle;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;

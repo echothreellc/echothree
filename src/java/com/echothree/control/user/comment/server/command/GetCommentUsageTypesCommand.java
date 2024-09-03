@@ -18,13 +18,8 @@ package com.echothree.control.user.comment.server.command;
 
 import com.echothree.control.user.comment.common.form.GetCommentUsageTypesForm;
 import com.echothree.control.user.comment.common.result.CommentResultFactory;
-import com.echothree.control.user.comment.common.result.GetCommentUsageTypesResult;
 import com.echothree.model.control.comment.server.control.CommentControl;
-import com.echothree.model.data.comment.server.entity.CommentType;
-import com.echothree.model.data.core.server.entity.ComponentVendor;
-import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;

@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.search.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.search.common.transfer.SearchResultActionTypeDescriptionTransfer;
-import com.echothree.model.control.search.common.transfer.SearchResultActionTypeTransfer;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.data.search.server.entity.SearchResultActionTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;

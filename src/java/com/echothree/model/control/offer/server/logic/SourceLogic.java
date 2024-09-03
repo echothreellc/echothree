@@ -17,7 +17,6 @@
 package com.echothree.model.control.offer.server.logic;
 
 import com.echothree.model.control.offer.common.exception.UnknownSourceNameException;
-import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.control.SourceControl;
 import com.echothree.model.data.offer.server.entity.Source;
 import com.echothree.util.common.message.ExecutionErrors;

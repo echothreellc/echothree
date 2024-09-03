@@ -19,7 +19,6 @@ package com.echothree.model.control.item.server.transfer;
 import com.echothree.model.control.item.common.transfer.ItemCategoryTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemCategory;
-import com.echothree.model.data.item.server.entity.ItemCategoryDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class ItemCategoryTransferCache

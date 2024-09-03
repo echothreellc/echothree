@@ -19,7 +19,6 @@ package com.echothree.control.user.job.server.command;
 import com.echothree.control.user.job.common.form.SetJobStatusForm;
 import com.echothree.model.control.job.server.control.JobControl;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.data.job.server.entity.Job;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;

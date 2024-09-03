@@ -18,7 +18,6 @@ package com.echothree.control.user.icon.common;
 
 import com.echothree.control.user.icon.server.IconLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class IconUtil {

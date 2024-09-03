@@ -24,8 +24,6 @@ import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.workeffort.server.entity.WorkEffort;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortScope;
-import com.echothree.model.data.workeffort.server.entity.WorkEffortScopeDetail;
-import com.echothree.model.data.workeffort.server.entity.WorkEffortTypeDetail;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;

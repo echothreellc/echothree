@@ -17,11 +17,9 @@
 package com.echothree.control.user.tax.server.command;
 
 import com.echothree.control.user.tax.common.form.GetTaxForm;
-import com.echothree.control.user.tax.common.result.GetTaxResult;
 import com.echothree.control.user.tax.common.result.TaxResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.tax.server.control.TaxControl;
-import com.echothree.model.data.tax.server.entity.Tax;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;

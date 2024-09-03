@@ -19,7 +19,6 @@ package com.echothree.view.client.web.taglib.util;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import org.cyberneko.html.filters.ElementRemover;
 
 public class HtmlFilterHolder {

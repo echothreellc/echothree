@@ -17,7 +17,6 @@
 package com.echothree.control.user.sales.server.command;
 
 import com.echothree.control.user.sales.common.form.GetSalesOrderTimesForm;
-import com.echothree.control.user.sales.common.result.GetSalesOrderTimesResult;
 import com.echothree.control.user.sales.common.result.SalesResultFactory;
 import com.echothree.model.control.sales.server.logic.SalesOrderTimeLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;

@@ -20,10 +20,8 @@ import com.echothree.model.control.uom.common.UomProperties;
 import com.echothree.model.control.uom.common.transfer.UnitOfMeasureKindTransfer;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
-import java.util.Set;
 
 public class UnitOfMeasureKindTransferCache
         extends BaseUomTransferCache<UnitOfMeasureKind, UnitOfMeasureKindTransfer> {

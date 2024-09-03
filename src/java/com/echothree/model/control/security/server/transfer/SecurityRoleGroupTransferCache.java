@@ -21,11 +21,8 @@ import com.echothree.model.control.security.common.transfer.SecurityRoleGroupTra
 import com.echothree.model.control.security.common.transfer.SecurityRoleTransfer;
 import com.echothree.model.control.security.server.control.SecurityControl;
 import com.echothree.model.data.security.server.entity.SecurityRoleGroup;
-import com.echothree.model.data.security.server.entity.SecurityRoleGroupDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.MapWrapper;
-import java.util.List;
-import java.util.Set;
 
 public class SecurityRoleGroupTransferCache
         extends BaseSecurityTransferCache<SecurityRoleGroup, SecurityRoleGroupTransfer> {

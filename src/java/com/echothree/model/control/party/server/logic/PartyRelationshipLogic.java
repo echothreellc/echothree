@@ -29,9 +29,6 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.user.server.logic.UserKeyLogic;
 import com.echothree.model.control.user.server.logic.UserSessionLogic;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.party.server.entity.PartyCompany;
-import com.echothree.model.data.party.server.entity.PartyDepartment;
-import com.echothree.model.data.party.server.entity.PartyDivision;
 import com.echothree.model.data.party.server.entity.PartyRelationship;
 import com.echothree.model.data.party.server.entity.PartyRelationshipType;
 import com.echothree.model.data.party.server.entity.RoleType;
@@ -40,7 +37,6 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
-import java.util.List;
 
 public class PartyRelationshipLogic
         extends BaseLogic {

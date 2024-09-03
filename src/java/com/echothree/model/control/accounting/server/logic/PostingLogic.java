@@ -22,13 +22,11 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.period.common.PeriodConstants;
 import com.echothree.model.control.period.server.control.PeriodControl;
 import com.echothree.model.data.accounting.server.entity.GlAccount;
-import com.echothree.model.data.accounting.server.entity.GlAccountSummary;
 import com.echothree.model.data.accounting.server.entity.Transaction;
 import com.echothree.model.data.accounting.server.entity.TransactionGlEntry;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.period.server.entity.Period;
 import com.echothree.util.server.persistence.Session;
-import java.util.List;
 
 public class PostingLogic {
 

@@ -18,7 +18,6 @@ package com.echothree.control.user.party.server.command;
 
 
 import com.echothree.control.user.party.common.form.GetBirthdayFormatChoicesForm;
-import com.echothree.control.user.party.common.result.GetBirthdayFormatChoicesResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;

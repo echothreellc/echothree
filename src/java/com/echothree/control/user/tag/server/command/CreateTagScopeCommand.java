@@ -17,7 +17,6 @@
 package com.echothree.control.user.tag.server.command;
 
 import com.echothree.control.user.tag.common.form.CreateTagScopeForm;
-import com.echothree.control.user.tag.common.result.CreateTagScopeResult;
 import com.echothree.control.user.tag.common.result.TagResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -26,9 +25,6 @@ import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.control.tag.server.control.TagControl;
-import com.echothree.model.data.party.common.pk.PartyPK;
-import com.echothree.model.data.sequence.server.entity.Sequence;
-import com.echothree.model.data.tag.server.entity.TagScope;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;

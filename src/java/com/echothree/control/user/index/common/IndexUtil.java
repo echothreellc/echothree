@@ -18,7 +18,6 @@ package com.echothree.control.user.index.common;
 
 import com.echothree.control.user.index.server.IndexLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class IndexUtil {

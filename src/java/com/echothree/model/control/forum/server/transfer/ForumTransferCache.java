@@ -18,24 +18,16 @@ package com.echothree.model.control.forum.server.transfer;
 
 import com.echothree.model.control.forum.common.ForumOptions;
 import com.echothree.model.control.forum.common.transfer.ForumTransfer;
-import com.echothree.model.control.forum.common.transfer.ForumTypeTransfer;
 import com.echothree.model.control.forum.server.control.ForumControl;
-import com.echothree.model.control.icon.common.transfer.IconTransfer;
 import com.echothree.model.control.icon.server.control.IconControl;
-import com.echothree.model.control.sequence.common.transfer.SequenceTransfer;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.forum.server.entity.Forum;
-import com.echothree.model.data.forum.server.entity.ForumDetail;
 import com.echothree.model.data.forum.server.entity.ForumGroup;
-import com.echothree.model.data.forum.server.entity.ForumGroupForum;
-import com.echothree.model.data.icon.server.entity.Icon;
-import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class ForumTransferCache
         extends BaseForumTransferCache<Forum, ForumTransfer> {

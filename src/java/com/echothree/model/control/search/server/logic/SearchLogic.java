@@ -33,10 +33,7 @@ import com.echothree.model.control.search.common.exception.UnknownSearchUseTypeN
 import com.echothree.model.control.search.common.exception.UnknownUserVisitSearchException;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.search.server.database.CachedSearchToInvalidateQuery;
-import com.echothree.model.control.search.server.database.CachedSearchToInvalidateResult;
 import com.echothree.model.data.index.server.entity.Index;
-import com.echothree.model.data.search.server.entity.CachedExecutedSearch;
-import com.echothree.model.data.search.server.entity.CachedSearch;
 import com.echothree.model.data.search.server.entity.Search;
 import com.echothree.model.data.search.server.entity.SearchDefaultOperator;
 import com.echothree.model.data.search.server.entity.SearchKind;

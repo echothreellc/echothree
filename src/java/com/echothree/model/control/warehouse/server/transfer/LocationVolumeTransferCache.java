@@ -18,10 +18,8 @@ package com.echothree.model.control.warehouse.server.transfer;
 
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.control.UomControl;
-import com.echothree.model.control.warehouse.common.transfer.LocationTransfer;
 import com.echothree.model.control.warehouse.common.transfer.LocationVolumeTransfer;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.warehouse.server.entity.LocationVolume;
 import com.echothree.util.server.persistence.Session;

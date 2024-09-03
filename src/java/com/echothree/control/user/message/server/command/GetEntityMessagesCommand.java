@@ -17,16 +17,9 @@
 package com.echothree.control.user.message.server.command;
 
 import com.echothree.control.user.message.common.form.GetEntityMessagesForm;
-import com.echothree.control.user.message.common.result.GetEntityMessagesResult;
 import com.echothree.control.user.message.common.result.MessageResultFactory;
 import com.echothree.model.control.message.server.control.MessageControl;
-import com.echothree.model.data.core.server.entity.ComponentVendor;
-import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.message.server.entity.Message;
-import com.echothree.model.data.message.server.entity.MessageType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;

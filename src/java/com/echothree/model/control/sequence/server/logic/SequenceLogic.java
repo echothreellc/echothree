@@ -28,7 +28,6 @@ import com.echothree.model.control.sequence.common.exception.UnknownDefaultSeque
 import com.echothree.model.control.sequence.common.exception.UnknownDefaultSequenceTypeException;
 import com.echothree.model.control.sequence.common.exception.UnknownSequenceNameException;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.sequence.server.entity.SequenceType;

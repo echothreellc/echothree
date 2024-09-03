@@ -18,7 +18,6 @@ package com.echothree.control.user.carrier.common;
 
 import com.echothree.control.user.carrier.server.CarrierLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class CarrierUtil {

@@ -18,7 +18,6 @@ package com.echothree.control.user.job.common;
 
 import com.echothree.control.user.job.server.JobLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class JobUtil {

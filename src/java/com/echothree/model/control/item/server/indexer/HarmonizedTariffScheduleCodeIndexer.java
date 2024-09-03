@@ -27,8 +27,6 @@ import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.index.server.entity.Index;
 import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCode;
-import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCodeDetail;
-import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCodeTranslation;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 import org.apache.lucene.analysis.Analyzer;

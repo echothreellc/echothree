@@ -74,7 +74,6 @@
 package com.echothree.view.client.web.struts.sslext.taglib;
 
 import com.echothree.view.client.web.struts.sslext.util.SecureRequestUtils;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.JspException;

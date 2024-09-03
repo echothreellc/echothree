@@ -16,10 +16,8 @@
 
 package com.echothree.model.control.tag.server.transfer;
 
-import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.tag.common.transfer.EntityTagTransfer;
-import com.echothree.model.control.tag.common.transfer.TagTransfer;
 import com.echothree.model.control.tag.server.control.TagControl;
 import com.echothree.model.data.tag.server.entity.EntityTag;
 import com.echothree.model.data.user.server.entity.UserVisit;

@@ -21,7 +21,6 @@ import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyRelationship;
 import com.echothree.model.data.user.server.entity.UserKey;
 import com.echothree.model.data.user.server.factory.UserKeyFactory;
-import com.echothree.model.data.user.server.value.UserKeyDetailValue;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.List;

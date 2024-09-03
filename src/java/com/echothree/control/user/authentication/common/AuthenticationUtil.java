@@ -18,7 +18,6 @@ package com.echothree.control.user.authentication.common;
 
 import com.echothree.control.user.authentication.server.AuthenticationLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class AuthenticationUtil {

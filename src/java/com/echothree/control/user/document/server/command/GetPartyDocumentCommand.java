@@ -18,11 +18,8 @@ package com.echothree.control.user.document.server.command;
 
 import com.echothree.control.user.document.common.form.GetPartyDocumentForm;
 import com.echothree.control.user.document.common.result.DocumentResultFactory;
-import com.echothree.control.user.document.common.result.GetPartyDocumentResult;
 import com.echothree.model.control.content.server.logic.ContentLogic;
 import com.echothree.model.control.document.server.control.DocumentControl;
-import com.echothree.model.data.document.server.entity.Document;
-import com.echothree.model.data.document.server.entity.PartyDocument;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;

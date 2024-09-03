@@ -18,23 +18,14 @@ package com.echothree.model.control.contactlist.server.transfer;
 
 import com.echothree.model.control.comment.common.CommentConstants;
 import com.echothree.model.control.contactlist.common.ContactListOptions;
-import com.echothree.model.control.contactlist.common.transfer.ContactListContactMechanismPurposeTransfer;
-import com.echothree.model.control.contactlist.common.transfer.ContactListTransfer;
 import com.echothree.model.control.contactlist.common.transfer.PartyContactListTransfer;
 import com.echothree.model.control.contactlist.server.ContactListControl;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
-import com.echothree.model.data.contactlist.server.entity.ContactList;
-import com.echothree.model.data.contactlist.server.entity.ContactListContactMechanismPurpose;
 import com.echothree.model.data.contactlist.server.entity.PartyContactList;
-import com.echothree.model.data.contactlist.server.entity.PartyContactListDetail;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class PartyContactListTransferCache
         extends BaseContactListTransferCache<PartyContactList, PartyContactListTransfer> {

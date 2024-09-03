@@ -16,10 +16,8 @@
 
 package com.echothree.model.control.term.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.term.common.transfer.PartyTermTransfer;
-import com.echothree.model.control.term.common.transfer.TermTransfer;
 import com.echothree.model.control.term.server.control.TermControl;
 import com.echothree.model.data.term.server.entity.PartyTerm;
 import com.echothree.model.data.user.server.entity.UserVisit;

@@ -28,7 +28,6 @@ import com.echothree.model.control.offer.common.exception.UnknownOfferNameExcept
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.control.OfferItemControl;
 import com.echothree.model.control.offer.server.control.OfferUseControl;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.factory.OfferFactory;

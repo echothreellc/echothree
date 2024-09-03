@@ -17,13 +17,9 @@
 package com.echothree.control.user.security.server.command;
 
 import com.echothree.control.user.security.common.form.CheckSecurityRolesForm;
-import com.echothree.control.user.security.common.result.CheckSecurityRolesResult;
 import com.echothree.control.user.security.common.result.SecurityResultFactory;
 import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserKeyDetail;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;

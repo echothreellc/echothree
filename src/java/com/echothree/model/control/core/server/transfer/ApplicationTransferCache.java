@@ -20,10 +20,8 @@ import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.transfer.ApplicationTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.Application;
-import com.echothree.model.data.core.server.entity.ApplicationDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class ApplicationTransferCache
         extends BaseCoreTransferCache<Application, ApplicationTransfer> {

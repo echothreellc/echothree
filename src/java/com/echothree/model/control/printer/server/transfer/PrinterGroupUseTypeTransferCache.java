@@ -20,7 +20,6 @@ import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.printer.common.transfer.PrinterGroupUseTypeTransfer;
 import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.data.printer.server.entity.PrinterGroupUseType;
-import com.echothree.model.data.printer.server.entity.PrinterGroupUseTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 

@@ -17,8 +17,6 @@
 package com.echothree.model.control.filter.server.evaluator;
 
 import com.echothree.model.control.filter.server.control.FilterControl;
-import com.echothree.model.data.filter.server.entity.FilterKind;
-import com.echothree.model.data.filter.server.entity.FilterType;
 import com.echothree.util.server.persistence.Session;
 
 public class FilterCacheFactory {

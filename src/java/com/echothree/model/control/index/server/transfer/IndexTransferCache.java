@@ -18,17 +18,11 @@ package com.echothree.model.control.index.server.transfer;
 
 import com.echothree.model.control.index.common.IndexOptions;
 import com.echothree.model.control.index.common.transfer.IndexTransfer;
-import com.echothree.model.control.index.common.transfer.IndexTypeTransfer;
 import com.echothree.model.control.index.server.control.IndexControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.index.server.entity.Index;
-import com.echothree.model.data.index.server.entity.IndexDetail;
-import com.echothree.model.data.index.server.entity.IndexStatus;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class IndexTransferCache
         extends BaseIndexTransferCache<Index, IndexTransfer> {

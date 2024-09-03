@@ -34,13 +34,8 @@ import com.echothree.model.control.workeffort.common.workeffort.TrainingConstant
 import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.training.server.entity.TrainingClass;
-import com.echothree.model.data.training.server.entity.TrainingClassDetail;
-import com.echothree.model.data.training.server.entity.TrainingClassTranslation;
-import com.echothree.model.data.training.server.value.TrainingClassDetailValue;
-import com.echothree.model.data.training.server.value.TrainingClassTranslationValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortScope;
-import com.echothree.model.data.workeffort.server.entity.WorkEffortType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;

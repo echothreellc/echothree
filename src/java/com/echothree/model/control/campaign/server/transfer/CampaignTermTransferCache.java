@@ -21,14 +21,10 @@ import com.echothree.model.control.campaign.common.transfer.CampaignTermTransfer
 import com.echothree.model.control.campaign.server.control.CampaignControl;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.campaign.common.workflow.CampaignTermStatusConstants;
-import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.campaign.server.entity.CampaignTerm;
-import com.echothree.model.data.campaign.server.entity.CampaignTermDetail;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class CampaignTermTransferCache
         extends BaseCampaignTransferCache<CampaignTerm, CampaignTermTransfer> {

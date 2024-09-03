@@ -16,21 +16,14 @@
 
 package com.echothree.model.control.forum.server.transfer;
 
-import com.echothree.model.control.core.common.transfer.EntityTimeTransfer;
-import com.echothree.model.control.core.common.transfer.MimeTypeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.forum.common.ForumOptions;
 import com.echothree.model.control.forum.common.transfer.ForumMessageAttachmentTransfer;
-import com.echothree.model.control.forum.common.transfer.ForumMessageTransfer;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.data.forum.server.entity.ForumMessageAttachment;
-import com.echothree.model.data.forum.server.entity.ForumMessageAttachmentDetail;
-import com.echothree.model.data.forum.server.entity.ForumMessageBlobAttachment;
-import com.echothree.model.data.forum.server.entity.ForumMessageClobAttachment;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class ForumMessageAttachmentTransferCache
         extends BaseForumTransferCache<ForumMessageAttachment, ForumMessageAttachmentTransfer> {

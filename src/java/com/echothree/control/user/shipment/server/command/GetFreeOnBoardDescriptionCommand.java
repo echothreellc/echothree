@@ -18,15 +18,11 @@ package com.echothree.control.user.shipment.server.command;
 
 import com.echothree.control.user.shipment.common.form.GetFreeOnBoardDescriptionForm;
 import com.echothree.control.user.shipment.common.result.ShipmentResultFactory;
-import com.echothree.control.user.shipment.common.result.GetFreeOnBoardDescriptionResult;
 import com.echothree.model.control.shipment.server.control.FreeOnBoardControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
-import com.echothree.model.data.shipment.server.entity.FreeOnBoardDescription;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;

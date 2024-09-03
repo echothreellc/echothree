@@ -16,11 +16,9 @@
 
 package com.echothree.model.control.offer.server.transfer;
 
-import com.echothree.model.control.offer.common.transfer.OfferUseTransfer;
 import com.echothree.model.control.offer.common.transfer.SourceTransfer;
 import com.echothree.model.control.offer.server.control.OfferUseControl;
 import com.echothree.model.data.offer.server.entity.Source;
-import com.echothree.model.data.offer.server.entity.SourceDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 

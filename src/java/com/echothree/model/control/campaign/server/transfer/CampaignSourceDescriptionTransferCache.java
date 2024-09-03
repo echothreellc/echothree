@@ -17,9 +17,7 @@
 package com.echothree.model.control.campaign.server.transfer;
 
 import com.echothree.model.control.campaign.common.transfer.CampaignSourceDescriptionTransfer;
-import com.echothree.model.control.campaign.common.transfer.CampaignSourceTransfer;
 import com.echothree.model.control.campaign.server.control.CampaignControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.campaign.server.entity.CampaignSourceDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 

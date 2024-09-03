@@ -16,12 +16,9 @@
 
 package com.echothree.model.control.sequence.server.transfer;
 
-import com.echothree.model.control.sequence.common.transfer.SequenceChecksumTypeTransfer;
-import com.echothree.model.control.sequence.common.transfer.SequenceEncoderTypeTransfer;
 import com.echothree.model.control.sequence.common.transfer.SequenceTypeTransfer;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
-import com.echothree.model.data.sequence.server.entity.SequenceTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class SequenceTypeTransferCache

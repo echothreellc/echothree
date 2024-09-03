@@ -19,7 +19,6 @@ package com.echothree.model.control.employee.server.transfer;
 import com.echothree.model.control.employee.common.transfer.ResponsibilityTypeTransfer;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.data.employee.server.entity.ResponsibilityType;
-import com.echothree.model.data.employee.server.entity.ResponsibilityTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class ResponsibilityTypeTransferCache

@@ -20,9 +20,6 @@ import com.echothree.control.user.term.common.form.CreateCustomerTypeCreditLimit
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.term.server.control.TermControl;
-import com.echothree.model.data.accounting.server.entity.Currency;
-import com.echothree.model.data.customer.server.entity.CustomerType;
-import com.echothree.model.data.term.server.entity.CustomerTypeCreditLimit;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;

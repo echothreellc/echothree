@@ -23,10 +23,7 @@ import com.echothree.model.control.printer.server.trigger.PrinterGroupJobTrigger
 import com.echothree.model.control.training.server.trigger.PartyTrainingClassTrigger;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workflow.server.trigger.EntityTypeTrigger;
-import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.core.server.entity.EntityTypeDetail;
 import com.echothree.model.data.party.common.pk.PartyPK;
-import com.echothree.model.data.workflow.server.entity.WorkflowEntityStatus;
 import com.echothree.model.data.workflow.server.entity.WorkflowTrigger;
 import com.echothree.model.data.workflow.server.factory.WorkflowTriggerFactory;
 import com.echothree.util.common.message.ExecutionErrors;

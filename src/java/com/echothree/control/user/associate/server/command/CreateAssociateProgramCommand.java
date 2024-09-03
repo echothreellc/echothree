@@ -20,10 +20,7 @@ import com.echothree.control.user.associate.common.form.CreateAssociateProgramFo
 import com.echothree.model.control.associate.server.control.AssociateControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
-import com.echothree.model.data.associate.server.entity.AssociateProgram;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.sequence.server.entity.Sequence;
-import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;

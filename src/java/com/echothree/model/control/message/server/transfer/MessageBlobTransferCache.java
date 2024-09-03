@@ -16,16 +16,12 @@
 
 package com.echothree.model.control.message.server.transfer;
 
-import com.echothree.model.control.core.common.transfer.MimeTypeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.message.common.transfer.MessageBlobTransfer;
-import com.echothree.model.control.message.common.transfer.MessageTransfer;
 import com.echothree.model.control.message.server.control.MessageControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.message.server.entity.MessageBlob;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.server.persistence.Session;
 
 public class MessageBlobTransferCache

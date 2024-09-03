@@ -18,15 +18,9 @@ package com.echothree.control.user.authentication.server.command;
 
 import com.echothree.control.user.authentication.common.form.AuthenticationFormFactory;
 import com.echothree.control.user.authentication.common.form.GetVendorLoginDefaultsForm;
-import com.echothree.control.user.authentication.common.form.VendorLoginForm;
 import com.echothree.control.user.authentication.common.result.AuthenticationResultFactory;
-import com.echothree.control.user.authentication.common.result.GetVendorLoginDefaultsResult;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.user.server.control.UserControl;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserLogin;
-import com.echothree.model.data.user.server.entity.UserSession;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;

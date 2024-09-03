@@ -18,7 +18,6 @@ package com.echothree.control.user.warehouse.server.command;
 
 import com.echothree.control.user.warehouse.common.form.GetWarehouseTypeChoicesForm;
 import com.echothree.control.user.warehouse.common.result.WarehouseResultFactory;
-import com.echothree.control.user.warehouse.common.result.GetWarehouseTypeChoicesResult;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;

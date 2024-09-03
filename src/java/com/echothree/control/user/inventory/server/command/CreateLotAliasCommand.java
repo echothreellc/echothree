@@ -22,9 +22,6 @@ import com.echothree.model.control.inventory.server.control.LotControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.inventory.server.entity.Lot;
-import com.echothree.model.data.inventory.server.entity.LotAliasType;
-import com.echothree.model.data.inventory.server.entity.LotAliasTypeDetail;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -38,7 +35,6 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CreateLotAliasCommand

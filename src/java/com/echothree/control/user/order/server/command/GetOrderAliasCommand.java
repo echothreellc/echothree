@@ -17,7 +17,6 @@
 package com.echothree.control.user.order.server.command;
 
 import com.echothree.control.user.order.common.form.GetOrderAliasForm;
-import com.echothree.control.user.order.common.result.GetOrderAliasResult;
 import com.echothree.control.user.order.common.result.OrderResultFactory;
 import com.echothree.control.user.order.server.command.util.OrderAliasUtil;
 import com.echothree.model.control.order.server.control.OrderAliasControl;
@@ -25,10 +24,6 @@ import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.order.server.entity.Order;
-import com.echothree.model.data.order.server.entity.OrderAlias;
-import com.echothree.model.data.order.server.entity.OrderAliasType;
-import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;

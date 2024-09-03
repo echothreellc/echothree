@@ -17,13 +17,10 @@
 package com.echothree.control.user.party.client.helper;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.GetNameSuffixChoicesForm;
 import com.echothree.control.user.party.common.form.PartyFormFactory;
 import com.echothree.control.user.party.common.result.GetNameSuffixChoicesResult;
 import com.echothree.model.control.party.common.choice.NameSuffixChoicesBean;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 
 public class NameSuffixesHelper {

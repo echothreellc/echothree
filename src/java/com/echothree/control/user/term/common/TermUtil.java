@@ -18,7 +18,6 @@ package com.echothree.control.user.term.common;
 
 import com.echothree.control.user.term.server.TermLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class TermUtil {

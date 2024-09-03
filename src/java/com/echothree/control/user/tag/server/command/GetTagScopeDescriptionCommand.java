@@ -17,16 +17,12 @@
 package com.echothree.control.user.tag.server.command;
 
 import com.echothree.control.user.tag.common.form.GetTagScopeDescriptionForm;
-import com.echothree.control.user.tag.common.result.GetTagScopeDescriptionResult;
 import com.echothree.control.user.tag.common.result.TagResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.tag.server.control.TagControl;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.tag.server.entity.TagScope;
-import com.echothree.model.data.tag.server.entity.TagScopeDescription;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;

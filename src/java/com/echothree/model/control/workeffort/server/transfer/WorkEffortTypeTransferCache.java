@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.workeffort.server.transfer;
 
-import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.sequence.common.transfer.SequenceTransfer;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.control.UomControl;
@@ -26,14 +24,11 @@ import com.echothree.model.control.workeffort.common.WorkEffortOptions;
 import com.echothree.model.control.workeffort.common.transfer.WorkEffortTypeTransfer;
 import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.control.workrequirement.server.control.WorkRequirementControl;
-import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortType;
-import com.echothree.model.data.workeffort.server.entity.WorkEffortTypeDetail;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class WorkEffortTypeTransferCache
         extends BaseWorkEffortTransferCache<WorkEffortType, WorkEffortTypeTransfer> {

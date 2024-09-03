@@ -20,7 +20,6 @@ import com.echothree.model.control.inventory.common.transfer.LotAliasTypeTransfe
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.inventory.server.control.LotAliasControl;
 import com.echothree.model.data.inventory.server.entity.LotAliasType;
-import com.echothree.model.data.inventory.server.entity.LotAliasTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 

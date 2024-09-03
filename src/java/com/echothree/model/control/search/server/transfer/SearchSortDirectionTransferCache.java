@@ -20,9 +20,7 @@ import com.echothree.model.control.search.common.SearchOptions;
 import com.echothree.model.control.search.common.transfer.SearchSortDirectionTransfer;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.data.search.server.entity.SearchSortDirection;
-import com.echothree.model.data.search.server.entity.SearchSortDirectionDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import java.util.Set;
 
 public class SearchSortDirectionTransferCache
         extends BaseSearchTransferCache<SearchSortDirection, SearchSortDirectionTransfer> {

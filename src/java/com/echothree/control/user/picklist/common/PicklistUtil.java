@@ -18,7 +18,6 @@ package com.echothree.control.user.picklist.common;
 
 import com.echothree.control.user.picklist.server.PicklistLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class PicklistUtil {

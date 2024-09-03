@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.contact.server.transfer;
 
-import com.echothree.model.control.contact.common.transfer.PostalAddressElementTypeTransfer;
 import com.echothree.model.control.contact.common.transfer.PostalAddressLineElementTransfer;
-import com.echothree.model.control.contact.common.transfer.PostalAddressLineTransfer;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.data.contact.server.entity.PostalAddressLineElement;
 import com.echothree.model.data.user.server.entity.UserVisit;

@@ -16,11 +16,8 @@
 
 package com.echothree.view.client.web.displaytag;
 
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.jsp.PageContext;
 import org.displaytag.decorator.TableDecorator;
 
 public class BaseTableDecorator

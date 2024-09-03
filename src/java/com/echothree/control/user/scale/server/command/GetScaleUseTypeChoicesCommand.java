@@ -17,7 +17,6 @@
 package com.echothree.control.user.scale.server.command;
 
 import com.echothree.control.user.scale.common.form.GetScaleUseTypeChoicesForm;
-import com.echothree.control.user.scale.common.result.GetScaleUseTypeChoicesResult;
 import com.echothree.control.user.scale.common.result.ScaleResultFactory;
 import com.echothree.model.control.scale.server.control.ScaleControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;

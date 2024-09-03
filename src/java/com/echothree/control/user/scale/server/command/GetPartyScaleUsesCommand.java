@@ -17,7 +17,6 @@
 package com.echothree.control.user.scale.server.command;
 
 import com.echothree.control.user.scale.common.form.GetPartyScaleUsesForm;
-import com.echothree.control.user.scale.common.result.GetPartyScaleUsesResult;
 import com.echothree.control.user.scale.common.result.ScaleResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;

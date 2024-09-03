@@ -20,13 +20,10 @@ import com.echothree.model.control.order.common.exception.UnknownOrderLineTimeEx
 import com.echothree.model.control.order.common.exception.UnknownOrderTimeTypeNameException;
 import com.echothree.model.control.order.common.transfer.OrderLineTimeTransfer;
 import com.echothree.model.control.order.server.control.OrderTimeControl;
-import com.echothree.model.data.order.server.entity.OrderDetail;
 import com.echothree.model.data.order.server.entity.OrderLine;
-import com.echothree.model.data.order.server.entity.OrderLineDetail;
 import com.echothree.model.data.order.server.entity.OrderLineTime;
 import com.echothree.model.data.order.server.entity.OrderTimeType;
 import com.echothree.model.data.order.server.entity.OrderType;
-import com.echothree.model.data.order.server.value.OrderLineTimeValue;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;

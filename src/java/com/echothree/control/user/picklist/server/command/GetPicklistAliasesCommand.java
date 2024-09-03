@@ -17,16 +17,12 @@
 package com.echothree.control.user.picklist.server.command;
 
 import com.echothree.control.user.picklist.common.form.GetPicklistAliasesForm;
-import com.echothree.control.user.picklist.common.result.GetPicklistAliasesResult;
 import com.echothree.control.user.picklist.common.result.PicklistResultFactory;
 import com.echothree.control.user.picklist.server.command.util.PicklistAliasUtil;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.picklist.server.control.PicklistControl;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.picklist.server.entity.Picklist;
-import com.echothree.model.data.picklist.server.entity.PicklistType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;

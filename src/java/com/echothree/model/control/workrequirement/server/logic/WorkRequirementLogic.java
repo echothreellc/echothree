@@ -26,29 +26,16 @@ import com.echothree.model.control.workrequirement.common.workflow.WorkAssignmen
 import com.echothree.model.control.workrequirement.common.workflow.WorkRequirementStatusConstants;
 import com.echothree.model.control.workrequirement.common.workflow.WorkTimeStatusConstants;
 import com.echothree.model.control.workrequirement.server.control.WorkRequirementControl;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workeffort.server.entity.WorkEffort;
-import com.echothree.model.data.workeffort.server.entity.WorkEffortScope;
-import com.echothree.model.data.workeffort.server.entity.WorkEffortType;
-import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
-import com.echothree.model.data.workflow.server.entity.WorkflowEntityStatus;
 import com.echothree.model.data.workrequirement.server.entity.WorkAssignment;
 import com.echothree.model.data.workrequirement.server.entity.WorkRequirement;
 import com.echothree.model.data.workrequirement.server.entity.WorkRequirementScope;
-import com.echothree.model.data.workrequirement.server.entity.WorkRequirementScopeDetail;
-import com.echothree.model.data.workrequirement.server.entity.WorkRequirementStatus;
-import com.echothree.model.data.workrequirement.server.entity.WorkRequirementType;
-import com.echothree.model.data.workrequirement.server.entity.WorkRequirementTypeDetail;
 import com.echothree.model.data.workrequirement.server.entity.WorkTime;
-import com.echothree.model.data.workrequirement.server.entity.WorkTimeUserVisit;
-import com.echothree.model.data.workrequirement.server.value.WorkTimeDetailValue;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.Session;
-import java.util.List;
 
 public class WorkRequirementLogic {
     

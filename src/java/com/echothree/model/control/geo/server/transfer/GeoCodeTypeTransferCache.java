@@ -19,7 +19,6 @@ package com.echothree.model.control.geo.server.transfer;
 import com.echothree.model.control.geo.common.transfer.GeoCodeTypeTransfer;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.data.geo.server.entity.GeoCodeType;
-import com.echothree.model.data.geo.server.entity.GeoCodeTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class GeoCodeTypeTransferCache

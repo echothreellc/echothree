@@ -56,7 +56,6 @@ import com.echothree.model.data.order.server.entity.OrderPaymentPreference;
 import com.echothree.model.data.order.server.entity.OrderPriority;
 import com.echothree.model.data.order.server.entity.OrderRoleType;
 import com.echothree.model.data.order.server.entity.OrderShipmentGroup;
-import com.echothree.model.data.order.server.entity.OrderStatus;
 import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.payment.server.entity.PartyPaymentMethod;
 import com.echothree.model.data.payment.server.entity.PaymentMethod;

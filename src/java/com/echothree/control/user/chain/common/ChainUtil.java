@@ -18,7 +18,6 @@ package com.echothree.control.user.chain.common;
 
 import com.echothree.control.user.chain.server.ChainLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class ChainUtil {

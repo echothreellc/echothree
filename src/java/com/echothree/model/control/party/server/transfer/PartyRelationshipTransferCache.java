@@ -17,8 +17,6 @@
 package com.echothree.model.control.party.server.transfer;
 
 import com.echothree.model.control.party.common.transfer.PartyRelationshipTransfer;
-import com.echothree.model.control.party.common.transfer.PartyTransfer;
-import com.echothree.model.control.party.common.transfer.RoleTypeTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.PartyRelationship;
 import com.echothree.model.data.user.server.entity.UserVisit;

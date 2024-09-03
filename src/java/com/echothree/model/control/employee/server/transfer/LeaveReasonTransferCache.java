@@ -19,7 +19,6 @@ package com.echothree.model.control.employee.server.transfer;
 import com.echothree.model.control.employee.common.transfer.LeaveReasonTransfer;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.data.employee.server.entity.LeaveReason;
-import com.echothree.model.data.employee.server.entity.LeaveReasonDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class LeaveReasonTransferCache

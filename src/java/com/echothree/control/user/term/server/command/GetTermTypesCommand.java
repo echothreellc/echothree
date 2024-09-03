@@ -18,9 +18,6 @@ package com.echothree.control.user.term.server.command;
 
 import com.echothree.control.user.term.common.form.GetTermTypesForm;
 import com.echothree.control.user.term.common.result.TermResultFactory;
-import com.echothree.control.user.term.common.form.GetTermTypesForm;
-import com.echothree.control.user.term.common.result.TermResultFactory;
-import com.echothree.model.control.term.server.control.TermControl;
 import com.echothree.model.control.term.server.control.TermControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.term.server.entity.TermType;
@@ -28,7 +25,6 @@ import com.echothree.model.data.term.server.factory.TermTypeFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
-import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;

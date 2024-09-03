@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.rating.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.rating.common.transfer.RatingTypeListItemDescriptionTransfer;
-import com.echothree.model.control.rating.common.transfer.RatingTypeListItemTransfer;
 import com.echothree.model.control.rating.server.control.RatingControl;
 import com.echothree.model.data.rating.server.entity.RatingTypeListItemDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;

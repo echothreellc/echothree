@@ -16,10 +16,8 @@
 
 package com.echothree.model.control.shipping.server.transfer;
 
-import com.echothree.model.control.carrier.common.transfer.CarrierServiceTransfer;
 import com.echothree.model.control.carrier.server.control.CarrierControl;
 import com.echothree.model.control.shipping.common.transfer.ShippingMethodCarrierServiceTransfer;
-import com.echothree.model.control.shipping.common.transfer.ShippingMethodTransfer;
 import com.echothree.model.control.shipping.server.control.ShippingControl;
 import com.echothree.model.data.shipping.server.entity.ShippingMethodCarrierService;
 import com.echothree.model.data.user.server.entity.UserVisit;

@@ -18,11 +18,7 @@ package com.echothree.control.user.authentication.server.command;
 
 import com.echothree.control.user.authentication.common.form.GetJobUserVisitForm;
 import com.echothree.control.user.authentication.common.result.AuthenticationResultFactory;
-import com.echothree.control.user.authentication.common.result.GetJobUserVisitResult;
 import com.echothree.model.control.job.server.control.JobControl;
-import com.echothree.model.control.user.server.control.UserControl;
-import com.echothree.model.data.job.server.entity.Job;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;

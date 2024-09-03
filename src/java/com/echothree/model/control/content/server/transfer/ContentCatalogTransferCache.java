@@ -20,18 +20,13 @@ import com.echothree.model.control.content.common.ContentOptions;
 import com.echothree.model.control.content.common.ContentProperties;
 import com.echothree.model.control.content.common.transfer.ContentCatalogTransfer;
 import com.echothree.model.control.content.common.transfer.ContentCategoryTransfer;
-import com.echothree.model.control.content.common.transfer.ContentCollectionTransfer;
 import com.echothree.model.control.content.server.control.ContentControl;
-import com.echothree.model.control.offer.common.transfer.OfferUseTransfer;
 import com.echothree.model.control.offer.server.control.OfferUseControl;
 import com.echothree.model.data.content.server.entity.ContentCatalog;
-import com.echothree.model.data.content.server.entity.ContentCatalogDetail;
-import com.echothree.model.data.offer.server.entity.OfferUse;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class ContentCatalogTransferCache
         extends BaseContentTransferCache<ContentCatalog, ContentCatalogTransfer> {

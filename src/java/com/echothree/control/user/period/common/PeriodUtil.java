@@ -18,7 +18,6 @@ package com.echothree.control.user.period.common;
 
 import com.echothree.control.user.period.server.PeriodLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class PeriodUtil {

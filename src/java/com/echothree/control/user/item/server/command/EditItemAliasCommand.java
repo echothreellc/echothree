@@ -32,16 +32,8 @@ import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemAlias;
 import com.echothree.model.data.item.server.entity.ItemAliasType;
-import com.echothree.model.data.item.server.entity.ItemAliasTypeDetail;
-import com.echothree.model.data.item.server.entity.ItemDetail;
-import com.echothree.model.data.item.server.value.ItemAliasValue;
-import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.vendor.server.entity.Vendor;
-import com.echothree.model.data.vendor.server.entity.VendorItem;
-import com.echothree.model.data.vendor.server.value.VendorItemDetailValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -54,7 +46,6 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class EditItemAliasCommand

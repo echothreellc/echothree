@@ -30,8 +30,6 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.printer.server.entity.PartyPrinterGroupUse;
 import com.echothree.model.data.printer.server.entity.PrinterGroup;
-import com.echothree.model.data.printer.server.entity.PrinterGroupUseType;
-import com.echothree.model.data.printer.server.value.PartyPrinterGroupUseValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;

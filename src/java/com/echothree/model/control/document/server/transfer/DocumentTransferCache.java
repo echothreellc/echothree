@@ -16,21 +16,14 @@
 
 package com.echothree.model.control.document.server.transfer;
 
-import com.echothree.model.control.core.common.transfer.EntityTimeTransfer;
-import com.echothree.model.control.core.common.transfer.MimeTypeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.document.common.DocumentOptions;
 import com.echothree.model.control.document.common.transfer.DocumentTransfer;
-import com.echothree.model.control.document.common.transfer.DocumentTypeTransfer;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.data.document.server.entity.Document;
-import com.echothree.model.data.document.server.entity.DocumentBlob;
-import com.echothree.model.data.document.server.entity.DocumentClob;
-import com.echothree.model.data.document.server.entity.DocumentDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class DocumentTransferCache
         extends BaseDocumentTransferCache<Document, DocumentTransfer> {

@@ -18,7 +18,6 @@ package com.echothree.control.user.shipment.server.command;
 
 import com.echothree.control.user.shipment.common.form.GetFreeOnBoardsForm;
 import com.echothree.control.user.shipment.common.result.ShipmentResultFactory;
-import com.echothree.control.user.shipment.common.result.GetFreeOnBoardsResult;
 import com.echothree.model.control.shipment.server.control.FreeOnBoardControl;
 import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
 import com.echothree.model.data.user.common.pk.UserVisitPK;

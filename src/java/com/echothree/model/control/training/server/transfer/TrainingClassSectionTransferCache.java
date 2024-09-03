@@ -18,15 +18,11 @@ package com.echothree.model.control.training.server.transfer;
 
 import com.echothree.model.control.training.common.TrainingOptions;
 import com.echothree.model.control.training.common.transfer.TrainingClassSectionTransfer;
-import com.echothree.model.control.training.common.transfer.TrainingClassTransfer;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.training.server.entity.TrainingClassSection;
-import com.echothree.model.data.training.server.entity.TrainingClassSectionDetail;
-import com.echothree.model.data.training.server.entity.TrainingClassSectionTranslation;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.string.PercentUtils;
-import java.util.Set;
 
 public class TrainingClassSectionTransferCache
         extends BaseTrainingTransferCache<TrainingClassSection, TrainingClassSectionTransfer> {

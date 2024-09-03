@@ -18,12 +18,10 @@ package com.echothree.control.user.payment.server.command;
 
 import com.echothree.control.user.payment.common.form.CreatePaymentProcessorActionTypeForm;
 import com.echothree.control.user.payment.common.result.PaymentResultFactory;
-import com.echothree.control.user.payment.common.result.CreatePaymentProcessorActionTypeResult;
 import com.echothree.model.control.payment.server.logic.PaymentProcessorActionTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.payment.server.entity.PaymentProcessorActionType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;

@@ -21,17 +21,10 @@ import com.echothree.model.control.training.common.transfer.PartyTrainingClassSe
 import com.echothree.model.control.training.common.transfer.PartyTrainingClassSessionQuestionTransfer;
 import com.echothree.model.control.training.common.transfer.PartyTrainingClassSessionSectionTransfer;
 import com.echothree.model.control.training.common.transfer.PartyTrainingClassSessionTransfer;
-import com.echothree.model.control.training.common.transfer.PartyTrainingClassTransfer;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.training.server.entity.PartyTrainingClassSession;
-import com.echothree.model.data.training.server.entity.PartyTrainingClassSessionDetail;
-import com.echothree.model.data.training.server.entity.PartyTrainingClassSessionPage;
-import com.echothree.model.data.training.server.entity.PartyTrainingClassSessionQuestion;
-import com.echothree.model.data.training.server.entity.PartyTrainingClassSessionSection;
-import com.echothree.model.data.training.server.entity.PartyTrainingClassSessionStatus;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
-import java.util.Set;
 
 public class PartyTrainingClassSessionTransferCache
         extends BaseTrainingTransferCache<PartyTrainingClassSession, PartyTrainingClassSessionTransfer> {

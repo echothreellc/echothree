@@ -18,12 +18,9 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.common.form.GetForumThreadForm;
 import com.echothree.control.user.forum.common.result.GetForumThreadResult;
 import com.echothree.model.control.forum.common.ForumOptions;
 import com.echothree.model.data.forum.common.ForumMessageConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.transfer.Limit;
 import java.util.Arrays;

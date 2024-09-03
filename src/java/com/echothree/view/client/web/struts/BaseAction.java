@@ -17,11 +17,9 @@
 package com.echothree.view.client.web.struts;
 
 import com.echothree.control.user.security.common.SecurityUtil;
-import com.echothree.control.user.security.common.form.CheckSecurityRolesForm;
 import com.echothree.control.user.security.common.result.CheckSecurityRolesResult;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.WebConstants;
 import com.echothree.view.client.web.taglib.TagConstants;
 import com.google.common.base.Splitter;
@@ -29,7 +27,6 @@ import java.util.HashSet;
 import java.util.Map;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import org.apache.struts.action.Action;
 import org.apache.struts.taglib.html.Constants;
 import org.displaytag.tags.TableTagParameters;

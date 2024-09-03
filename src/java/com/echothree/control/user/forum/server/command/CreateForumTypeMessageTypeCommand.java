@@ -18,9 +18,6 @@ package com.echothree.control.user.forum.server.command;
 
 import com.echothree.control.user.forum.common.form.CreateForumTypeMessageTypeForm;
 import com.echothree.model.control.forum.server.control.ForumControl;
-import com.echothree.model.data.forum.server.entity.ForumMessageType;
-import com.echothree.model.data.forum.server.entity.ForumType;
-import com.echothree.model.data.forum.server.entity.ForumTypeMessageType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;

@@ -19,8 +19,6 @@ package com.echothree.control.user.workeffort.server.command;
 import com.echothree.control.user.workeffort.common.form.SetDefaultWorkEffortScopeForm;
 import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.workeffort.server.entity.WorkEffortType;
-import com.echothree.model.data.workeffort.server.value.WorkEffortScopeDetailValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;

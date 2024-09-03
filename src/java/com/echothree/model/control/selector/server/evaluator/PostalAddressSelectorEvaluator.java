@@ -22,10 +22,7 @@ import com.echothree.model.control.selector.common.SelectorNodeTypes;
 import com.echothree.model.data.contact.server.entity.ContactMechanism;
 import com.echothree.model.data.contact.server.entity.ContactPostalAddress;
 import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.selector.server.entity.SelectorNodeDetail;
-import com.echothree.model.data.selector.server.entity.SelectorNodeGeoCode;
-import com.echothree.model.data.selector.server.entity.SelectorNodeType;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.Session;
 

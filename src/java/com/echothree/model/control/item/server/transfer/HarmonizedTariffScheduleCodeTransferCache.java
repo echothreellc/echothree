@@ -16,22 +16,15 @@
 
 package com.echothree.model.control.item.server.transfer;
 
-import com.echothree.model.control.geo.common.transfer.CountryTransfer;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.item.common.ItemOptions;
 import com.echothree.model.control.item.common.transfer.HarmonizedTariffScheduleCodeTransfer;
-import com.echothree.model.control.item.common.transfer.HarmonizedTariffScheduleCodeUnitTransfer;
 import com.echothree.model.control.item.common.transfer.HarmonizedTariffScheduleCodeUseTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCode;
-import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCodeDetail;
-import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCodeTranslation;
-import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCodeUnit;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.MapWrapper;
 import com.echothree.util.server.persistence.Session;
-import java.util.List;
-import java.util.Set;
 
 public class HarmonizedTariffScheduleCodeTransferCache
         extends BaseItemTransferCache<HarmonizedTariffScheduleCode, HarmonizedTariffScheduleCodeTransfer> {

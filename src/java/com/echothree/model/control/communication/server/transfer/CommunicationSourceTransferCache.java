@@ -20,12 +20,9 @@ import com.echothree.model.control.communication.common.CommunicationConstants;
 import com.echothree.model.control.communication.common.CommunicationOptions;
 import com.echothree.model.control.communication.common.transfer.CommunicationEmailSourceTransfer;
 import com.echothree.model.control.communication.common.transfer.CommunicationSourceTransfer;
-import com.echothree.model.control.communication.common.transfer.CommunicationSourceTypeTransfer;
 import com.echothree.model.control.communication.server.control.CommunicationControl;
 import com.echothree.model.data.communication.server.entity.CommunicationSource;
-import com.echothree.model.data.communication.server.entity.CommunicationSourceDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import java.util.Set;
 
 public class CommunicationSourceTransferCache
         extends BaseCommunicationTransferCache<CommunicationSource, CommunicationSourceTransfer> {

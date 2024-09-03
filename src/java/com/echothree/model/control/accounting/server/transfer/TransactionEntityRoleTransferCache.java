@@ -17,10 +17,7 @@
 package com.echothree.model.control.accounting.server.transfer;
 
 import com.echothree.model.control.accounting.common.transfer.TransactionEntityRoleTransfer;
-import com.echothree.model.control.accounting.common.transfer.TransactionEntityRoleTypeTransfer;
-import com.echothree.model.control.accounting.common.transfer.TransactionTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.accounting.server.entity.TransactionEntityRole;
 import com.echothree.model.data.user.server.entity.UserVisit;

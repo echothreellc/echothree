@@ -17,7 +17,6 @@
 package com.echothree.view.common;
 
 import java.io.Serializable;
-import java.util.Iterator;
 import java.util.List;
 
 public class BaseChoicesBean implements Serializable {

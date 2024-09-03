@@ -76,7 +76,6 @@ package com.echothree.view.client.web.struts.sslext.taglib;
 import com.echothree.view.client.web.struts.sslext.util.SecureRequestUtils;
 import java.net.MalformedURLException;
 import java.util.HashMap;
-import java.util.Map;
 import javax.servlet.jsp.JspException;
 import org.apache.struts.taglib.TagUtils;
 import org.apache.struts.taglib.html.LinkTag;

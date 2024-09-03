@@ -18,17 +18,9 @@ package com.echothree.model.control.selector.server.evaluator;
 
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.selector.common.SelectorNodeTypes;
-import com.echothree.model.data.accounting.server.entity.ItemAccountingCategory;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.item.server.entity.ItemCategory;
-import com.echothree.model.data.item.server.entity.ItemDetail;
 import com.echothree.model.data.selector.server.entity.SelectorNodeDetail;
-import com.echothree.model.data.selector.server.entity.SelectorNodeItemAccountingCategory;
-import com.echothree.model.data.selector.server.entity.SelectorNodeItemCategory;
-import com.echothree.model.data.selector.server.entity.SelectorNodeItemPurchasingCategory;
-import com.echothree.model.data.selector.server.entity.SelectorNodeType;
-import com.echothree.model.data.vendor.server.entity.ItemPurchasingCategory;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.Session;
 

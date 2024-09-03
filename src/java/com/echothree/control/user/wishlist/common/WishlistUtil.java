@@ -18,7 +18,6 @@ package com.echothree.control.user.wishlist.common;
 
 import com.echothree.control.user.wishlist.server.WishlistLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class WishlistUtil {

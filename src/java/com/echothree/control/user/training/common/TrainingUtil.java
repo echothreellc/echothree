@@ -18,7 +18,6 @@ package com.echothree.control.user.training.common;
 
 import com.echothree.control.user.training.server.TrainingLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class TrainingUtil {

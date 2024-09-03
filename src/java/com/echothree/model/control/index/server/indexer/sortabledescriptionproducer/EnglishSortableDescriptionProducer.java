@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.List;
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 
 public class EnglishSortableDescriptionProducer

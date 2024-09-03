@@ -17,7 +17,6 @@
 package com.echothree.control.user.security.server.command;
 
 import com.echothree.control.user.security.common.form.GetSecurityRoleGroupChoicesForm;
-import com.echothree.control.user.security.common.result.GetSecurityRoleGroupChoicesResult;
 import com.echothree.control.user.security.common.result.SecurityResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;

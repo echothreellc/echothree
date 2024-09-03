@@ -17,15 +17,12 @@
 package com.echothree.control.user.wishlist.server.command;
 
 import com.echothree.control.user.wishlist.common.form.GetWishlistLinesForm;
-import com.echothree.control.user.wishlist.common.result.GetWishlistLinesResult;
 import com.echothree.control.user.wishlist.common.result.WishlistResultFactory;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.order.common.OrderTypes;
 import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
-import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.order.server.entity.Order;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;

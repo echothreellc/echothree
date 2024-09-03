@@ -31,7 +31,6 @@ import com.echothree.model.control.workflow.server.logic.WorkflowStepTypeLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.workflow.server.entity.WorkflowStep;
 import com.echothree.model.data.workflow.server.entity.WorkflowStepType;
-import com.echothree.model.data.workflow.server.value.WorkflowStepDescriptionValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;

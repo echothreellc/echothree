@@ -18,7 +18,6 @@ package com.echothree.control.user.track.common;
 
 import com.echothree.control.user.track.server.TrackLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class TrackUtil {

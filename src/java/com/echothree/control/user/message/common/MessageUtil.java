@@ -18,7 +18,6 @@ package com.echothree.control.user.message.common;
 
 import com.echothree.control.user.message.server.MessageLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class MessageUtil {

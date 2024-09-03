@@ -16,16 +16,11 @@
 
 package com.echothree.model.control.letter.server.transfer;
 
-import com.echothree.model.control.chain.common.transfer.ChainTypeTransfer;
 import com.echothree.model.control.chain.server.control.ChainControl;
-import com.echothree.model.control.contactlist.common.transfer.ContactListTransfer;
 import com.echothree.model.control.contactlist.server.ContactListControl;
-import com.echothree.model.control.letter.common.transfer.LetterSourceTransfer;
 import com.echothree.model.control.letter.common.transfer.LetterTransfer;
 import com.echothree.model.control.letter.server.control.LetterControl;
-import com.echothree.model.data.contactlist.server.entity.ContactList;
 import com.echothree.model.data.letter.server.entity.Letter;
-import com.echothree.model.data.letter.server.entity.LetterDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 

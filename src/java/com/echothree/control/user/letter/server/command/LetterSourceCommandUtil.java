@@ -20,8 +20,6 @@ import com.echothree.control.user.letter.common.edit.LetterSourceEdit;
 import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.data.contact.server.entity.ContactMechanism;
-import com.echothree.model.data.contact.server.entity.ContactMechanismAlias;
-import com.echothree.model.data.contact.server.entity.ContactMechanismAliasType;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.util.common.message.ExecutionErrors;

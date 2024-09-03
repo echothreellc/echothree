@@ -20,38 +20,15 @@ import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.CoreProperties;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.common.transfer.EntityAttributeTransfer;
-import com.echothree.model.control.core.common.transfer.EntityAttributeTypeTransfer;
-import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
-import com.echothree.model.data.core.server.entity.EntityAttributeBlob;
-import com.echothree.model.data.core.server.entity.EntityAttributeDetail;
-import com.echothree.model.data.core.server.entity.EntityAttributeListItem;
-import com.echothree.model.data.core.server.entity.EntityAttributeNumeric;
-import com.echothree.model.data.core.server.entity.EntityAttributeString;
-import com.echothree.model.data.core.server.entity.EntityAttributeType;
-import com.echothree.model.data.core.server.entity.EntityBlobAttribute;
-import com.echothree.model.data.core.server.entity.EntityBooleanAttribute;
-import com.echothree.model.data.core.server.entity.EntityClobAttribute;
-import com.echothree.model.data.core.server.entity.EntityDateAttribute;
-import com.echothree.model.data.core.server.entity.EntityEntityAttribute;
-import com.echothree.model.data.core.server.entity.EntityGeoPointAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.core.server.entity.EntityIntegerAttribute;
-import com.echothree.model.data.core.server.entity.EntityListItemAttribute;
-import com.echothree.model.data.core.server.entity.EntityLongAttribute;
-import com.echothree.model.data.core.server.entity.EntityNameAttribute;
-import com.echothree.model.data.core.server.entity.EntityStringAttribute;
-import com.echothree.model.data.core.server.entity.EntityTimeAttribute;
-import com.echothree.model.data.sequence.server.entity.Sequence;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class EntityAttributeTransferCache
         extends BaseCoreTransferCache<EntityAttribute, EntityAttributeTransfer> {

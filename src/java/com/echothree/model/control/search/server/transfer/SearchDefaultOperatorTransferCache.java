@@ -20,9 +20,7 @@ import com.echothree.model.control.search.common.SearchOptions;
 import com.echothree.model.control.search.common.transfer.SearchDefaultOperatorTransfer;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.data.search.server.entity.SearchDefaultOperator;
-import com.echothree.model.data.search.server.entity.SearchDefaultOperatorDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import java.util.Set;
 
 public class SearchDefaultOperatorTransferCache
         extends BaseSearchTransferCache<SearchDefaultOperator, SearchDefaultOperatorTransfer> {

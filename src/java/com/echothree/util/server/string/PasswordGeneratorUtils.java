@@ -18,7 +18,6 @@ package com.echothree.util.server.string;
 
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.PartyType;
-import com.echothree.model.data.party.server.entity.PartyTypePasswordStringPolicyDetail;
 import com.echothree.util.server.persistence.EncryptionUtils;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.Graph.GraphType;

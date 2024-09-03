@@ -17,7 +17,6 @@
 package com.echothree.control.user.vendor.server.command;
 
 import com.echothree.control.user.vendor.common.form.GetItemPurchasingCategoryChoicesForm;
-import com.echothree.control.user.vendor.common.result.GetItemPurchasingCategoryChoicesResult;
 import com.echothree.control.user.vendor.common.result.VendorResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;

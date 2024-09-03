@@ -19,7 +19,6 @@ package com.echothree.model.control.payment.server.transfer;
 import com.echothree.model.control.payment.common.transfer.PaymentProcessorActionTypeTransfer;
 import com.echothree.model.control.payment.server.control.PaymentProcessorActionTypeControl;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorActionType;
-import com.echothree.model.data.payment.server.entity.PaymentProcessorActionTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 

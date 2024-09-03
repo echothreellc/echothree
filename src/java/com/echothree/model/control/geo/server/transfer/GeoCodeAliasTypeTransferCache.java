@@ -17,10 +17,8 @@
 package com.echothree.model.control.geo.server.transfer;
 
 import com.echothree.model.control.geo.common.transfer.GeoCodeAliasTypeTransfer;
-import com.echothree.model.control.geo.common.transfer.GeoCodeTypeTransfer;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.data.geo.server.entity.GeoCodeAliasType;
-import com.echothree.model.data.geo.server.entity.GeoCodeAliasTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class GeoCodeAliasTypeTransferCache

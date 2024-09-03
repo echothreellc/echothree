@@ -19,9 +19,6 @@ package com.echothree.control.user.forum.server.command;
 
 import com.echothree.control.user.forum.common.form.SetDefaultForumMimeTypeForm;
 import com.echothree.model.control.forum.server.control.ForumControl;
-import com.echothree.model.data.core.server.entity.MimeType;
-import com.echothree.model.data.forum.server.entity.Forum;
-import com.echothree.model.data.forum.server.value.ForumMimeTypeValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;

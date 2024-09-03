@@ -18,11 +18,7 @@ package com.echothree.control.user.batch.server.command;
 
 import com.echothree.control.user.batch.common.form.GetBatchTypeEntityTypesForm;
 import com.echothree.control.user.batch.common.result.BatchResultFactory;
-import com.echothree.control.user.batch.common.result.GetBatchTypeEntityTypesResult;
 import com.echothree.model.control.batch.server.control.BatchControl;
-import com.echothree.model.data.batch.server.entity.BatchType;
-import com.echothree.model.data.core.server.entity.ComponentVendor;
-import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;

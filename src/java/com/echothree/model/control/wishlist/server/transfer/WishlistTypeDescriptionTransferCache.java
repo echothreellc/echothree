@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.wishlist.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.wishlist.common.transfer.WishlistTypeDescriptionTransfer;
-import com.echothree.model.control.wishlist.common.transfer.WishlistTypeTransfer;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.wishlist.server.entity.WishlistTypeDescription;

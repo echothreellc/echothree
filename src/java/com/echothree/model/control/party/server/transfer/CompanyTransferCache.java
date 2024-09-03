@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.party.server.transfer;
 
-import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.carrier.server.control.CarrierControl;
 import com.echothree.model.control.contact.server.control.ContactControl;
@@ -25,29 +24,15 @@ import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
 import com.echothree.model.control.party.common.PartyOptions;
 import com.echothree.model.control.party.common.transfer.CompanyTransfer;
-import com.echothree.model.control.party.common.transfer.DateTimeFormatTransfer;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
-import com.echothree.model.control.party.common.transfer.PartyGroupTransfer;
-import com.echothree.model.control.party.common.transfer.PartyTypeTransfer;
-import com.echothree.model.control.party.common.transfer.PersonTransfer;
-import com.echothree.model.control.party.common.transfer.TimeZoneTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.scale.server.control.ScaleControl;
-import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.invoice.server.factory.InvoiceFactory;
-import com.echothree.model.data.party.server.entity.DateTimeFormat;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyCompany;
-import com.echothree.model.data.party.server.entity.PartyDetail;
-import com.echothree.model.data.party.server.entity.PartyGroup;
-import com.echothree.model.data.party.server.entity.Person;
-import com.echothree.model.data.party.server.entity.TimeZone;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class CompanyTransferCache
         extends BasePartyTransferCache<Party, CompanyTransfer> {

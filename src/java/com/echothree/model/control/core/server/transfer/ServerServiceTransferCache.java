@@ -17,8 +17,6 @@
 package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.ServerServiceTransfer;
-import com.echothree.model.control.core.common.transfer.ServerTransfer;
-import com.echothree.model.control.core.common.transfer.ServiceTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.ServerService;
 import com.echothree.model.data.user.server.entity.UserVisit;

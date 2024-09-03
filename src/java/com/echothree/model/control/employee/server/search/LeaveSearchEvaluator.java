@@ -22,7 +22,6 @@ import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.search.server.search.BaseSearchEvaluator;
 import com.echothree.model.control.search.server.search.EntityInstancePKHolder;
 import com.echothree.model.data.core.server.factory.EntityInstanceFactory;
-import com.echothree.model.data.employee.server.entity.Leave;
 import com.echothree.model.data.employee.server.entity.LeaveReason;
 import com.echothree.model.data.employee.server.entity.LeaveType;
 import com.echothree.model.data.party.server.entity.Party;

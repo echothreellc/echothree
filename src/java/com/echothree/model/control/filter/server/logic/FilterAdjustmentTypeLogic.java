@@ -16,23 +16,14 @@
 
 package com.echothree.model.control.filter.server.logic;
 
-import com.echothree.control.user.filter.common.spec.FilterAdjustmentTypeUniversalSpec;
-import com.echothree.model.control.core.common.ComponentVendors;
-import com.echothree.model.control.core.common.EntityTypes;
-import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
-import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.filter.common.exception.DuplicateFilterAdjustmentTypeNameException;
-import com.echothree.model.control.filter.common.exception.UnknownDefaultFilterAdjustmentTypeException;
 import com.echothree.model.control.filter.common.exception.UnknownFilterAdjustmentTypeNameException;
 import com.echothree.model.control.filter.server.control.FilterControl;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentType;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.util.common.message.ExecutionErrors;
-import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 
 public class FilterAdjustmentTypeLogic

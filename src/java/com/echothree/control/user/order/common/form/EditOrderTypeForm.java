@@ -17,7 +17,6 @@
 package com.echothree.control.user.order.common.form;
 
 import com.echothree.control.user.order.common.edit.OrderTypeEdit;
-import com.echothree.control.user.order.common.spec.OrderTypeSpec;
 import com.echothree.control.user.order.common.spec.OrderTypeUniversalSpec;
 import com.echothree.util.common.form.BaseEditForm;
 

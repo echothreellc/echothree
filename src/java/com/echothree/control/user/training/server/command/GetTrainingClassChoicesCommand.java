@@ -18,7 +18,6 @@ package com.echothree.control.user.training.server.command;
 
 
 import com.echothree.control.user.training.common.form.GetTrainingClassChoicesForm;
-import com.echothree.control.user.training.common.result.GetTrainingClassChoicesResult;
 import com.echothree.control.user.training.common.result.TrainingResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;

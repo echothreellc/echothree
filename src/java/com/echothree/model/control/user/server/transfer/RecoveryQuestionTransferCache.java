@@ -19,7 +19,6 @@ package com.echothree.model.control.user.server.transfer;
 import com.echothree.model.control.user.common.transfer.RecoveryQuestionTransfer;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.user.server.entity.RecoveryQuestion;
-import com.echothree.model.data.user.server.entity.RecoveryQuestionDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class RecoveryQuestionTransferCache

@@ -18,7 +18,6 @@ package com.echothree.control.user.selector.common;
 
 import com.echothree.control.user.selector.server.SelectorLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class SelectorUtil {

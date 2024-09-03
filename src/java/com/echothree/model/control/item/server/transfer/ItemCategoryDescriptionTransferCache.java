@@ -17,9 +17,7 @@
 package com.echothree.model.control.item.server.transfer;
 
 import com.echothree.model.control.item.common.transfer.ItemCategoryDescriptionTransfer;
-import com.echothree.model.control.item.common.transfer.ItemCategoryTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.item.server.entity.ItemCategoryDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 

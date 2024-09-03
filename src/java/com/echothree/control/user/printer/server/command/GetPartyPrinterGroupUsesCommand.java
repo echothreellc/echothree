@@ -17,7 +17,6 @@
 package com.echothree.control.user.printer.server.command;
 
 import com.echothree.control.user.printer.common.form.GetPartyPrinterGroupUsesForm;
-import com.echothree.control.user.printer.common.result.GetPartyPrinterGroupUsesResult;
 import com.echothree.control.user.printer.common.result.PrinterResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;

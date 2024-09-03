@@ -18,7 +18,6 @@ package com.echothree.control.user.club.server.command;
 
 import com.echothree.control.user.club.common.form.CreateClubItemTypeForm;
 import com.echothree.model.control.club.server.control.ClubControl;
-import com.echothree.model.data.club.server.entity.ClubItemType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;

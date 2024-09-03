@@ -17,7 +17,6 @@
 package com.echothree.control.user.uom.server.command;
 
 import com.echothree.control.user.uom.common.form.GetUnitOfMeasureKindForm;
-import com.echothree.control.user.uom.common.result.GetUnitOfMeasureKindResult;
 import com.echothree.control.user.uom.common.result.UomResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.uom.server.control.UomControl;

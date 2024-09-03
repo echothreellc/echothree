@@ -18,8 +18,6 @@ package com.echothree.control.user.icon.server.command;
 
 import com.echothree.control.user.icon.common.form.CreateIconUsageTypeForm;
 import com.echothree.model.control.icon.server.control.IconControl;
-import com.echothree.model.data.icon.server.entity.IconUsageType;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;

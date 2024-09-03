@@ -20,9 +20,6 @@ import com.echothree.control.user.party.common.form.RemoveEmployeeFromCompanyFor
 import com.echothree.model.control.party.server.logic.CompanyLogic;
 import com.echothree.model.control.party.server.logic.EmployeeLogic;
 import com.echothree.model.control.party.server.logic.PartyRelationshipLogic;
-import com.echothree.model.data.employee.server.entity.PartyEmployee;
-import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.party.server.entity.PartyCompany;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;

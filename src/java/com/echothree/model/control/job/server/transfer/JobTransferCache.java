@@ -19,15 +19,10 @@ package com.echothree.model.control.job.server.transfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.job.common.transfer.JobTransfer;
 import com.echothree.model.control.job.server.control.JobControl;
-import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.job.common.workflow.JobStatusConstants;
-import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.job.server.entity.Job;
-import com.echothree.model.data.job.server.entity.JobDetail;
-import com.echothree.model.data.job.server.entity.JobStatus;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 

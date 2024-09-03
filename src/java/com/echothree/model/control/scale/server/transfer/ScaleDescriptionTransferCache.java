@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.scale.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.scale.common.transfer.ScaleDescriptionTransfer;
-import com.echothree.model.control.scale.common.transfer.ScaleTransfer;
 import com.echothree.model.control.scale.server.control.ScaleControl;
 import com.echothree.model.data.scale.server.entity.ScaleDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;

@@ -17,7 +17,6 @@
 package com.echothree.util.server.persistence;
 
 import com.echothree.util.common.exception.PersistenceDatabaseException;
-import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;

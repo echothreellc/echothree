@@ -19,7 +19,6 @@ package com.echothree.model.control.scale.server.logic;
 import com.echothree.model.control.scale.server.control.ScaleControl;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.scale.server.entity.PartyScaleUse;
-import com.echothree.model.data.scale.server.entity.Scale;
 import com.echothree.model.data.scale.server.entity.ScaleUseType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;

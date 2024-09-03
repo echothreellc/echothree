@@ -18,7 +18,6 @@ package com.echothree.control.user.order.common;
 
 import com.echothree.control.user.order.server.OrderLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class OrderUtil {

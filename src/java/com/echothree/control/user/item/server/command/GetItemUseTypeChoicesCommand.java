@@ -17,7 +17,6 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.GetItemUseTypeChoicesForm;
-import com.echothree.control.user.item.common.result.GetItemUseTypeChoicesResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;

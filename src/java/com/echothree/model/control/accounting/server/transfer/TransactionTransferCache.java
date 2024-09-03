@@ -16,19 +16,13 @@
 package com.echothree.model.control.accounting.server.transfer;
 
 import com.echothree.model.control.accounting.common.AccountingOptions;
-import com.echothree.model.control.accounting.common.transfer.TransactionGroupTransfer;
 import com.echothree.model.control.accounting.common.transfer.TransactionTransfer;
-import com.echothree.model.control.accounting.common.transfer.TransactionTypeTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.accounting.server.entity.Transaction;
-import com.echothree.model.data.accounting.server.entity.TransactionDetail;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class TransactionTransferCache
         extends BaseAccountingTransferCache<Transaction, TransactionTransfer> {

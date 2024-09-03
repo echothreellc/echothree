@@ -17,9 +17,7 @@
 package com.echothree.model.control.index.server.transfer;
 
 import com.echothree.model.control.index.common.transfer.IndexDescriptionTransfer;
-import com.echothree.model.control.index.common.transfer.IndexTransfer;
 import com.echothree.model.control.index.server.control.IndexControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.index.server.entity.IndexDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 

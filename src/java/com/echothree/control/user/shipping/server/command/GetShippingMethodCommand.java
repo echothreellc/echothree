@@ -17,13 +17,11 @@
 package com.echothree.control.user.shipping.server.command;
 
 import com.echothree.control.user.shipping.common.form.GetShippingMethodForm;
-import com.echothree.control.user.shipping.common.result.GetShippingMethodResult;
 import com.echothree.control.user.shipping.common.result.ShippingResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.shipping.server.control.ShippingControl;
-import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;

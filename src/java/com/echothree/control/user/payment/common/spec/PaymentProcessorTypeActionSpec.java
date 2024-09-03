@@ -16,8 +16,6 @@
 
 package com.echothree.control.user.payment.common.spec;
 
-import com.echothree.util.common.form.BaseSpec;
-
 public interface PaymentProcessorTypeActionSpec
         extends PaymentProcessorTypeSpec, PaymentProcessorActionTypeSpec {
     

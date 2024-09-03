@@ -18,12 +18,8 @@ package com.echothree.control.user.customer.server.command;
 
 import com.echothree.control.user.customer.common.form.GetCustomerTypeShippingMethodForm;
 import com.echothree.control.user.customer.common.result.CustomerResultFactory;
-import com.echothree.control.user.customer.common.result.GetCustomerTypeShippingMethodResult;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.shipping.server.control.ShippingControl;
-import com.echothree.model.data.customer.server.entity.CustomerType;
-import com.echothree.model.data.customer.server.entity.CustomerTypeShippingMethod;
-import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;

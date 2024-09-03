@@ -17,7 +17,6 @@
 package com.echothree.control.user.user.server.command;
 
 import com.echothree.control.user.user.common.form.GetRecoveryQuestionForm;
-import com.echothree.control.user.user.common.result.GetRecoveryQuestionResult;
 import com.echothree.control.user.user.common.result.UserResultFactory;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
@@ -26,18 +25,11 @@ import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.user.server.logic.RecoveryQuestionLogic;
 import com.echothree.model.control.vendor.server.control.VendorControl;
-import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.customer.server.entity.Customer;
-import com.echothree.model.data.employee.server.entity.PartyEmployee;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.RecoveryAnswer;
 import com.echothree.model.data.user.server.entity.RecoveryQuestion;
-import com.echothree.model.data.user.server.entity.UserLogin;
-import com.echothree.model.data.vendor.server.entity.Vendor;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;

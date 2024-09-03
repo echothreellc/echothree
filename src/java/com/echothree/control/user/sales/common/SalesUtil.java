@@ -18,7 +18,6 @@ package com.echothree.control.user.sales.common;
 
 import com.echothree.control.user.sales.server.SalesLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class SalesUtil {

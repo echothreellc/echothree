@@ -18,10 +18,8 @@ package com.echothree.model.control.carrier.server.transfer;
 
 
 
-import com.echothree.model.control.carrier.common.transfer.CarrierTransfer;
 import com.echothree.model.control.carrier.common.transfer.PartyCarrierTransfer;
 import com.echothree.model.control.carrier.server.control.CarrierControl;
-import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.carrier.server.entity.PartyCarrier;
 import com.echothree.model.data.user.server.entity.UserVisit;

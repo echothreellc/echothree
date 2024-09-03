@@ -24,7 +24,6 @@ import com.echothree.model.control.sales.server.logic.SalesOrderLineLogic;
 import com.echothree.model.control.sales.server.logic.SalesOrderLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.order.server.entity.Order;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;

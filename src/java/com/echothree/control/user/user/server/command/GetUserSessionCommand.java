@@ -17,17 +17,11 @@
 package com.echothree.control.user.user.server.command;
 
 import com.echothree.control.user.user.common.form.GetUserSessionForm;
-import com.echothree.control.user.user.common.result.GetUserSessionResult;
 import com.echothree.control.user.user.common.result.UserResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.employee.common.workflow.EmployeeAvailabilityConstants;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
-import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserSession;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;

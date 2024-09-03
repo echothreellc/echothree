@@ -19,7 +19,6 @@ package com.echothree.model.control.content.server.transfer;
 import com.echothree.model.control.content.common.transfer.ContentPageLayoutTransfer;
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.data.content.server.entity.ContentPageLayout;
-import com.echothree.model.data.content.server.entity.ContentPageLayoutDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class ContentPageLayoutTransferCache

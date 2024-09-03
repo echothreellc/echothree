@@ -17,9 +17,7 @@
 package com.echothree.model.control.financial.server.transfer;
 
 import com.echothree.model.control.financial.common.transfer.FinancialAccountTypeDescriptionTransfer;
-import com.echothree.model.control.financial.common.transfer.FinancialAccountTypeTransfer;
 import com.echothree.model.control.financial.server.control.FinancialControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.financial.server.entity.FinancialAccountTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 

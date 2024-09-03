@@ -28,7 +28,6 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.warehouse.server.logic.WarehouseLogic;
 import com.echothree.model.control.warehouse.server.logic.WarehouseTypeLogic;
 import com.echothree.model.data.accounting.server.entity.Currency;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.warehouse.server.entity.Warehouse;
 import com.echothree.util.common.command.BaseResult;

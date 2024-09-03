@@ -17,7 +17,6 @@
 package com.echothree.control.user.search.server.command;
 
 import com.echothree.control.user.search.common.form.GetSearchUseTypeChoicesForm;
-import com.echothree.control.user.search.common.result.GetSearchUseTypeChoicesResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.search.server.control.SearchControl;

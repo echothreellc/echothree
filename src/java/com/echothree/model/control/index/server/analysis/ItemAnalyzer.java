@@ -24,7 +24,6 @@ import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.core.server.entity.EntityAliasType;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.tag.server.entity.TagScope;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;

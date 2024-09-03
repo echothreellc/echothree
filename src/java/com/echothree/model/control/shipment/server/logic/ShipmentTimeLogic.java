@@ -18,11 +18,7 @@ package com.echothree.model.control.shipment.server.logic;
 
 import com.echothree.model.control.shipment.server.ShipmentControl;
 import com.echothree.model.data.shipment.server.entity.Shipment;
-import com.echothree.model.data.shipment.server.entity.ShipmentDetail;
-import com.echothree.model.data.shipment.server.entity.ShipmentTime;
-import com.echothree.model.data.shipment.server.entity.ShipmentTimeType;
 import com.echothree.model.data.shipment.server.entity.ShipmentType;
-import com.echothree.model.data.shipment.server.value.ShipmentTimeValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;

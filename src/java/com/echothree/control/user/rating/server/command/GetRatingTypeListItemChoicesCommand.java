@@ -17,12 +17,10 @@
 package com.echothree.control.user.rating.server.command;
 
 import com.echothree.control.user.rating.common.form.GetRatingTypeListItemChoicesForm;
-import com.echothree.control.user.rating.common.result.GetRatingTypeListItemChoicesResult;
 import com.echothree.control.user.rating.common.result.RatingResultFactory;
 import com.echothree.model.control.rating.server.control.RatingControl;
 import com.echothree.model.control.rating.server.logic.RatingLogic;
 import com.echothree.model.control.rating.server.logic.RatingTypeLogic;
-import com.echothree.model.data.rating.server.entity.Rating;
 import com.echothree.model.data.rating.server.entity.RatingType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;

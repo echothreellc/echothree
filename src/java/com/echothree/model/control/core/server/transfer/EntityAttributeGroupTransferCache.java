@@ -21,13 +21,10 @@ import com.echothree.model.control.core.common.transfer.EntityAttributeGroupTran
 import com.echothree.model.control.core.common.transfer.EntityAttributeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.EntityAttributeGroup;
-import com.echothree.model.data.core.server.entity.EntityAttributeGroupDetail;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.MapWrapper;
 import com.echothree.util.server.persistence.Session;
-import java.util.List;
-import java.util.Set;
 
 public class EntityAttributeGroupTransferCache
         extends BaseCoreTransferCache<EntityAttributeGroup, EntityAttributeGroupTransfer> {

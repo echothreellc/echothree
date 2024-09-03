@@ -29,29 +29,11 @@ import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
-import com.echothree.model.data.communication.server.entity.CommunicationEvent;
 import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.core.server.entity.MimeType;
-import com.echothree.model.data.forum.server.entity.Forum;
-import com.echothree.model.data.forum.server.entity.ForumGroup;
 import com.echothree.model.data.forum.server.entity.ForumMessage;
-import com.echothree.model.data.forum.server.entity.ForumMessagePart;
-import com.echothree.model.data.forum.server.entity.ForumMessagePartType;
-import com.echothree.model.data.forum.server.entity.ForumStringMessagePart;
-import com.echothree.model.data.forum.server.entity.ForumThread;
-import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.item.server.entity.ItemDescription;
-import com.echothree.model.data.item.server.entity.ItemDescriptionDetail;
 import com.echothree.model.data.item.server.entity.ItemDescriptionType;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.training.server.entity.PartyTrainingClass;
-import com.echothree.model.data.training.server.entity.TrainingClass;
-import com.echothree.model.data.training.server.entity.TrainingClassTranslation;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.model.data.vendor.server.entity.VendorItem;
-import com.echothree.model.data.vendor.server.entity.VendorItemDetail;
-import java.util.List;
 
 public class EntityDescriptionUtils {
     

@@ -17,7 +17,6 @@
 package com.echothree.control.user.queue.server.command;
 
 import com.echothree.control.user.queue.common.form.GetQueueTypeChoicesForm;
-import com.echothree.control.user.queue.common.result.GetQueueTypeChoicesResult;
 import com.echothree.control.user.queue.common.result.QueueResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.queue.server.control.QueueControl;

@@ -16,21 +16,15 @@
 
 package com.echothree.model.control.uom.server.transfer;
 
-import com.echothree.model.control.accounting.common.transfer.SymbolPositionTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.uom.common.UomOptions;
 import com.echothree.model.control.uom.common.UomProperties;
-import com.echothree.model.control.uom.common.transfer.UnitOfMeasureKindTransfer;
 import com.echothree.model.control.uom.common.transfer.UnitOfMeasureTypeTransfer;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureTypeDetail;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureTypeVolume;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureTypeWeight;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class UnitOfMeasureTypeTransferCache
         extends BaseUomTransferCache<UnitOfMeasureType, UnitOfMeasureTypeTransfer> {

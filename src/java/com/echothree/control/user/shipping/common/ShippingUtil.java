@@ -18,7 +18,6 @@ package com.echothree.control.user.shipping.common;
 
 import com.echothree.control.user.shipping.server.ShippingLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class ShippingUtil {

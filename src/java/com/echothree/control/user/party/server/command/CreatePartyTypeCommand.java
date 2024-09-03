@@ -20,7 +20,6 @@ import com.echothree.control.user.party.common.form.CreatePartyTypeForm;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.party.server.entity.PartyType;
-import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;

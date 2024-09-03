@@ -16,10 +16,8 @@
 
 package com.echothree.model.control.core.server.transfer;
 
-import com.echothree.model.control.core.common.transfer.CommandMessageTransfer;
 import com.echothree.model.control.core.common.transfer.CommandMessageTranslationTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.core.server.entity.CommandMessageTranslation;
 import com.echothree.model.data.user.server.entity.UserVisit;

@@ -18,9 +18,7 @@ package com.echothree.control.user.accounting.server.command;
 
 import com.echothree.control.user.accounting.common.form.GetTransactionGlAccountCategoriesForm;
 import com.echothree.control.user.accounting.common.result.AccountingResultFactory;
-import com.echothree.control.user.accounting.common.result.GetTransactionGlAccountCategoriesResult;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.data.accounting.server.entity.TransactionType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;

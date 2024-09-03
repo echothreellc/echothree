@@ -23,7 +23,6 @@ import com.echothree.util.common.message.Messages;
 import com.echothree.util.server.validation.Patterns;
 import com.echothree.util.server.validation.Validator;
 import com.google.common.base.Splitter;
-import java.util.regex.Matcher;
 
 public class Inet4AddressFieldType
         extends BaseFieldType {

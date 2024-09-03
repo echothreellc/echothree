@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.content.server.graphql;
 
-import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.graphql.BaseObject;
 import com.echothree.model.data.content.server.entity.ContentCategoryItem;
 import graphql.annotations.annotationTypes.GraphQLDescription;

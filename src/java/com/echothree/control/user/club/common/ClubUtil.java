@@ -18,7 +18,6 @@ package com.echothree.control.user.club.common;
 
 import com.echothree.control.user.club.server.ClubLocal;
 import com.echothree.util.common.control.InitialContextUtils;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class ClubUtil {

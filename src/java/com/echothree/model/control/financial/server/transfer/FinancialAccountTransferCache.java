@@ -16,25 +16,17 @@
 
 package com.echothree.model.control.financial.server.transfer;
 
-import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
-import com.echothree.model.control.accounting.common.transfer.GlAccountTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.financial.common.FinancialOptions;
 import com.echothree.model.control.financial.common.transfer.FinancialAccountRoleTransfer;
 import com.echothree.model.control.financial.common.transfer.FinancialAccountTransfer;
-import com.echothree.model.control.financial.common.transfer.FinancialAccountTypeTransfer;
 import com.echothree.model.control.financial.server.control.FinancialControl;
-import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.financial.server.entity.FinancialAccount;
-import com.echothree.model.data.financial.server.entity.FinancialAccountDetail;
-import com.echothree.model.data.financial.server.entity.FinancialAccountStatus;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.common.transfer.MapWrapper;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
-import java.util.List;
-import java.util.Set;
 
 public class FinancialAccountTransferCache
         extends BaseFinancialTransferCache<FinancialAccount, FinancialAccountTransfer> {

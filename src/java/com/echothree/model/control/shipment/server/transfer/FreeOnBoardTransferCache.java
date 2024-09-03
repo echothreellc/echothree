@@ -19,7 +19,6 @@ package com.echothree.model.control.shipment.server.transfer;
 import com.echothree.model.control.shipment.common.transfer.FreeOnBoardTransfer;
 import com.echothree.model.control.shipment.server.control.FreeOnBoardControl;
 import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
-import com.echothree.model.data.shipment.server.entity.FreeOnBoardDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 

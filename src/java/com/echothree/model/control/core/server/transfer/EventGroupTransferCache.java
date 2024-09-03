@@ -19,11 +19,8 @@ package com.echothree.model.control.core.server.transfer;
 import com.echothree.model.control.core.common.transfer.EventGroupTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.common.workflow.EventGroupStatusConstants;
-import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EventGroup;
-import com.echothree.model.data.core.server.entity.EventGroupDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 

@@ -18,13 +18,10 @@ package com.echothree.model.control.workflow.server.transfer;
 
 import com.echothree.model.control.workflow.common.WorkflowProperties;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntranceTransfer;
-import com.echothree.model.control.workflow.common.transfer.WorkflowTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
-import com.echothree.model.data.workflow.server.entity.WorkflowEntranceDetail;
 import com.echothree.util.common.form.TransferProperties;
-import java.util.Set;
 
 public class WorkflowEntranceTransferCache
         extends BaseWorkflowTransferCache<WorkflowEntrance, WorkflowEntranceTransfer> {

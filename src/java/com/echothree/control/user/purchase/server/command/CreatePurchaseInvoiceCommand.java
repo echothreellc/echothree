@@ -32,7 +32,6 @@ import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.invoice.server.entity.Invoice;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.vendor.server.entity.Vendor;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;

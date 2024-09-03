@@ -17,9 +17,7 @@
 package com.echothree.model.control.employee.server.transfer;
 
 import com.echothree.model.control.employee.common.transfer.ResponsibilityTypeDescriptionTransfer;
-import com.echothree.model.control.employee.common.transfer.ResponsibilityTypeTransfer;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.employee.server.entity.ResponsibilityTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 

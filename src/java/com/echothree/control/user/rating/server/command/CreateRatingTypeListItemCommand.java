@@ -18,10 +18,6 @@ package com.echothree.control.user.rating.server.command;
 
 import com.echothree.control.user.rating.common.form.CreateRatingTypeListItemForm;
 import com.echothree.model.control.rating.server.control.RatingControl;
-import com.echothree.model.data.core.server.entity.ComponentVendor;
-import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.rating.server.entity.RatingType;
-import com.echothree.model.data.rating.server.entity.RatingTypeListItem;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
