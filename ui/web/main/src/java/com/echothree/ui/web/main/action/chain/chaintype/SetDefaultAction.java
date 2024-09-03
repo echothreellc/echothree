@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.chain.chaintype;
 
 import com.echothree.control.user.chain.common.ChainUtil;
-import com.echothree.control.user.chain.common.form.SetDefaultChainTypeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

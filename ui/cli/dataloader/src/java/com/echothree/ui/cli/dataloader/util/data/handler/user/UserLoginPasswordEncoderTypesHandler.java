@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.user;
 
 import com.echothree.control.user.user.common.UserUtil;
 import com.echothree.control.user.user.common.UserService;
-import com.echothree.control.user.user.common.form.CreateUserLoginPasswordEncoderTypeForm;
 import com.echothree.control.user.user.common.form.UserFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;

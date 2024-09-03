@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.advertising.offercustomertype;
 
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.form.GetCustomerTypeChoicesForm;
 import com.echothree.control.user.customer.common.result.GetCustomerTypeChoicesResult;
 import com.echothree.model.control.customer.common.choice.CustomerTypeChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

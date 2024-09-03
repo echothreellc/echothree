@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.club.clubitem;
 
 import com.echothree.control.user.club.common.ClubUtil;
-import com.echothree.control.user.club.common.form.DeleteClubItemForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

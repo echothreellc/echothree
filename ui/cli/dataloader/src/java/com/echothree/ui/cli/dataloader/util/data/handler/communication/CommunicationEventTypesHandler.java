@@ -19,7 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.communication;
 import com.echothree.control.user.communication.common.CommunicationUtil;
 import com.echothree.control.user.communication.common.CommunicationService;
 import com.echothree.control.user.communication.common.form.CommunicationFormFactory;
-import com.echothree.control.user.communication.common.form.CreateCommunicationEventTypeForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;

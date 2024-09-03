@@ -17,7 +17,6 @@
 package com.echothree.ui.web.cms.action.v1;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.common.form.GetForumMessageForm;
 import com.echothree.ui.web.cms.framework.CmsBaseJsonAction;
 import com.echothree.ui.web.cms.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;

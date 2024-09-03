@@ -17,10 +17,6 @@
 package com.echothree.ui.web.main.action.contactlist.contactlist;
 
 import com.echothree.control.user.contactlist.common.ContactListUtil;
-import com.echothree.control.user.contactlist.common.form.GetContactListFrequencyChoicesForm;
-import com.echothree.control.user.contactlist.common.form.GetContactListGroupChoicesForm;
-import com.echothree.control.user.contactlist.common.form.GetContactListTypeChoicesForm;
-import com.echothree.control.user.contactlist.common.form.GetPartyContactListStatusChoicesForm;
 import com.echothree.control.user.contactlist.common.result.GetContactListFrequencyChoicesResult;
 import com.echothree.control.user.contactlist.common.result.GetContactListGroupChoicesResult;
 import com.echothree.control.user.contactlist.common.result.GetContactListTypeChoicesResult;
@@ -29,8 +25,6 @@ import com.echothree.model.control.contactlist.common.choice.ContactListFrequenc
 import com.echothree.model.control.contactlist.common.choice.ContactListGroupChoicesBean;
 import com.echothree.model.control.contactlist.common.choice.ContactListTypeChoicesBean;
 import com.echothree.model.control.contactlist.common.choice.PartyContactListStatusChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

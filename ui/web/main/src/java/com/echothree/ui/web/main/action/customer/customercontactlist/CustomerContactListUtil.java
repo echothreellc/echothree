@@ -17,19 +17,13 @@
 package com.echothree.ui.web.main.action.customer.customercontactlist;
 
 import com.echothree.control.user.contactlist.common.ContactListUtil;
-import com.echothree.control.user.contactlist.common.form.GetContactListForm;
-import com.echothree.control.user.contactlist.common.form.GetPartyContactListForm;
 import com.echothree.control.user.contactlist.common.result.GetContactListResult;
 import com.echothree.control.user.contactlist.common.result.GetPartyContactListResult;
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.form.GetCustomerForm;
 import com.echothree.control.user.customer.common.result.GetCustomerResult;
-import com.echothree.model.control.customer.common.transfer.CustomerTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 

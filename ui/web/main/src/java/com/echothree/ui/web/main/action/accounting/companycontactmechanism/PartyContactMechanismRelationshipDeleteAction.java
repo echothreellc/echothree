@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.companycontactmechanism;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.form.DeletePartyContactMechanismRelationshipForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

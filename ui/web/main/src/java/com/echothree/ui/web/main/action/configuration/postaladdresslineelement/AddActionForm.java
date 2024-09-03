@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.configuration.postaladdresslineelement;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.form.GetPostalAddressElementTypeChoicesForm;
 import com.echothree.control.user.contact.common.result.GetPostalAddressElementTypeChoicesResult;
 import com.echothree.model.control.contact.common.choice.PostalAddressElementTypeChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

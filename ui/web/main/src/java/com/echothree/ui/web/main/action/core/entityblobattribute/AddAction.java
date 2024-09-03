@@ -17,11 +17,9 @@
 package com.echothree.ui.web.main.action.core.entityblobattribute;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.CreateEntityBlobAttributeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -32,7 +30,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.upload.FormFile;
 
 @SproutAction(
     path = "/Core/EntityBlobAttribute/Add",

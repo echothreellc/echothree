@@ -17,8 +17,6 @@
 package com.echothree.ui.web.main.action.customer.customer;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.form.GetCustomerResultsForm;
-import com.echothree.control.user.search.common.form.SearchCustomersForm;
 import com.echothree.control.user.search.common.result.GetCustomerResultsResult;
 import com.echothree.control.user.search.common.result.SearchCustomersResult;
 import com.echothree.model.control.customer.common.transfer.CustomerResultTransfer;
@@ -26,8 +24,6 @@ import com.echothree.model.control.search.common.SearchTypes;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -35,7 +31,6 @@ import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;

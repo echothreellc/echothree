@@ -17,14 +17,10 @@
 package com.echothree.ui.web.main.action.forum.forummessage;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.common.form.CreateBlogCommentForm;
-import com.echothree.control.user.forum.common.form.GetForumMessageForm;
 import com.echothree.control.user.forum.common.result.GetForumMessageResult;
 import com.echothree.model.control.forum.common.ForumConstants;
 import com.echothree.model.control.forum.common.ForumOptions;
-import com.echothree.model.control.forum.common.transfer.ForumForumThreadTransfer;
 import com.echothree.model.control.forum.common.transfer.ForumMessageTransfer;
-import com.echothree.model.control.forum.common.transfer.ForumThreadTransfer;
 import com.echothree.model.control.forum.common.transfer.ForumTransfer;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.ui.web.main.framework.AttributeConstants;
@@ -32,7 +28,6 @@ import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;

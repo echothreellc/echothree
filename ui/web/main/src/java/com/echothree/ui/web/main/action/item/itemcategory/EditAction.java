@@ -20,7 +20,6 @@ import com.echothree.control.user.item.common.ItemUtil;
 import com.echothree.control.user.item.common.edit.ItemCategoryEdit;
 import com.echothree.control.user.item.common.form.EditItemCategoryForm;
 import com.echothree.control.user.item.common.result.EditItemCategoryResult;
-import com.echothree.control.user.item.common.spec.ItemCategorySpec;
 import com.echothree.control.user.item.common.spec.ItemCategoryUniversalSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;

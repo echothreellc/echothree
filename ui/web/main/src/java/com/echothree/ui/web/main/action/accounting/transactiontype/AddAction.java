@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.transactiontype;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.form.CreateTransactionTypeForm;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;

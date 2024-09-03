@@ -18,8 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.wishlist;
 
 import com.echothree.control.user.wishlist.common.WishlistUtil;
 import com.echothree.control.user.wishlist.common.WishlistService;
-import com.echothree.control.user.wishlist.common.form.CreateWishlistTypeDescriptionForm;
-import com.echothree.control.user.wishlist.common.form.CreateWishlistPriorityForm;
 import com.echothree.control.user.wishlist.common.form.WishlistFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;

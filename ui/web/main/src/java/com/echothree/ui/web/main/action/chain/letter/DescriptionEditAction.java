@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.chain.letter;
 
 import com.echothree.control.user.letter.common.LetterUtil;
-import com.echothree.control.user.letter.common.edit.LetterDescriptionEdit;
-import com.echothree.control.user.letter.common.form.EditLetterDescriptionForm;
 import com.echothree.control.user.letter.common.result.EditLetterDescriptionResult;
-import com.echothree.control.user.letter.common.spec.LetterDescriptionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;

@@ -19,7 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.contactlist;
 import com.echothree.control.user.contactlist.common.ContactListUtil;
 import com.echothree.control.user.contactlist.common.ContactListService;
 import com.echothree.control.user.contactlist.common.form.ContactListFormFactory;
-import com.echothree.control.user.contactlist.common.form.CreateContactListGroupForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;

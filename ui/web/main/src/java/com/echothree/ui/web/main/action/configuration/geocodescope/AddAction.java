@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.geocodescope;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.common.form.CreateGeoCodeScopeForm;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;

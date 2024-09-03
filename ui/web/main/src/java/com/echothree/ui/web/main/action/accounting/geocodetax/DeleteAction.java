@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.geocodetax;
 
 import com.echothree.control.user.tax.common.TaxUtil;
-import com.echothree.control.user.tax.common.form.DeleteGeoCodeTaxForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

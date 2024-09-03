@@ -18,10 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.shipment;
 
 import com.echothree.control.user.shipment.common.ShipmentUtil;
 import com.echothree.control.user.shipment.common.ShipmentService;
-import com.echothree.control.user.shipment.common.form.CreateShipmentAliasTypeForm;
-import com.echothree.control.user.shipment.common.form.CreateShipmentTimeTypeForm;
-import com.echothree.control.user.shipment.common.form.CreateShipmentTypeDescriptionForm;
-import com.echothree.control.user.shipment.common.form.CreateShipmentTypeShippingMethodForm;
 import com.echothree.control.user.shipment.common.form.ShipmentFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;

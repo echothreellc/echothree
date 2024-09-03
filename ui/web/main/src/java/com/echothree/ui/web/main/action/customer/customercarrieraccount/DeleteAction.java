@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.customer.customercarrieraccount;
 
 import com.echothree.control.user.carrier.common.CarrierUtil;
-import com.echothree.control.user.carrier.common.form.DeletePartyCarrierAccountForm;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

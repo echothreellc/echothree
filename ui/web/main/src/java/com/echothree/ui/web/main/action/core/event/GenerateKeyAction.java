@@ -17,13 +17,10 @@
 package com.echothree.ui.web.main.action.core.event;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GenerateKeyForm;
 import com.echothree.control.user.core.common.result.GenerateKeyResult;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;

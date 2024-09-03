@@ -18,8 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.selector;
 
 import com.echothree.control.user.selector.common.SelectorUtil;
 import com.echothree.control.user.selector.common.SelectorService;
-import com.echothree.control.user.selector.common.form.CreateSelectorForm;
-import com.echothree.control.user.selector.common.form.CreateSelectorTypeDescriptionForm;
 import com.echothree.control.user.selector.common.form.SelectorFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;

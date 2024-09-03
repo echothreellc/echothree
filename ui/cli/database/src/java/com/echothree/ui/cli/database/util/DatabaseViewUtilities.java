@@ -19,8 +19,6 @@ package com.echothree.ui.cli.database.util;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.HashSet;
 import java.util.Set;
 import org.apache.commons.logging.Log;

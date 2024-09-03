@@ -17,11 +17,9 @@
 package com.echothree.ui.web.main.action.customer.customercontactmechanism.contactmechanismadd;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.form.CreateContactEmailAddressForm;
 import com.echothree.ui.web.main.action.customer.customercontactmechanism.BaseCustomerContactMechanismAction;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;

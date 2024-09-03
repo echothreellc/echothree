@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.icon;
 
 import com.echothree.control.user.icon.common.IconUtil;
 import com.echothree.control.user.icon.common.IconService;
-import com.echothree.control.user.icon.common.form.CreateIconUsageTypeForm;
 import com.echothree.control.user.icon.common.form.IconFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;

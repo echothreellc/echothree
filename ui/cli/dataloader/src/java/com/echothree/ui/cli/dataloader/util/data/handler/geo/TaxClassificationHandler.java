@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.geo;
 
 import com.echothree.control.user.tax.common.TaxUtil;
 import com.echothree.control.user.tax.common.TaxService;
-import com.echothree.control.user.tax.common.form.CreateTaxClassificationTranslationForm;
 import com.echothree.control.user.tax.common.form.TaxFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;

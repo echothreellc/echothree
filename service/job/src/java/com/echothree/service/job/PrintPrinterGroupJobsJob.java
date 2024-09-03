@@ -17,15 +17,10 @@
 package com.echothree.service.job;
 
 import com.echothree.control.user.printer.common.PrinterUtil;
-import com.echothree.control.user.printer.common.form.GetPrinterGroupJobsForm;
-import com.echothree.control.user.printer.common.form.GetPrinterGroupsForm;
-import com.echothree.control.user.printer.common.form.SetPrinterGroupJobStatusForm;
 import com.echothree.control.user.printer.common.result.GetPrinterGroupJobsResult;
 import com.echothree.control.user.printer.common.result.GetPrinterGroupsResult;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
-import com.echothree.model.control.core.common.transfer.MimeTypeTransfer;
 import com.echothree.model.control.document.common.DocumentOptions;
-import com.echothree.model.control.document.common.transfer.DocumentTransfer;
 import com.echothree.model.control.job.common.Jobs;
 import com.echothree.model.control.printer.common.PrinterOptions;
 import com.echothree.model.control.printer.common.transfer.PrinterGroupJobTransfer;
@@ -34,8 +29,6 @@ import com.echothree.model.control.printer.common.workflow.PrinterGroupJobStatus
 import com.echothree.model.control.printer.common.workflow.PrinterGroupStatusConstants;
 import com.echothree.model.control.printer.common.workflow.PrinterStatusConstants;
 import com.echothree.util.common.service.job.BaseScheduledJob;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -49,7 +42,6 @@ import javax.ejb.Singleton;
 import javax.naming.NamingException;
 import javax.print.Doc;
 import javax.print.DocFlavor;
-import javax.print.DocPrintJob;
 import javax.print.PrintException;
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;

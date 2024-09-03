@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.customer.customerdocument;
 
 import com.echothree.control.user.document.common.DocumentUtil;
-import com.echothree.control.user.document.common.form.CreateDocumentDescriptionForm;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;

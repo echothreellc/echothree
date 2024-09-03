@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.chain.letter;
 
 import com.echothree.control.user.contactlist.common.ContactListUtil;
-import com.echothree.control.user.contactlist.common.form.GetContactListChoicesForm;
 import com.echothree.control.user.contactlist.common.result.GetContactListChoicesResult;
 import com.echothree.control.user.letter.common.LetterUtil;
-import com.echothree.control.user.letter.common.form.GetLetterSourceChoicesForm;
 import com.echothree.control.user.letter.common.result.GetLetterSourceChoicesResult;
 import com.echothree.model.control.contactlist.common.choice.ContactListChoicesBean;
 import com.echothree.model.control.letter.common.choice.LetterSourceChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

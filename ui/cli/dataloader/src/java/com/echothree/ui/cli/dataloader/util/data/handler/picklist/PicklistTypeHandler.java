@@ -18,9 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.picklist;
 
 import com.echothree.control.user.picklist.common.PicklistUtil;
 import com.echothree.control.user.picklist.common.PicklistService;
-import com.echothree.control.user.picklist.common.form.CreatePicklistAliasTypeForm;
-import com.echothree.control.user.picklist.common.form.CreatePicklistTimeTypeForm;
-import com.echothree.control.user.picklist.common.form.CreatePicklistTypeDescriptionForm;
 import com.echothree.control.user.picklist.common.form.PicklistFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;

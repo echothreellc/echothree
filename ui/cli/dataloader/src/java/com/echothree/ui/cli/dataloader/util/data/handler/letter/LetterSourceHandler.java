@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.letter;
 
 import com.echothree.control.user.letter.common.LetterUtil;
 import com.echothree.control.user.letter.common.LetterService;
-import com.echothree.control.user.letter.common.form.CreateLetterSourceDescriptionForm;
 import com.echothree.control.user.letter.common.form.LetterFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;

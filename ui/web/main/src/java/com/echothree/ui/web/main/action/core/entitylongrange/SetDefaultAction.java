@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.entitylongrange;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.SetDefaultEntityLongRangeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

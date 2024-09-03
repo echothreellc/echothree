@@ -17,16 +17,12 @@
 package com.echothree.ui.web.main.action.salesorder.salesorderbatch;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.form.GetCurrencyChoicesForm;
 import com.echothree.control.user.accounting.common.result.GetCurrencyChoicesResult;
 import com.echothree.control.user.batch.common.BatchUtil;
-import com.echothree.control.user.batch.common.form.GetBatchAliasTypeChoicesForm;
 import com.echothree.control.user.batch.common.result.GetBatchAliasTypeChoicesResult;
 import com.echothree.control.user.payment.common.PaymentUtil;
-import com.echothree.control.user.payment.common.form.GetPaymentMethodChoicesForm;
 import com.echothree.control.user.payment.common.result.GetPaymentMethodChoicesResult;
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.common.form.GetWorkflowStepChoicesForm;
 import com.echothree.control.user.workflow.common.result.GetWorkflowStepChoicesResult;
 import com.echothree.model.control.accounting.common.choice.CurrencyChoicesBean;
 import com.echothree.model.control.batch.common.BatchConstants;
@@ -34,8 +30,6 @@ import com.echothree.model.control.batch.common.choice.BatchAliasTypeChoicesBean
 import com.echothree.model.control.payment.common.choice.PaymentMethodChoicesBean;
 import com.echothree.model.control.sales.common.workflow.SalesOrderBatchStatusConstants;
 import com.echothree.model.control.workflow.common.choice.WorkflowStepChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

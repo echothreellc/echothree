@@ -19,7 +19,6 @@ package com.echothree.ui.web.main.servlet;
 import com.echothree.view.client.web.WebConstants;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

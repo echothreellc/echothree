@@ -22,7 +22,6 @@ import com.echothree.control.user.document.common.form.EditPartyDocumentForm;
 import com.echothree.control.user.document.common.result.EditPartyDocumentResult;
 import com.echothree.control.user.document.common.spec.DocumentSpec;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
-import com.echothree.model.control.core.common.transfer.MimeTypeUsageTypeTransfer;
 import com.echothree.model.control.document.common.transfer.PartyDocumentTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
@@ -38,7 +37,6 @@ import java.io.IOException;
 import java.util.Map;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
-import org.apache.struts.upload.FormFile;
 
 @SproutAction(
     path = "/HumanResources/EmployeeDocument/Edit",

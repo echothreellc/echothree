@@ -19,7 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.content;
 import com.echothree.control.user.content.common.ContentUtil;
 import com.echothree.control.user.content.common.ContentService;
 import com.echothree.control.user.content.common.form.ContentFormFactory;
-import com.echothree.control.user.content.common.form.CreateContentPageAreaTypeDescriptionForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;

@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.scale;
 
 import com.echothree.control.user.scale.common.ScaleUtil;
 import com.echothree.control.user.scale.common.ScaleService;
-import com.echothree.control.user.scale.common.form.CreateScaleDescriptionForm;
 import com.echothree.control.user.scale.common.form.ScaleFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;

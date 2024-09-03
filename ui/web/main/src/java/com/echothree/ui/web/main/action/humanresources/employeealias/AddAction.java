@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.employeealias;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.CreatePartyAliasForm;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;

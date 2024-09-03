@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.printergroup;
 
 import com.echothree.control.user.printer.common.PrinterUtil;
-import com.echothree.control.user.printer.common.form.SetDefaultPrinterGroupForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

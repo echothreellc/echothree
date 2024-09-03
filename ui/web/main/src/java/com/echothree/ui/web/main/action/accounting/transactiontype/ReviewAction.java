@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.accounting.transactiontype;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.form.GetTransactionTypeForm;
 import com.echothree.control.user.accounting.common.result.GetTransactionTypeResult;
 import com.echothree.model.control.accounting.common.transfer.TransactionTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

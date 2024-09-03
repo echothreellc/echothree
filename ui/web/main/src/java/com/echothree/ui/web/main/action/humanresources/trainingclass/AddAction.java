@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.trainingclass;
 
 import com.echothree.control.user.training.common.TrainingUtil;
-import com.echothree.control.user.training.common.form.CreateTrainingClassForm;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;

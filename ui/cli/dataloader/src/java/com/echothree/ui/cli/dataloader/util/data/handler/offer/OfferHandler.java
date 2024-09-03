@@ -18,11 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.offer;
 
 import com.echothree.control.user.offer.common.OfferUtil;
 import com.echothree.control.user.offer.common.OfferService;
-import com.echothree.control.user.offer.common.form.CreateOfferChainTypeForm;
-import com.echothree.control.user.offer.common.form.CreateOfferCustomerTypeForm;
-import com.echothree.control.user.offer.common.form.CreateOfferDescriptionForm;
-import com.echothree.control.user.offer.common.form.CreateOfferItemForm;
-import com.echothree.control.user.offer.common.form.CreateOfferUseForm;
 import com.echothree.control.user.offer.common.form.OfferFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;

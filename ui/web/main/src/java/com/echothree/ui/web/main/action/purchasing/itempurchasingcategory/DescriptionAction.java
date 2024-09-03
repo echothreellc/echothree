@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.purchasing.itempurchasingcategory;
 
 import com.echothree.control.user.vendor.common.VendorUtil;
-import com.echothree.control.user.vendor.common.form.GetItemPurchasingCategoryDescriptionsForm;
 import com.echothree.control.user.vendor.common.result.GetItemPurchasingCategoryDescriptionsResult;
-import com.echothree.model.control.vendor.common.transfer.ItemPurchasingCategoryTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

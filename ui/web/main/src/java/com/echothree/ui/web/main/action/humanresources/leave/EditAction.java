@@ -21,7 +21,6 @@ import com.echothree.control.user.employee.common.edit.LeaveEdit;
 import com.echothree.control.user.employee.common.form.EditLeaveForm;
 import com.echothree.control.user.employee.common.result.EditLeaveResult;
 import com.echothree.control.user.employee.common.spec.LeaveSpec;
-import com.echothree.model.control.employee.common.transfer.LeaveTransfer;
 import com.echothree.ui.web.main.action.humanresources.employee.EmployeeUtils;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;

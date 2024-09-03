@@ -19,7 +19,6 @@ package com.echothree.ui.web.main.action.humanresources.employee;
 import com.echothree.control.user.employee.common.EmployeeUtil;
 import com.echothree.control.user.employee.common.result.GetEmployeeResult;
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.SetEmployeeStatusForm;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;

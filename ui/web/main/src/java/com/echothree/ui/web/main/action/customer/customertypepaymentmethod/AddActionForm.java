@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.customer.customertypepaymentmethod;
 
 import com.echothree.control.user.payment.common.PaymentUtil;
-import com.echothree.control.user.payment.common.form.GetPaymentMethodChoicesForm;
 import com.echothree.control.user.payment.common.result.GetPaymentMethodChoicesResult;
 import com.echothree.model.control.payment.common.choice.PaymentMethodChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

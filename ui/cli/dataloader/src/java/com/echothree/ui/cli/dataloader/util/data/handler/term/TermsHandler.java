@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.term;
 
 import com.echothree.control.user.term.common.TermUtil;
 import com.echothree.control.user.term.common.TermService;
-import com.echothree.control.user.term.common.form.CreateTermForm;
 import com.echothree.control.user.term.common.form.TermFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;

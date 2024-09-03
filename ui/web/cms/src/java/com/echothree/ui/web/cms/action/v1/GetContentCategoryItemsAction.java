@@ -17,7 +17,6 @@
 package com.echothree.ui.web.cms.action.v1;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.form.GetContentCategoryItemsForm;
 import com.echothree.model.data.content.common.ContentCategoryItemConstants;
 import com.echothree.ui.web.cms.framework.CmsBaseJsonAction;
 import com.echothree.ui.web.cms.framework.ParameterConstants;

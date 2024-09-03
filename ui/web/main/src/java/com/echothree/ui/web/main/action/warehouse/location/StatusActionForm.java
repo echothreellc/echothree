@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.warehouse.location;
 
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
-import com.echothree.control.user.warehouse.common.form.GetLocationStatusChoicesForm;
 import com.echothree.control.user.warehouse.common.result.GetLocationStatusChoicesResult;
 import com.echothree.model.control.warehouse.common.choice.LocationStatusChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

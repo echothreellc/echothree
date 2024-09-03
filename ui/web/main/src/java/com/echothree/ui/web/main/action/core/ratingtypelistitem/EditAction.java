@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.core.ratingtypelistitem;
 
 import com.echothree.control.user.rating.common.RatingUtil;
-import com.echothree.control.user.rating.common.edit.RatingTypeListItemEdit;
-import com.echothree.control.user.rating.common.form.EditRatingTypeListItemForm;
 import com.echothree.control.user.rating.common.result.EditRatingTypeListItemResult;
-import com.echothree.control.user.rating.common.spec.RatingTypeListItemSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;

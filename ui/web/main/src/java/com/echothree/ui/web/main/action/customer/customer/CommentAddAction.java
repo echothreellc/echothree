@@ -17,20 +17,15 @@
 package com.echothree.ui.web.main.action.customer.customer;
 
 import com.echothree.control.user.comment.common.CommentUtil;
-import com.echothree.control.user.comment.common.form.CreateCommentForm;
-import com.echothree.control.user.comment.common.form.GetCommentTypeForm;
 import com.echothree.control.user.comment.common.result.GetCommentTypeResult;
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.form.GetCustomerForm;
 import com.echothree.control.user.customer.common.result.GetCustomerResult;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
-import com.echothree.model.control.customer.common.transfer.CustomerTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

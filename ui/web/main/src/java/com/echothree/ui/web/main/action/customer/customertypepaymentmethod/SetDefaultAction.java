@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.customer.customertypepaymentmethod;
 
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.form.SetDefaultCustomerTypePaymentMethodForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

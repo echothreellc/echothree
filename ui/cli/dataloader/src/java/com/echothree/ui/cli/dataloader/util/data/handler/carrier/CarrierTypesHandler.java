@@ -19,7 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.carrier;
 import com.echothree.control.user.carrier.common.CarrierUtil;
 import com.echothree.control.user.carrier.common.CarrierService;
 import com.echothree.control.user.carrier.common.form.CarrierFormFactory;
-import com.echothree.control.user.carrier.common.form.CreateCarrierTypeForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;

@@ -17,16 +17,12 @@
 package com.echothree.ui.web.main.action.advertising.offernameelement;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.edit.OfferNameElementEdit;
-import com.echothree.control.user.offer.common.form.EditOfferNameElementForm;
 import com.echothree.control.user.offer.common.result.EditOfferNameElementResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

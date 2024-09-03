@@ -17,18 +17,14 @@
 package com.echothree.ui.web.main.action.accounting.companydocument;
 
 import com.echothree.control.user.document.common.DocumentUtil;
-import com.echothree.control.user.document.common.form.GetPartyDocumentForm;
 import com.echothree.control.user.document.common.result.GetPartyDocumentResult;
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.GetCompanyForm;
 import com.echothree.control.user.party.common.result.GetCompanyResult;
 import com.echothree.model.control.document.common.transfer.PartyDocumentTransfer;
 import com.echothree.model.control.party.common.transfer.CompanyTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import java.util.Set;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;

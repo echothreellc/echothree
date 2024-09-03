@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.customer.customertypeshippingmethod;
 
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.form.DeleteCustomerTypeShippingMethodForm;
-import com.echothree.control.user.customer.common.form.GetCustomerTypeShippingMethodForm;
 import com.echothree.control.user.customer.common.result.GetCustomerTypeShippingMethodResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

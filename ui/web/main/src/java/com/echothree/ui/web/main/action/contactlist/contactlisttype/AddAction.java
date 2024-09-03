@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.contactlist.contactlisttype;
 
 import com.echothree.control.user.contactlist.common.ContactListUtil;
-import com.echothree.control.user.contactlist.common.form.CreateContactListTypeForm;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;

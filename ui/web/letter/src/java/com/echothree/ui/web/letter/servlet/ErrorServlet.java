@@ -18,10 +18,8 @@ package com.echothree.ui.web.letter.servlet;
 
 import com.echothree.view.client.web.WebConstants;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;

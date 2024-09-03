@@ -17,12 +17,9 @@
 package com.echothree.ui.web.main.action.core.entityattributeentitytype.add;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetEntityAttributeForm;
 import com.echothree.control.user.core.common.result.GetEntityAttributeResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.struts.action.ActionForm;

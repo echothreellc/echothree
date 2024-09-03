@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.humanresources.employeescaleuse;
 
 import com.echothree.control.user.scale.common.ScaleUtil;
-import com.echothree.control.user.scale.common.form.GetScaleChoicesForm;
 import com.echothree.control.user.scale.common.result.GetScaleChoicesResult;
 import com.echothree.model.control.scale.common.choice.ScaleChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseLanguageActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

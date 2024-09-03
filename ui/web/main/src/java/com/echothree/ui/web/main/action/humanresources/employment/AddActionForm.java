@@ -17,18 +17,13 @@
 package com.echothree.ui.web.main.action.humanresources.employment;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.form.GetTerminationReasonChoicesForm;
-import com.echothree.control.user.employee.common.form.GetTerminationTypeChoicesForm;
 import com.echothree.control.user.employee.common.result.GetTerminationReasonChoicesResult;
 import com.echothree.control.user.employee.common.result.GetTerminationTypeChoicesResult;
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.GetCompanyChoicesForm;
 import com.echothree.control.user.party.common.result.GetCompanyChoicesResult;
 import com.echothree.model.control.employee.common.choice.TerminationReasonChoicesBean;
 import com.echothree.model.control.employee.common.choice.TerminationTypeChoicesBean;
 import com.echothree.model.control.party.common.choice.CompanyChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

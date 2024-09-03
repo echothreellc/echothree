@@ -17,9 +17,7 @@
 package com.echothree.cucumber.party;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.CreatePartyAliasTypeResult;
 import com.echothree.control.user.party.common.result.EditPartyAliasResult;
-import com.echothree.control.user.party.common.result.EditPartyAliasTypeResult;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.AnonymousPersonas;
 import com.echothree.cucumber.util.persona.CurrentPersona;

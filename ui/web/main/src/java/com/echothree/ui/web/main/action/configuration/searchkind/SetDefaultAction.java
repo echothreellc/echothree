@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.searchkind;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.form.SetDefaultSearchKindForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

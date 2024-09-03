@@ -17,17 +17,13 @@
 package com.echothree.ui.web.main.action.humanresources.employeeprintergroupuse;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.form.GetEmployeeForm;
 import com.echothree.control.user.employee.common.result.GetEmployeeResult;
 import com.echothree.control.user.printer.common.PrinterUtil;
-import com.echothree.control.user.printer.common.form.GetPartyPrinterGroupUseForm;
 import com.echothree.control.user.printer.common.result.GetPartyPrinterGroupUseResult;
 import com.echothree.model.control.printer.common.transfer.PartyPrinterGroupUseTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.struts.action.ActionForm;

@@ -18,17 +18,13 @@ package com.echothree.ui.cli.dataloader.util.data.handler.workeffort;
 
 import com.echothree.control.user.workeffort.common.WorkEffortUtil;
 import com.echothree.control.user.workeffort.common.WorkEffortService;
-import com.echothree.control.user.workeffort.common.form.CreateWorkEffortScopeForm;
-import com.echothree.control.user.workeffort.common.form.CreateWorkEffortTypeDescriptionForm;
 import com.echothree.control.user.workeffort.common.form.WorkEffortFormFactory;
 import com.echothree.control.user.workrequirement.common.WorkRequirementUtil;
 import com.echothree.control.user.workrequirement.common.WorkRequirementService;
-import com.echothree.control.user.workrequirement.common.form.CreateWorkRequirementTypeForm;
 import com.echothree.control.user.workrequirement.common.form.WorkRequirementFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.workrequirement.WorkRequirementTypeHandler;
-import java.util.Map;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;

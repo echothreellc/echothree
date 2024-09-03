@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.commentusagetype;
 
 import com.echothree.control.user.comment.common.CommentUtil;
-import com.echothree.control.user.comment.common.form.DeleteCommentUsageTypeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

@@ -21,7 +21,6 @@ import com.echothree.control.user.employee.common.edit.EmploymentEdit;
 import com.echothree.control.user.employee.common.form.EditEmploymentForm;
 import com.echothree.control.user.employee.common.result.EditEmploymentResult;
 import com.echothree.control.user.employee.common.spec.EmploymentSpec;
-import com.echothree.model.control.employee.common.transfer.EmploymentTransfer;
 import com.echothree.ui.web.main.action.humanresources.employee.EmployeeUtils;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;

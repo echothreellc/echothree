@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.customer.customercarrieraccount;
 
 import com.echothree.control.user.carrier.common.CarrierUtil;
-import com.echothree.control.user.carrier.common.form.CreatePartyCarrierAccountForm;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;

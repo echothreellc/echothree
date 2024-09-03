@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.printergroupusetype;
 
 import com.echothree.control.user.printer.common.PrinterUtil;
-import com.echothree.control.user.printer.common.form.CreatePrinterGroupUseTypeForm;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;

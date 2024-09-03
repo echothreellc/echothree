@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.humanresources.terminationtype;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.edit.TerminationTypeDescriptionEdit;
-import com.echothree.control.user.employee.common.form.EditTerminationTypeDescriptionForm;
 import com.echothree.control.user.employee.common.result.EditTerminationTypeDescriptionResult;
-import com.echothree.control.user.employee.common.spec.TerminationTypeDescriptionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;

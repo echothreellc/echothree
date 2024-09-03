@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.core.appearance;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetColorChoicesForm;
-import com.echothree.control.user.core.common.form.GetFontStyleChoicesForm;
-import com.echothree.control.user.core.common.form.GetFontWeightChoicesForm;
 import com.echothree.control.user.core.common.result.GetColorChoicesResult;
 import com.echothree.control.user.core.common.result.GetFontStyleChoicesResult;
 import com.echothree.control.user.core.common.result.GetFontWeightChoicesResult;
 import com.echothree.model.control.core.common.choice.ColorChoicesBean;
 import com.echothree.model.control.core.common.choice.FontStyleChoicesBean;
 import com.echothree.model.control.core.common.choice.FontWeightChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

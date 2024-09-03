@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.customer.customercontactlist;
 
 import com.echothree.control.user.contactlist.common.ContactListUtil;
-import com.echothree.control.user.contactlist.common.form.SetPartyContactListStatusForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

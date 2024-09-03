@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.content.contentsection;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.form.DeleteContentSectionDescriptionForm;
-import com.echothree.control.user.content.common.form.GetContentSectionDescriptionForm;
 import com.echothree.control.user.content.common.result.GetContentSectionDescriptionResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

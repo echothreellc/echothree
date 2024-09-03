@@ -17,19 +17,13 @@
 package com.echothree.ui.web.main.action.employee;
 
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
-import com.echothree.control.user.authentication.common.form.SetPasswordForm;
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.GetPartyTypeForm;
 import com.echothree.control.user.party.common.result.GetPartyTypeResult;
 import com.echothree.model.control.party.common.PartyOptions;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.common.transfer.PartyTypePasswordStringPolicyTransfer;
-import com.echothree.model.control.party.common.transfer.PartyTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.queuetype;
 
 import com.echothree.control.user.queue.common.QueueUtil;
-import com.echothree.control.user.queue.common.form.SetDefaultQueueTypeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

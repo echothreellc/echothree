@@ -17,17 +17,13 @@
 package com.echothree.ui.web.main.action.humanresources.employeeentitytype;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetPartyEntityTypeForm;
 import com.echothree.control.user.core.common.result.GetPartyEntityTypeResult;
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.form.GetEmployeeForm;
 import com.echothree.control.user.employee.common.result.GetEmployeeResult;
 import com.echothree.model.control.core.common.transfer.PartyEntityTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.struts.action.ActionForm;

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.uom.unitofmeasuretype;
 
 import com.echothree.control.user.uom.common.UomUtil;
-import com.echothree.control.user.uom.common.form.DeleteUnitOfMeasureTypeWeightForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

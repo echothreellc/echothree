@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.core.uservisitgroup;
 
 import com.echothree.control.user.user.common.UserUtil;
-import com.echothree.control.user.user.common.form.GetUserVisitGroupStatusChoicesForm;
 import com.echothree.control.user.user.common.result.GetUserVisitGroupStatusChoicesResult;
 import com.echothree.model.control.user.common.choice.UserVisitGroupStatusChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

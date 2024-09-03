@@ -17,15 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.scaleusetype;
 
 import com.echothree.control.user.scale.common.ScaleUtil;
-import com.echothree.control.user.scale.common.form.GetScaleUseTypeDescriptionsForm;
 import com.echothree.control.user.scale.common.result.GetScaleUseTypeDescriptionsResult;
-import com.echothree.model.control.scale.common.transfer.ScaleUseTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

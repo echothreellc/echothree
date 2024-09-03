@@ -18,8 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.message;
 
 import com.echothree.control.user.message.common.MessageUtil;
 import com.echothree.control.user.message.common.MessageService;
-import com.echothree.control.user.message.common.form.CreateMessageForm;
-import com.echothree.control.user.message.common.form.CreateMessageTypeDescriptionForm;
 import com.echothree.control.user.message.common.form.MessageFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;

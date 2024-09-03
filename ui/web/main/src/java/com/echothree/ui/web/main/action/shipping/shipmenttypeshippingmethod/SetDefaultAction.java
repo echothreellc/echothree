@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.shipping.shipmenttypeshippingmethod;
 
 import com.echothree.control.user.shipment.common.ShipmentUtil;
-import com.echothree.control.user.shipment.common.form.SetDefaultShipmentTypeShippingMethodForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

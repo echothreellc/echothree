@@ -17,10 +17,8 @@
 package com.echothree.ui.web.main.action.cancellationpolicy.cancellationkind;
 
 import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyUtil;
-import com.echothree.control.user.cancellationpolicy.common.form.CreateCancellationKindForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

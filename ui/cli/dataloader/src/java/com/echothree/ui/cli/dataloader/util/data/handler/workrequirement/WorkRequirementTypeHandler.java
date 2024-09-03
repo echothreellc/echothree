@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.workrequirement;
 
 import com.echothree.control.user.workrequirement.common.WorkRequirementUtil;
 import com.echothree.control.user.workrequirement.common.WorkRequirementService;
-import com.echothree.control.user.workrequirement.common.form.CreateWorkRequirementTypeDescriptionForm;
 import com.echothree.control.user.workrequirement.common.form.WorkRequirementFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;

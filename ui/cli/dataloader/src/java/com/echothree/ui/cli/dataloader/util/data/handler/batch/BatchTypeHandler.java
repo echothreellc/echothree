@@ -19,8 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.batch;
 import com.echothree.control.user.batch.common.BatchService;
 import com.echothree.control.user.batch.common.BatchUtil;
 import com.echothree.control.user.batch.common.form.BatchFormFactory;
-import com.echothree.control.user.batch.common.form.CreateBatchTypeDescriptionForm;
-import com.echothree.control.user.batch.common.form.CreateBatchTypeEntityTypeForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;

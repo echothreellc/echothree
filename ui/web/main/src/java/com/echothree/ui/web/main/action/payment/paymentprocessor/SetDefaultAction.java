@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.payment.paymentprocessor;
 
 import com.echothree.control.user.payment.common.PaymentUtil;
-import com.echothree.control.user.payment.common.form.SetDefaultPaymentProcessorForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

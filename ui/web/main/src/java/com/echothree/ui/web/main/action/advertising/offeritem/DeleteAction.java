@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.advertising.offeritem;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.form.DeleteOfferItemForm;
-import com.echothree.control.user.offer.common.form.GetOfferItemForm;
 import com.echothree.control.user.offer.common.result.GetOfferItemResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

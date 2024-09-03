@@ -17,21 +17,15 @@
 package com.echothree.ui.web.main.action.customer.customercontactmechanism;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.form.GetContactMechanismForm;
 import com.echothree.control.user.contact.common.result.GetContactMechanismResult;
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.form.GetCustomerForm;
 import com.echothree.control.user.customer.common.result.GetCustomerResult;
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.common.form.GetCountryForm;
 import com.echothree.control.user.geo.common.result.GetCountryResult;
-import com.echothree.model.control.customer.common.transfer.CustomerTransfer;
 import com.echothree.model.control.geo.common.GeoOptions;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import java.util.HashSet;
 import java.util.Set;
 import javax.naming.NamingException;

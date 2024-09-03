@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.employee.employeescaleuse;
 
 import com.echothree.control.user.scale.common.ScaleUtil;
-import com.echothree.control.user.scale.common.form.DeletePartyScaleUseForm;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.action.humanresources.employeescaleuse.BaseEmployeeScaleUseAction;
 import com.echothree.ui.web.main.action.humanresources.employeescaleuse.DeleteActionForm;

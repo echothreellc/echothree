@@ -18,11 +18,9 @@ package com.echothree.ui.cli.dataloader.util.data.handler.party;
 
 import com.echothree.control.user.letter.common.LetterUtil;
 import com.echothree.control.user.letter.common.LetterService;
-import com.echothree.control.user.letter.common.form.CreateLetterSourceForm;
 import com.echothree.control.user.letter.common.form.LetterFormFactory;
 import com.echothree.control.user.party.common.PartyUtil;
 import com.echothree.control.user.party.common.PartyService;
-import com.echothree.control.user.party.common.form.CreateDivisionForm;
 import com.echothree.control.user.party.common.form.PartyFormFactory;
 import com.echothree.control.user.party.common.result.CreateDivisionResult;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
@@ -32,8 +30,6 @@ import com.echothree.ui.cli.dataloader.util.data.handler.contact.ContactMechanis
 import com.echothree.ui.cli.dataloader.util.data.handler.core.EntityAttributesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.document.PartyDocumentsHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.letter.LetterSourceHandler;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;

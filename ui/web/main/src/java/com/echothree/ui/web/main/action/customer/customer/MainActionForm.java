@@ -17,20 +17,15 @@
 package com.echothree.ui.web.main.action.customer.customer;
 
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.form.GetCustomerTypeChoicesForm;
 import com.echothree.control.user.customer.common.result.GetCustomerTypeChoicesResult;
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.common.form.GetCountryChoicesForm;
 import com.echothree.control.user.geo.common.result.GetCountryChoicesResult;
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.GetPartyAliasTypeChoicesForm;
 import com.echothree.control.user.party.common.result.GetPartyAliasTypeChoicesResult;
 import com.echothree.model.control.customer.common.choice.CustomerTypeChoicesBean;
 import com.echothree.model.control.geo.common.choice.CountryChoicesBean;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.common.choice.PartyAliasTypeChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

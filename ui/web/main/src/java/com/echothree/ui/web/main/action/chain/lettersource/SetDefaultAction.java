@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.chain.lettersource;
 
 import com.echothree.control.user.letter.common.LetterUtil;
-import com.echothree.control.user.letter.common.form.SetDefaultLetterSourceForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

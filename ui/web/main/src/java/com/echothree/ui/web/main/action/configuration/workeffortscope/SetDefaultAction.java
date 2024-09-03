@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.workeffortscope;
 
 import com.echothree.control.user.workeffort.common.WorkEffortUtil;
-import com.echothree.control.user.workeffort.common.form.SetDefaultWorkEffortScopeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

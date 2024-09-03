@@ -18,9 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.warehouse;
 
 import com.echothree.control.user.inventory.common.InventoryUtil;
 import com.echothree.control.user.inventory.common.InventoryService;
-import com.echothree.control.user.inventory.common.form.CreateInventoryLocationGroupCapacityForm;
-import com.echothree.control.user.inventory.common.form.CreateInventoryLocationGroupDescriptionForm;
-import com.echothree.control.user.inventory.common.form.CreateInventoryLocationGroupVolumeForm;
 import com.echothree.control.user.inventory.common.form.InventoryFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;

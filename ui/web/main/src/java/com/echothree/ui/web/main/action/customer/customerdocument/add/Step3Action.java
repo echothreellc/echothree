@@ -17,20 +17,15 @@
 package com.echothree.ui.web.main.action.customer.customerdocument.add;
 
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.form.GetCustomerForm;
 import com.echothree.control.user.customer.common.result.GetCustomerResult;
 import com.echothree.control.user.document.common.DocumentUtil;
-import com.echothree.control.user.document.common.form.CreatePartyDocumentForm;
-import com.echothree.control.user.document.common.form.GetDocumentTypeForm;
 import com.echothree.control.user.document.common.result.GetDocumentTypeResult;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
-import com.echothree.model.control.customer.common.transfer.CustomerTransfer;
 import com.echothree.model.control.document.common.transfer.DocumentTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
@@ -41,7 +36,6 @@ import java.io.IOException;
 import java.util.Map;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
-import org.apache.struts.upload.FormFile;
 
 @SproutAction(
     path = "/Customer/CustomerDocument/Add/Step3",

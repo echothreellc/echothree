@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.employee;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.SetEmployeeAvailabilityForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.util.common.command.CommandResult;

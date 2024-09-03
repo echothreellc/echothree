@@ -19,7 +19,6 @@ package com.echothree.cucumber.inventory;
 import com.echothree.control.user.inventory.common.InventoryUtil;
 import com.echothree.control.user.inventory.common.result.CreateInventoryLocationGroupResult;
 import com.echothree.control.user.inventory.common.result.EditInventoryLocationGroupResult;
-import com.echothree.control.user.vendor.common.VendorUtil;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;

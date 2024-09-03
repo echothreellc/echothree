@@ -18,16 +18,11 @@ package com.echothree.ui.cli.dataloader.util.data.handler.item;
 
 import com.echothree.control.user.item.common.ItemUtil;
 import com.echothree.control.user.item.common.ItemService;
-import com.echothree.control.user.item.common.form.CreateItemForm;
-import com.echothree.control.user.item.common.form.GetItemForm;
 import com.echothree.control.user.item.common.form.ItemFormFactory;
 import com.echothree.control.user.item.common.result.CreateItemResult;
 import com.echothree.control.user.item.common.result.GetItemResult;
-import com.echothree.model.control.item.common.transfer.ItemTransfer;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;

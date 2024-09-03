@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.humanresources.partytrainingclass;
 
 import com.echothree.control.user.training.common.TrainingUtil;
-import com.echothree.control.user.training.common.form.GetPartyTrainingClassStatusChoicesForm;
 import com.echothree.control.user.training.common.result.GetPartyTrainingClassStatusChoicesResult;
 import com.echothree.model.control.training.common.choice.PartyTrainingClassStatusChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

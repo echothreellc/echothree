@@ -22,11 +22,8 @@ import com.echothree.control.user.graphql.common.form.ExecuteGraphQlForm;
 import com.echothree.control.user.graphql.common.result.ExecuteGraphQlResult;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.service.graphql.internal.invocation.GraphQlInvocationInput;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 public class GraphQlQueryInvoker {
 

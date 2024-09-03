@@ -18,8 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.document;
 
 import com.echothree.control.user.document.common.DocumentUtil;
 import com.echothree.control.user.document.common.DocumentService;
-import com.echothree.control.user.document.common.form.CreateDocumentTypeDescriptionForm;
-import com.echothree.control.user.document.common.form.CreateDocumentTypeUsageForm;
 import com.echothree.control.user.document.common.form.DocumentFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;

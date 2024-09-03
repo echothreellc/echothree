@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.communicationeventpurpose;
 
 import com.echothree.control.user.communication.common.CommunicationUtil;
-import com.echothree.control.user.communication.common.form.DeleteCommunicationEventPurposeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

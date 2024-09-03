@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.subscription.subscriptiontype;
 
 import com.echothree.control.user.subscription.common.SubscriptionUtil;
-import com.echothree.control.user.subscription.common.form.DeleteSubscriptionTypeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

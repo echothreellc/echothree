@@ -17,26 +17,19 @@
 package com.echothree.ui.web.main.action.item.item;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.form.GetItemResultsForm;
-import com.echothree.control.user.search.common.form.SearchItemsForm;
 import com.echothree.control.user.search.common.result.GetItemResultsResult;
 import com.echothree.control.user.search.common.result.SearchItemsResult;
-import com.echothree.model.control.item.common.transfer.ItemResultTransfer;
 import com.echothree.model.control.search.common.SearchTypes;
 import com.echothree.model.control.search.common.SearchUseTypes;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;

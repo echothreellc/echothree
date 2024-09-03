@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.employee.employeescaleuse;
 
 import com.echothree.control.user.scale.common.ScaleUtil;
-import com.echothree.control.user.scale.common.form.CreatePartyScaleUseForm;
 import com.echothree.ui.web.main.action.humanresources.employeescaleuse.AddActionForm;
 import com.echothree.ui.web.main.action.humanresources.employeescaleuse.BaseEmployeeScaleUseAction;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;

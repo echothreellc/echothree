@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.content.contentcatalog;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.form.GetSourceChoicesForm;
 import com.echothree.control.user.offer.common.result.GetSourceChoicesResult;
 import com.echothree.model.control.offer.common.choice.SourceChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

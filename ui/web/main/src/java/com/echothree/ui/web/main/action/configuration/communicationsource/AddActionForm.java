@@ -17,13 +17,10 @@
 package com.echothree.ui.web.main.action.configuration.communicationsource;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetServerChoicesForm;
 import com.echothree.control.user.core.common.result.GetServerChoicesResult;
 import com.echothree.control.user.selector.common.SelectorUtil;
-import com.echothree.control.user.selector.common.form.GetSelectorChoicesForm;
 import com.echothree.control.user.selector.common.result.GetSelectorChoicesResult;
 import com.echothree.control.user.workeffort.common.WorkEffortUtil;
-import com.echothree.control.user.workeffort.common.form.GetWorkEffortScopeChoicesForm;
 import com.echothree.control.user.workeffort.common.result.GetWorkEffortScopeChoicesResult;
 import com.echothree.model.control.core.common.choice.ServerChoicesBean;
 import com.echothree.model.control.selector.common.SelectorKinds;
@@ -32,8 +29,6 @@ import com.echothree.model.control.selector.common.choice.SelectorChoicesBean;
 import com.echothree.model.control.workeffort.common.choice.WorkEffortScopeChoicesBean;
 import com.echothree.model.control.workeffort.common.workeffort.ReceiveCustomerEmailConstants;
 import com.echothree.model.control.workeffort.common.workeffort.SendCustomerEmailConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

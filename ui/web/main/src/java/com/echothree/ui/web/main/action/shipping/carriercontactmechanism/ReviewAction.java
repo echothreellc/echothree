@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.shipping.carriercontactmechanism;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.form.GetContactMechanismForm;
 import com.echothree.control.user.contact.common.result.GetContactMechanismResult;
 import com.echothree.model.control.comment.common.CommentOptions;
 import com.echothree.model.control.contact.common.ContactOptions;
@@ -28,8 +27,6 @@ import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.string.ContactPostalAddressUtils;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

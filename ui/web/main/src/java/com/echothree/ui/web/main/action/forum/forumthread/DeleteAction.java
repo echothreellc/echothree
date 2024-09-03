@@ -17,9 +17,6 @@
 package com.echothree.ui.web.main.action.forum.forumthread;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.common.form.DeleteForumThreadForm;
-import com.echothree.control.user.forum.common.form.GetForumForm;
-import com.echothree.control.user.forum.common.form.GetForumThreadForm;
 import com.echothree.control.user.forum.common.result.GetForumResult;
 import com.echothree.control.user.forum.common.result.GetForumThreadResult;
 import com.echothree.model.control.core.common.EntityTypes;
@@ -29,7 +26,6 @@ import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.transfer.Limit;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;

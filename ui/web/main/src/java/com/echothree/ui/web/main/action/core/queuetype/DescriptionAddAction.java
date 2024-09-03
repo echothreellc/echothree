@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.core.queuetype;
 
 import com.echothree.control.user.queue.common.QueueUtil;
-import com.echothree.control.user.queue.common.form.CreateQueueTypeDescriptionForm;
-import com.echothree.control.user.queue.common.form.GetQueueTypeForm;
 import com.echothree.control.user.queue.common.result.GetQueueTypeResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

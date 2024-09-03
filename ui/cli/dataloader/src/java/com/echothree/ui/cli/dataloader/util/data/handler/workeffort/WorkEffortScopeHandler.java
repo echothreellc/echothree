@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.workeffort;
 
 import com.echothree.control.user.workeffort.common.WorkEffortUtil;
 import com.echothree.control.user.workeffort.common.WorkEffortService;
-import com.echothree.control.user.workeffort.common.form.CreateWorkEffortScopeDescriptionForm;
 import com.echothree.control.user.workeffort.common.form.WorkEffortFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;

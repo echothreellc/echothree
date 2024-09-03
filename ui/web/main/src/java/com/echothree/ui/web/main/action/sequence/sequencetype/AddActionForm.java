@@ -17,14 +17,10 @@
 package com.echothree.ui.web.main.action.sequence.sequencetype;
 
 import com.echothree.control.user.sequence.common.SequenceUtil;
-import com.echothree.control.user.sequence.common.form.GetSequenceChecksumTypeChoicesForm;
-import com.echothree.control.user.sequence.common.form.GetSequenceEncoderTypeChoicesForm;
 import com.echothree.control.user.sequence.common.result.GetSequenceChecksumTypeChoicesResult;
 import com.echothree.control.user.sequence.common.result.GetSequenceEncoderTypeChoicesResult;
 import com.echothree.model.control.sequence.common.choice.SequenceChecksumTypeChoicesBean;
 import com.echothree.model.control.sequence.common.choice.SequenceEncoderTypeChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

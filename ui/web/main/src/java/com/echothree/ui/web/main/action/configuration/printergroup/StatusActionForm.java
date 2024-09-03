@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.configuration.printergroup;
 
 import com.echothree.control.user.printer.common.PrinterUtil;
-import com.echothree.control.user.printer.common.form.GetPrinterGroupStatusChoicesForm;
 import com.echothree.control.user.printer.common.result.GetPrinterGroupStatusChoicesResult;
 import com.echothree.model.control.printer.common.choice.PrinterGroupStatusChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.customer.customercontactlist;
 
 import com.echothree.control.user.contactlist.common.ContactListUtil;
-import com.echothree.control.user.contactlist.common.form.DeletePartyContactListForm;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

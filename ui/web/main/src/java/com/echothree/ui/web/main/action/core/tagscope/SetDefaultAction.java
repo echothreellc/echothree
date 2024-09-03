@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.tagscope;
 
 import com.echothree.control.user.tag.common.TagUtil;
-import com.echothree.control.user.tag.common.form.SetDefaultTagScopeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

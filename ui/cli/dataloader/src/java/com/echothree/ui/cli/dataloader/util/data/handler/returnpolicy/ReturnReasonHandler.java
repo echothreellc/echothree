@@ -18,8 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.returnpolicy;
 
 import com.echothree.control.user.returnpolicy.common.ReturnPolicyUtil;
 import com.echothree.control.user.returnpolicy.common.ReturnPolicyService;
-import com.echothree.control.user.returnpolicy.common.form.CreateReturnPolicyReasonForm;
-import com.echothree.control.user.returnpolicy.common.form.CreateReturnReasonDescriptionForm;
 import com.echothree.control.user.returnpolicy.common.form.ReturnPolicyFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;

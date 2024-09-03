@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.uom;
 
 import com.echothree.control.user.uom.common.UomUtil;
 import com.echothree.control.user.uom.common.UomService;
-import com.echothree.control.user.uom.common.form.CreateUnitOfMeasureKindForm;
 import com.echothree.control.user.uom.common.form.UomFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;

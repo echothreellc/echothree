@@ -19,8 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.comment;
 import com.echothree.control.user.comment.common.CommentUtil;
 import com.echothree.control.user.comment.common.CommentService;
 import com.echothree.control.user.comment.common.form.CommentFormFactory;
-import com.echothree.control.user.comment.common.form.CreateCommentTypeDescriptionForm;
-import com.echothree.control.user.comment.common.form.CreateCommentUsageTypeForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;

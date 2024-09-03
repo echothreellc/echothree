@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.customer.customer;
 
 import com.echothree.control.user.term.common.TermUtil;
-import com.echothree.control.user.term.common.form.DeletePartyCreditLimitForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

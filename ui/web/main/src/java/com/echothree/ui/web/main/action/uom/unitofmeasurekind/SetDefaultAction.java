@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.uom.unitofmeasurekind;
 
 import com.echothree.control.user.uom.common.UomUtil;
-import com.echothree.control.user.uom.common.form.SetDefaultUnitOfMeasureKindForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

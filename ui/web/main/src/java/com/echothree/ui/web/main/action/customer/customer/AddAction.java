@@ -17,13 +17,10 @@
 package com.echothree.ui.web.main.action.customer.customer;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.CreateCustomerForm;
 import com.echothree.control.user.party.common.result.CreateCustomerResult;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;

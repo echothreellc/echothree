@@ -18,11 +18,8 @@ package com.echothree.ui.web.main.action.customer.customertypeshippingmethod;
 
 
 import com.echothree.control.user.shipping.common.ShippingUtil;
-import com.echothree.control.user.shipping.common.form.GetShippingMethodChoicesForm;
 import com.echothree.control.user.shipping.common.result.GetShippingMethodChoicesResult;
 import com.echothree.model.control.shipping.common.choice.ShippingMethodChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

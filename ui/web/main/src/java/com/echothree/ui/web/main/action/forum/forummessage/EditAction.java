@@ -17,24 +17,16 @@
 package com.echothree.ui.web.main.action.forum.forummessage;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.common.edit.BlogCommentEdit;
-import com.echothree.control.user.forum.common.edit.BlogEntryEdit;
-import com.echothree.control.user.forum.common.form.EditBlogCommentForm;
-import com.echothree.control.user.forum.common.form.EditBlogEntryForm;
-import com.echothree.control.user.forum.common.form.GetForumMessageForm;
 import com.echothree.control.user.forum.common.result.EditBlogCommentResult;
 import com.echothree.control.user.forum.common.result.EditBlogEntryResult;
 import com.echothree.control.user.forum.common.result.GetForumMessageResult;
-import com.echothree.control.user.forum.common.spec.ForumMessageSpec;
 import com.echothree.model.control.forum.common.ForumConstants;
 import com.echothree.model.control.forum.common.transfer.ForumMessageTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;

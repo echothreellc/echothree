@@ -17,9 +17,6 @@
 package com.echothree.ui.cli.database.util;
 
 import com.echothree.ui.cli.database.util.current.CurrentColumn;
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.sql.Types;
 import java.util.Locale;
 

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.customer.customeralias;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.DeletePartyAliasForm;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

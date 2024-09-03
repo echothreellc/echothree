@@ -18,8 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.geo;
 
 import com.echothree.control.user.geo.common.GeoUtil;
 import com.echothree.control.user.geo.common.GeoService;
-import com.echothree.control.user.geo.common.form.CreateGeoCodeAliasTypeForm;
-import com.echothree.control.user.geo.common.form.CreateGeoCodeTypeDescriptionForm;
 import com.echothree.control.user.geo.common.form.GeoFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;

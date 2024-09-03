@@ -17,10 +17,8 @@
 package com.echothree.ui.web.main.action.inventory.inventorycondition;
 
 import com.echothree.control.user.inventory.common.InventoryUtil;
-import com.echothree.control.user.inventory.common.form.CreateInventoryConditionForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

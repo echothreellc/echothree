@@ -17,16 +17,12 @@
 package com.echothree.ui.web.main.action.accounting.tax;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.form.GetGlAccountChoicesForm;
 import com.echothree.control.user.accounting.common.result.GetGlAccountChoicesResult;
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.form.GetContactMechanismPurposeChoicesForm;
 import com.echothree.control.user.contact.common.result.GetContactMechanismPurposeChoicesResult;
 import com.echothree.model.control.accounting.common.choice.GlAccountChoicesBean;
 import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.common.choice.ContactMechanismPurposeChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

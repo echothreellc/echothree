@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.party;
 
 import com.echothree.control.user.party.common.PartyUtil;
 import com.echothree.control.user.party.common.PartyService;
-import com.echothree.control.user.party.common.form.CreateRoleTypeForm;
 import com.echothree.control.user.party.common.form.PartyFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;

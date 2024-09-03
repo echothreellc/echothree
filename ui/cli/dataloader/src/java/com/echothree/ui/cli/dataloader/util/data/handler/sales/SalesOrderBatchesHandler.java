@@ -18,13 +18,10 @@ package com.echothree.ui.cli.dataloader.util.data.handler.sales;
 
 import com.echothree.control.user.sales.common.SalesUtil;
 import com.echothree.control.user.sales.common.SalesService;
-import com.echothree.control.user.sales.common.form.CreateSalesOrderBatchForm;
 import com.echothree.control.user.sales.common.form.SalesFormFactory;
 import com.echothree.control.user.sales.common.result.CreateSalesOrderBatchResult;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;

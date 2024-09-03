@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.responsibilitytype;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.form.DeleteResponsibilityTypeDescriptionForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

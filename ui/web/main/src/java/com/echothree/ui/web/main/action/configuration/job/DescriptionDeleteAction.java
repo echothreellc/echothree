@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.job;
 
 import com.echothree.control.user.job.common.JobUtil;
-import com.echothree.control.user.job.common.form.DeleteJobDescriptionForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

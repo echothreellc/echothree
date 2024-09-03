@@ -18,10 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.filter;
 
 import com.echothree.control.user.filter.common.FilterUtil;
 import com.echothree.control.user.filter.common.FilterService;
-import com.echothree.control.user.filter.common.form.CreateFilterAdjustmentAmountForm;
-import com.echothree.control.user.filter.common.form.CreateFilterAdjustmentDescriptionForm;
-import com.echothree.control.user.filter.common.form.CreateFilterAdjustmentFixedAmountForm;
-import com.echothree.control.user.filter.common.form.CreateFilterAdjustmentPercentForm;
 import com.echothree.control.user.filter.common.form.FilterFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;

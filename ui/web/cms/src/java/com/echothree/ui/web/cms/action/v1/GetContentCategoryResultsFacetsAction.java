@@ -17,7 +17,6 @@
 package com.echothree.ui.web.cms.action.v1;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.form.GetContentCategoryResultsFacetsForm;
 import com.echothree.model.data.search.common.SearchResultConstants;
 import com.echothree.ui.web.cms.framework.CmsBaseJsonAction;
 import com.echothree.ui.web.cms.framework.ParameterConstants;

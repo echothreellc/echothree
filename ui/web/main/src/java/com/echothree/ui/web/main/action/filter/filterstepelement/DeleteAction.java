@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.filter.filterstepelement;
 
 import com.echothree.control.user.filter.common.FilterUtil;
-import com.echothree.control.user.filter.common.form.DeleteFilterStepElementForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

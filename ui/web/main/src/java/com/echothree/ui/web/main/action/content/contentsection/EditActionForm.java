@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.content.contentsection;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.form.GetContentSectionChoicesForm;
 import com.echothree.control.user.content.common.result.GetContentSectionChoicesResult;
 import com.echothree.model.control.content.common.choice.ContentSectionChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
 import javax.naming.NamingException;

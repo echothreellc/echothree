@@ -17,12 +17,9 @@
 package com.echothree.ui.web.main.action.forum.forumgroup;
 
 import com.echothree.control.user.icon.common.IconUtil;
-import com.echothree.control.user.icon.common.form.GetIconChoicesForm;
 import com.echothree.control.user.icon.common.result.GetIconChoicesResult;
 import com.echothree.model.control.icon.common.IconConstants;
 import com.echothree.model.control.icon.common.choice.IconChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

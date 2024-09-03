@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.partysecurityroletemplate;
 
 import com.echothree.control.user.security.common.SecurityUtil;
-import com.echothree.control.user.security.common.form.DeletePartySecurityRoleTemplateDescriptionForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

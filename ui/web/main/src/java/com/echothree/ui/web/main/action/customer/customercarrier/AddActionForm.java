@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.customer.customercarrier;
 
 import com.echothree.control.user.carrier.common.CarrierUtil;
-import com.echothree.control.user.carrier.common.form.GetCarrierChoicesForm;
 import com.echothree.control.user.carrier.common.result.GetCarrierChoicesResult;
 import com.echothree.model.control.carrier.common.choice.CarrierChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseLanguageActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

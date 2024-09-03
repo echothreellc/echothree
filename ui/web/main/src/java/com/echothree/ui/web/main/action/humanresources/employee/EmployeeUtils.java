@@ -17,12 +17,9 @@
 package com.echothree.ui.web.main.action.humanresources.employee;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.form.GetEmployeeForm;
 import com.echothree.control.user.employee.common.result.GetEmployeeResult;
 import com.echothree.model.control.employee.common.transfer.EmployeeTransfer;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 
 public class EmployeeUtils {

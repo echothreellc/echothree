@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.warehouse;
 
 import com.echothree.control.user.warehouse.common.WarehouseService;
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
-import com.echothree.control.user.warehouse.common.form.CreateWarehouseTypeDescriptionForm;
 import com.echothree.control.user.warehouse.common.form.WarehouseFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;

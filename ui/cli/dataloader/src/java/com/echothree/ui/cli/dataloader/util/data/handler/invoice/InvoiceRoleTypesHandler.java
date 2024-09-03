@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.invoice;
 
 import com.echothree.control.user.invoice.common.InvoiceUtil;
 import com.echothree.control.user.invoice.common.InvoiceService;
-import com.echothree.control.user.invoice.common.form.CreateInvoiceRoleTypeForm;
 import com.echothree.control.user.invoice.common.form.InvoiceFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;

@@ -17,14 +17,10 @@
 package com.echothree.ui.web.main.action.accounting.departmentcontactmechanism.contactmechanismadd;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.GetNameSuffixChoicesForm;
-import com.echothree.control.user.party.common.form.GetPersonalTitleChoicesForm;
 import com.echothree.control.user.party.common.result.GetNameSuffixChoicesResult;
 import com.echothree.control.user.party.common.result.GetPersonalTitleChoicesResult;
 import com.echothree.model.control.party.common.choice.NameSuffixChoicesBean;
 import com.echothree.model.control.party.common.choice.PersonalTitleChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

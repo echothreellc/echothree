@@ -18,12 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.order;
 
 import com.echothree.control.user.order.common.OrderUtil;
 import com.echothree.control.user.order.common.OrderService;
-import com.echothree.control.user.order.common.form.CreateOrderAdjustmentTypeForm;
-import com.echothree.control.user.order.common.form.CreateOrderAliasTypeForm;
-import com.echothree.control.user.order.common.form.CreateOrderLineAdjustmentTypeForm;
-import com.echothree.control.user.order.common.form.CreateOrderPriorityForm;
-import com.echothree.control.user.order.common.form.CreateOrderTimeTypeForm;
-import com.echothree.control.user.order.common.form.CreateOrderTypeDescriptionForm;
 import com.echothree.control.user.order.common.form.OrderFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;

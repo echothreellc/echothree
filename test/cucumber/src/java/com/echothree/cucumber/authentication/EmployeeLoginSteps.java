@@ -17,14 +17,10 @@
 package com.echothree.cucumber.authentication;
 
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
-import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.CreateItemResult;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
-import com.echothree.cucumber.util.persona.EmployeePersona;
 import com.echothree.cucumber.util.persona.EmployeePersonas;
 import io.cucumber.java8.En;
-import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class EmployeeLoginSteps implements En {

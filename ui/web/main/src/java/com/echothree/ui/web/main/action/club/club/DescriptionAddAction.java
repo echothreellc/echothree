@@ -17,12 +17,10 @@
 package com.echothree.ui.web.main.action.club.club;
 
 import com.echothree.control.user.club.common.ClubUtil;
-import com.echothree.control.user.club.common.form.CreateClubDescriptionForm;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;

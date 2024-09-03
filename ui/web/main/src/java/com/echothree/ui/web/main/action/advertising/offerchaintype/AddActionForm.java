@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.advertising.offerchaintype;
 
 import com.echothree.control.user.chain.common.ChainUtil;
-import com.echothree.control.user.chain.common.form.GetChainChoicesForm;
 import com.echothree.control.user.chain.common.result.GetChainChoicesResult;
 import com.echothree.model.control.chain.common.choice.ChainChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

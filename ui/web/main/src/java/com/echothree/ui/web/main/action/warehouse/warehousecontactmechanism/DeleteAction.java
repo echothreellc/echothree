@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.warehouse.warehousecontactmechanism;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.form.DeleteContactMechanismForm;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

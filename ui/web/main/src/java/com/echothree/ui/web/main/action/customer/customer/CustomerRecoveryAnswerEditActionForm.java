@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.customer.customer;
 
 import com.echothree.control.user.user.common.UserUtil;
-import com.echothree.control.user.user.common.form.GetRecoveryQuestionChoicesForm;
 import com.echothree.control.user.user.common.result.GetRecoveryQuestionChoicesResult;
 import com.echothree.model.control.user.common.choice.RecoveryQuestionChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

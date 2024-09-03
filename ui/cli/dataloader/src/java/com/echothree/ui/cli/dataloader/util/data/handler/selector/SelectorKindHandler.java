@@ -18,13 +18,9 @@ package com.echothree.ui.cli.dataloader.util.data.handler.selector;
 
 import com.echothree.control.user.selector.common.SelectorUtil;
 import com.echothree.control.user.selector.common.SelectorService;
-import com.echothree.control.user.selector.common.form.CreateSelectorKindDescriptionForm;
-import com.echothree.control.user.selector.common.form.CreateSelectorNodeTypeUseForm;
-import com.echothree.control.user.selector.common.form.CreateSelectorTypeForm;
 import com.echothree.control.user.selector.common.form.SelectorFormFactory;
 import com.echothree.control.user.workflow.common.WorkflowUtil;
 import com.echothree.control.user.workflow.common.WorkflowService;
-import com.echothree.control.user.workflow.common.form.CreateWorkflowSelectorKindForm;
 import com.echothree.control.user.workflow.common.form.WorkflowFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;

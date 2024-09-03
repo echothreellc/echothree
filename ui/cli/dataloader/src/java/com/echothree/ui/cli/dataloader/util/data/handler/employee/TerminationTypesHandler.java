@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.employee;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
 import com.echothree.control.user.employee.common.EmployeeService;
-import com.echothree.control.user.employee.common.form.CreateTerminationTypeForm;
 import com.echothree.control.user.employee.common.form.EmployeeFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;

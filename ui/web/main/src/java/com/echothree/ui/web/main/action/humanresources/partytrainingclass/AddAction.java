@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.partytrainingclass;
 
 import com.echothree.control.user.training.common.TrainingUtil;
-import com.echothree.control.user.training.common.form.CreatePartyTrainingClassForm;
 import com.echothree.ui.web.main.action.humanresources.employee.EmployeeUtils;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;

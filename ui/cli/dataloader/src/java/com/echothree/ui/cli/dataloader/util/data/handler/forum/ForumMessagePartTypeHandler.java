@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.forum;
 
 import com.echothree.control.user.forum.common.ForumUtil;
 import com.echothree.control.user.forum.common.ForumService;
-import com.echothree.control.user.forum.common.form.CreateForumMessagePartTypeDescriptionForm;
 import com.echothree.control.user.forum.common.form.ForumFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;

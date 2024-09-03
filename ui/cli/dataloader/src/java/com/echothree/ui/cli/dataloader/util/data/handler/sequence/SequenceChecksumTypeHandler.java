@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.sequence;
 
 import com.echothree.control.user.sequence.common.SequenceUtil;
 import com.echothree.control.user.sequence.common.SequenceService;
-import com.echothree.control.user.sequence.common.form.CreateSequenceChecksumTypeDescriptionForm;
 import com.echothree.control.user.sequence.common.form.SequenceFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;

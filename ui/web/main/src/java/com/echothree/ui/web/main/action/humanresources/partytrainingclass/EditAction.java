@@ -21,7 +21,6 @@ import com.echothree.control.user.training.common.edit.PartyTrainingClassEdit;
 import com.echothree.control.user.training.common.form.EditPartyTrainingClassForm;
 import com.echothree.control.user.training.common.result.EditPartyTrainingClassResult;
 import com.echothree.control.user.training.common.spec.PartyTrainingClassSpec;
-import com.echothree.model.control.training.common.transfer.PartyTrainingClassTransfer;
 import com.echothree.ui.web.main.action.humanresources.employee.EmployeeUtils;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;

@@ -17,17 +17,12 @@
 package com.echothree.ui.web.main.action.advertising.usenameelement;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.edit.UseNameElementEdit;
-import com.echothree.control.user.offer.common.form.EditUseNameElementForm;
 import com.echothree.control.user.offer.common.result.EditUseNameElementResult;
-import com.echothree.control.user.offer.common.spec.UseNameElementSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

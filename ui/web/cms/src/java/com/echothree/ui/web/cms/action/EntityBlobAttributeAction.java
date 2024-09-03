@@ -17,20 +17,14 @@
 package com.echothree.ui.web.cms.action;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetEntityBlobAttributeForm;
 import com.echothree.control.user.core.common.result.GetEntityBlobAttributeResult;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.MimeTypes;
-import com.echothree.model.control.core.common.transfer.EntityAttributeTypeTransfer;
 import com.echothree.model.control.core.common.transfer.EntityBlobAttributeTransfer;
-import com.echothree.model.control.core.common.transfer.EntityTimeTransfer;
-import com.echothree.model.control.core.common.transfer.MimeTypeTransfer;
 import com.echothree.ui.web.cms.framework.ByteArrayStreamInfo;
 import com.echothree.ui.web.cms.framework.CmsBaseDownloadAction;
 import com.echothree.ui.web.cms.framework.ParameterConstants;
 import com.echothree.ui.web.cms.persistence.CmsCacheBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;

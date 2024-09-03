@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.tag;
 
 import com.echothree.control.user.tag.common.TagUtil;
 import com.echothree.control.user.tag.common.TagService;
-import com.echothree.control.user.tag.common.form.CreateTagScopeForm;
 import com.echothree.control.user.tag.common.form.TagFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;

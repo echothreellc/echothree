@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.job;
 
 import com.echothree.control.user.job.common.JobUtil;
 import com.echothree.control.user.job.common.JobService;
-import com.echothree.control.user.job.common.form.CreateJobForm;
 import com.echothree.control.user.job.common.form.JobFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;

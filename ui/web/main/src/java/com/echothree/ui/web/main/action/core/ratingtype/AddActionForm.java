@@ -18,12 +18,9 @@ package com.echothree.ui.web.main.action.core.ratingtype;
 
 
 import com.echothree.control.user.sequence.common.SequenceUtil;
-import com.echothree.control.user.sequence.common.form.GetSequenceChoicesForm;
 import com.echothree.control.user.sequence.common.result.GetSequenceChoicesResult;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.common.choice.SequenceChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

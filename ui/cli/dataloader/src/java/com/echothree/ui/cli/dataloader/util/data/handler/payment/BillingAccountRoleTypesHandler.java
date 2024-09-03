@@ -18,7 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.payment;
 
 import com.echothree.control.user.payment.common.PaymentUtil;
 import com.echothree.control.user.payment.common.PaymentService;
-import com.echothree.control.user.payment.common.form.CreateBillingAccountRoleTypeForm;
 import com.echothree.control.user.payment.common.form.PaymentFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;

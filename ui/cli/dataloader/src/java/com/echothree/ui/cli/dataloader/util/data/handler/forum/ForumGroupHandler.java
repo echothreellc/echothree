@@ -18,12 +18,9 @@ package com.echothree.ui.cli.dataloader.util.data.handler.forum;
 
 import com.echothree.control.user.forum.common.ForumUtil;
 import com.echothree.control.user.forum.common.ForumService;
-import com.echothree.control.user.forum.common.form.CreateForumGroupDescriptionForm;
-import com.echothree.control.user.forum.common.form.CreateForumGroupForumForm;
 import com.echothree.control.user.forum.common.form.ForumFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import java.util.Map;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;

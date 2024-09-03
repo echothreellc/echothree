@@ -18,8 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.subscription;
 
 import com.echothree.control.user.subscription.common.SubscriptionUtil;
 import com.echothree.control.user.subscription.common.SubscriptionService;
-import com.echothree.control.user.subscription.common.form.CreateSubscriptionTypeChainForm;
-import com.echothree.control.user.subscription.common.form.CreateSubscriptionTypeDescriptionForm;
 import com.echothree.control.user.subscription.common.form.SubscriptionFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;

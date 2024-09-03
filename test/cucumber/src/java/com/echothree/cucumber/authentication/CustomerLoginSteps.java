@@ -19,10 +19,8 @@ package com.echothree.cucumber.authentication;
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
-import com.echothree.cucumber.util.persona.CustomerPersona;
 import com.echothree.cucumber.util.persona.CustomerPersonas;
 import io.cucumber.java8.En;
-import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class CustomerLoginSteps implements En {

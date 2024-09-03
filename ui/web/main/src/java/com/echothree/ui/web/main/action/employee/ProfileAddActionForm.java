@@ -17,14 +17,10 @@
 package com.echothree.ui.web.main.action.employee;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetMimeTypeChoicesForm;
 import com.echothree.control.user.core.common.result.GetMimeTypeChoicesResult;
 import com.echothree.control.user.icon.common.IconUtil;
-import com.echothree.control.user.icon.common.form.GetIconChoicesForm;
 import com.echothree.control.user.icon.common.result.GetIconChoicesResult;
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.GetBirthdayFormatChoicesForm;
-import com.echothree.control.user.party.common.form.GetGenderChoicesForm;
 import com.echothree.control.user.party.common.result.GetBirthdayFormatChoicesResult;
 import com.echothree.control.user.party.common.result.GetGenderChoicesResult;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
@@ -33,8 +29,6 @@ import com.echothree.model.control.icon.common.IconConstants;
 import com.echothree.model.control.icon.common.choice.IconChoicesBean;
 import com.echothree.model.control.party.common.choice.BirthdayFormatChoicesBean;
 import com.echothree.model.control.party.common.choice.GenderChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseLanguageActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

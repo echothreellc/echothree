@@ -17,18 +17,14 @@
 package com.echothree.ui.web.main.action.customer.customercontactmechanism;
 
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.form.GetCustomerForm;
 import com.echothree.control.user.customer.common.result.GetCustomerResult;
 import com.echothree.model.control.contact.common.ContactOptions;
-import com.echothree.model.control.customer.common.transfer.CustomerTransfer;
 import com.echothree.model.control.party.common.PartyOptions;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.string.ContactPostalAddressUtils;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

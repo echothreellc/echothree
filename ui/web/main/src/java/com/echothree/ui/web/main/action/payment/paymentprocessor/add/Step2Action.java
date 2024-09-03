@@ -17,8 +17,6 @@
 package com.echothree.ui.web.main.action.payment.paymentprocessor.add;
 
 import com.echothree.control.user.payment.common.PaymentUtil;
-import com.echothree.control.user.payment.common.form.CreatePaymentProcessorForm;
-import com.echothree.control.user.payment.common.form.GetPaymentProcessorTypeForm;
 import com.echothree.control.user.payment.common.result.GetPaymentProcessorTypeResult;
 import com.echothree.model.control.payment.common.transfer.PaymentProcessorTypeTransfer;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -26,8 +24,6 @@ import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;

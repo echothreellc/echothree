@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.employee.employeeapplicationeditoruse;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.DeletePartyApplicationEditorUseForm;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.action.humanresources.employeeapplicationeditoruse.BaseEmployeeApplicationEditorUseAction;
 import com.echothree.ui.web.main.action.humanresources.employeeapplicationeditoruse.DeleteActionForm;

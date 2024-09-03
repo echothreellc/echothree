@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.workflowselectorkind;
 
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.common.form.DeleteWorkflowSelectorKindForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -27,7 +26,6 @@ import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
 import com.google.common.collect.ImmutableMap;
-import java.util.HashMap;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

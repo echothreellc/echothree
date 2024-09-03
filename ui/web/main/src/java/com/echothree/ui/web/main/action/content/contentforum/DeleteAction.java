@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.content.contentforum;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.form.DeleteContentForumForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

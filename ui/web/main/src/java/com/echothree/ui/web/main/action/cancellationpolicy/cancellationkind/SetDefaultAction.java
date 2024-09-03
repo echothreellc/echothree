@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.cancellationpolicy.cancellationkind;
 
 import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyUtil;
-import com.echothree.control.user.cancellationpolicy.common.form.SetDefaultCancellationKindForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

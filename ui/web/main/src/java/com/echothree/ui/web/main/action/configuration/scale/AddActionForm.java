@@ -17,18 +17,13 @@
 package com.echothree.ui.web.main.action.configuration.scale;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetServerChoicesForm;
-import com.echothree.control.user.core.common.form.GetServiceChoicesForm;
 import com.echothree.control.user.core.common.result.GetServerChoicesResult;
 import com.echothree.control.user.core.common.result.GetServiceChoicesResult;
 import com.echothree.control.user.scale.common.ScaleUtil;
-import com.echothree.control.user.scale.common.form.GetScaleTypeChoicesForm;
 import com.echothree.control.user.scale.common.result.GetScaleTypeChoicesResult;
 import com.echothree.model.control.core.common.choice.ServerChoicesBean;
 import com.echothree.model.control.core.common.choice.ServiceChoicesBean;
 import com.echothree.model.control.scale.common.choice.ScaleTypeChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

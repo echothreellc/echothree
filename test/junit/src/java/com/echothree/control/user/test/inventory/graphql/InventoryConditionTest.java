@@ -17,7 +17,6 @@
 package com.echothree.control.user.test.inventory.graphql;
 
 import com.echothree.control.user.test.common.graphql.GraphQlTestCase;
-import java.util.Map;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import org.junit.Test;
 

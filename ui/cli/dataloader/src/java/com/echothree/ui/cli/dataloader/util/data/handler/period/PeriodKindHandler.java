@@ -18,8 +18,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.period;
 
 import com.echothree.control.user.period.common.PeriodUtil;
 import com.echothree.control.user.period.common.PeriodService;
-import com.echothree.control.user.period.common.form.CreatePeriodKindDescriptionForm;
-import com.echothree.control.user.period.common.form.CreatePeriodTypeForm;
 import com.echothree.control.user.period.common.form.PeriodFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;

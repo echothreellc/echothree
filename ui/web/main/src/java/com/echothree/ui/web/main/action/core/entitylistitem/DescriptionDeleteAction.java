@@ -17,15 +17,12 @@
 package com.echothree.ui.web.main.action.core.entitylistitem;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.DeleteEntityListItemDescriptionForm;
-import com.echothree.control.user.core.common.form.GetEntityListItemDescriptionForm;
 import com.echothree.control.user.core.common.result.GetEntityListItemDescriptionResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.warehouse.location;
 
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
-import com.echothree.control.user.warehouse.common.form.DeleteLocationVolumeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

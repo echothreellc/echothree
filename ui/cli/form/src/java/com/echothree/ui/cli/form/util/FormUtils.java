@@ -17,7 +17,6 @@
 package com.echothree.ui.cli.form.util;
 
 import static com.google.common.base.Charsets.UTF_8;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.PrintWriter;
 import java.nio.file.Files;
