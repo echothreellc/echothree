@@ -69,7 +69,7 @@ public class ProxyInvocationHandler
         } else if(name.equals("reset")) {
             map.clear();
         } else if(name.equals("toString")) {
-            return new StringBuilder().append("{ map = ").append(map).append(" }").toString();
+            return "{ map = " + map + " }";
         } else if(name.equals("hashCode")) {
             return map.hashCode();
         } else if(name.equals("equals")) {

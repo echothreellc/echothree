@@ -1505,7 +1505,7 @@ public class ItemControl
         for(var itemCategory : itemCategories) {
             ItemCategoryDetail itemCategoryDetail = itemCategory.getLastDetail();
             
-            var label = allowNullChoice ? new StringBuilder(getBestItemCategoryDescription(itemCategory, language)).append(itemCategoryDetail.getIsDefault() ? " *" : "").toString(): getBestItemCategoryDescription(itemCategory, language);
+            var label = allowNullChoice ? getBestItemCategoryDescription(itemCategory, language) + (itemCategoryDetail.getIsDefault() ? " *" : "") : getBestItemCategoryDescription(itemCategory, language);
             var value = itemCategoryDetail.getItemCategoryName();
             
             labels.add(label == null? value: label);

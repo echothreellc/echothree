@@ -61,7 +61,7 @@ public class AbsoluteUrlFilter
     }
 
     private String absoluteifyUrl(String url) {
-        return url == null ? null : url.length() > 0 && url.toCharArray()[0] == '/' ? new StringBuilder(base).append(url).toString() : url;
+        return url == null ? null : url.length() > 0 && url.toCharArray()[0] == '/' ? base + url : url;
     }
 
     private static Map<String, Set<String>> elementsAndAttributes;

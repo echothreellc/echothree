@@ -92,7 +92,7 @@ public class DocumentTransferCache
                 long maxTime = modifiedTime == null ? entityTimeTransfer.getUnformattedCreatedTime() : modifiedTime;
 
                 // EntityId-Size-ModifiedTime
-                eTag = new StringBuilder(Long.toHexString(eTagEntityId)).append('-').append(Integer.toHexString(eTagSize)).append('-').append(Long.toHexString(maxTime)).toString();
+                eTag = Long.toHexString(eTagEntityId) + '-' + Integer.toHexString(eTagSize) + '-' + Long.toHexString(maxTime);
             }
 
             documentTransfer = new DocumentTransfer(documentName, documentType, mimeType, pages, description, blob, clob, eTag);

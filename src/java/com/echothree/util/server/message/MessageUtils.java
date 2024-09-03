@@ -92,7 +92,7 @@ public class MessageUtils {
             }
         }
         
-        message.setMessage(translation == null ? new StringBuilder("??").append(key).append("??").toString() : translation);
+        message.setMessage(translation == null ? "??" + key + "??" : translation);
     }
     
     public void fillInMessages(Language language, String commandMessageTypeName, Messages messages) {

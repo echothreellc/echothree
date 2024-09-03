@@ -142,7 +142,7 @@ public class Message
      * Get the message for this message.
      */
     public String getMessage() {
-        return message == null ? new StringBuilder().append("??").append(key).append("??").toString() : message;
+        return message == null ? "??" + key + "??" : message;
     }
     
     /**
@@ -174,7 +174,7 @@ public class Message
      */
     @Override
     public String toString() {
-        return new StringBuilder().append("key = \"").append(key).append("\", values[] = ").append(valuesToStringBuilder()).append(", message = \"").append(message).append("\"").toString();
+        return "key = \"" + key + "\", values[] = " + valuesToStringBuilder() + ", message = \"" + message + "\"";
     }
     
 }

@@ -193,7 +193,7 @@ public class ItemDescriptionTransferCache
                 }
                 
                 // EntityId-Size-ModifiedTime
-                eTag = new StringBuilder(Long.toHexString(eTagEntityId)).append('-').append(Integer.toHexString(eTagSize)).append('-').append(Long.toHexString(maxTime)).toString();
+                eTag = Long.toHexString(eTagEntityId) + '-' + Integer.toHexString(eTagSize) + '-' + Long.toHexString(maxTime);
             }
             
             itemDescriptionTransfer = new ItemDescriptionTransfer(itemDescriptionTypeTransfer, itemTransfer, languageTransfer, mimeTypeTransfer,

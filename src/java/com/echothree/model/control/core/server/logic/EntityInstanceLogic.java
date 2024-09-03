@@ -240,9 +240,9 @@ public class EntityInstanceLogic
         var entityTypeDetail = entityInstance.getEntityType().getLastDetail();
         var componentVendorDetail = entityTypeDetail.getComponentVendor().getLastDetail();
         
-        return new StringBuilder(componentVendorDetail.getComponentVendorName()).append('.')
-                .append(entityTypeDetail.getEntityTypeName()).append('.')
-                .append(entityInstance.getEntityUniqueId()).toString();
+        return componentVendorDetail.getComponentVendorName() + '.' +
+                entityTypeDetail.getEntityTypeName() + '.' +
+                entityInstance.getEntityUniqueId();
     }
 
     public void deleteEntityInstance(final ExecutionErrorAccumulator eea, final EntityInstance entityInstance, final BasePK deletedBy) {

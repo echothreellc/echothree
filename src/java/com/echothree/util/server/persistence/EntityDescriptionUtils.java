@@ -153,7 +153,7 @@ public class EntityDescriptionUtils {
                         ItemDescriptionDetail itemDescriptionDetail = itemDescription.getLastDetail();
                         Language language = getLanguage(userVisit);
 
-                        description = new StringBuilder(itemControl.getBestItemDescriptionTypeDescription(itemDescriptionDetail.getItemDescriptionType(), language)).append(", ").append(itemControl.getBestItemStringDescription(getItemDefaultDescriptionType(), itemDescriptionDetail.getItem(), language)).append(", ").append(partyControl.getBestLanguageDescription(itemDescriptionDetail.getLanguage(), language)).toString();
+                        description = itemControl.getBestItemDescriptionTypeDescription(itemDescriptionDetail.getItemDescriptionType(), language) + ", " + itemControl.getBestItemStringDescription(getItemDefaultDescriptionType(), itemDescriptionDetail.getItem(), language) + ", " + partyControl.getBestLanguageDescription(itemDescriptionDetail.getLanguage(), language);
                     }
                 } else if(entityTypeName.equals(EntityTypes.VendorItem.name())) {
                     var vendorControl = Session.getModelController(VendorControl.class);

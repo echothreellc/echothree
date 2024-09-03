@@ -39,7 +39,7 @@ public class SecurityResult
     
     @Override
     public String toString() {
-        return new StringBuilder().append("{ securityMessages = ").append(securityMessages).append(" }").toString();
+        return "{ securityMessages = " + securityMessages + " }";
     }
     
 }

@@ -87,7 +87,7 @@ public class EntityInstanceTransferCache
             var componentVendorTransfer = entityTypeTransfer == null ? null : entityTypeTransfer.getComponentVendor();
             var componentVendorName = componentVendorTransfer == null ? null : componentVendorTransfer.getComponentVendorName();
             var entityTypeName = entityTypeTransfer == null ? null : entityTypeTransfer.getEntityTypeName();
-            var entityRef = filterEntityRef || componentVendorName == null || entityTypeName == null || entityUniqueId == null ? null : new StringBuilder(componentVendorName).append('.').append(entityTypeName).append('.').append(entityUniqueId).toString();
+            var entityRef = filterEntityRef || componentVendorName == null || entityTypeName == null || entityUniqueId == null ? null : componentVendorName + '.' + entityTypeName + '.' + entityUniqueId;
             var entityTime = filterEntityTime ? null : coreControl.getEntityTime(entityInstance);
             var entityTimeTransfer = entityTime == null ? null : coreControl.getEntityTimeTransfer(userVisit, entityTime);
             String description = null;

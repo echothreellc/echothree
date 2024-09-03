@@ -88,7 +88,7 @@ public class CreateStateCommand
         GeoCodeAlias countryGeoCodeAlias = geoControl.getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
         String countryIso2Letter = countryGeoCodeAlias.getAlias();
         
-        String geoCodeScopeName = new StringBuilder().append(countryIso2Letter).append("_STATES").toString();
+        String geoCodeScopeName = countryIso2Letter + "_STATES";
         GeoCodeScope geoCodeScope = geoControl.getGeoCodeScopeByName(geoCodeScopeName);
         
         if(geoCodeScope != null) {

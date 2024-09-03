@@ -4172,7 +4172,7 @@ public class GeoControl
                 GeoConstants.GeoCodeAliasType_ISO_2_LETTER);
         GeoCodeAlias countryGeoCodeAlias = getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
         String countryIso2Letter = countryGeoCodeAlias.getAlias();
-        String geoCodeScopeName = new StringBuilder().append(countryIso2Letter).append("_ZIP_CODES").toString();
+        String geoCodeScopeName = countryIso2Letter + "_ZIP_CODES";
         
         return getGeoCodeByTypeScopeAndAlias(GeoConstants.GeoCodeType_ZIP_CODE, geoCodeScopeName, postalCodeAlias);
     }
@@ -4204,7 +4204,7 @@ public class GeoControl
                 GeoConstants.GeoCodeAliasType_ISO_2_LETTER);
         GeoCodeAlias countryGeoCodeAlias = getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
         String countryIso2Letter = countryGeoCodeAlias.getAlias();
-        String geoCodeScopeName = new StringBuilder().append(countryIso2Letter).append("_STATES").toString();
+        String geoCodeScopeName = countryIso2Letter + "_STATES";
         
         return getGeoCodeByTypeScopeAndAlias(GeoConstants.GeoCodeType_STATE, geoCodeScopeName, stateAlias);
     }
@@ -4249,7 +4249,7 @@ public class GeoControl
         GeoCodeAlias countryGeoCodeAlias = getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
         String countryIso2Letter = countryGeoCodeAlias.getAlias();
         
-        String geoCodeScopeName = new StringBuilder().append(countryIso2Letter).append("_").append(statePostal2Letter).append("_CITIES").toString();
+        String geoCodeScopeName = countryIso2Letter + "_" + statePostal2Letter + "_CITIES";
         
         return getGeoCodeByTypeScopeAndAlias(GeoConstants.GeoCodeType_CITY, geoCodeScopeName, cityAlias);
     }

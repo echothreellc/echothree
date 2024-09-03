@@ -41,7 +41,7 @@ public class ValidationResult
 
     @Override
     public String toString() {
-        return new StringBuilder().append("{ validationMessages = ").append(validationMessages).append(" }").toString();
+        return "{ validationMessages = " + validationMessages + " }";
     }
 
 }

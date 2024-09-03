@@ -46,9 +46,8 @@ public class AmountUtils {
                 long rawAmount = amount;
                 int i = IntMath.checkedPow(10, fractionDigits);
                 StringBuilder builtResult = new StringBuilder().append(rawAmount / i).append(currency.getFractionSeparator());
-                StringBuilder formatString = new StringBuilder().append("%0").append(fractionDigits).append("d");
 
-                new Formatter(builtResult).format(formatString.toString(), Math.abs(rawAmount) % i);
+                new Formatter(builtResult).format("%0" + fractionDigits + "d", Math.abs(rawAmount) % i);
                 result = builtResult.toString();
             }
         }
@@ -69,9 +68,8 @@ public class AmountUtils {
                 long rawPriceUnit = priceUnit;
                 int i = IntMath.checkedPow(10, fractionDigits);
                 StringBuilder builtResult = new StringBuilder().append(rawPriceUnit / i).append(currency.getFractionSeparator());
-                StringBuilder formatString = new StringBuilder().append("%0").append(fractionDigits).append("d");
 
-                new Formatter(builtResult).format(formatString.toString(), Math.abs(rawPriceUnit) % i);
+                new Formatter(builtResult).format("%0" + fractionDigits + "d", Math.abs(rawPriceUnit) % i);
                 result = builtResult.toString();
             }
         }
@@ -92,9 +90,8 @@ public class AmountUtils {
                 long rawPriceLine = priceLine;
                 int i = IntMath.checkedPow(10, fractionDigits);
                 StringBuilder builtResult = new StringBuilder().append(rawPriceLine / i).append(currency.getFractionSeparator());
-                StringBuilder formatString = new StringBuilder().append("%0").append(fractionDigits).append('d');
 
-                new Formatter(builtResult).format(formatString.toString(), Math.abs(rawPriceLine) % i);
+                new Formatter(builtResult).format("%0" + fractionDigits + 'd', Math.abs(rawPriceLine) % i);
                 result = builtResult.toString();
             }
         }
@@ -115,9 +112,8 @@ public class AmountUtils {
                 long rawCostUnit = costUnit;
                 int i = IntMath.checkedPow(10, fractionDigits);
                 StringBuilder builtResult = new StringBuilder().append(rawCostUnit / i).append(currency.getFractionSeparator());
-                StringBuilder formatString = new StringBuilder().append("%0").append(fractionDigits).append('d');
 
-                new Formatter(builtResult).format(formatString.toString(), Math.abs(rawCostUnit) % i);
+                new Formatter(builtResult).format("%0" + fractionDigits + 'd', Math.abs(rawCostUnit) % i);
                 result = builtResult.toString();
             }
         }
@@ -138,9 +134,8 @@ public class AmountUtils {
                 long rawCostLine = costLine;
                 int i = IntMath.checkedPow(10, fractionDigits);
                 StringBuilder builtResult = new StringBuilder().append(rawCostLine / i).append(currency.getFractionSeparator());
-                StringBuilder formatString = new StringBuilder().append("%0").append(fractionDigits).append('d');
 
-                new Formatter(builtResult).format(formatString.toString(), Math.abs(rawCostLine) % i);
+                new Formatter(builtResult).format("%0" + fractionDigits + 'd', Math.abs(rawCostLine) % i);
                 result = builtResult.toString();
             }
         }

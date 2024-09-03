@@ -134,7 +134,7 @@ public class CommandResult
 
     @Override
     public String toString() {
-        return new StringBuilder().append("{ securityResult = ").append(securityResult).append(", validationResult = ").append(validationResult).append(", executionResult = ").append(executionResult).append(" }").toString();
+        return "{ securityResult = " + securityResult + ", validationResult = " + validationResult + ", executionResult = " + executionResult + " }";
     }
 
 }

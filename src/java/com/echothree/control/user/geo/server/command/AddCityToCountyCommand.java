@@ -126,7 +126,7 @@ public class AddCityToCountyCommand
                 GeoCodeAlias countryGeoCodeAlias = geoControl.getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
                 String countryIso2Letter = countryGeoCodeAlias.getAlias();
                 
-                String geoCodeScopeName = new StringBuilder().append(countryIso2Letter).append("_").append(statePostal2Letter).append("_COUNTIES").toString();
+                String geoCodeScopeName = countryIso2Letter + "_" + statePostal2Letter + "_COUNTIES";
                 GeoCodeScope geoCodeScope = geoControl.getGeoCodeScopeByName(geoCodeScopeName);
                 
                 GeoCodeAliasType geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoConstants.GeoCodeAliasType_COUNTY_NAME);

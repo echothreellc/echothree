@@ -3564,8 +3564,8 @@ public class ForumControl
         if(forumMessageAttachmentDescription == null) {
             ForumMessageAttachmentDetail forumMessageAttachmentDetail = forumMessageAttachment.getLastDetail();
             
-            description = new StringBuilder(forumMessageAttachmentDetail.getForumMessage().getLastDetail().getForumMessageName()).append('-')
-                    .append(forumMessageAttachmentDetail.getForumMessageAttachmentSequence()).toString();
+            description = forumMessageAttachmentDetail.getForumMessage().getLastDetail().getForumMessageName() + '-' +
+                    forumMessageAttachmentDetail.getForumMessageAttachmentSequence();
         } else {
             description = forumMessageAttachmentDescription.getDescription();
         }

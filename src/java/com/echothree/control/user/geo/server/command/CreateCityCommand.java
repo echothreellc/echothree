@@ -107,7 +107,7 @@ public class CreateCityCommand
         GeoCodeAlias countryGeoCodeAlias = geoControl.getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
         String countryIso2Letter = countryGeoCodeAlias.getAlias();
         
-        String geoCodeScopeName = new StringBuilder().append(countryIso2Letter).append("_").append(statePostal2Letter).append("_CITIES").toString();
+        String geoCodeScopeName = countryIso2Letter + "_" + statePostal2Letter + "_CITIES";
         GeoCodeScope geoCodeScope = geoControl.getGeoCodeScopeByName(geoCodeScopeName);
         if(geoCodeScope == null) {
             geoCodeScope = geoControl.createGeoCodeScope(geoCodeScopeName, Boolean.FALSE, 0, getPartyPK());

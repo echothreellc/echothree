@@ -381,7 +381,7 @@ public class EncryptionUtils {
 
     private Cipher getCipher(final String entityTypeName, final String entityColumnName, final Boolean isExternal, final int cipherMode) {
         var coreControl = Session.getModelController(CoreControl.class);
-        String entityEncryptionKeyName = MD5Utils.getInstance().encode(new StringBuilder(entityTypeName).append('.').append(isExternal? externalPrefix: entityColumnName).toString());
+        String entityEncryptionKeyName = MD5Utils.getInstance().encode(entityTypeName + '.' + (isExternal ? externalPrefix : entityColumnName));
         SecretKey secretKey;
         byte[] iv;
 
